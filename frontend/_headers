@@ -4,10 +4,16 @@
   Referrer-Policy: no-referrer
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
   X-Robots-Tag: noindex, nofollow, noarchive
-  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://desgracias-api-staging.onrender.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://desgracias-api-staging.onrender.com https://desgracias-ops-staging.onrender.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
 
 /styles.css
   Cache-Control: public, max-age=300
 
 /app.js
   Cache-Control: public, max-age=300
+
+/historias.js
+  Cache-Control: no-cache, no-store, must-revalidate
+
+/historias.html
+  Cache-Control: no-cache, no-store, must-revalidate
