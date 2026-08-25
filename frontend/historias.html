@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="description" content="Explorador de historias ficticias de staging de Desgracias.es.">
+  <meta name="theme-color" content="#fbf7f2">
+  <title>Historias · Desgracias.es · Staging</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/historias.css">
+  <script src="/historias.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#contenido">Saltar al contenido</a>
+  <div class="stagebar">STAGING · Todos los recorridos de esta página son ficticios · No indexado</div>
+
+  <header>
+    <div class="shell nav">
+      <a class="brand" href="/" aria-label="Desgracias.es, inicio"><span class="brandmark">D</span><span>Desgracias.es</span></a>
+      <nav class="navlinks" aria-label="Navegación principal">
+        <a href="/">Inicio</a>
+        <a href="/historias.html" aria-current="page">Historias</a>
+        <a href="/#acompanamiento">Personas que ya estuvieron aquí</a>
+        <a href="/#confianza">Confianza</a>
+        <a class="btn btn-primary" href="/?contar=1">Cuéntanos tu historia</a>
+      </nav>
+      <details class="mobile-nav">
+        <summary>Menú</summary>
+        <div class="mobile-panel">
+          <a href="/">Inicio</a>
+          <a href="/historias.html">Historias</a>
+          <a href="/#acompanamiento">Personas que ya estuvieron aquí</a>
+          <a href="/#confianza">Confianza</a>
+          <a href="/?contar=1">Cuéntanos tu historia</a>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="story-hero">
+      <div class="story-shell story-hero-grid">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Historias que muestran el después</div>
+          <h1>Encontrar algo parecido ayuda más cuando sabes en qué punto está esa persona.</h1>
+          <p>No ordenamos el sufrimiento por popularidad. Queremos comparar evento, contexto y fase: qué ocurrió, qué cambió después y qué pasos fueron útiles.</p>
+        </div>
+        <aside class="story-disclaimer">
+          <strong>Demostración segura de staging</strong>
+          Estas seis historias son completamente ficticias. No pertenecen a usuarios reales y no mostramos contadores inventados de apoyo, seguidores o reacciones.
+        </aside>
+      </div>
+    </section>
+
+    <section class="story-tools" aria-label="Buscar y filtrar historias">
+      <div class="story-shell">
+        <div class="story-tools-card">
+          <label class="story-search" for="storySearch"><span aria-hidden="true">⌕</span><input id="storySearch" type="search" autocomplete="off" placeholder="Busca por situación, etapa o palabra…"></label>
+          <select class="story-filter" id="storyCategory" aria-label="Filtrar por categoría">
+            <option value="">Todas las categorías</option>
+            <option>Duelo y Pérdidas</option>
+            <option>Soledad</option>
+            <option>Pareja y Rupturas</option>
+            <option>Familia</option>
+            <option>Trabajo</option>
+            <option>Dinero</option>
+            <option>Autoestima</option>
+            <option>Amistad</option>
+            <option>Conflictos</option>
+            <option>Otras historias</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="storiesHeading">
+      <div class="story-shell">
+        <div class="story-meta-row">
+          <div><div class="section-kicker">Recorridos por tiempo y experiencia</div><h2 class="section-title" id="storiesHeading">Qué pasó después.</h2></div>
+          <span class="story-nobody"><i></i> Sin rankings de sufrimiento ni “dislikes”</span>
+        </div>
+        <div class="story-count" id="storyCount" aria-live="polite">Cargando recorridos…</div>
+        <div class="story-grid" id="storyGrid" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="story-principles">
+      <div class="story-shell story-principles-card">
+        <div class="story-principle"><strong>“A mí también me pasó”</strong><span>Sirve para reconocer experiencia compartida, no para convertir una historia en una competición de popularidad.</span></div>
+        <div class="story-principle"><strong>“Te acompaño”</strong><span>Expresa presencia. En producción tendrá controles antiabuso y no sustituirá una respuesta profesional cuando sea necesaria.</span></div>
+        <div class="story-principle"><strong>Guardar y seguir</strong><span>Son acciones privadas del usuario. En esta demostración se conservan solo en tu navegador y se registran como eventos sintéticos de staging.</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <div class="footer-grid">
+        <div><a class="brand" href="/"><span class="brandmark">D</span><span>Desgracias.es</span></a><p class="section-copy">Un lugar para convertir un momento difícil en un siguiente paso más claro.</p></div>
+        <div><h4>Explorar</h4><a href="/">Inicio</a><a href="/historias.html">Historias</a><a href="/#acompanamiento">Acompañamiento</a></div>
+        <div><h4>Staging</h4><a href="https://desgracias-api-staging.onrender.com/health">Estado técnico</a><a href="/?contar=1">Probar formulario</a></div>
+      </div>
+      <div class="footer-note"><span>© 2026 Desgracias.es · Staging</span><span>No es un servicio de emergencias ni sustituye atención profesional.</span></div>
+    </div>
+  </footer>
+
+  <dialog class="story-dialog" id="storyDetail" aria-labelledby="detailTitle">
+    <div class="story-detail">
+      <header class="story-detail-head">
+        <div><span class="story-chip" id="detailChip">Historia</span><h2 id="detailTitle">Cargando…</h2><div class="story-context" id="detailContext"></div></div>
+        <button class="story-close" id="closeDetail" type="button" aria-label="Cerrar historia">×</button>
+      </header>
+      <div class="story-detail-body">
+        <div class="story-detail-grid">
+          <article>
+            <div class="story-copy" id="detailCopy"></div>
+            <div class="section-kicker">El recorrido en el tiempo</div>
+            <div class="timeline" id="detailTimeline"></div>
+          </article>
+          <aside class="story-side">
+            <div class="story-box"><h3>Qué ayudó en esta demostración</h3><ul id="detailHelped"></ul></div>
+            <div class="story-box"><h3>Próximos pasos posibles</h3><ul id="detailNext"></ul></div>
+            <div class="story-disclaimer"><strong>No es una receta universal</strong>Una experiencia personal puede orientar, pero no sustituye asesoramiento médico, psicológico, jurídico o financiero cuando corresponde.</div>
+          </aside>
+        </div>
+      </div>
+      <footer class="story-detail-foot">
+        <div class="story-interaction-title">¿Qué te aporta esta historia?</div>
+        <div class="story-interactions">
+          <button class="story-action" type="button" data-interaction="tambien_me_paso" aria-pressed="false">A mí también me pasó</button>
+          <button class="story-action" type="button" data-interaction="te_acompano" aria-pressed="false">Te acompaño</button>
+          <button class="story-action" type="button" data-interaction="esto_me_ayudo" aria-pressed="false">Esto me ayudó</button>
+          <button class="story-action secondary" type="button" data-interaction="seguir" aria-pressed="false">Seguir historia</button>
+          <button class="story-action secondary" type="button" data-interaction="guardar" aria-pressed="false">Guardar</button>
+        </div>
+        <div class="story-event-status" id="storyEventStatus" aria-live="polite"></div>
+      </footer>
+    </div>
+  </dialog>
+</body>
+</html>
