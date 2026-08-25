@@ -5,23 +5,23 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#f7f3ee">
-  <title>Desgracias.es · Moderación interna</title>
-  <link rel="stylesheet" href="/ops/ops.css">
-  <script src="/ops/ops.js" defer></script>
+  <title>Desgracias.es · Centro de Mando interno</title>
+  <link rel="stylesheet" href="/ops/ops.css?v=20260825-command-1">
+  <script src="/ops/ops.js?v=20260825-command-1" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Saltar al contenido</a>
 
   <header class="topbar">
     <div class="brand"><span class="brandmark">D</span><span>Desgracias.es</span></div>
-    <div class="env-pill">INTERNO · STAGING</div>
+    <div class="env-pill">CENTRO DE MANDO · STAGING</div>
   </header>
 
   <main id="main" class="shell">
     <section id="loginView" class="login-card" aria-labelledby="loginTitle">
       <div>
         <p class="eyebrow">Operaciones internas</p>
-        <h1 id="loginTitle">Moderación humana, sin complicaciones.</h1>
+        <h1 id="loginTitle">Decisiones humanas, con contexto y control.</h1>
         <p class="lead">Introduce el token temporal de staging. No se guarda en el navegador y se pierde al recargar o cerrar esta pestaña.</p>
       </div>
       <form id="loginForm" class="login-form">
@@ -38,9 +38,9 @@
     <section id="consoleView" class="console" hidden>
       <div class="console-head">
         <div>
-          <p class="eyebrow">Bandeja de trabajo</p>
-          <h1>Moderación</h1>
-          <p class="lead compact">Revisa una historia, elige un motivo y toma una decisión. Nada se publica automáticamente.</p>
+          <p class="eyebrow">Centro de Mando</p>
+          <h1>Decisión coordinada</h1>
+          <p class="lead compact">Safety → privacidad → valor humano → UX → ingeniería → Google/medición → negocio. La recomendación orienta; la decisión sensible sigue siendo humana.</p>
         </div>
         <div class="head-actions">
           <button id="refreshButton" class="btn secondary" type="button">Actualizar</button>
@@ -68,7 +68,7 @@
           <div id="emptyReview" class="empty-review">
             <div class="empty-icon">✓</div>
             <h2 id="reviewTitle">Selecciona una historia</h2>
-            <p>Verás únicamente los datos necesarios para decidir. El panel evita métricas sociales y decisiones automáticas.</p>
+            <p>El Centro de Mando mostrará el contexto necesario para decidir sin convertir una orientación automática en diagnóstico, peritaje o decisión clínica.</p>
           </div>
 
           <article id="reviewCard" class="review-card" hidden>
@@ -86,6 +86,21 @@
               <div><dt>Recibida</dt><dd id="reviewDate">—</dd></div>
               <div><dt>Tipo</dt><dd id="reviewSynthetic">—</dd></div>
             </dl>
+
+            <section class="command-center" aria-labelledby="commandTitle">
+              <div class="command-head">
+                <div><p class="eyebrow">Brief ejecutivo de caso</p><h3 id="commandTitle">Lectura multidisciplinar</h3></div>
+                <span id="commandDecision" class="command-decision">Analizando…</span>
+              </div>
+              <div class="command-grid">
+                <article id="safetyCard" class="command-card"><span>🛡️ Safety</span><strong id="safetyLevel">—</strong><small id="safetyText">—</small></article>
+                <article class="command-card"><span>🧠 Necesidad principal</span><strong id="primaryNeed">—</strong><small id="primaryNeedText">—</small></article>
+                <article class="command-card"><span>👥 Equipo sugerido</span><strong id="disciplineCount">—</strong><small id="disciplineText">—</small></article>
+                <article class="command-card"><span>🔐 Privacidad / negocio</span><strong id="commercialMode">—</strong><small id="analyticsMode">—</small></article>
+              </div>
+              <div id="commandExplanation" class="command-explanation"></div>
+              <div class="command-guardrail"><strong>Regla:</strong> este análisis es apoyo a la decisión. No diagnostica, no prescribe, no emite conclusiones forenses y nunca sustituye la revisión humana en situaciones críticas.</div>
+            </section>
 
             <div class="story-copy">
               <h3>Historia</h3>
@@ -135,6 +150,6 @@
     </section>
   </main>
 
-  <footer>Desgracias.es · Consola interna de staging · No pública · No indexada</footer>
+  <footer>Desgracias.es · Centro de Mando interno de staging · No público · No indexado</footer>
 </body>
 </html>
