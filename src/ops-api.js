@@ -36,6 +36,10 @@ const reasonsByDecision = {
   reject: new Set(['needs_editing', 'privacy_risk', 'unsafe_guidance', 'spam_or_abuse', 'out_of_scope', 'duplicate_or_test']),
   escalate: new Set(['crisis_or_safeguarding'])
 };
+const publicCommunityTypes = new Set(['tambien_me_paso', 'te_acompano', 'esto_me_ayudo']);
+const publicInteractionWindowMs = 10 * 60 * 1000;
+const publicInteractionMax = 60;
+const publicInteractionsByIp = new Map();
 
 function secureEqual(a, b) {
   const left = Buffer.from(String(a));
@@ -84,7 +88,7 @@ function applyPublicCors(request, reply) {
     reply.header('Access-Control-Allow-Origin', origin);
     reply.header('Vary', 'Origin');
   }
-  reply.header('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  reply.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
   reply.header('Access-Control-Allow-Headers', 'Content-Type');
   reply.header('Access-Control-Max-Age', '600');
 }
@@ -96,6 +100,49 @@ function allowPublicOriginOrDeny(request, reply) {
     return false;
   }
   applyPublicCors(request, reply);
+  return true;
+}
+
+function withinPublicInteractionRate(ip) {
+  const now = Date.now();
+  const recent = (publicInteractionsByIp.get(ip) || []).filter(
+    (timestamp) => now - timestamp < publicInteractionWindowMs
+  );
+  if (recent.length >= publicInteractionMax) return false;
+  recent.push(now);
+  publicInteractionsByIp.set(ip, recent);
+  return true;
+}
+
+function anonymousClientHash(clientId) {
+  return crypto.createHash('sha256').update(`staging-community:${clientId}`).digest('hex');
+}
+
+async function ensureCommunitySchema() {
+  if (!pool || environment !== 'staging') return false;
+  const existing = await pool.query(
+    "select to_regclass('public.staging_published_stories') as table_name"
+  );
+  if (!existing.rows[0]?.table_name) return false;
+
+  await pool.query(`
+    create table if not exists staging_story_interactions (
+      id bigserial primary key,
+      story_id bigint not null references staging_published_stories(id) on delete cascade,
+      interaction_type text not null check (
+        interaction_type in ('tambien_me_paso','te_acompano','esto_me_ayudo')
+      ),
+      client_hash char(64) not null,
+      active boolean not null default true,
+      created_at timestamptz not null default now(),
+      updated_at timestamptz not null default now(),
+      unique (story_id, interaction_type, client_hash)
+    )
+  `);
+  await pool.query(`
+    create index if not exists staging_story_interactions_story_active_idx
+      on staging_story_interactions (story_id, active)
+  `);
   return true;
 }
 
@@ -123,6 +170,8 @@ function excerptFromStory(story) {
 }
 
 function publishedSummary(row) {
+  const supportSignals = Number(row.support_signals || 0);
+  const nobodyAloneEligible = row.nadie_solo_eligible === true;
   return {
     id: `published-${row.id}`,
     slug: row.slug,
@@ -133,7 +182,9 @@ function publishedSummary(row) {
     context: 'Historia aprobada por moderación humana · staging',
     source: 'moderated_staging',
     published_at: row.published_at,
-    nadie_solo_eligible: row.nadie_solo_eligible === true
+    nadie_solo_eligible: nobodyAloneEligible,
+    nadie_solo_attention: nobodyAloneEligible && supportSignals === 0,
+    community_supported: supportSignals > 0
   };
 }
 
@@ -193,6 +244,16 @@ app.options('/public/stories/:slug', async (request, reply) => {
   return reply.code(204).send();
 });
 
+app.options('/public/stories/:slug/interactions', async (request, reply) => {
+  if (!allowPublicOriginOrDeny(request, reply)) return;
+  return reply.code(204).send();
+});
+
+app.options('/public/nadie-solo', async (request, reply) => {
+  if (!allowPublicOriginOrDeny(request, reply)) return;
+  return reply.code(204).send();
+});
+
 app.get('/public/stories', async (request, reply) => {
   if (!allowPublicOriginOrDeny(request, reply)) return;
   if (environment !== 'staging') return reply.code(404).send({ error: 'not_found' });
@@ -200,17 +261,29 @@ app.get('/public/stories', async (request, reply) => {
 
   const category = typeof request.query?.category === 'string' ? request.query.category.trim() : '';
   try {
+    await ensureCommunitySchema();
     const values = [];
-    let where = "where status = 'published' and synthetic = true";
+    let where = "where s.status = 'published' and s.synthetic = true";
     if (category) {
       values.push(category);
-      where += ` and category = $${values.length}`;
+      where += ` and s.category = $${values.length}`;
     }
     const { rows } = await pool.query(
-      `select id, slug, category, title, story, needs, published_at, nadie_solo_eligible
-       from staging_published_stories
+      `select s.id, s.slug, s.category, s.title, s.story, s.needs, s.published_at,
+              s.nadie_solo_eligible,
+              coalesce((
+                select count(*)
+                from staging_story_interactions i
+                where i.story_id = s.id and i.active = true
+              ), 0)::int as support_signals
+       from staging_published_stories s
        ${where}
-       order by published_at desc
+       order by
+         (s.nadie_solo_eligible and not exists (
+           select 1 from staging_story_interactions i
+           where i.story_id = s.id and i.active = true
+         )) desc,
+         s.published_at desc
        limit 50`,
       values
     );
@@ -237,10 +310,17 @@ app.get('/public/stories/:slug', async (request, reply) => {
 
   const slug = String(request.params?.slug || '').trim();
   try {
+    await ensureCommunitySchema();
     const { rows } = await pool.query(
-      `select id, slug, category, title, story, needs, published_at, nadie_solo_eligible
-       from staging_published_stories
-       where slug = $1 and status = 'published' and synthetic = true
+      `select s.id, s.slug, s.category, s.title, s.story, s.needs, s.published_at,
+              s.nadie_solo_eligible,
+              coalesce((
+                select count(*)
+                from staging_story_interactions i
+                where i.story_id = s.id and i.active = true
+              ), 0)::int as support_signals
+       from staging_published_stories s
+       where s.slug = $1 and s.status = 'published' and s.synthetic = true
        limit 1`,
       [slug]
     );
@@ -255,6 +335,117 @@ app.get('/public/stories/:slug', async (request, reply) => {
   } catch (error) {
     app.log.error({ err: error, slug }, 'published staging story unavailable');
     return reply.code(503).send({ error: 'published_story_unavailable' });
+  }
+});
+
+app.post('/public/stories/:slug/interactions', async (request, reply) => {
+  if (!allowPublicOriginOrDeny(request, reply)) return;
+  if (environment !== 'staging') return reply.code(404).send({ error: 'not_found' });
+  if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
+
+  const slug = String(request.params?.slug || '').trim();
+  const body = request.body ?? {};
+  const type = typeof body.type === 'string' ? body.type.trim() : '';
+  const clientId = typeof body.client_id === 'string' ? body.client_id.trim() : '';
+  const active = body.active !== false;
+  const synthetic = body.synthetic === true;
+
+  if (!publicCommunityTypes.has(type)) return reply.code(400).send({ error: 'invalid_interaction' });
+  if (!synthetic) return reply.code(400).send({ error: 'staging_requires_synthetic_content' });
+  if (!/^[A-Za-z0-9-]{16,80}$/.test(clientId)) {
+    return reply.code(400).send({ error: 'invalid_client_id' });
+  }
+
+  const ip = request.ip || 'unknown';
+  if (!withinPublicInteractionRate(ip)) {
+    return reply.code(429).send({ error: 'rate_limit', retry_after_seconds: 600 });
+  }
+
+  try {
+    const schemaReady = await ensureCommunitySchema();
+    if (!schemaReady) return reply.code(503).send({ error: 'community_not_ready' });
+
+    const storyResult = await pool.query(
+      `select id, nadie_solo_eligible
+       from staging_published_stories
+       where slug = $1 and status = 'published' and synthetic = true
+       limit 1`,
+      [slug]
+    );
+    const story = storyResult.rows[0];
+    if (!story) return reply.code(404).send({ error: 'story_not_found' });
+
+    const clientHash = anonymousClientHash(clientId);
+    await pool.query(
+      `insert into staging_story_interactions (
+         story_id, interaction_type, client_hash, active, created_at, updated_at
+       ) values ($1,$2,$3,$4,now(),now())
+       on conflict (story_id, interaction_type, client_hash)
+       do update set active = excluded.active, updated_at = now()`,
+      [story.id, type, clientHash, active]
+    );
+
+    const signalsResult = await pool.query(
+      `select count(*)::int as support_signals
+       from staging_story_interactions
+       where story_id = $1 and active = true`,
+      [story.id]
+    );
+    const supportSignals = Number(signalsResult.rows[0]?.support_signals || 0);
+    const nobodyAloneAttention = story.nadie_solo_eligible === true && supportSignals === 0;
+
+    app.log.info(
+      { slug, type, active, nadieSoloAttention: nobodyAloneAttention },
+      'staging community signal updated'
+    );
+
+    return reply.code(202).send({
+      status: active ? 'interaction_recorded' : 'interaction_removed',
+      active,
+      synthetic: true,
+      nadie_solo_attention: nobodyAloneAttention
+    });
+  } catch (error) {
+    app.log.error({ err: error, slug, type }, 'staging community interaction failed');
+    return reply.code(503).send({ error: 'community_interaction_unavailable' });
+  }
+});
+
+app.get('/public/nadie-solo', async (request, reply) => {
+  if (!allowPublicOriginOrDeny(request, reply)) return;
+  if (environment !== 'staging') return reply.code(404).send({ error: 'not_found' });
+  if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
+
+  try {
+    const schemaReady = await ensureCommunitySchema();
+    if (!schemaReady) {
+      return { environment, synthetic: true, principle: 'first_support_not_popularity', items: [] };
+    }
+    const { rows } = await pool.query(
+      `select s.id, s.slug, s.category, s.title, s.story, s.needs, s.published_at,
+              s.nadie_solo_eligible, 0::int as support_signals
+       from staging_published_stories s
+       where s.status = 'published'
+         and s.synthetic = true
+         and s.nadie_solo_eligible = true
+         and not exists (
+           select 1
+           from staging_story_interactions i
+           where i.story_id = s.id and i.active = true
+         )
+       order by s.published_at asc
+       limit 12`
+    );
+    return {
+      environment,
+      synthetic: true,
+      principle: 'first_support_not_popularity',
+      disclaimer: 'Nadie Solo prioriza historias sin una primera señal comunitaria; no crea rankings de sufrimiento.',
+      items: rows.map(publishedSummary)
+    };
+  } catch (error) {
+    app.log.error({ err: error }, 'nadie solo staging feed unavailable');
+    return reply.code(503).send({ error: 'nadie_solo_unavailable' });
   }
 });
 
