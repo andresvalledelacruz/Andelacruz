@@ -10,7 +10,9 @@
     "start": "node src/api.js",
     "start:ops": "node --import ./src/publish-processor.js src/ops-api.js",
     "worker": "node src/worker.js",
-    "test:story-updates": "node --test tests/story-update-policy.test.js"
+    "test:story-updates": "node --test tests/story-update-policy.test.js",
+    "test:needs-router": "node --test tests/human-needs-router.test.js",
+    "test": "node --test tests/*.test.js"
   },
   "dependencies": {
     "fastify": "^5.6.0",
