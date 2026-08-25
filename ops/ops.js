@@ -215,7 +215,11 @@ async function loadConsole() {
     document.querySelector('#metricSafety').textContent = queueLength(summary.queues?.safety);
     document.querySelector('#metricTasks').textContent = queueLength(summary.queues?.internal_tasks);
     document.querySelector('#metricApi').textContent = 'OK';
-    document.querySelector('#lastRefresh').textContent = `Actualizado ${new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(new Date())}`;
+    const triage = pending.triage_summary || {};
+    const triageText = Number(triage.P0 || 0) + Number(triage.P1 || 0) > 0
+      ? ` · ${Number(triage.P0 || 0) + Number(triage.P1 || 0)} prioridad crítica`
+      : '';
+    document.querySelector('#lastRefresh').textContent = `Actualizado ${new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(new Date())}${triageText}`;
 
     queueItems = Array.isArray(pending.items) ? pending.items : [];
     renderQueue();
@@ -255,9 +259,11 @@ function renderQueue() {
 
   for (const item of queueItems) {
     const payload = item.payload || {};
+    const triage = item.triage || {};
+    const triageClass = ['p0','p1','p2','normal'].includes(triage.priority_class) ? triage.priority_class : 'normal';
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = `queue-item${selectedItem?.message_id === item.message_id ? ' active' : ''}`;
+    button.className = `queue-item triage-${triageClass}${selectedItem?.message_id === item.message_id ? ' active' : ''}`;
     button.dataset.messageId = item.message_id;
 
     const top = document.createElement('div');
@@ -270,12 +276,22 @@ function renderQueue() {
     time.textContent = formatDate(item.enqueued_at);
     top.append(category, time);
 
+    const triageRow = document.createElement('div');
+    triageRow.className = 'queue-triage-row';
+    const priority = document.createElement('span');
+    priority.className = `queue-triage ${triageClass}`;
+    priority.textContent = triage.priority_label || 'NORMAL';
+    const route = document.createElement('span');
+    route.className = 'queue-route';
+    route.textContent = triage.primary_need_label || 'Revisión general';
+    triageRow.append(priority, route);
+
     const title = document.createElement('strong');
     title.textContent = payload.title || 'Historia sin título';
     const preview = document.createElement('p');
     preview.textContent = excerpt(payload.story || '');
 
-    button.append(top, title, preview);
+    button.append(top, triageRow, title, preview);
     button.addEventListener('click', () => selectItem(item));
     queueList.append(button);
   }
