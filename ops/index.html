@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#f7f3ee">
+  <title>Desgracias.es · Moderación interna</title>
+  <link rel="stylesheet" href="/ops/ops.css">
+  <script src="/ops/ops.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Saltar al contenido</a>
+
+  <header class="topbar">
+    <div class="brand"><span class="brandmark">D</span><span>Desgracias.es</span></div>
+    <div class="env-pill">INTERNO · STAGING</div>
+  </header>
+
+  <main id="main" class="shell">
+    <section id="loginView" class="login-card" aria-labelledby="loginTitle">
+      <div>
+        <p class="eyebrow">Operaciones internas</p>
+        <h1 id="loginTitle">Moderación humana, sin complicaciones.</h1>
+        <p class="lead">Introduce el token temporal de staging. No se guarda en el navegador y se pierde al recargar o cerrar esta pestaña.</p>
+      </div>
+      <form id="loginForm" class="login-form">
+        <label for="opsToken">Token de operaciones</label>
+        <div class="token-row">
+          <input id="opsToken" name="opsToken" type="password" autocomplete="off" spellcheck="false" required placeholder="Pega el token de staging">
+          <button class="btn primary" type="submit">Entrar</button>
+        </div>
+        <p id="loginStatus" class="status" role="status" aria-live="polite"></p>
+      </form>
+      <div class="security-note"><strong>Seguridad:</strong> este panel no sustituye el acceso con identidad + MFA previsto para producción. Es una consola operativa de staging protegida en servidor.</div>
+    </section>
+
+    <section id="consoleView" class="console" hidden>
+      <div class="console-head">
+        <div>
+          <p class="eyebrow">Bandeja de trabajo</p>
+          <h1>Moderación</h1>
+          <p class="lead compact">Revisa una historia, elige un motivo y toma una decisión. Nada se publica automáticamente.</p>
+        </div>
+        <div class="head-actions">
+          <button id="refreshButton" class="btn secondary" type="button">Actualizar</button>
+          <button id="logoutButton" class="btn ghost" type="button">Salir</button>
+        </div>
+      </div>
+
+      <div class="metrics" aria-label="Estado de colas">
+        <article><span>Pendientes</span><strong id="metricModeration">—</strong><small>Moderación</small></article>
+        <article><span>Seguridad</span><strong id="metricSafety">—</strong><small>Revisión humana</small></article>
+        <article><span>Tareas</span><strong id="metricTasks">—</strong><small>Procesamiento interno</small></article>
+        <article><span>API interna</span><strong id="metricApi" class="metric-word">—</strong><small id="lastRefresh">Sin comprobar</small></article>
+      </div>
+
+      <div class="workspace">
+        <section class="queue-panel" aria-labelledby="queueTitle">
+          <div class="panel-head">
+            <div><p class="eyebrow">Cola</p><h2 id="queueTitle">Historias pendientes</h2></div>
+            <span id="queueCount" class="counter">0</span>
+          </div>
+          <div id="queueList" class="queue-list" aria-live="polite"></div>
+        </section>
+
+        <section class="review-panel" aria-labelledby="reviewTitle">
+          <div id="emptyReview" class="empty-review">
+            <div class="empty-icon">✓</div>
+            <h2 id="reviewTitle">Selecciona una historia</h2>
+            <p>Verás únicamente los datos necesarios para decidir. El panel evita métricas sociales y decisiones automáticas.</p>
+          </div>
+
+          <article id="reviewCard" class="review-card" hidden>
+            <div class="review-top">
+              <div>
+                <span id="reviewCategory" class="category-chip"></span>
+                <h2 id="reviewHeadline"></h2>
+              </div>
+              <span id="reviewId" class="message-id"></span>
+            </div>
+
+            <dl class="facts">
+              <div><dt>Alias</dt><dd id="reviewAlias">—</dd></div>
+              <div><dt>Necesita</dt><dd id="reviewNeeds">—</dd></div>
+              <div><dt>Recibida</dt><dd id="reviewDate">—</dd></div>
+              <div><dt>Tipo</dt><dd id="reviewSynthetic">—</dd></div>
+            </dl>
+
+            <div class="story-copy">
+              <h3>Historia</h3>
+              <p id="reviewStory"></p>
+            </div>
+
+            <div class="decision-box">
+              <div class="field">
+                <label for="reasonSelect">Motivo de la decisión</label>
+                <select id="reasonSelect" required>
+                  <option value="">Selecciona un motivo…</option>
+                  <optgroup label="Aprobar">
+                    <option value="safe_and_useful">Segura y útil</option>
+                  </optgroup>
+                  <optgroup label="Rechazar">
+                    <option value="needs_editing">Necesita edición</option>
+                    <option value="privacy_risk">Riesgo de privacidad</option>
+                    <option value="unsafe_guidance">Orientación insegura</option>
+                    <option value="spam_or_abuse">Spam o abuso</option>
+                    <option value="out_of_scope">Fuera de alcance</option>
+                    <option value="duplicate_or_test">Duplicada o prueba</option>
+                  </optgroup>
+                  <optgroup label="Escalar">
+                    <option value="crisis_or_safeguarding">Crisis o salvaguarda</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="field">
+                <label for="decisionNote">Nota interna <span>(opcional, máx. 500)</span></label>
+                <textarea id="decisionNote" maxlength="500" rows="3" placeholder="Solo información necesaria para la decisión. No copies datos personales innecesarios."></textarea>
+              </div>
+              <div class="decision-actions">
+                <button class="decision approve" data-decision="approve" type="button">Aprobar</button>
+                <button class="decision reject" data-decision="reject" type="button">Rechazar</button>
+                <button class="decision escalate" data-decision="escalate" type="button">Escalar a seguridad</button>
+              </div>
+              <p id="decisionStatus" class="status" role="status" aria-live="polite"></p>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <section class="session-log" aria-labelledby="sessionTitle">
+        <div class="panel-head"><div><p class="eyebrow">Esta sesión</p><h2 id="sessionTitle">Decisiones recientes</h2></div></div>
+        <div id="sessionLog" class="session-items"><p class="muted">Todavía no has tomado ninguna decisión en esta sesión.</p></div>
+      </section>
+    </section>
+  </main>
+
+  <footer>Desgracias.es · Consola interna de staging · No pública · No indexada</footer>
+</body>
+</html>
