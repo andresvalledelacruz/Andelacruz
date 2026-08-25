@@ -1,6 +1,9 @@
 const API_BASE = 'https://desgracias-api-staging.onrender.com';
 const MODERATED_BASE = 'https://desgracias-ops-staging.onrender.com';
 const STORAGE_KEY = 'desgracias_staging_story_actions_v1';
+const CLIENT_KEY = 'desgracias_staging_community_client_v1';
+const PRIVATE_ACTIONS = new Set(['seguir', 'guardar']);
+const COMMUNITY_ACTIONS = new Set(['tambien_me_paso', 'te_acompano', 'esto_me_ayudo']);
 
 const grid = document.querySelector('#storyGrid');
 const count = document.querySelector('#storyCount');
@@ -37,6 +40,20 @@ function writeActions(actions) {
   }
 }
 
+function getCommunityClientId() {
+  try {
+    const existing = localStorage.getItem(CLIENT_KEY);
+    if (existing && /^[A-Za-z0-9-]{16,80}$/.test(existing)) return existing;
+    const generated = globalThis.crypto?.randomUUID
+      ? globalThis.crypto.randomUUID()
+      : `browser-${Date.now()}-${Math.random().toString(36).slice(2, 18)}`;
+    localStorage.setItem(CLIENT_KEY, generated);
+    return generated;
+  } catch {
+    return `session-${Date.now()}-${Math.random().toString(36).slice(2, 18)}`;
+  }
+}
+
 function hasAction(slug, type) {
   return Boolean(readActions()[slug]?.includes(type));
 }
@@ -65,10 +82,42 @@ function updateActionButtons() {
   }
 }
 
-async function queueInteraction(slug, type) {
-  if (activeStory?.source === 'moderated_staging') {
-    return { local_only: true };
+function updateNobodyState(slug, attention) {
+  if (typeof attention !== 'boolean') return;
+  const summary = stories.find((item) => item.slug === slug);
+  if (summary) {
+    summary.nadie_solo_attention = attention;
+    summary.community_supported = !attention;
   }
+  if (activeStory?.slug === slug) {
+    activeStory.nadie_solo_attention = attention;
+    activeStory.community_supported = !attention;
+  }
+}
+
+async function queueInteraction(slug, type, active = true) {
+  if (PRIVATE_ACTIONS.has(type)) {
+    return { local_only: true, private_action: true, active };
+  }
+
+  if (activeStory?.source === 'moderated_staging' && COMMUNITY_ACTIONS.has(type)) {
+    const response = await fetch(`${MODERATED_BASE}/public/stories/${encodeURIComponent(slug)}/interactions`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type,
+        active,
+        synthetic: true,
+        client_id: getCommunityClientId()
+      })
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || 'interaction_failed');
+    return { ...data, moderated: true };
+  }
+
+  if (!active) return { local_only: true, active: false };
+
   const response = await fetch(`${API_BASE}/api/stories/${encodeURIComponent(slug)}/interactions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -81,27 +130,44 @@ async function queueInteraction(slug, type) {
 
 async function applyInteraction(type, button) {
   if (!activeStory) return;
-  const enabling = toggleLocalAction(activeStory.slug, type);
+  const slug = activeStory.slug;
+  const enabling = toggleLocalAction(slug, type);
   updateActionButtons();
-  renderStories();
-
-  if (!enabling) {
-    setEventStatus('', 'Preferencia quitada en este navegador.');
-    return;
-  }
 
   button.disabled = true;
-  setEventStatus('', 'Guardando prueba de interacción…');
+  setEventStatus('', enabling ? 'Registrando tu señal…' : 'Quitando esta señal…');
+
   try {
-    const data = await queueInteraction(activeStory.slug, type);
-    if (data.local_only) {
-      setEventStatus('ok', 'Preferencia guardada localmente. Las interacciones de historias moderadas se activarán en la siguiente fase de staging.');
+    const data = await queueInteraction(slug, type, enabling);
+    updateNobodyState(slug, data.nadie_solo_attention);
+    renderStories();
+
+    if (data.private_action) {
+      setEventStatus('ok', enabling
+        ? 'Guardado de forma privada en este navegador. No entra en métricas ni en Nadie Solo.'
+        : 'Preferencia privada quitada de este navegador.');
+    } else if (data.moderated) {
+      if (enabling) {
+        setEventStatus('ok', data.nadie_solo_attention
+          ? 'Señal registrada. Nadie Solo mantiene esta historia visible hasta que reciba una primera señal de acompañamiento.'
+          : 'Señal registrada. La historia ya ha recibido acompañamiento y deja de necesitar prioridad de Nadie Solo.');
+      } else {
+        setEventStatus('ok', data.nadie_solo_attention
+          ? 'Señal retirada. Nadie Solo vuelve a dar visibilidad temporal a esta historia.'
+          : 'Señal retirada correctamente.');
+      }
+    } else if (data.local_only) {
+      setEventStatus('', enabling
+        ? 'Preferencia guardada en este navegador.'
+        : 'Preferencia quitada en este navegador.');
     } else {
       const suffix = data.event_id ? ` · evento #${data.event_id}` : '';
       setEventStatus('ok', `Prueba registrada en staging${suffix}. No mostramos contadores sociales ficticios.`);
     }
   } catch {
-    setEventStatus('error', 'La preferencia se guardó en este navegador, pero la API no pudo registrar la prueba ahora mismo.');
+    toggleLocalAction(slug, type);
+    updateActionButtons();
+    setEventStatus('error', 'No hemos podido registrar esta señal ahora mismo. No se ha cambiado tu estado local.');
   } finally {
     button.disabled = false;
   }
@@ -128,6 +194,7 @@ function filteredStories() {
 function storyCard(story) {
   const article = document.createElement('article');
   article.className = 'story-card';
+  if (story.nadie_solo_attention) article.classList.add('story-card--nadie-solo');
 
   const top = document.createElement('div');
   top.className = 'story-card-top';
@@ -142,11 +209,20 @@ function storyCard(story) {
   phase.textContent = story.phase || 'Historia';
   chipRow.append(chip, phase);
 
+  top.append(chipRow);
+
+  if (story.nadie_solo_attention) {
+    const nobody = document.createElement('div');
+    nobody.className = 'story-nadie-solo-chip';
+    nobody.innerHTML = '<span aria-hidden="true">●</span> Nadie Solo · esperando una primera señal';
+    top.append(nobody);
+  }
+
   const title = document.createElement('h2');
   title.textContent = story.title;
   const excerpt = document.createElement('p');
   excerpt.textContent = story.excerpt;
-  top.append(chipRow, title, excerpt);
+  top.append(title, excerpt);
 
   const foot = document.createElement('div');
   foot.className = 'story-card-foot';
@@ -172,11 +248,6 @@ function storyCard(story) {
     const enabling = toggleLocalAction(story.slug, 'guardar');
     save.setAttribute('aria-pressed', String(enabling));
     save.textContent = enabling ? '★' : '☆';
-    if (enabling) {
-      activeStory = story;
-      try { await queueInteraction(story.slug, 'guardar'); } catch { /* local save remains useful */ }
-      activeStory = null;
-    }
   });
 
   actions.append(read, save);
@@ -191,8 +262,9 @@ function renderStories() {
   grid.replaceChildren();
   if (count) {
     const moderated = items.filter((item) => item.source === 'moderated_staging').length;
+    const nobodyActive = items.some((item) => item.nadie_solo_attention === true);
     count.textContent = moderated
-      ? `${items.length} recorridos ficticios · ${moderated} aprobado${moderated === 1 ? '' : 's'} por moderación humana`
+      ? `${items.length} recorridos ficticios · ${moderated} aprobado${moderated === 1 ? '' : 's'} por moderación humana${nobodyActive ? ' · Nadie Solo activo' : ''}`
       : `${items.length} recorridos ficticios para probar la experiencia`;
   }
 
@@ -255,10 +327,12 @@ function renderDetail(story) {
     }
   }
 
-  if (story.source === 'moderated_staging') {
-    setEventStatus('ok', 'Historia ficticia aprobada mediante el circuito real de moderación de staging.');
+  if (story.source === 'moderated_staging' && story.nadie_solo_attention) {
+    setEventStatus('nadie-solo', 'Nadie Solo: esta historia todavía espera una primera señal comunitaria. Le damos visibilidad sin convertir el apoyo en una competición.');
+  } else if (story.source === 'moderated_staging') {
+    setEventStatus('ok', 'Historia ficticia aprobada mediante el circuito real de moderación y con una señal comunitaria registrada en staging.');
   } else {
-    setEventStatus('', 'Las acciones son pruebas de staging y se guardan también en este navegador.');
+    setEventStatus('', 'Las acciones son pruebas de staging. Guardar y seguir permanecen privados en este navegador.');
   }
   updateActionButtons();
 }
