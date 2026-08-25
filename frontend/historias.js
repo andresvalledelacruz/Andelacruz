@@ -1,4 +1,5 @@
 const API_BASE = 'https://desgracias-api-staging.onrender.com';
+const MODERATED_BASE = 'https://desgracias-ops-staging.onrender.com';
 const STORAGE_KEY = 'desgracias_staging_story_actions_v1';
 
 const grid = document.querySelector('#storyGrid');
@@ -32,7 +33,7 @@ function writeActions(actions) {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(actions));
   } catch {
-    // Staging UX must keep working even when local storage is unavailable.
+    // The UI still works without localStorage.
   }
 }
 
@@ -65,6 +66,9 @@ function updateActionButtons() {
 }
 
 async function queueInteraction(slug, type) {
+  if (activeStory?.source === 'moderated_staging') {
+    return { local_only: true };
+  }
   const response = await fetch(`${API_BASE}/api/stories/${encodeURIComponent(slug)}/interactions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -90,8 +94,12 @@ async function applyInteraction(type, button) {
   setEventStatus('', 'Guardando prueba de interacción…');
   try {
     const data = await queueInteraction(activeStory.slug, type);
-    const suffix = data.event_id ? ` · evento #${data.event_id}` : '';
-    setEventStatus('ok', `Prueba registrada en staging${suffix}. No mostramos contadores sociales ficticios.`);
+    if (data.local_only) {
+      setEventStatus('ok', 'Preferencia guardada localmente. Las interacciones de historias moderadas se activarán en la siguiente fase de staging.');
+    } else {
+      const suffix = data.event_id ? ` · evento #${data.event_id}` : '';
+      setEventStatus('ok', `Prueba registrada en staging${suffix}. No mostramos contadores sociales ficticios.`);
+    }
   } catch {
     setEventStatus('error', 'La preferencia se guardó en este navegador, pero la API no pudo registrar la prueba ahora mismo.');
   } finally {
@@ -113,8 +121,7 @@ function filteredStories() {
   return stories.filter((story) => {
     const matchesCategory = !category || story.category === category;
     const haystack = normalized(`${story.title} ${story.excerpt} ${story.context} ${story.category}`);
-    const matchesTerm = !term || haystack.includes(term);
-    return matchesCategory && matchesTerm;
+    return matchesCategory && (!term || haystack.includes(term));
   });
 }
 
@@ -132,7 +139,7 @@ function storyCard(story) {
   chip.textContent = story.category;
   const phase = document.createElement('span');
   phase.className = 'story-phase';
-  phase.textContent = story.phase;
+  phase.textContent = story.phase || 'Historia';
   chipRow.append(chip, phase);
 
   const title = document.createElement('h2');
@@ -145,7 +152,7 @@ function storyCard(story) {
   foot.className = 'story-card-foot';
   const context = document.createElement('div');
   context.className = 'story-context';
-  context.textContent = story.context;
+  context.textContent = story.context || '';
 
   const actions = document.createElement('div');
   actions.className = 'story-card-actions';
@@ -166,7 +173,9 @@ function storyCard(story) {
     save.setAttribute('aria-pressed', String(enabling));
     save.textContent = enabling ? '★' : '☆';
     if (enabling) {
+      activeStory = story;
       try { await queueInteraction(story.slug, 'guardar'); } catch { /* local save remains useful */ }
+      activeStory = null;
     }
   });
 
@@ -180,7 +189,12 @@ function renderStories() {
   if (!grid) return;
   const items = filteredStories();
   grid.replaceChildren();
-  if (count) count.textContent = `${items.length} recorridos ficticios para probar la experiencia`;
+  if (count) {
+    const moderated = items.filter((item) => item.source === 'moderated_staging').length;
+    count.textContent = moderated
+      ? `${items.length} recorridos ficticios · ${moderated} aprobado${moderated === 1 ? '' : 's'} por moderación humana`
+      : `${items.length} recorridos ficticios para probar la experiencia`;
+  }
 
   if (!items.length) {
     const empty = document.createElement('div');
@@ -189,21 +203,28 @@ function renderStories() {
     grid.append(empty);
     return;
   }
+
   for (const story of items) grid.append(storyCard(story));
 }
 
 async function fetchStory(slug) {
-  const response = await fetch(`${API_BASE}/api/stories/${encodeURIComponent(slug)}`, { cache: 'no-store' });
-  const data = await response.json();
-  if (!response.ok) throw new Error(data.error || 'story_not_found');
+  const summary = stories.find((item) => item.slug === slug);
+  const isModerated = summary?.source === 'moderated_staging';
+  const url = isModerated
+    ? `${MODERATED_BASE}/public/stories/${encodeURIComponent(slug)}`
+    : `${API_BASE}/api/stories/${encodeURIComponent(slug)}`;
+  const response = await fetch(url, { cache: 'no-store' });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok || !data.story) throw new Error(data.error || 'story_not_found');
   return data.story;
 }
 
 function renderDetail(story) {
   activeStory = story;
-  detailChip.textContent = `${story.category} · ${story.phase}`;
+  detailChip.textContent = `${story.category} · ${story.phase || 'Historia'}`;
   detailTitle.textContent = story.title;
-  detailContext.textContent = story.context;
+  detailContext.textContent = story.context || '';
+
   detailCopy.replaceChildren();
   for (const paragraph of story.body || []) {
     const p = document.createElement('p');
@@ -233,7 +254,12 @@ function renderDetail(story) {
       target.append(li);
     }
   }
-  setEventStatus('', 'Las acciones son pruebas de staging y se guardan también en este navegador.');
+
+  if (story.source === 'moderated_staging') {
+    setEventStatus('ok', 'Historia ficticia aprobada mediante el circuito real de moderación de staging.');
+  } else {
+    setEventStatus('', 'Las acciones son pruebas de staging y se guardan también en este navegador.');
+  }
   updateActionButtons();
 }
 
@@ -275,13 +301,36 @@ window.addEventListener('popstate', () => {
   else closeStory({ updateUrl: false });
 });
 
+async function fetchJson(url) {
+  const response = await fetch(url, { cache: 'no-store' });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || 'request_failed');
+  return data;
+}
+
 async function loadStories() {
   try {
-    const response = await fetch(`${API_BASE}/api/stories`, { cache: 'no-store' });
-    const data = await response.json();
-    if (!response.ok || !Array.isArray(data.items)) throw new Error('stories_unavailable');
-    stories = data.items;
+    const [demoResult, moderatedResult] = await Promise.allSettled([
+      fetchJson(`${API_BASE}/api/stories`),
+      fetchJson(`${MODERATED_BASE}/public/stories`)
+    ]);
+
+    const demoItems = demoResult.status === 'fulfilled' && Array.isArray(demoResult.value.items)
+      ? demoResult.value.items
+      : [];
+    const moderatedItems = moderatedResult.status === 'fulfilled' && Array.isArray(moderatedResult.value.items)
+      ? moderatedResult.value.items
+      : [];
+
+    const bySlug = new Map();
+    for (const item of [...moderatedItems, ...demoItems]) {
+      if (item?.slug && !bySlug.has(item.slug)) bySlug.set(item.slug, item);
+    }
+    stories = [...bySlug.values()];
+
+    if (!stories.length) throw new Error('stories_unavailable');
     renderStories();
+
     const slug = new URLSearchParams(location.search).get('historia');
     if (slug) openStory(slug, false);
   } catch {
