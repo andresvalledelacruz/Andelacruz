@@ -1,4 +1,5 @@
 import pg from 'pg';
+import { evaluateCriticalSafety } from './critical-safety-taxonomy.js';
 
 const { Pool } = pg;
 const environment = process.env.NODE_ENV || 'staging';
@@ -49,6 +50,35 @@ async function ensureSchema() {
   `);
 }
 
+async function rerouteCriticalStory(client, messageId, event, submission, safety) {
+  await client.query(
+    'select pgmq.send($1, $2::jsonb)',
+    ['safety', JSON.stringify({
+      kind: 'publication_safety_guard',
+      version: 1,
+      environment,
+      source: 'publish_processor',
+      task: 'human_safety_review',
+      publication_blocked: true,
+      moderation_message_id: String(event.moderation_message_id || ''),
+      detected_at: new Date().toISOString(),
+      synthetic: submission.synthetic === true,
+      safety: {
+        level: safety.level,
+        matched_groups: safety.matched_groups,
+        official_resources_spain: safety.official_resources_spain
+      },
+      story_submission: submission
+    })]
+  );
+
+  const archived = await client.query(
+    'select pgmq.archive($1, $2::bigint) as archived',
+    ['internal_tasks', messageId]
+  );
+  if (archived.rows[0]?.archived !== true) throw new Error('critical_task_archive_failed');
+}
+
 async function processOne(messageId) {
   const client = await pool.connect();
   try {
@@ -76,6 +106,22 @@ async function processOne(messageId) {
     const submission = event.story_submission;
     if (environment === 'staging' && submission.synthetic !== true) {
       throw new Error('staging_publish_requires_synthetic_story');
+    }
+
+    const safety = evaluateCriticalSafety({
+      title: submission.title,
+      story: submission.story
+    });
+    if (safety.safety_gateway) {
+      await rerouteCriticalStory(client, messageId, event, submission, safety);
+      await client.query('commit');
+      console.warn('[publish-processor] publication blocked by safety gateway', {
+        internal_task_id: String(messageId),
+        moderation_message_id: String(event.moderation_message_id || ''),
+        safety_level: safety.level,
+        rerouted_to: 'safety'
+      });
+      return true;
     }
 
     const moderationId = Number(event.moderation_message_id);
