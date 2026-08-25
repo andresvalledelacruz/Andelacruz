@@ -63,6 +63,42 @@ function setSecurityHeaders(reply) {
   reply.header('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=()');
 }
 
+function isAllowedPublicOrigin(origin) {
+  if (!origin) return true;
+  try {
+    const url = new URL(origin);
+    return (
+      url.hostname === 'desgracias-staging.pages.dev' ||
+      url.hostname.endsWith('.desgracias-staging.pages.dev') ||
+      url.hostname === 'localhost' ||
+      url.hostname === '127.0.0.1'
+    );
+  } catch {
+    return false;
+  }
+}
+
+function applyPublicCors(request, reply) {
+  const origin = request.headers.origin;
+  if (origin && isAllowedPublicOrigin(origin)) {
+    reply.header('Access-Control-Allow-Origin', origin);
+    reply.header('Vary', 'Origin');
+  }
+  reply.header('Access-Control-Allow-Methods', 'GET,OPTIONS');
+  reply.header('Access-Control-Allow-Headers', 'Content-Type');
+  reply.header('Access-Control-Max-Age', '600');
+}
+
+function allowPublicOriginOrDeny(request, reply) {
+  const origin = request.headers.origin;
+  if (origin && !isAllowedPublicOrigin(origin)) {
+    reply.code(403).send({ error: 'origin_not_allowed' });
+    return false;
+  }
+  applyPublicCors(request, reply);
+  return true;
+}
+
 async function sendOpsAsset(reply, filename, contentType) {
   try {
     const content = await readFile(resolve(opsDir, filename));
@@ -79,6 +115,42 @@ async function sendOpsAsset(reply, filename, contentType) {
     app.log.error({ err: error, filename }, 'ops asset unavailable');
     return reply.code(404).send('Not found');
   }
+}
+
+function excerptFromStory(story) {
+  const text = String(story || '').replace(/\s+/g, ' ').trim();
+  return text.length > 190 ? `${text.slice(0, 187).trim()}…` : text;
+}
+
+function publishedSummary(row) {
+  return {
+    id: `published-${row.id}`,
+    slug: row.slug,
+    category: row.category,
+    title: row.title,
+    excerpt: excerptFromStory(row.story),
+    phase: 'Recién publicada',
+    context: 'Historia aprobada por moderación humana · staging',
+    source: 'moderated_staging',
+    published_at: row.published_at,
+    nadie_solo_eligible: row.nadie_solo_eligible === true
+  };
+}
+
+function publishedDetail(row) {
+  return {
+    ...publishedSummary(row),
+    body: [row.story],
+    timeline: [
+      {
+        label: 'Publicada',
+        text: 'Esta prueba pasó por revisión humana antes de incorporarse al entorno de staging.'
+      }
+    ],
+    helped: [],
+    nextSteps: [],
+    needs: Array.isArray(row.needs) ? row.needs : []
+  };
 }
 
 app.addHook('onSend', async (_request, reply, payload) => {
@@ -108,6 +180,81 @@ app.get('/ready', async (_request, reply) => {
   } catch (error) {
     app.log.error(error);
     return reply.code(503).send({ status: 'not_ready', database: 'error' });
+  }
+});
+
+app.options('/public/stories', async (request, reply) => {
+  if (!allowPublicOriginOrDeny(request, reply)) return;
+  return reply.code(204).send();
+});
+
+app.options('/public/stories/:slug', async (request, reply) => {
+  if (!allowPublicOriginOrDeny(request, reply)) return;
+  return reply.code(204).send();
+});
+
+app.get('/public/stories', async (request, reply) => {
+  if (!allowPublicOriginOrDeny(request, reply)) return;
+  if (environment !== 'staging') return reply.code(404).send({ error: 'not_found' });
+  if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
+
+  const category = typeof request.query?.category === 'string' ? request.query.category.trim() : '';
+  try {
+    const values = [];
+    let where = "where status = 'published' and synthetic = true";
+    if (category) {
+      values.push(category);
+      where += ` and category = $${values.length}`;
+    }
+    const { rows } = await pool.query(
+      `select id, slug, category, title, story, needs, published_at, nadie_solo_eligible
+       from staging_published_stories
+       ${where}
+       order by published_at desc
+       limit 50`,
+      values
+    );
+    return {
+      environment,
+      synthetic: true,
+      source: 'human_moderated_staging',
+      disclaimer: 'Contenido ficticio aprobado por moderación humana en staging.',
+      items: rows.map(publishedSummary)
+    };
+  } catch (error) {
+    if (error?.code === '42P01') {
+      return { environment, synthetic: true, source: 'human_moderated_staging', items: [] };
+    }
+    app.log.error({ err: error }, 'published staging stories unavailable');
+    return reply.code(503).send({ error: 'published_stories_unavailable' });
+  }
+});
+
+app.get('/public/stories/:slug', async (request, reply) => {
+  if (!allowPublicOriginOrDeny(request, reply)) return;
+  if (environment !== 'staging') return reply.code(404).send({ error: 'not_found' });
+  if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
+
+  const slug = String(request.params?.slug || '').trim();
+  try {
+    const { rows } = await pool.query(
+      `select id, slug, category, title, story, needs, published_at, nadie_solo_eligible
+       from staging_published_stories
+       where slug = $1 and status = 'published' and synthetic = true
+       limit 1`,
+      [slug]
+    );
+    if (!rows[0]) return reply.code(404).send({ error: 'story_not_found' });
+    return {
+      environment,
+      synthetic: true,
+      source: 'human_moderated_staging',
+      disclaimer: 'Historia ficticia aprobada por moderación humana en staging.',
+      story: publishedDetail(rows[0])
+    };
+  } catch (error) {
+    app.log.error({ err: error, slug }, 'published staging story unavailable');
+    return reply.code(503).send({ error: 'published_story_unavailable' });
   }
 });
 
