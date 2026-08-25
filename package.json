@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node src/api.js",
     "start:ops": "node --import ./src/publish-processor.js src/ops-api.js",
-    "worker": "node src/worker.js"
+    "worker": "node src/worker.js",
+    "test:story-updates": "node --test tests/story-update-policy.test.js"
   },
   "dependencies": {
     "fastify": "^5.6.0",
