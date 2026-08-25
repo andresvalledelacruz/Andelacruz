@@ -8,8 +8,8 @@
   <meta name="theme-color" content="#fbf7f2">
   <title>Historias · Desgracias.es · Staging</title>
   <link rel="stylesheet" href="/styles.css">
-  <link rel="stylesheet" href="/historias.css">
-  <script src="/historias.js?v=20260825-1" defer></script>
+  <link rel="stylesheet" href="/historias.css?v=20260825-2">
+  <script src="/historias.js?v=20260825-2" defer></script>
 </head>
 <body>
   <a class="skip" href="#contenido">Saltar al contenido</a>
@@ -81,15 +81,20 @@
           <span class="story-nobody"><i></i> Sin rankings de sufrimiento ni “dislikes”</span>
         </div>
         <div class="story-count" id="storyCount" aria-live="polite">Cargando recorridos…</div>
+        <div class="story-nadie-solo-info">
+          <span aria-hidden="true"></span>
+          <strong>Nadie Solo</strong>
+          <div>Si una historia moderada todavía no ha recibido una primera señal comunitaria, le damos visibilidad temporal. No es un ranking: cuando llega acompañamiento, deja de necesitar esa prioridad.</div>
+        </div>
         <div class="story-grid" id="storyGrid" aria-live="polite"></div>
       </div>
     </section>
 
     <section class="story-principles">
       <div class="story-shell story-principles-card">
-        <div class="story-principle"><strong>“A mí también me pasó”</strong><span>Sirve para reconocer experiencia compartida, no para convertir una historia en una competición de popularidad.</span></div>
-        <div class="story-principle"><strong>“Te acompaño”</strong><span>Expresa presencia. En producción tendrá controles antiabuso y no sustituirá una respuesta profesional cuando sea necesaria.</span></div>
-        <div class="story-principle"><strong>Guardar y seguir</strong><span>Son acciones privadas del usuario. En esta demostración se conservan solo en tu navegador y se registran como eventos sintéticos de staging.</span></div>
+        <div class="story-principle"><strong>“A mí también me pasó”</strong><span>Sirve para reconocer experiencia compartida, no para convertir una historia en una competición de popularidad. En staging la señal se registra sin mostrar contadores públicos.</span></div>
+        <div class="story-principle"><strong>“Te acompaño”</strong><span>Expresa presencia. Puede sacar una historia de la prioridad Nadie Solo, pero no sustituye una respuesta profesional cuando sea necesaria.</span></div>
+        <div class="story-principle"><strong>Guardar y seguir</strong><span>Son acciones privadas. En esta demostración permanecen únicamente en tu navegador y no forman parte de la lógica de Nadie Solo.</span></div>
       </div>
     </section>
   </main>
