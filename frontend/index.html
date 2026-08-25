@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Desgracias.es · Staging</title>
+  <style>
+    :root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#2d241f;background:#fbf7f2}
+    *{box-sizing:border-box} body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px}
+    main{width:min(760px,100%);background:white;border:1px solid #e8ddd2;border-radius:24px;padding:36px;box-shadow:0 16px 40px rgba(92,58,32,.08)}
+    h1{margin:0 0 8px;font-size:clamp(2rem,6vw,3.6rem);color:#7a3f18;letter-spacing:-.04em}
+    .tag{display:inline-block;margin:8px 0 24px;padding:7px 11px;border-radius:999px;background:#f4e7d8;color:#7a3f18;font-weight:700;font-size:.82rem}
+    p{line-height:1.6;font-size:1.05rem}.status{display:grid;gap:12px;margin-top:24px}.item{padding:16px;border:1px solid #eadfd5;border-radius:16px;background:#fffdfb}
+    .ok{font-weight:800;color:#336b47}.muted{color:#6f645c;font-size:.92rem}.cta{display:inline-block;margin-top:22px;padding:12px 16px;border-radius:12px;background:#7a3f18;color:#fff;text-decoration:none;font-weight:750}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Desgracias.es</h1>
+    <span class="tag">STAGING TÉCNICO · NO PÚBLICO</span>
+    <p>Entorno temporal para validar despliegue, HTTPS, CDN y conexión de infraestructura antes de publicar el frontend definitivo.</p>
+    <div class="status">
+      <div class="item"><span class="ok">✓ Cloudflare Pages</span><div class="muted">Si ves esta página, la capa pública de staging está sirviendo correctamente.</div></div>
+      <div class="item"><span class="ok">✓ Backend Render</span><div class="muted">La API ya dispone de endpoints de health y readiness verificados.</div></div>
+      <div class="item"><span class="ok">✓ Supabase</span><div class="muted">Base de datos, autenticación, almacenamiento y colas están preparados en staging.</div></div>
+    </div>
+    <a class="cta" href="https://desgracias-api-staging.onrender.com/health" rel="noreferrer">Comprobar API /health</a>
+  </main>
+</body>
+</html>
