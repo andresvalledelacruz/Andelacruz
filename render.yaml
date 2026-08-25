@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: desgracias-api-staging
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: staging
+      - key: DATABASE_URL
+        sync: false
+
+  - type: worker
+    name: desgracias-worker-staging
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install
+    startCommand: npm run worker
+    envVars:
+      - key: NODE_ENV
+        value: staging
+      - key: WORKER_POLL_MS
+        value: "15000"
+      - key: DATABASE_URL
+        sync: false
