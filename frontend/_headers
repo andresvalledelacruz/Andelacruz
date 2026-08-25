@@ -12,6 +12,9 @@
 /app.js
   Cache-Control: public, max-age=300
 
+/historias.css
+  Cache-Control: no-cache, no-store, must-revalidate
+
 /historias.js
   Cache-Control: no-cache, no-store, must-revalidate
 
