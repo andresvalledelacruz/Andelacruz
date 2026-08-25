@@ -5,6 +5,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { evaluateExecutiveDecision } from './executive-decision-engine.js';
+import { buildModerationTriage, sortModerationItems, moderationTriageSummary } from './moderation-triage.js';
 
 const { Pool } = pg;
 const app = Fastify({ logger: true, bodyLimit: 16 * 1024 });
@@ -510,17 +511,22 @@ app.get('/ops/moderation/pending', { preHandler: requireOps }, async (request, r
       [limit]
     );
 
+    const items = sortModerationItems(rows.map((row) => ({
+      message_id: String(row.msg_id),
+      read_count: Number(row.read_ct || 0),
+      enqueued_at: row.enqueued_at,
+      visible_at: row.vt,
+      payload: row.message,
+      triage: buildModerationTriage(row.message || {})
+    })));
+
     return {
       environment,
       queue: 'moderation',
-      count: rows.length,
-      items: rows.map((row) => ({
-        message_id: String(row.msg_id),
-        read_count: Number(row.read_ct || 0),
-        enqueued_at: row.enqueued_at,
-        visible_at: row.vt,
-        payload: row.message
-      }))
+      count: items.length,
+      triage_summary: moderationTriageSummary(items),
+      ordering: 'safety_priority_then_oldest',
+      items
     };
   } catch (error) {
     app.log.error({ err: error }, 'moderation queue read failed');
