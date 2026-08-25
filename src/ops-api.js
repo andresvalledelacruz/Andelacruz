@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
+import { evaluateExecutiveDecision } from './executive-decision-engine.js';
 
 const { Pool } = pg;
 const app = Fastify({ logger: true, bodyLimit: 16 * 1024 });
@@ -116,6 +117,36 @@ function withinPublicInteractionRate(ip) {
 
 function anonymousClientHash(clientId) {
   return crypto.createHash('sha256').update(`staging-community:${clientId}`).digest('hex');
+}
+
+function evaluateCase(payload = {}) {
+  return evaluateExecutiveDecision({
+    kind: 'user_case',
+    category: typeof payload.category === 'string' ? payload.category : '',
+    title: typeof payload.title === 'string' ? payload.title : '',
+    story: typeof payload.story === 'string' ? payload.story : '',
+    needs: Array.isArray(payload.needs) ? payload.needs : []
+  });
+}
+
+function executiveAuditSummary(result = {}) {
+  return {
+    decision: result.decision || 'HUMAN_REVIEW',
+    safety_level: result.safety?.level || 'NONE',
+    safety_gateway: result.safety?.safety_gateway === true,
+    official_resources_spain: Array.isArray(result.safety?.official_resources_spain)
+      ? result.safety.official_resources_spain
+      : [],
+    primary_route: result.multidisciplinary?.primary_need?.id || null,
+    next_step_class: result.multidisciplinary?.next_step_class || null,
+    disciplines: Array.isArray(result.multidisciplinary?.disciplines)
+      ? result.multidisciplinary.disciplines.slice(0, 12)
+      : [],
+    analytics_mode: result.analytics_mode || 'privacy_minimized',
+    commercial_ui_allowed: result.commercial_ui_allowed !== false,
+    diagnostic: false,
+    forensic_opinion: false
+  };
 }
 
 async function ensureCommunitySchema() {
@@ -497,6 +528,36 @@ app.get('/ops/moderation/pending', { preHandler: requireOps }, async (request, r
   }
 });
 
+app.get('/ops/moderation/:messageId/brief', { preHandler: requireOps }, async (request, reply) => {
+  if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
+  const messageId = String(request.params?.messageId || '').trim();
+  if (!/^\d+$/.test(messageId)) return reply.code(400).send({ error: 'invalid_message_id' });
+
+  try {
+    const { rows } = await pool.query(
+      `select msg_id, message
+       from pgmq.q_moderation
+       where msg_id = $1::bigint
+       limit 1`,
+      [messageId]
+    );
+    const item = rows[0];
+    if (!item) return reply.code(404).send({ error: 'moderation_item_not_found' });
+
+    const result = evaluateCase(item.message || {});
+    return {
+      environment,
+      message_id: messageId,
+      engine: 'executive-decision-engine',
+      authoritative: true,
+      result
+    };
+  } catch (error) {
+    app.log.error({ err: error, messageId }, 'executive moderation brief failed');
+    return reply.code(503).send({ error: 'executive_brief_unavailable' });
+  }
+});
+
 app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, async (request, reply) => {
   if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
 
@@ -532,10 +593,27 @@ app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, asyn
     }
 
     const original = item.message || {};
+    const executiveResult = evaluateCase(original);
+    const executiveSummary = executiveAuditSummary(executiveResult);
+
+    if (executiveResult.decision === 'SAFETY_GATEWAY' && decision !== 'escalate') {
+      await client.query('rollback');
+      return reply.code(409).send({
+        error: 'safety_gateway_requires_escalation',
+        required_decision: 'escalate',
+        executive_brief: executiveSummary
+      });
+    }
+
+    if (decision === 'approve' && reasonCode !== 'safe_and_useful') {
+      await client.query('rollback');
+      return reply.code(400).send({ error: 'approval_requires_safe_and_useful' });
+    }
+
     const decidedAt = new Date().toISOString();
     const auditEvent = {
       kind: 'moderation_decision',
-      version: 1,
+      version: 2,
       environment,
       source: 'ops_staging',
       actor: 'staging_ops_token',
@@ -544,7 +622,8 @@ app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, asyn
       reason_code: reasonCode,
       note: note || null,
       decided_at: decidedAt,
-      synthetic: original.synthetic === true
+      synthetic: original.synthetic === true,
+      executive_brief: executiveSummary
     };
 
     if (decision === 'approve') {
@@ -579,14 +658,18 @@ app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, asyn
     if (archived.rows[0]?.archived !== true) throw new Error('archive_failed');
 
     await client.query('commit');
-    app.log.info({ messageId, decision, reasonCode }, 'staging moderation decision committed');
+    app.log.info(
+      { messageId, decision, reasonCode, executiveDecision: executiveSummary.decision },
+      'staging moderation decision committed'
+    );
 
     return {
       status: 'decision_recorded',
       message_id: messageId,
       decision,
       next_queue: decision === 'escalate' ? 'safety' : 'internal_tasks',
-      archived_from_moderation: true
+      archived_from_moderation: true,
+      executive_brief: executiveSummary
     };
   } catch (error) {
     await client.query('rollback').catch(() => {});
