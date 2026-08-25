@@ -5,6 +5,7 @@ const { Pool } = pg;
 const app = Fastify({ logger: true });
 const port = Number(process.env.PORT || 10000);
 const host = '0.0.0.0';
+const queueNames = ['moderation', 'safety', 'internal_tasks'];
 
 const pool = process.env.DATABASE_URL
   ? new Pool({ connectionString: process.env.DATABASE_URL, ssl: { rejectUnauthorized: false } })
@@ -31,6 +32,19 @@ app.get('/ready', async (_request, reply) => {
   }
 });
 
+async function runStagingQueueSelfTest() {
+  if (process.env.NODE_ENV !== 'staging' || !pool) return;
+
+  for (const queue of queueNames) {
+    try {
+      const { rows } = await pool.query('select * from pgmq.metrics($1)', [queue]);
+      app.log.info({ queue, metrics: rows[0] ?? {} }, 'staging queue self-test ok');
+    } catch (error) {
+      app.log.error({ queue, err: error }, 'staging queue self-test failed');
+    }
+  }
+}
+
 const shutdown = async () => {
   try {
     await app.close();
@@ -44,3 +58,4 @@ process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
 
 await app.listen({ port, host });
+await runStagingQueueSelfTest();
