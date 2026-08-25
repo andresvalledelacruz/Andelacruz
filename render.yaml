@@ -13,6 +13,22 @@ services:
       - key: DATABASE_URL
         sync: false
 
+  - type: web
+    name: desgracias-ops-staging
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install
+    startCommand: npm run start:ops
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: staging
+      - key: DATABASE_URL
+        sync: false
+      - key: STAGING_OPS_TOKEN
+        sync: false
+
   - type: worker
     name: desgracias-worker-staging
     runtime: node
