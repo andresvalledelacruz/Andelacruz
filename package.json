@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "node src/api.js",
-    "start:ops": "node src/ops-api.js",
+    "start:ops": "node --import ./src/publish-processor.js src/ops-api.js",
     "worker": "node src/worker.js"
   },
   "dependencies": {
