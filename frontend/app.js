@@ -114,4 +114,30 @@ async function checkApi() {
   }
 }
 
+function connectStoryExplorer() {
+  for (const link of document.querySelectorAll('a[href="#experiencias"]')) {
+    link.href = '/historias.html';
+  }
+
+  const demoSection = document.querySelector('#experiencias .shell');
+  if (demoSection && !document.querySelector('#storyExplorerCta')) {
+    const wrap = document.createElement('div');
+    wrap.id = 'storyExplorerCta';
+    wrap.className = 'hero-actions';
+    const link = document.createElement('a');
+    link.className = 'btn btn-primary';
+    link.href = '/historias.html';
+    link.textContent = 'Explorar historias por etapas';
+    wrap.append(link);
+    demoSection.append(wrap);
+  }
+
+  const params = new URLSearchParams(location.search);
+  if (params.get('contar') === '1') {
+    openStoryDialog();
+    history.replaceState({}, '', location.pathname + location.hash);
+  }
+}
+
+connectStoryExplorer();
 checkApi();
