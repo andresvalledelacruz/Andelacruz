@@ -115,7 +115,7 @@ async function checkApi() {
 }
 
 function connectStoryExplorer() {
-  for (const link of document.querySelectorAll('a[href="#experiencias"]')) {
+  for (const link of document.querySelectorAll('header a[href="#experiencias"], footer a[href="#experiencias"]')) {
     link.href = '/historias.html';
   }
 
