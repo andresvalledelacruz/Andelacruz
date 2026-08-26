@@ -6,8 +6,8 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#f7f3ee">
   <title>Desgracias.es · Centro de Mando interno</title>
-  <link rel="stylesheet" href="/ops/ops.css?v=20260825-command-3">
-  <script src="/ops/ops.js?v=20260825-command-3" defer></script>
+  <link rel="stylesheet" href="/ops/ops.css?v=20260826-command-4">
+  <script src="/ops/ops.js?v=20260826-command-4" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Saltar al contenido</a>
@@ -142,6 +142,65 @@
           </article>
         </section>
       </div>
+
+      <section class="product-council" aria-labelledby="productCouncilTitle">
+        <div class="panel-head">
+          <div><p class="eyebrow">Consejo ejecutivo · producto</p><h2 id="productCouncilTitle">¿Construimos, probamos, detenemos o escalamos?</h2></div>
+          <span class="server-badge">Cálculo servidor</span>
+        </div>
+        <form id="productCouncilForm" class="product-form">
+          <div class="product-intro">
+            <div class="field">
+              <label for="productProposal">Propuesta</label>
+              <input id="productProposal" maxlength="120" placeholder="Ej.: añadir actualización del autor a las historias" required>
+            </div>
+            <p>0 = muy débil · 3 = suficiente para experimentar · 5 = excelente. Los bloqueos éticos tienen prioridad sobre cualquier puntuación.</p>
+          </div>
+
+          <div class="score-grid">
+            <label>Valor humano<select data-product-score="user_value"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+            <label>Evidencia<select data-product-score="evidence_strength"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+            <label>UX / claridad<select data-product-score="ux_clarity"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+            <label>Ingeniería<select data-product-score="engineering_readiness"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+            <label>Seguridad / privacidad<select data-product-score="security_privacy"><option>0</option><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></label>
+            <label>Safety<select data-product-score="safety"><option>0</option><option>1</option><option>2</option><option>3</option><option selected>4</option><option>5</option></select></label>
+            <label>Google / calidad<select data-product-score="google_quality"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+            <label>Medición<select data-product-score="measurement"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+            <label>Negocio<select data-product-score="business_value"><option>0</option><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option></select></label>
+            <label>Mantenibilidad<select data-product-score="maintainability"><option>0</option><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select></label>
+          </div>
+
+          <fieldset class="hard-blocks">
+            <legend>Bloqueos no negociables</legend>
+            <label><input type="checkbox" data-hard-block="exploits_vulnerability"> Explota vulnerabilidad o sufrimiento</label>
+            <label><input type="checkbox" data-hard-block="sensitive_targeting"> Targeting/remarketing sensible</label>
+            <label><input type="checkbox" data-hard-block="bypasses_human_safety_review"> Evita revisión humana de Safety</label>
+            <label><input type="checkbox" data-hard-block="publishes_unreviewed_ymyl"> Publica YMYL sensible sin revisión</label>
+            <label><input type="checkbox" data-hard-block="exposes_secrets_or_pii"> Expone secretos o PII innecesarios</label>
+            <label><input type="checkbox" data-hard-block="nonessential_tracking_without_consent"> Tracking no esencial sin consentimiento</label>
+            <label><input type="checkbox" data-hard-block="paid_verification_or_quality_badge"> Vende una insignia de calidad/verificación</label>
+            <label><input type="checkbox" data-hard-block="deceptive_cro"> Usa dark patterns o presión engañosa</label>
+          </fieldset>
+
+          <div class="product-actions">
+            <button id="evaluateProductButton" class="btn primary" type="submit">Evaluar propuesta</button>
+            <span id="productCouncilStatus" class="status" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+
+        <article id="productCouncilResult" class="product-result" hidden>
+          <div class="product-result-head">
+            <div><span>Decisión ejecutiva</span><strong id="productDecision">—</strong></div>
+            <div class="product-score"><span>Puntuación</span><strong id="productScore">—</strong></div>
+          </div>
+          <div id="productResultSummary" class="command-explanation"></div>
+          <div class="product-result-columns">
+            <div><h3>Antes de escalar</h3><ul id="productRequirements"></ul></div>
+            <div><h3>Bloqueos</h3><ul id="productBlocks"></ul></div>
+          </div>
+          <div class="command-guardrail"><strong>Orden de autoridad:</strong> Safety → privacidad/seguridad → valor humano → UX → ingeniería → Google/medición → negocio.</div>
+        </article>
+      </section>
 
       <section class="session-log" aria-labelledby="sessionTitle">
         <div class="panel-head"><div><p class="eyebrow">Esta sesión</p><h2 id="sessionTitle">Decisiones recientes</h2></div></div>
