@@ -686,6 +686,34 @@ app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, asyn
   }
 });
 
+app.post('/ops/product/evaluate', { preHandler: requireOps }, async (request, reply) => {
+  const body = request.body ?? {};
+  const proposal = typeof body.proposal === 'string' ? body.proposal.trim().slice(0, 120) : '';
+  const scores = body.scores && typeof body.scores === 'object' ? body.scores : {};
+  const hardBlocks = body.hard_blocks && typeof body.hard_blocks === 'object' ? body.hard_blocks : {};
+
+  const result = evaluateExecutiveDecision({
+    kind: 'product_change',
+    scores,
+    hard_blocks: hardBlocks
+  });
+
+  app.log.info({
+    proposal: proposal || 'unnamed',
+    decision: result.decision,
+    score: result.score,
+    hardBlockCount: Array.isArray(result.hard_blocks) ? result.hard_blocks.length : 0
+  }, 'product council evaluation');
+
+  return {
+    environment,
+    engine: 'executive-decision-engine',
+    authoritative: true,
+    proposal: proposal || null,
+    result
+  };
+});
+
 const shutdown = async () => {
   try {
     await app.close();
