@@ -19,6 +19,11 @@ const reasonSelect = document.querySelector('#reasonSelect');
 const decisionNote = document.querySelector('#decisionNote');
 const decisionStatus = document.querySelector('#decisionStatus');
 const sessionLog = document.querySelector('#sessionLog');
+const productCouncilForm = document.querySelector('#productCouncilForm');
+const productProposal = document.querySelector('#productProposal');
+const productCouncilStatus = document.querySelector('#productCouncilStatus');
+const productCouncilResult = document.querySelector('#productCouncilResult');
+const evaluateProductButton = document.querySelector('#evaluateProductButton');
 
 const decisionReasonMap = {
   approve: new Set(['safe_and_useful']),
@@ -48,6 +53,13 @@ const reasonLabels = {
   spam_or_abuse: 'Spam o abuso',
   out_of_scope: 'Fuera de alcance',
   duplicate_or_test: 'Duplicada o prueba'
+};
+
+const productDecisionLabels = {
+  BLOCKED: 'BLOQUEADA',
+  HOLD: 'DETENER / REVISAR',
+  EXPERIMENT: 'EXPERIMENTO CONTROLADO',
+  SCALE_CANDIDATE: 'CANDIDATA A ESCALAR'
 };
 
 function setStatus(el, kind, text) {
@@ -430,6 +442,88 @@ async function submitDecision(decision) {
   }
 }
 
+function collectProductScores() {
+  return Object.fromEntries(
+    [...document.querySelectorAll('[data-product-score]')].map((el) => [el.dataset.productScore, Number(el.value)])
+  );
+}
+
+function collectHardBlocks() {
+  return Object.fromEntries(
+    [...document.querySelectorAll('[data-hard-block]')].map((el) => [el.dataset.hardBlock, el.checked === true])
+  );
+}
+
+function fillList(element, items, emptyText) {
+  element.replaceChildren();
+  if (!items.length) {
+    const li = document.createElement('li');
+    li.textContent = emptyText;
+    element.append(li);
+    return;
+  }
+  for (const item of items) {
+    const li = document.createElement('li');
+    li.textContent = typeof item === 'string' ? item : item.reason || item.id || 'Revisión requerida';
+    element.append(li);
+  }
+}
+
+function renderProductCouncilResult(data = {}) {
+  const result = data.result || {};
+  const decision = result.decision || 'HOLD';
+  const decisionEl = document.querySelector('#productDecision');
+  decisionEl.textContent = productDecisionLabels[decision] || decision;
+  document.querySelector('#productScore').textContent = `${Number(result.score || 0)}/100`;
+
+  const blocks = Array.isArray(result.hard_blocks) ? result.hard_blocks : [];
+  const requirements = Array.isArray(result.requirements) ? result.requirements : [];
+  const summary = decision === 'BLOCKED'
+    ? 'Existe al menos un bloqueo no negociable. La propuesta no debe avanzar hasta eliminarlo.'
+    : decision === 'HOLD'
+      ? 'La propuesta necesita más trabajo antes de probarse con usuarios.'
+      : decision === 'SCALE_CANDIDATE'
+        ? 'La propuesta supera el umbral de calidad para considerarse candidata a escalar, previa validación humana y de datos reales.'
+        : 'La propuesta puede avanzar como experimento controlado, con métrica de éxito, límites y posibilidad de rollback.';
+  document.querySelector('#productResultSummary').textContent = summary;
+  fillList(document.querySelector('#productRequirements'), requirements, 'No hay requisitos adicionales detectados por el motor.');
+  fillList(document.querySelector('#productBlocks'), blocks, 'Sin bloqueos no negociables activados.');
+
+  productCouncilResult.hidden = false;
+  productCouncilResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+async function evaluateProductProposal(event) {
+  event.preventDefault();
+  if (!productCouncilForm.reportValidity()) return;
+
+  evaluateProductButton.disabled = true;
+  productCouncilResult.hidden = true;
+  setStatus(productCouncilStatus, '', 'Consultando al motor ejecutivo…');
+  try {
+    const data = await api('/ops/product/evaluate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        proposal: productProposal.value.trim(),
+        scores: collectProductScores(),
+        hard_blocks: collectHardBlocks()
+      })
+    });
+    if (data.authoritative !== true || !data.result) throw new Error('product_result_not_authoritative');
+    renderProductCouncilResult(data);
+    setStatus(productCouncilStatus, 'ok', 'Evaluación calculada por el servidor.');
+  } catch (error) {
+    if (error.status === 401) {
+      logout('El token ha dejado de ser válido.');
+      return;
+    }
+    setStatus(productCouncilStatus, 'error', 'No se pudo evaluar la propuesta. No se ha tomado ninguna decisión.');
+  } finally {
+    evaluateProductButton.disabled = false;
+  }
+}
+
 function logout(message = '') {
   opsToken = '';
   queueItems = [];
@@ -439,6 +533,8 @@ function logout(message = '') {
   consoleView.hidden = true;
   loginView.hidden = false;
   clearReview();
+  if (productCouncilResult) productCouncilResult.hidden = true;
+  if (productCouncilStatus) setStatus(productCouncilStatus, '', '');
   if (message) setStatus(loginStatus, 'error', message);
   tokenInput.focus();
 }
@@ -466,5 +562,6 @@ logoutButton.addEventListener('click', () => logout());
 for (const button of document.querySelectorAll('[data-decision]')) {
   button.addEventListener('click', () => submitDecision(button.dataset.decision));
 }
+productCouncilForm?.addEventListener('submit', evaluateProductProposal);
 
 renderSessionLog();
