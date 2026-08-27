@@ -1,0 +1,83 @@
+name: Production SEO Integrity
+
+on:
+  push:
+    branches: [production-v9]
+  pull_request:
+    branches: [production-v9]
+
+permissions:
+  contents: read
+
+jobs:
+  seo-integrity:
+    name: SEO invariants
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout production
+        uses: actions/checkout@v4
+
+      - name: Validate SEO invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import re
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          index = Path('index.html').read_text(encoding='utf-8')
+          sitemap = Path('sitemap.xml').read_text(encoding='utf-8')
+          robots = Path('robots.txt').read_text(encoding='utf-8')
+          withdrawal = Path('retirar.html').read_text(encoding='utf-8')
+          friends = Path('webs-amigas.html').read_text(encoding='utf-8')
+
+          required_home = [
+              '<html lang="es">',
+              '<link rel="canonical" href="https://desgracias.es/"',
+              'name="robots" content="index,follow,max-image-preview:large',
+              'property="og:site_name" content="Desgracias.es"',
+              'property="og:image" content="https://desgracias.es/assets/manos-apoyo.png"',
+              'name="twitter:card" content="summary_large_image"',
+              'type="application/ld+json"',
+          ]
+          missing = [item for item in required_home if item not in index]
+          assert not missing, f'Missing homepage SEO signals: {missing}'
+
+          titles = re.findall(r'<title>(.*?)</title>', index, flags=re.S | re.I)
+          assert len(titles) == 1, f'Expected exactly one title, found {len(titles)}'
+          title = re.sub(r'\s+', ' ', titles[0]).strip()
+          assert 25 <= len(title) <= 75, f'Homepage title length out of guardrail: {len(title)}'
+
+          descriptions = re.findall(r'<meta\s+name="description"\s+content="([^"]+)"', index, flags=re.I)
+          assert len(descriptions) == 1, 'Expected exactly one homepage meta description'
+          assert 80 <= len(descriptions[0]) <= 180, f'Meta description length out of guardrail: {len(descriptions[0])}'
+
+          h1_count = len(re.findall(r'<h1\b', index, flags=re.I))
+          assert h1_count == 1, f'Expected exactly one H1, found {h1_count}'
+
+          ld_blocks = re.findall(r'<script\s+type="application/ld\+json">(.*?)</script>', index, flags=re.S | re.I)
+          assert ld_blocks, 'Missing JSON-LD block'
+          website = json.loads(ld_blocks[0])
+          assert website.get('@type') == 'WebSite', 'Homepage JSON-LD must describe a WebSite'
+          assert website.get('name') == 'Desgracias.es', 'Unexpected WebSite name'
+          assert website.get('url') == 'https://desgracias.es/', 'Unexpected WebSite canonical URL'
+
+          root = ET.fromstring(sitemap)
+          ns = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls = [el.text.strip() for el in root.findall('s:url/s:loc', ns) if el.text]
+          assert 'https://desgracias.es/' in urls, 'Homepage missing from sitemap'
+          assert 'https://desgracias.es/retirar.html' not in urls, 'Noindex withdrawal utility must not be in sitemap'
+          assert 'https://desgracias.es/webs-amigas.html' not in urls, 'Placeholder page must not be in sitemap'
+          assert len(urls) == len(set(urls)), 'Duplicate URLs found in sitemap'
+
+          assert 'name="robots" content="noindex,follow"' in withdrawal, 'Withdrawal page must stay noindex,follow'
+          assert 'name="robots" content="noindex,follow"' in friends, 'Placeholder friends page must stay noindex,follow'
+          assert 'Sitemap: https://desgracias.es/sitemap.xml' in robots, 'robots.txt must advertise canonical sitemap'
+          assert 'Disallow: /\n' not in robots, 'robots.txt must not block the whole site'
+
+          print('SEO integrity checks passed.')
+          PY
