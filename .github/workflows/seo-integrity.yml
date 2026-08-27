@@ -34,6 +34,7 @@ jobs:
           robots = Path('robots.txt').read_text(encoding='utf-8')
           withdrawal = Path('retirar.html').read_text(encoding='utf-8')
           friends = Path('webs-amigas.html').read_text(encoding='utf-8')
+          hero_webp = Path('assets/manos-apoyo.webp')
 
           required_home = [
               '<html lang="es">',
@@ -43,9 +44,16 @@ jobs:
               'property="og:image" content="https://desgracias.es/assets/manos-apoyo.png"',
               'name="twitter:card" content="summary_large_image"',
               'type="application/ld+json"',
+              'href="/assets/manos-apoyo.webp" type="image/webp" fetchpriority="high"',
+              'srcset="assets/manos-apoyo.webp" type="image/webp"',
+              'width="1342" height="1172" fetchpriority="high"',
           ]
           missing = [item for item in required_home if item not in index]
-          assert not missing, f'Missing homepage SEO signals: {missing}'
+          assert not missing, f'Missing homepage SEO/performance signals: {missing}'
+
+          assert hero_webp.exists(), 'Optimized hero WebP is missing'
+          hero_bytes = hero_webp.stat().st_size
+          assert 10_000 <= hero_bytes <= 100_000, f'Hero WebP size outside guardrail: {hero_bytes} bytes'
 
           titles = re.findall(r'<title>(.*?)</title>', index, flags=re.S | re.I)
           assert len(titles) == 1, f'Expected exactly one title, found {len(titles)}'
@@ -79,5 +87,5 @@ jobs:
           assert 'Sitemap: https://desgracias.es/sitemap.xml' in robots, 'robots.txt must advertise canonical sitemap'
           assert 'Disallow: /\n' not in robots, 'robots.txt must not block the whole site'
 
-          print('SEO integrity checks passed.')
+          print(f'SEO integrity checks passed. Hero WebP: {hero_bytes} bytes.')
           PY
