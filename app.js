@@ -22,13 +22,13 @@ document.querySelectorAll('[data-open-story]').forEach(btn => {
 });
 
 modal?.querySelectorAll('.close, .modal-actions .btn-ghost').forEach(btn => {
-  btn.addEventListener('click', (event) => {
+  btn.addEventListener('click', event => {
     event.preventDefault();
     modal.close();
   });
 });
 
-modal?.addEventListener('click', (event) => {
+modal?.addEventListener('click', event => {
   if (event.target === modal) modal.close();
 });
 
@@ -42,67 +42,54 @@ function installStorySafetyLayer() {
   const legacyPrivacyCheck = [...form.querySelectorAll('label.check')].find(label => !label.querySelector('[name]'));
   if (legacyPrivacyCheck) {
     legacyPrivacyCheck.className = 'personal-data-guidance';
-    legacyPrivacyCheck.innerHTML = '<span><strong>Privacidad:</strong> evita incluir nombres, teléfonos, direcciones u otros datos que identifiquen a alguien. Si los incluyes por una situación de seguridad grave, nunca se publicarán sin revisión.</span>';
+    legacyPrivacyCheck.innerHTML = '<span>Evita incluir nombres, teléfonos, direcciones u otros datos que permitan identificarte a ti o a terceras personas, salvo que sean necesarios para explicar una situación de seguridad grave.</span>';
   }
 
   actions.insertAdjacentHTML('beforebegin', `
     <div class="story-safety-layer" id="story-safety-layer">
-      <fieldset class="safety-fieldset">
-        <legend>Edad</legend>
-        <p>¿Tienes 18 años o más?</p>
-        <div class="safety-options">
-          <label><input type="radio" name="ageGate" value="adult" required> Sí</label>
-          <label><input type="radio" name="ageGate" value="minor" required> No</label>
-        </div>
-      </fieldset>
-
-      <div class="safety-help safety-minor-help" id="minor-help" hidden>
-        <strong>Este espacio todavía no admite historias de menores de 18 años.</strong>
-        <p>Si necesitas hablar con alguien, puedes acudir a ANAR. Si existe un peligro inmediato, llama al <a href="tel:112">112</a>.</p>
-        <p><strong>ANAR:</strong> <a href="tel:900202010">900 20 20 10</a>.</p>
-      </div>
-
-      <fieldset class="safety-fieldset">
-        <legend>Seguridad</legend>
-        <p>Antes de continuar: ¿crees que tú o alguna otra persona podéis estar en peligro inmediato?</p>
-        <div class="safety-options safety-options-stack">
+      <fieldset class="safety-fieldset safety-compact">
+        <legend>¿Hay peligro inmediato para ti o para otra persona?</legend>
+        <div class="safety-options safety-inline">
           <label><input type="radio" name="safetyLevel" value="normal" required> No</label>
           <label><input type="radio" name="safetyLevel" value="elevated" required> No estoy seguro/a</label>
           <label><input type="radio" name="safetyLevel" value="urgent" required> Sí, ahora mismo</label>
         </div>
       </fieldset>
 
-      <div class="safety-help" id="emergency-help" hidden>
-        <strong>Si existe peligro inmediato, no esperes a que revisemos la historia.</strong>
+      <div class="safety-help safety-help-compact" id="emergency-help" hidden>
+        <strong>Si hay peligro inmediato, no esperes nuestra revisión.</strong>
         <p>Llama al <a href="tel:112"><strong>112</strong></a>. Si se trata de una crisis relacionada con conducta suicida, también puedes llamar al <a href="tel:024"><strong>024</strong></a>.</p>
-        <p>Desgracias.es no es un servicio de emergencias y no garantiza una revisión inmediata.</p>
       </div>
 
-      <label class="check safety-consent">
-        <input type="checkbox" name="privacyConsent" required>
-        <span>Consiento el tratamiento de esta historia para su recepción, revisión, moderación y, si procede, publicación. Entiendo que puede contener información sensible.</span>
-      </label>
+      <div class="story-confirmations">
+        <label class="check">
+          <input type="checkbox" name="ageGate" value="adult" required>
+          <span>Tengo 18 años o más.</span>
+        </label>
 
-      <label class="check safety-consent">
-        <input type="checkbox" name="emergencyNoticeAcknowledged" required>
-        <span>Entiendo que Desgracias.es no presta asistencia médica, psicológica ni de emergencias, y que una situación de peligro inmediato debe comunicarse al 112.</span>
-      </label>
+        <label class="check">
+          <input type="checkbox" name="privacyConsent" required>
+          <span>Consiento que Desgracias.es reciba y modere mi historia y, si procede, la publique tras su revisión.</span>
+        </label>
+      </div>
+
+      <p class="story-safety-note">Desgracias.es no es un servicio médico, psicológico ni de emergencias y no garantiza una revisión inmediata. En una situación de peligro inmediato, llama al 112.</p>
+
+      <details class="minor-help-compact">
+        <summary>Si eres menor de 18 años</summary>
+        <p>Este espacio todavía no admite historias de menores. Puedes contactar con ANAR en el <a href="tel:900202010">900 20 20 10</a>. Si existe peligro inmediato, llama al <a href="tel:112">112</a>.</p>
+      </details>
     </div>
   `);
 
-  const submitButton = form.querySelector('button[type="submit"]');
-  const minorHelp = form.querySelector('#minor-help');
   const emergencyHelp = form.querySelector('#emergency-help');
 
   const updateSafetyUi = () => {
-    const age = form.querySelector('input[name="ageGate"]:checked')?.value || '';
     const safety = form.querySelector('input[name="safetyLevel"]:checked')?.value || '';
-    if (minorHelp) minorHelp.hidden = age !== 'minor';
     if (emergencyHelp) emergencyHelp.hidden = !['elevated', 'urgent'].includes(safety);
-    if (submitButton) submitButton.disabled = age === 'minor';
   };
 
-  form.querySelectorAll('input[name="ageGate"], input[name="safetyLevel"]').forEach(input => {
+  form.querySelectorAll('input[name="safetyLevel"]').forEach(input => {
     input.addEventListener('change', updateSafetyUi);
   });
 
@@ -191,7 +178,6 @@ async function friendlySubmissionError(error) {
   if (code.includes('rate_limit')) return 'Has enviado varias historias seguidas. Espera un poco antes de volver a intentarlo.';
   if (code.includes('adult_confirmation')) return 'Actualmente solo podemos recibir historias de personas de 18 años o más.';
   if (code.includes('privacy_consent')) return 'Necesitamos tu consentimiento para recibir y moderar la historia.';
-  if (code.includes('emergency_notice')) return 'Confirma que has leído el aviso sobre situaciones de emergencia.';
   if (code.includes('invalid_story')) return 'Revisa la categoría y cuéntanos un poco más para poder valorar bien tu historia.';
   if (code.includes('invalid_session') || code.includes('authentication')) return 'La sesión anónima ha caducado. Recarga la página e inténtalo de nuevo.';
   if (code.includes('origin_not_allowed')) return 'No hemos podido validar el origen de la solicitud. Recarga la página e inténtalo de nuevo.';
@@ -320,7 +306,7 @@ function applyStoryFilter(category) {
 }
 
 const storyForm = document.getElementById('story-form');
-storyForm?.addEventListener('submit', async (e) => {
+storyForm?.addEventListener('submit', async e => {
   e.preventDefault();
   if (!storyForm.reportValidity()) return;
 
@@ -333,7 +319,7 @@ storyForm?.addEventListener('submit', async (e) => {
   const adultConfirmed = formData.get('ageGate') === 'adult';
   const safetyLevel = String(formData.get('safetyLevel') || 'normal');
   const privacyConsent = formData.get('privacyConsent') === 'on';
-  const emergencyNoticeAcknowledged = formData.get('emergencyNoticeAcknowledged') === 'on';
+  const emergencyNoticeAcknowledged = true;
 
   if (!adultConfirmed) {
     if (status) status.textContent = 'Actualmente solo podemos recibir historias de personas de 18 años o más.';
@@ -347,8 +333,8 @@ storyForm?.addEventListener('submit', async (e) => {
     if (status) status.textContent = 'Cuéntanos un poco más para poder revisar bien tu historia.';
     return;
   }
-  if (!privacyConsent || !emergencyNoticeAcknowledged) {
-    if (status) status.textContent = 'Revisa y acepta las confirmaciones necesarias antes de enviar.';
+  if (!privacyConsent) {
+    if (status) status.textContent = 'Necesitamos tu consentimiento para recibir y moderar la historia.';
     return;
   }
 
