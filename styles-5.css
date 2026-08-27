@@ -1,0 +1,273 @@
+.value-icon{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:1.7rem;color:#2e2a27}
+.value-yellow{background:#f8dfa0}.value-sage{background:#e6ead5;color:#6b2d21}.value-lilac{background:#e8e0f0}.value-green{background:#e2eacf;color:#2e6b32}
+.hero-final-privacy{display:flex;align-items:center;justify-content:center;gap:12px;min-height:42px;color:#6e6259;font-size:.74rem}.hero-final-privacy span:last-child{color:#e59d89}
+.site-header{background:#fff9f2;border-bottom:1px solid #efe4d9}.header-inner{min-height:72px}.header-cta{background:#7a2f0a;color:#fff;border-radius:10px;font-weight:700;box-shadow:0 8px 18px rgba(122,47,10,.16)}.header-cta:hover{background:#6a2808;color:#fff}
+
+@media(max-width:1080px){
+.hero-final-banner{width:68%}.hero-final-copy h1 span{white-space:normal}.hero-final-main{grid-template-columns:1fr 1fr}.hero-final-actions{grid-template-columns:1fr 1fr}.hero-final-actions .final-card:last-child{grid-column:1/-1}
+}
+@media(max-width:760px){
+.hero-final{padding-top:22px}.hero-final-banner{width:100%;min-height:76px}.hero-final-banner strong{font-size:.88rem}.banner-shield{width:48px;height:48px;flex-basis:48px}.hero-final-main{grid-template-columns:1fr;margin-top:0}.hero-final-copy{padding-top:42px}.hero-final-copy h1{font-size:clamp(2.55rem,11vw,4rem)}.hero-final-media{min-height:320px;margin-top:-30px}.hero-final-actions{grid-template-columns:1fr;margin-top:0}.hero-final-actions .final-card:last-child{grid-column:auto}.hero-final-values{grid-template-columns:1fr 1fr}.value-item:nth-child(3):before{display:none}.value-item:nth-child(n+3){border-top:1px solid #e6dacd}.hero-final-privacy{flex-wrap:wrap;text-align:center;padding:10px 0}
+}
+@media(max-width:480px){.hero-final-copy h1{font-size:2.55rem}.hero-final-values{grid-template-columns:1fr}.value-item+.value-item:before{display:none}.value-item{border-top:1px solid #e6dacd}.value-item:first-child{border-top:0}}
+
+
+/* ==========================================================
+   V6 · PORTADA PERFECTA
+   Microajustes finales de proporción, iconografía y difuminado
+   ========================================================== */
+
+.hero-final-copy{
+  max-width:760px;
+}
+
+.hero-final-copy h1{
+  font-size:clamp(2.9rem,4.05vw,4.42rem);
+  line-height:1.12;
+  letter-spacing:-.042em;
+  max-width:760px;
+}
+
+.hero-final-copy h1 span{
+  white-space:normal;
+}
+
+.hero-final-main{
+  grid-template-columns:1.03fr .97fr;
+  column-gap:10px;
+}
+
+/* transición más orgánica: las manos nacen del fondo */
+.hero-final-media::before{
+  background:
+    linear-gradient(90deg,
+      #FBF0E3 0%,
+      rgba(251,240,227,.98) 7%,
+      rgba(251,240,227,.82) 16%,
+      rgba(251,240,227,.48) 28%,
+      rgba(251,240,227,.14) 43%,
+      rgba(251,240,227,0) 58%);
+}
+
+.hero-final-media::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,249,241,.08),rgba(248,225,199,.04));
+}
+
+/* SVGs homogéneos en toda la portada */
+.banner-shield svg,
+.final-icon svg,
+.value-icon svg{
+  width:58%;
+  height:58%;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+.banner-shield svg{
+  width:70%;
+  height:70%;
+}
+
+.final-icon-dark svg{
+  width:56%;
+  height:56%;
+}
+
+.final-icon-mail svg{
+  width:56%;
+  height:56%;
+}
+
+/* mayor precisión en las tres tarjetas */
+.hero-final-actions{
+  align-items:stretch;
+}
+
+.final-card{
+  min-height:112px;
+}
+
+.final-card-copy strong{
+  letter-spacing:-.01em;
+}
+
+.email-strong{
+  font-size:1.22rem!important;
+}
+
+/* valores inferiores */
+.value-item{
+  min-height:118px;
+}
+
+.value-icon{
+  flex-shrink:0;
+}
+
+.value-yellow svg{color:#3A2A20}
+.value-sage svg{color:#7B3A2E}
+.value-lilac svg{color:#3F334A}
+.value-green svg{color:#2F6B3A}
+
+/* evitar cualquier símbolo tipográfico residual */
+.hero-final-privacy span:first-child{
+  font-size:.8rem;
+}
+
+@media(min-width:1280px){
+  .hero-final-copy h1{
+    max-width:730px;
+  }
+}
+
+@media(max-width:1080px){
+  .hero-final-copy h1{
+    max-width:none;
+  }
+}
+
+@media(max-width:760px){
+  .hero-final-main{
+    grid-template-columns:1fr;
+  }
+  .hero-final-copy{
+    max-width:none;
+  }
+  .hero-final-copy h1{
+    max-width:none;
+    font-size:clamp(2.45rem,10.5vw,3.8rem);
+  }
+  .hero-final-media::before{
+    background:linear-gradient(180deg,#FBF0E3 0%,rgba(251,240,227,.52) 22%,rgba(251,240,227,.08) 62%);
+  }
+}
+
+
+/* ===== V7 · Webs amigas solo en menú + microajustes cabecera ===== */
+.header-cta{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:9px;
+}
+
+.header-heart{
+  width:20px;
+  height:20px;
+  flex:0 0 20px;
+  fill:none;
+  stroke:currentColor;
+  stroke-width:1.8;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+
+/* Compactar ligeramente el hero para evitar exceso de aire arriba y abajo del titular */
+@media (min-width:1060px){
+  .hero-final{
+    padding-top:34px;
+  }
+
+  .hero-final-main{
+    min-height:320px;
+    margin-top:-36px;
+  }
+
+  .hero-final-copy{
+    padding-top:40px;
+  }
+
+  .hero-final-media{
+    min-height:382px;
+  }
+
+  .hero-final-actions{
+    margin-top:-18px;
+  }
+}
+
+/* Página independiente "Webs amigas", no visible como bloque en la portada */
+.friends-page{
+  min-height:calc(100vh - 72px);
+  background:linear-gradient(180deg,#FFF9F1,#FBF0E3);
+}
+
+.friends-intro{
+  max-width:760px;
+  padding-top:70px;
+}
+
+.friends-intro h1{
+  color:#7B3F1E;
+}
+
+.simple-nav{
+  justify-content:center;
+}
+
+
+/* ===== V8 · SOLO los cambios acordados ===== */
+
+/* Mantener exactamente la distribución aprobada del titular */
+.hero-final-copy h1{
+  display:flex;
+  flex-direction:column;
+}
+.hero-final-copy h1 span{
+  display:block;
+  white-space:nowrap;
+}
+
+/* Reducir el espacio en blanco marcado por el usuario, sin tocar tipografía ni contenido */
+@media (min-width:1060px){
+  .hero-final{
+    padding-top:26px;
+  }
+
+  .hero-final-banner{
+    margin-bottom:8px;
+  }
+
+  .hero-final-main{
+    margin-top:-52px;
+    min-height:286px;
+  }
+
+  .hero-final-copy{
+    padding-top:26px;
+    padding-bottom:0;
+  }
+
+  .hero-final-media{
+    min-height:350px;
+  }
+
+  .hero-final-actions{
+    margin-top:-34px;
+  }
+}
+
+@media (max-width:1080px){
+  .hero-final-copy h1 span{
+    white-space:normal;
+  }
+}
+
+
+/* ==========================================================
+   V9 · Ajuste al último boceto aprobado
+   SOLO composición/espaciado de portada.
+   ========================================================== */
+
+.hero-final{
+  padding-top:18px;
+  padding-bottom:8px;
+}
