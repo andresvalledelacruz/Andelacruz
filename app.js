@@ -33,6 +33,7 @@ modal?.addEventListener('click', event => {
 });
 
 const POLICY_VERSION = '2026-08-27-v4';
+let reportStoryId = null;
 
 function installStorySafetyLayer() {
   const form = document.getElementById('story-form');
@@ -140,8 +141,105 @@ function installPrivacyTransparency() {
   }
 }
 
+function installReportUi() {
+  if (document.getElementById('report-story-modal')) return;
+
+  const style = document.createElement('style');
+  style.textContent = `
+    .report-link{border:0;background:transparent;padding:0;color:inherit;opacity:.62;font:inherit;font-size:.78rem;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+    .report-link:hover{opacity:1}.report-story-modal{border:0;border-radius:18px;padding:0;width:min(520px,calc(100% - 28px));box-shadow:0 24px 80px rgba(25,34,31,.24)}
+    .report-story-modal::backdrop{background:rgba(31,39,36,.48)}.report-card{padding:26px;background:#fff;color:#28332f;position:relative}
+    .report-card h2{margin:0 34px 8px 0;font-size:1.55rem}.report-card p{color:#64706b}.report-card label{display:block;font-weight:700;margin-top:16px}
+    .report-card select,.report-card textarea{width:100%;margin-top:7px;border:1px solid #d7cec4;border-radius:11px;padding:11px 12px;font:inherit;background:#fff;color:#28332f}
+    .report-close{position:absolute;right:17px;top:14px;border:0;background:transparent;font-size:1.6rem;cursor:pointer}.report-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+    .report-actions button{border:0;border-radius:10px;padding:10px 14px;font:inherit;font-weight:700;cursor:pointer}.report-cancel{background:#f1ece5;color:#28332f}.report-send{background:#28332f;color:#fff}.report-status{font-size:.9rem;font-weight:700;margin-top:12px;min-height:1.4em}
+  `;
+  document.head.append(style);
+
+  const dialog = document.createElement('dialog');
+  dialog.className = 'report-story-modal';
+  dialog.id = 'report-story-modal';
+  dialog.innerHTML = `
+    <form class="report-card" id="report-story-form">
+      <button class="report-close" type="button" aria-label="Cerrar">×</button>
+      <h2>Reportar esta historia</h2>
+      <p>Ayúdanos a revisar contenido que pueda ser dañino, identificar a alguien o incumplir las normas del espacio.</p>
+      <label>Motivo
+        <select name="reason" required>
+          <option value="">Selecciona un motivo</option>
+          <option value="personal_data">Contiene datos personales</option>
+          <option value="self_harm_concern">Riesgo de autolesión o suicidio</option>
+          <option value="violence">Violencia o amenazas</option>
+          <option value="harassment">Acoso</option>
+          <option value="hate">Odio o discriminación</option>
+          <option value="dangerous_advice">Consejo peligroso</option>
+          <option value="impersonation">Suplantación</option>
+          <option value="spam">Spam</option>
+          <option value="other">Otro</option>
+        </select>
+      </label>
+      <label>Detalle opcional
+        <textarea name="detail" rows="4" maxlength="1000" placeholder="Cuéntanos brevemente qué deberíamos revisar."></textarea>
+      </label>
+      <div class="report-actions">
+        <button class="report-cancel" type="button">Cancelar</button>
+        <button class="report-send" type="submit">Enviar reporte</button>
+      </div>
+      <div class="report-status" id="report-story-status" role="status" aria-live="polite"></div>
+    </form>`;
+  document.body.append(dialog);
+
+  const form = dialog.querySelector('#report-story-form');
+  const status = dialog.querySelector('#report-story-status');
+  const close = () => { dialog.close(); reportStoryId = null; form.reset(); status.textContent = ''; };
+  dialog.querySelector('.report-close').addEventListener('click', close);
+  dialog.querySelector('.report-cancel').addEventListener('click', close);
+  dialog.addEventListener('click', event => { if (event.target === dialog) close(); });
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!reportStoryId || !form.reportValidity()) return;
+    const data = new FormData(form);
+    const reason = String(data.get('reason') || '');
+    const detail = String(data.get('detail') || '').trim();
+    const sendButton = form.querySelector('.report-send');
+    sendButton.disabled = true;
+    status.textContent = 'Enviando reporte…';
+    try {
+      const client = await getSupabaseClient();
+      await ensureAnonymousSession(client);
+      const { error } = await client.rpc('report_story', {
+        p_story_id: reportStoryId,
+        p_reason_code: reason,
+        p_detail: detail || null,
+        p_request_id: crypto.randomUUID()
+      });
+      if (error) throw error;
+      status.textContent = 'Gracias. El reporte ha quedado enviado para revisión.';
+      setTimeout(close, 1700);
+    } catch (error) {
+      const code = String(error?.code || '');
+      const message = String(error?.message || '').toLowerCase();
+      if (code === '23505' || message.includes('already reported')) status.textContent = 'Ya habías reportado esta historia y sigue pendiente de revisión.';
+      else if (code === 'P0001' || message.includes('rate limit')) status.textContent = 'Has enviado varios reportes seguidos. Espera un poco antes de volver a intentarlo.';
+      else status.textContent = 'No hemos podido enviar el reporte ahora mismo. Inténtalo de nuevo dentro de unos instantes.';
+    } finally {
+      sendButton.disabled = false;
+    }
+  });
+}
+
+function openReportDialog(storyId) {
+  reportStoryId = storyId;
+  const dialog = document.getElementById('report-story-modal');
+  const status = document.getElementById('report-story-status');
+  if (status) status.textContent = '';
+  dialog?.showModal();
+}
+
 installStorySafetyLayer();
 installPrivacyTransparency();
+installReportUi();
 
 const CATEGORY_MAP = {
   'Pareja / ruptura': 'pareja-rupturas',
@@ -184,7 +282,6 @@ async function ensureAnonymousSession(client) {
   const { data: sessionData, error: sessionError } = await client.auth.getSession();
   if (sessionError) throw sessionError;
   if (sessionData.session) return sessionData.session;
-
   const { data, error } = await client.auth.signInAnonymously();
   if (error) throw error;
   return data.session;
@@ -258,7 +355,13 @@ function createStoryCard(story, index) {
   published.textContent = formatPublishedDate(story.published_at);
   const identity = document.createElement('span');
   identity.textContent = story.public_alias ? `Por ${story.public_alias}` : 'Anónimo';
-  meta.append(published, identity);
+  const report = document.createElement('button');
+  report.type = 'button';
+  report.className = 'report-link';
+  report.textContent = 'Reportar';
+  report.setAttribute('aria-label', 'Reportar esta historia');
+  report.addEventListener('click', () => openReportDialog(story.id));
+  meta.append(published, identity, report);
   article.append(visual, meta);
   return article;
 }
@@ -290,13 +393,11 @@ async function loadPublicStories() {
     const client = await getSupabaseClient();
     const { data, error } = await client.rpc('list_public_stories', { p_limit: 12, p_offset: 0, p_category_slug: null });
     if (error) throw error;
-
     storyGrid.replaceChildren();
     if (!data?.length) {
       storyGrid.append(createStoryStateCard('Aún no hay historias publicadas.', 'Las primeras experiencias aparecerán aquí únicamente después de haber sido revisadas, autorizadas para publicación y aprobadas.'));
       return;
     }
-
     data.forEach((story, index) => storyGrid.append(createStoryCard(story, index)));
     const activeFilter = document.querySelector('.filter.active')?.dataset.filter || 'all';
     applyStoryFilter(activeFilter);
@@ -368,7 +469,6 @@ storyForm?.addEventListener('submit', async e => {
   try {
     const client = await getSupabaseClient();
     await ensureAnonymousSession(client);
-
     const { data, error } = await client.functions.invoke('submit-story', {
       body: {
         categorySlug,
@@ -389,7 +489,6 @@ storyForm?.addEventListener('submit', async e => {
 
     if (error) throw error;
     if (!data?.id || !data?.withdrawalCode) throw new Error('submission_failed');
-
     const shortId = ` · #${String(data.id).slice(0, 8)}`;
     let receiptMessage;
     if (safetyLevel === 'normal') {
@@ -401,7 +500,6 @@ storyForm?.addEventListener('submit', async e => {
         ? `Historia recibida${shortId}. Se ha marcado para revisión prioritaria. Si existe peligro inmediato, llama al 112.`
         : `Historia recibida${shortId}. Se ha marcado para revisión prioritaria y no se publicará. Si existe peligro inmediato, llama al 112.`;
     }
-
     storyForm.reset();
     showSubmissionReceipt(status, receiptMessage, String(data.withdrawalCode));
   } catch (error) {
