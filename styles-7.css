@@ -1,0 +1,131 @@
+/* UX compacta de seguridad del formulario. No altera la portada V9. */
+.story-safety-layer{
+  display:grid;
+  gap:10px;
+  margin-top:8px;
+}
+
+.safety-fieldset.safety-compact{
+  margin:0;
+  padding:10px 12px;
+  border:1px solid rgba(80,63,51,.14);
+  border-radius:12px;
+  background:rgba(255,255,255,.48);
+}
+
+.safety-fieldset.safety-compact legend{
+  padding:0;
+  margin:0 0 7px;
+  font-size:.94rem;
+  font-weight:700;
+  color:#4c4038;
+}
+
+.safety-options.safety-inline{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.safety-options.safety-inline label{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin:0;
+  padding:7px 10px;
+  border:1px solid rgba(80,63,51,.16);
+  border-radius:999px;
+  background:#fff;
+  cursor:pointer;
+  font-size:.9rem;
+  line-height:1.2;
+}
+
+.safety-options.safety-inline label:has(input:checked){
+  border-color:rgba(121,83,59,.55);
+  background:#f7eee7;
+  box-shadow:0 0 0 2px rgba(121,83,59,.08);
+}
+
+.safety-options.safety-inline input{
+  margin:0;
+}
+
+.safety-help.safety-help-compact{
+  padding:10px 12px;
+  border:1px solid rgba(154,87,57,.25);
+  border-radius:11px;
+  background:#fff6ee;
+  font-size:.91rem;
+  line-height:1.42;
+}
+
+.safety-help.safety-help-compact p{
+  margin:4px 0 0;
+}
+
+.safety-help.safety-help-compact[hidden]{
+  display:none;
+}
+
+.story-confirmations{
+  display:grid;
+  gap:7px;
+  margin-top:2px;
+}
+
+.story-confirmations .check{
+  align-items:flex-start;
+  margin:0;
+  font-size:.9rem;
+  line-height:1.4;
+}
+
+.story-confirmations .check input{
+  margin-top:3px;
+  flex:0 0 auto;
+}
+
+.personal-data-guidance{
+  display:block;
+  margin-top:-2px;
+  padding:0;
+  background:transparent;
+  font-size:.84rem;
+  line-height:1.4;
+  color:#74665d;
+}
+
+.minor-help-compact{
+  font-size:.84rem;
+  color:#74665d;
+}
+
+.minor-help-compact summary{
+  cursor:pointer;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
+
+.minor-help-compact p{
+  margin:6px 0 0;
+  line-height:1.4;
+}
+
+.story-safety-note{
+  margin:0;
+  font-size:.78rem;
+  line-height:1.35;
+  color:#7b6e65;
+}
+
+@media (max-width:560px){
+  .safety-options.safety-inline{
+    gap:6px;
+  }
+
+  .safety-options.safety-inline label{
+    padding:7px 9px;
+    font-size:.86rem;
+  }
+}
