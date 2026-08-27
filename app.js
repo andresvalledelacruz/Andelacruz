@@ -32,7 +32,7 @@ modal?.addEventListener('click', event => {
   if (event.target === modal) modal.close();
 });
 
-const POLICY_VERSION = '2026-08-27-v3';
+const POLICY_VERSION = '2026-08-27-v4';
 
 function installStorySafetyLayer() {
   const form = document.getElementById('story-form');
@@ -86,16 +86,12 @@ function installStorySafetyLayer() {
   `);
 
   const emergencyHelp = form.querySelector('#emergency-help');
-
   const updateSafetyUi = () => {
     const safety = form.querySelector('input[name="safetyLevel"]:checked')?.value || '';
     if (emergencyHelp) emergencyHelp.hidden = !['elevated', 'urgent'].includes(safety);
   };
 
-  form.querySelectorAll('input[name="safetyLevel"]').forEach(input => {
-    input.addEventListener('change', updateSafetyUi);
-  });
-
+  form.querySelectorAll('input[name="safetyLevel"]').forEach(input => input.addEventListener('change', updateSafetyUi));
   form.addEventListener('reset', () => setTimeout(updateSafetyUi, 0));
   updateSafetyUi();
 }
@@ -128,11 +124,19 @@ function installPrivacyTransparency() {
   }
 
   const transparency = [...document.querySelectorAll('.footer-grid > div')].find(div => div.querySelector('strong')?.textContent?.trim() === 'Transparencia');
-  if (transparency && !transparency.querySelector('a[href="privacidad.html"]')) {
-    const privacyLink = document.createElement('a');
-    privacyLink.href = 'privacidad.html';
-    privacyLink.textContent = 'Política de privacidad';
-    transparency.insertBefore(privacyLink, transparency.querySelector('a[href="mailto:info@desgracias.es"]'));
+  if (transparency) {
+    if (!transparency.querySelector('a[href="privacidad.html"]')) {
+      const privacyLink = document.createElement('a');
+      privacyLink.href = 'privacidad.html';
+      privacyLink.textContent = 'Política de privacidad';
+      transparency.insertBefore(privacyLink, transparency.querySelector('a[href="mailto:info@desgracias.es"]'));
+    }
+    if (!transparency.querySelector('a[href="retirar.html"]')) {
+      const withdrawLink = document.createElement('a');
+      withdrawLink.href = 'retirar.html';
+      withdrawLink.textContent = 'Retirar una historia';
+      transparency.insertBefore(withdrawLink, transparency.querySelector('a[href="mailto:info@desgracias.es"]'));
+    }
   }
 }
 
@@ -170,11 +174,7 @@ async function getSupabaseClient() {
   if (!supabaseClientPromise) {
     supabaseClientPromise = import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm')
       .then(({ createClient }) => createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
-        }
+        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
       }));
   }
   return supabaseClientPromise;
@@ -206,9 +206,7 @@ async function extractFunctionErrorCode(error) {
     try {
       const payload = await context.clone().json();
       if (payload?.error) return String(payload.error).toLowerCase();
-    } catch {
-      // La respuesta puede no ser JSON; se usa el mensaje genérico.
-    }
+    } catch {}
   }
   return String(error?.message || '').toLowerCase();
 }
@@ -234,11 +232,7 @@ function formatPublishedDate(value) {
   if (!value) return 'Publicada recientemente';
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return 'Publicada recientemente';
-  return `Publicada ${new Intl.DateTimeFormat('es-ES', {
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  }).format(date)}`;
+  return `Publicada ${new Intl.DateTimeFormat('es-ES', { day: 'numeric', month: 'short', year: 'numeric' }).format(date)}`;
 }
 
 function createStoryCard(story, index) {
@@ -249,28 +243,21 @@ function createStoryCard(story, index) {
 
   const visual = document.createElement('div');
   visual.className = `story-visual story-${['one', 'two', 'three'][index % 3]}`;
-
   const tag = document.createElement('span');
   tag.className = 'tag';
   tag.textContent = PUBLIC_CATEGORY_LABELS[story.category_slug] || 'Historia';
-
   const title = document.createElement('h3');
   title.textContent = story.title || 'Historia compartida';
-
   const body = document.createElement('p');
   body.textContent = truncateText(story.body);
-
   visual.append(tag, title, body);
 
   const meta = document.createElement('div');
   meta.className = 'story-meta';
-
   const published = document.createElement('span');
   published.textContent = formatPublishedDate(story.published_at);
-
   const identity = document.createElement('span');
   identity.textContent = story.public_alias ? `Por ${story.public_alias}` : 'Anónimo';
-
   meta.append(published, identity);
   article.append(visual, meta);
   return article;
@@ -280,20 +267,15 @@ function createStoryStateCard(titleText, bodyText) {
   const article = document.createElement('article');
   article.className = 'story-card';
   article.style.gridColumn = '1 / -1';
-
   const visual = document.createElement('div');
   visual.className = 'story-visual story-one';
-
   const tag = document.createElement('span');
   tag.className = 'tag';
   tag.textContent = 'Comunidad';
-
   const title = document.createElement('h3');
   title.textContent = titleText;
-
   const body = document.createElement('p');
   body.textContent = bodyText;
-
   visual.append(tag, title, body);
   article.append(visual);
   return article;
@@ -302,40 +284,25 @@ function createStoryStateCard(titleText, bodyText) {
 async function loadPublicStories() {
   const storyGrid = document.querySelector('.story-grid');
   if (!storyGrid) return;
-
-  storyGrid.replaceChildren(createStoryStateCard(
-    'Cargando historias…',
-    'Estamos preparando las experiencias aprobadas para mostrarlas con cuidado.'
-  ));
+  storyGrid.replaceChildren(createStoryStateCard('Cargando historias…', 'Estamos preparando las experiencias aprobadas para mostrarlas con cuidado.'));
 
   try {
     const client = await getSupabaseClient();
-    const { data, error } = await client.rpc('list_public_stories', {
-      p_limit: 12,
-      p_offset: 0,
-      p_category_slug: null
-    });
+    const { data, error } = await client.rpc('list_public_stories', { p_limit: 12, p_offset: 0, p_category_slug: null });
     if (error) throw error;
 
     storyGrid.replaceChildren();
     if (!data?.length) {
-      storyGrid.append(createStoryStateCard(
-        'Aún no hay historias publicadas.',
-        'Las primeras experiencias aparecerán aquí únicamente después de haber sido revisadas, autorizadas para publicación y aprobadas.'
-      ));
+      storyGrid.append(createStoryStateCard('Aún no hay historias publicadas.', 'Las primeras experiencias aparecerán aquí únicamente después de haber sido revisadas, autorizadas para publicación y aprobadas.'));
       return;
     }
 
     data.forEach((story, index) => storyGrid.append(createStoryCard(story, index)));
-
     const activeFilter = document.querySelector('.filter.active')?.dataset.filter || 'all';
     applyStoryFilter(activeFilter);
   } catch (error) {
     console.error('Public stories loading failed', error);
-    storyGrid.replaceChildren(createStoryStateCard(
-      'No hemos podido cargar las historias ahora mismo.',
-      'Puedes seguir usando el resto del espacio e intentarlo de nuevo dentro de unos instantes.'
-    ));
+    storyGrid.replaceChildren(createStoryStateCard('No hemos podido cargar las historias ahora mismo.', 'Puedes seguir usando el resto del espacio e intentarlo de nuevo dentro de unos instantes.'));
   }
 }
 
@@ -343,6 +310,34 @@ function applyStoryFilter(category) {
   document.querySelectorAll('.story-grid .story-card[data-category]').forEach(card => {
     card.hidden = category !== 'all' && card.dataset.category !== category;
   });
+}
+
+function showSubmissionReceipt(status, message, withdrawalCode) {
+  if (!status) return;
+  status.replaceChildren();
+  const messageSpan = document.createElement('span');
+  messageSpan.textContent = message;
+  const line1 = document.createElement('br');
+  const line2 = document.createElement('br');
+  const label = document.createElement('strong');
+  label.textContent = 'Guarda tu código privado de retirada:';
+  const line3 = document.createElement('br');
+  const code = document.createElement('strong');
+  code.textContent = withdrawalCode;
+  code.style.display = 'inline-block';
+  code.style.margin = '8px 0';
+  code.style.padding = '8px 10px';
+  code.style.border = '1px solid currentColor';
+  code.style.borderRadius = '8px';
+  code.style.letterSpacing = '.04em';
+  const line4 = document.createElement('br');
+  const warning = document.createElement('span');
+  warning.textContent = 'Haz una captura o guárdalo en un lugar seguro. Desgracias.es no conserva este código en texto y no podrá mostrártelo de nuevo.';
+  const line5 = document.createElement('br');
+  const withdrawLink = document.createElement('a');
+  withdrawLink.href = 'retirar.html';
+  withdrawLink.textContent = 'Retirar una historia →';
+  status.append(messageSpan, line1, line2, label, line3, code, line4, warning, line5, withdrawLink);
 }
 
 const storyForm = document.getElementById('story-form');
@@ -361,31 +356,14 @@ storyForm?.addEventListener('submit', async e => {
   const privacyConsent = formData.get('privacyConsent') === 'on';
   const publicationConsent = formData.get('publicationConsent') === 'on';
 
-  if (!adultConfirmed) {
-    if (status) status.textContent = 'Actualmente solo podemos recibir historias de personas de 18 años o más.';
-    return;
-  }
-  if (!categorySlug) {
-    if (status) status.textContent = 'Selecciona una categoría válida.';
-    return;
-  }
-  if (body.length < 20) {
-    if (status) status.textContent = 'Cuéntanos un poco más para poder revisar bien tu historia.';
-    return;
-  }
-  if (!privacyConsent) {
-    if (status) status.textContent = 'Necesitamos tu consentimiento para recibir y moderar la historia.';
-    return;
-  }
+  if (!adultConfirmed) { if (status) status.textContent = 'Actualmente solo podemos recibir historias de personas de 18 años o más.'; return; }
+  if (!categorySlug) { if (status) status.textContent = 'Selecciona una categoría válida.'; return; }
+  if (body.length < 20) { if (status) status.textContent = 'Cuéntanos un poco más para poder revisar bien tu historia.'; return; }
+  if (!privacyConsent) { if (status) status.textContent = 'Necesitamos tu consentimiento para recibir y moderar la historia.'; return; }
 
   const originalButtonText = submitButton?.textContent || 'Enviar historia';
-  if (submitButton) {
-    submitButton.disabled = true;
-    submitButton.textContent = 'Enviando…';
-  }
-  if (status) status.textContent = safetyLevel === 'normal'
-    ? 'Enviando tu historia sin pedirte nombre…'
-    : 'Enviando tu historia y marcándola para revisión prioritaria…';
+  if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Enviando…'; }
+  if (status) status.textContent = safetyLevel === 'normal' ? 'Enviando tu historia sin pedirte nombre…' : 'Enviando tu historia y marcándola para revisión prioritaria…';
 
   try {
     const client = await getSupabaseClient();
@@ -410,30 +388,27 @@ storyForm?.addEventListener('submit', async e => {
     });
 
     if (error) throw error;
-    if (!data?.id) throw new Error('submission_failed');
+    if (!data?.id || !data?.withdrawalCode) throw new Error('submission_failed');
 
     const shortId = ` · #${String(data.id).slice(0, 8)}`;
-    if (status) {
-      if (safetyLevel === 'normal') {
-        status.textContent = publicationConsent
-          ? `Historia recibida${shortId}. Queda pendiente de revisión antes de poder publicarse.`
-          : `Historia recibida${shortId}. Queda pendiente de revisión y no se publicará sin tu autorización.`;
-      } else {
-        status.textContent = publicationConsent
-          ? `Historia recibida${shortId}. Se ha marcado para revisión prioritaria y, si procede, solo podrá publicarse después de ser revisada. Si existe peligro inmediato, llama al 112.`
-          : `Historia recibida${shortId}. Se ha marcado para revisión prioritaria y no se publicará. Si existe peligro inmediato, llama al 112.`;
-      }
+    let receiptMessage;
+    if (safetyLevel === 'normal') {
+      receiptMessage = publicationConsent
+        ? `Historia recibida${shortId}. Queda pendiente de revisión antes de poder publicarse.`
+        : `Historia recibida${shortId}. Queda pendiente de revisión y no se publicará sin tu autorización.`;
+    } else {
+      receiptMessage = publicationConsent
+        ? `Historia recibida${shortId}. Se ha marcado para revisión prioritaria. Si existe peligro inmediato, llama al 112.`
+        : `Historia recibida${shortId}. Se ha marcado para revisión prioritaria y no se publicará. Si existe peligro inmediato, llama al 112.`;
     }
+
     storyForm.reset();
-    setTimeout(() => modal?.close(), safetyLevel === 'normal' ? 3600 : 7000);
+    showSubmissionReceipt(status, receiptMessage, String(data.withdrawalCode));
   } catch (error) {
     console.error('Story submission failed', error);
     if (status) status.textContent = await friendlySubmissionError(error);
   } finally {
-    if (submitButton) {
-      submitButton.disabled = false;
-      submitButton.textContent = originalButtonText;
-    }
+    if (submitButton) { submitButton.disabled = false; submitButton.textContent = originalButtonText; }
   }
 });
 
@@ -448,12 +423,9 @@ filters.forEach(btn => {
 
 const sections = [...document.querySelectorAll('main section[id]')];
 const navLinks = [...document.querySelectorAll('.main-nav a[href^="#"]')];
-
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`));
-    }
+    if (entry.isIntersecting) navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`));
   });
 }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
 
