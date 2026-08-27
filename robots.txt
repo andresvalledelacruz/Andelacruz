@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Disallow: /.github/
+Disallow: /docs/
+Disallow: /frontend/
+Disallow: /ops/
+Disallow: /sql/
+Disallow: /src/
+Disallow: /tests/
+Disallow: /OPS_STAGING.md
+Disallow: /README_V9.txt
+Disallow: /package.json
+Disallow: /render.yaml
+
+Sitemap: https://desgracias.es/sitemap.xml
