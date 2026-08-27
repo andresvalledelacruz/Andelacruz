@@ -32,7 +32,7 @@ modal?.addEventListener('click', event => {
   if (event.target === modal) modal.close();
 });
 
-const POLICY_VERSION = '2026-08-27-v4';
+const POLICY_VERSION = '2026-08-27-v5';
 let reportStoryId = null;
 
 function installStorySafetyLayer() {
@@ -70,12 +70,7 @@ function installStorySafetyLayer() {
 
         <label class="check">
           <input type="checkbox" name="privacyConsent" required>
-          <span>Consiento que Desgracias.es reciba y modere mi historia. <a href="privacidad.html" target="_blank" rel="noopener">Privacidad</a></span>
-        </label>
-
-        <label class="check publication-optin">
-          <input type="checkbox" name="publicationConsent">
-          <span>Autorizo publicar mi historia de forma anónima.</span>
+          <span>Consiento que Desgracias.es modere mi historia y, si supera la revisión, pueda publicarla. <a href="privacidad.html" target="_blank" rel="noopener">Privacidad</a></span>
         </label>
       </div>
 
@@ -312,7 +307,7 @@ async function friendlySubmissionError(error) {
   const code = await extractFunctionErrorCode(error);
   if (code.includes('rate_limit')) return 'Has enviado varias historias seguidas. Espera un poco antes de volver a intentarlo.';
   if (code.includes('adult_confirmation')) return 'Actualmente solo podemos recibir historias de personas de 18 años o más.';
-  if (code.includes('privacy_consent')) return 'Necesitamos tu consentimiento para recibir y moderar la historia.';
+  if (code.includes('privacy_consent') || code.includes('publication_consent')) return 'Necesitamos tu consentimiento para moderar y, si supera la revisión, poder publicar la historia.';
   if (code.includes('invalid_story')) return 'Revisa la categoría y cuéntanos un poco más para poder valorar bien tu historia.';
   if (code.includes('invalid_session') || code.includes('authentication')) return 'La sesión anónima ha caducado. Recarga la página e inténtalo de nuevo.';
   if (code.includes('origin_not_allowed')) return 'No hemos podido validar el origen de la solicitud. Recarga la página e inténtalo de nuevo.';
@@ -455,12 +450,12 @@ storyForm?.addEventListener('submit', async e => {
   const adultConfirmed = formData.get('ageGate') === 'adult';
   const safetyLevel = String(formData.get('safetyLevel') || 'normal');
   const privacyConsent = formData.get('privacyConsent') === 'on';
-  const publicationConsent = formData.get('publicationConsent') === 'on';
+  const publicationConsent = privacyConsent;
 
   if (!adultConfirmed) { if (status) status.textContent = 'Actualmente solo podemos recibir historias de personas de 18 años o más.'; return; }
   if (!categorySlug) { if (status) status.textContent = 'Selecciona una categoría válida.'; return; }
   if (body.length < 20) { if (status) status.textContent = 'Cuéntanos un poco más para poder revisar bien tu historia.'; return; }
-  if (!privacyConsent) { if (status) status.textContent = 'Necesitamos tu consentimiento para recibir y moderar la historia.'; return; }
+  if (!privacyConsent) { if (status) status.textContent = 'Necesitamos tu consentimiento para moderar y, si supera la revisión, poder publicar la historia.'; return; }
 
   const originalButtonText = submitButton?.textContent || 'Enviar historia';
   if (submitButton) { submitButton.disabled = true; submitButton.textContent = 'Enviando…'; }
@@ -490,16 +485,9 @@ storyForm?.addEventListener('submit', async e => {
     if (error) throw error;
     if (!data?.id || !data?.withdrawalCode) throw new Error('submission_failed');
     const shortId = ` · #${String(data.id).slice(0, 8)}`;
-    let receiptMessage;
-    if (safetyLevel === 'normal') {
-      receiptMessage = publicationConsent
-        ? `Historia recibida${shortId}. Queda pendiente de revisión antes de poder publicarse.`
-        : `Historia recibida${shortId}. Queda pendiente de revisión y no se publicará sin tu autorización.`;
-    } else {
-      receiptMessage = publicationConsent
-        ? `Historia recibida${shortId}. Se ha marcado para revisión prioritaria. Si existe peligro inmediato, llama al 112.`
-        : `Historia recibida${shortId}. Se ha marcado para revisión prioritaria y no se publicará. Si existe peligro inmediato, llama al 112.`;
-    }
+    const receiptMessage = safetyLevel === 'normal'
+      ? `Historia recibida${shortId}. Queda pendiente de revisión antes de poder publicarse.`
+      : `Historia recibida${shortId}. Se ha marcado para revisión prioritaria. Si existe peligro inmediato, llama al 112.`;
     storyForm.reset();
     showSubmissionReceipt(status, receiptMessage, String(data.withdrawalCode));
   } catch (error) {
