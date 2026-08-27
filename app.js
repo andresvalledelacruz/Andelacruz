@@ -44,6 +44,22 @@ const CATEGORY_MAP = {
   'Otro': 'otras-historias'
 };
 
+const PUBLIC_CATEGORY_LABELS = {
+  'pareja-rupturas': 'Pareja',
+  'familia': 'Familia',
+  'trabajo': 'Trabajo',
+  'dinero': 'Dinero',
+  'duelo-perdidas': 'Pérdida / duelo',
+  'soledad': 'Soledad',
+  'otras-historias': 'Otra historia'
+};
+
+const FILTER_CATEGORY_MAP = {
+  'pareja-rupturas': 'pareja',
+  'familia': 'familia',
+  'trabajo': 'trabajo'
+};
+
 let supabaseClientPromise;
 async function getSupabaseClient() {
   if (!supabaseClientPromise) {
@@ -85,6 +101,127 @@ function friendlySubmissionError(error) {
   if (text.includes('category')) return 'Selecciona una categoría válida.';
   if (text.includes('body') || text.includes('20')) return 'Cuéntanos un poco más para poder revisar bien tu historia.';
   return 'No hemos podido enviar la historia ahora mismo. Inténtalo de nuevo dentro de unos instantes.';
+}
+
+function truncateText(text, maxLength = 190) {
+  const clean = String(text || '').replace(/\s+/g, ' ').trim();
+  if (clean.length <= maxLength) return clean;
+  return `${clean.slice(0, maxLength - 1).trimEnd()}…`;
+}
+
+function formatPublishedDate(value) {
+  if (!value) return 'Publicada recientemente';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'Publicada recientemente';
+  return `Publicada ${new Intl.DateTimeFormat('es-ES', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  }).format(date)}`;
+}
+
+function createStoryCard(story, index) {
+  const article = document.createElement('article');
+  article.className = 'story-card';
+  article.dataset.category = FILTER_CATEGORY_MAP[story.category_slug] || story.category_slug || 'otras-historias';
+  article.dataset.storyId = story.id;
+
+  const visual = document.createElement('div');
+  visual.className = `story-visual story-${['one', 'two', 'three'][index % 3]}`;
+
+  const tag = document.createElement('span');
+  tag.className = 'tag';
+  tag.textContent = PUBLIC_CATEGORY_LABELS[story.category_slug] || 'Historia';
+
+  const title = document.createElement('h3');
+  title.textContent = story.title || 'Historia compartida';
+
+  const body = document.createElement('p');
+  body.textContent = truncateText(story.body);
+
+  visual.append(tag, title, body);
+
+  const meta = document.createElement('div');
+  meta.className = 'story-meta';
+
+  const published = document.createElement('span');
+  published.textContent = formatPublishedDate(story.published_at);
+
+  const identity = document.createElement('span');
+  identity.textContent = story.public_alias ? `Por ${story.public_alias}` : 'Anónimo';
+
+  meta.append(published, identity);
+  article.append(visual, meta);
+  return article;
+}
+
+function createStoryStateCard(titleText, bodyText) {
+  const article = document.createElement('article');
+  article.className = 'story-card';
+  article.style.gridColumn = '1 / -1';
+
+  const visual = document.createElement('div');
+  visual.className = 'story-visual story-one';
+
+  const tag = document.createElement('span');
+  tag.className = 'tag';
+  tag.textContent = 'Comunidad';
+
+  const title = document.createElement('h3');
+  title.textContent = titleText;
+
+  const body = document.createElement('p');
+  body.textContent = bodyText;
+
+  visual.append(tag, title, body);
+  article.append(visual);
+  return article;
+}
+
+async function loadPublicStories() {
+  const storyGrid = document.querySelector('.story-grid');
+  if (!storyGrid) return;
+
+  storyGrid.replaceChildren(createStoryStateCard(
+    'Cargando historias…',
+    'Estamos preparando las experiencias aprobadas para mostrarlas con cuidado.'
+  ));
+
+  try {
+    const client = await getSupabaseClient();
+    const { data, error } = await client.rpc('list_public_stories', {
+      p_limit: 12,
+      p_offset: 0,
+      p_category_slug: null
+    });
+    if (error) throw error;
+
+    storyGrid.replaceChildren();
+    if (!data?.length) {
+      storyGrid.append(createStoryStateCard(
+        'Aún no hay historias publicadas.',
+        'Las primeras experiencias aparecerán aquí únicamente después de haber sido revisadas y aprobadas.'
+      ));
+      return;
+    }
+
+    data.forEach((story, index) => storyGrid.append(createStoryCard(story, index)));
+
+    const activeFilter = document.querySelector('.filter.active')?.dataset.filter || 'all';
+    applyStoryFilter(activeFilter);
+  } catch (error) {
+    console.error('Public stories loading failed', error);
+    storyGrid.replaceChildren(createStoryStateCard(
+      'No hemos podido cargar las historias ahora mismo.',
+      'Puedes seguir usando el resto del espacio e intentarlo de nuevo dentro de unos instantes.'
+    ));
+  }
+}
+
+function applyStoryFilter(category) {
+  document.querySelectorAll('.story-grid .story-card[data-category]').forEach(card => {
+    card.hidden = category !== 'all' && card.dataset.category !== category;
+  });
 }
 
 const storyForm = document.getElementById('story-form');
@@ -185,16 +322,11 @@ document.querySelectorAll('[data-copy-email]').forEach(copyEmailButton => {
 });
 
 const filters = document.querySelectorAll('.filter');
-const stories = document.querySelectorAll('.story-card');
-
 filters.forEach(btn => {
   btn.addEventListener('click', () => {
     filters.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const category = btn.dataset.filter;
-    stories.forEach(card => {
-      card.hidden = category !== 'all' && card.dataset.category !== category;
-    });
+    applyStoryFilter(btn.dataset.filter || 'all');
   });
 });
 
@@ -210,3 +342,4 @@ const observer = new IntersectionObserver(entries => {
 }, { rootMargin: '-35% 0px -55% 0px', threshold: 0 });
 
 sections.forEach(section => observer.observe(section));
+loadPublicStories();
