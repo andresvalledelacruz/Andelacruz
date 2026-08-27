@@ -21,6 +21,19 @@ document.querySelectorAll('[data-open-story]').forEach(btn => {
   btn.addEventListener('click', () => modal?.showModal());
 });
 
+// Cierre explícito del formulario: evita que X/Cancelar se interpreten como envío.
+modal?.querySelectorAll('.close, .modal-actions .btn-ghost').forEach(btn => {
+  btn.addEventListener('click', (event) => {
+    event.preventDefault();
+    modal.close();
+  });
+});
+
+// También permite cerrar haciendo clic en el fondo oscuro del diálogo.
+modal?.addEventListener('click', (event) => {
+  if (event.target === modal) modal.close();
+});
+
 const CATEGORY_MAP = {
   'Pareja / ruptura': 'pareja-rupturas',
   'Familia': 'familia',
