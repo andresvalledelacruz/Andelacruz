@@ -1,0 +1,117 @@
+
+.hero-final-banner{
+  margin-bottom:0;
+}
+
+/* La imagen y el titular se compactan para eliminar el aire innecesario */
+@media (min-width:1060px){
+  .hero-final-main{
+    grid-template-columns:1.06fr .94fr;
+    min-height:292px;
+    margin-top:-70px;
+    column-gap:0;
+  }
+
+  .hero-final-copy{
+    padding-top:52px;
+    padding-bottom:0;
+    max-width:790px;
+  }
+
+  .hero-final-copy h1{
+    margin:0;
+    max-width:790px;
+    line-height:1.08;
+  }
+
+  .hero-final-copy h1 span{
+    white-space:nowrap;
+  }
+
+  .hero-final-media{
+    min-height:345px;
+  }
+
+  /* Difuminado más suave como en el último boceto */
+  .hero-final-media::before{
+    background:
+      linear-gradient(
+        90deg,
+        #FBF0E3 0%,
+        rgba(251,240,227,.97) 9%,
+        rgba(251,240,227,.78) 19%,
+        rgba(251,240,227,.42) 31%,
+        rgba(251,240,227,.12) 46%,
+        rgba(251,240,227,0) 61%
+      );
+  }
+
+  .hero-final-actions{
+    margin-top:-24px;
+  }
+
+  .hero-final-values{
+    margin-top:18px;
+  }
+
+  .hero-final-privacy{
+    min-height:34px;
+  }
+}
+
+/* Mantener las tres tarjetas exactamente en una fila */
+.hero-final-actions{
+  grid-template-columns:1.05fr .98fr 1.03fr;
+}
+
+/* Mejor equilibrio visual del bloque de valores */
+.value-item{
+  min-height:110px;
+}
+
+/* Cabecera: conservar Webs amigas solo en menú */
+.main-nav{
+  gap:20px;
+}
+
+/* Responsive sin alterar el contenido */
+@media (max-width:1080px){
+  .hero-final-main{
+    margin-top:-36px;
+  }
+
+  .hero-final-copy h1 span{
+    white-space:normal;
+  }
+
+  .hero-final-actions{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .hero-final-actions .final-card:last-child{
+    grid-column:1 / -1;
+  }
+}
+
+@media (max-width:760px){
+  .hero-final{
+    padding-top:16px;
+  }
+
+  .hero-final-main{
+    margin-top:0;
+  }
+
+  .hero-final-copy{
+    padding-top:32px;
+  }
+
+  .hero-final-actions{
+    grid-template-columns:1fr;
+    margin-top:0;
+  }
+
+  .hero-final-actions .final-card:last-child{
+    grid-column:auto;
+  }
+}
