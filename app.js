@@ -32,7 +32,7 @@ modal?.addEventListener('click', event => {
   if (event.target === modal) modal.close();
 });
 
-const POLICY_VERSION = '2026-08-27-v2';
+const POLICY_VERSION = '2026-08-27-v3';
 
 function installStorySafetyLayer() {
   const form = document.getElementById('story-form');
@@ -69,7 +69,12 @@ function installStorySafetyLayer() {
 
         <label class="check">
           <input type="checkbox" name="privacyConsent" required>
-          <span>Consiento que Desgracias.es reciba y modere mi historia.</span>
+          <span>Consiento que Desgracias.es reciba y modere mi historia. <a href="privacidad.html" target="_blank" rel="noopener">Privacidad</a></span>
+        </label>
+
+        <label class="check publication-optin">
+          <input type="checkbox" name="publicationConsent">
+          <span>Autorizo publicar mi historia de forma anónima.</span>
         </label>
       </div>
 
@@ -95,7 +100,44 @@ function installStorySafetyLayer() {
   updateSafetyUi();
 }
 
+function installPrivacyTransparency() {
+  const primarySmall = document.querySelector('.final-card-primary .final-card-copy small');
+  if (primarySmall) primarySmall.textContent = 'No necesitas dar tu nombre. Revisamos cada historia.';
+
+  document.querySelectorAll('.feature-card').forEach(card => {
+    const title = card.querySelector('h3');
+    if (title?.textContent?.trim() === 'Totalmente anónimo') {
+      title.textContent = 'Sin nombre público';
+      const copy = card.querySelector('p');
+      if (copy) copy.textContent = 'Puedes contar tu historia sin indicar tu nombre. Reducimos al mínimo los datos identificativos.';
+    }
+  });
+
+  document.querySelectorAll('.value-item').forEach(item => {
+    const title = item.querySelector('strong');
+    if (title?.textContent?.trim() === 'ANÓNIMO') {
+      title.textContent = 'SIN NOMBRE';
+      const copy = item.querySelector('small');
+      if (copy) copy.innerHTML = 'No necesitas<br>identificarte.';
+    }
+  });
+
+  const privacyStrip = document.querySelector('.hero-final-privacy');
+  if (privacyStrip) {
+    privacyStrip.innerHTML = '<span>▣</span><span>Tu privacidad importa. No vendemos tus datos ni publicamos información personal sin una autorización válida.</span><span class="dot">•</span><a href="privacidad.html">Política de privacidad</a><span>♥</span>';
+  }
+
+  const transparency = [...document.querySelectorAll('.footer-grid > div')].find(div => div.querySelector('strong')?.textContent?.trim() === 'Transparencia');
+  if (transparency && !transparency.querySelector('a[href="privacidad.html"]')) {
+    const privacyLink = document.createElement('a');
+    privacyLink.href = 'privacidad.html';
+    privacyLink.textContent = 'Política de privacidad';
+    transparency.insertBefore(privacyLink, transparency.querySelector('a[href="mailto:info@desgracias.es"]'));
+  }
+}
+
 installStorySafetyLayer();
+installPrivacyTransparency();
 
 const CATEGORY_MAP = {
   'Pareja / ruptura': 'pareja-rupturas',
@@ -279,7 +321,7 @@ async function loadPublicStories() {
     if (!data?.length) {
       storyGrid.append(createStoryStateCard(
         'Aún no hay historias publicadas.',
-        'Las primeras experiencias aparecerán aquí únicamente después de haber sido revisadas y aprobadas.'
+        'Las primeras experiencias aparecerán aquí únicamente después de haber sido revisadas, autorizadas para publicación y aprobadas.'
       ));
       return;
     }
@@ -317,6 +359,7 @@ storyForm?.addEventListener('submit', async e => {
   const adultConfirmed = formData.get('ageGate') === 'adult';
   const safetyLevel = String(formData.get('safetyLevel') || 'normal');
   const privacyConsent = formData.get('privacyConsent') === 'on';
+  const publicationConsent = formData.get('publicationConsent') === 'on';
 
   if (!adultConfirmed) {
     if (status) status.textContent = 'Actualmente solo podemos recibir historias de personas de 18 años o más.';
@@ -341,7 +384,7 @@ storyForm?.addEventListener('submit', async e => {
     submitButton.textContent = 'Enviando…';
   }
   if (status) status.textContent = safetyLevel === 'normal'
-    ? 'Enviando tu historia de forma anónima…'
+    ? 'Enviando tu historia sin pedirte nombre…'
     : 'Enviando tu historia y marcándola para revisión prioritaria…';
 
   try {
@@ -360,6 +403,7 @@ storyForm?.addEventListener('submit', async e => {
         allowUpdates: true,
         adultConfirmed,
         privacyConsent,
+        publicationConsent,
         safetyLevel,
         policyVersion: POLICY_VERSION
       }
@@ -370,12 +414,18 @@ storyForm?.addEventListener('submit', async e => {
 
     const shortId = ` · #${String(data.id).slice(0, 8)}`;
     if (status) {
-      status.textContent = safetyLevel === 'normal'
-        ? `Historia recibida${shortId}. Queda pendiente de revisión antes de publicarse.`
-        : `Historia recibida${shortId}. Se ha marcado para revisión prioritaria. Si existe peligro inmediato, no esperes nuestra revisión: llama al 112.`;
+      if (safetyLevel === 'normal') {
+        status.textContent = publicationConsent
+          ? `Historia recibida${shortId}. Queda pendiente de revisión antes de poder publicarse.`
+          : `Historia recibida${shortId}. Queda pendiente de revisión y no se publicará sin tu autorización.`;
+      } else {
+        status.textContent = publicationConsent
+          ? `Historia recibida${shortId}. Se ha marcado para revisión prioritaria y, si procede, solo podrá publicarse después de ser revisada. Si existe peligro inmediato, llama al 112.`
+          : `Historia recibida${shortId}. Se ha marcado para revisión prioritaria y no se publicará. Si existe peligro inmediato, llama al 112.`;
+      }
     }
     storyForm.reset();
-    setTimeout(() => modal?.close(), safetyLevel === 'normal' ? 3000 : 6500);
+    setTimeout(() => modal?.close(), safetyLevel === 'normal' ? 3600 : 7000);
   } catch (error) {
     console.error('Story submission failed', error);
     if (status) status.textContent = await friendlySubmissionError(error);
