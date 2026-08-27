@@ -58,7 +58,7 @@ function installStorySafetyLayer() {
 
       <div class="safety-help safety-help-compact" id="emergency-help" hidden>
         <strong>Si hay peligro inmediato, no esperes nuestra revisión.</strong>
-        <p>Llama al <a href="tel:112"><strong>112</strong></a>. Si se trata de una crisis relacionada con conducta suicida, también puedes llamar al <a href="tel:024"><strong>024</strong></a>.</p>
+        <p>Llama al <a href="tel:112"><strong>112</strong></a>. Si se trata de una crisis relacionada con conducta suicida, también puedes llamar al <a href="tel:024"><strong>024</strong></a> o al <strong>Teléfono de la Esperanza</strong>, <a href="tel:717003717"><strong>717 003 717</strong></a>.</p>
       </div>
 
       <div class="story-confirmations">
@@ -69,7 +69,7 @@ function installStorySafetyLayer() {
 
         <label class="check">
           <input type="checkbox" name="privacyConsent" required>
-          <span>Consiento que Desgracias.es reciba y modere mi historia y, si procede, la publique tras su revisión.</span>
+          <span>Consiento que Desgracias.es reciba y modere mi historia.</span>
         </label>
       </div>
 
