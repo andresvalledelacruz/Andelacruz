@@ -62,3 +62,5 @@ jobs:
           git diff --cached --check
           git commit -m "privacy: unify moderation and publication consent"
           git push origin production-v9
+
+# trigger: consent-v5
