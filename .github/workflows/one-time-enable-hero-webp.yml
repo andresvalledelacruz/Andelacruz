@@ -1,0 +1,65 @@
+name: One-time enable hero WebP
+
+on:
+  push:
+    branches: [production-v9]
+    paths:
+      - '.github/workflows/one-time-enable-hero-webp.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  enable-webp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout production
+        uses: actions/checkout@v4
+
+      - name: Switch hero delivery to WebP with PNG fallback
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          old_preload = '<link rel="preload" as="image" href="/assets/manos-apoyo.png" fetchpriority="high" />'
+          new_preload = '<link rel="preload" as="image" href="/assets/manos-apoyo.webp" type="image/webp" fetchpriority="high" />'
+          old_img = '<img src="assets/manos-apoyo.png" alt="Manos entrelazadas como símbolo de apoyo y acompañamiento">'
+          new_img = '''<picture>\n          <source srcset="assets/manos-apoyo.webp" type="image/webp">\n          <img src="assets/manos-apoyo.png" width="1342" height="1172" fetchpriority="high" decoding="async" alt="Manos entrelazadas como símbolo de apoyo y acompañamiento">\n        </picture>'''
+
+          if old_preload not in text:
+              raise SystemExit('Expected PNG preload not found; refusing blind edit')
+          if old_img not in text:
+              raise SystemExit('Expected hero image markup not found; refusing blind edit')
+          if not Path('assets/manos-apoyo.webp').exists():
+              raise SystemExit('Optimized WebP asset is missing')
+
+          text = text.replace(old_preload, new_preload, 1)
+          text = text.replace(old_img, new_img, 1)
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Verify exact invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -q 'href="/assets/manos-apoyo.webp" type="image/webp" fetchpriority="high"' index.html
+          grep -q 'srcset="assets/manos-apoyo.webp" type="image/webp"' index.html
+          grep -q 'width="1342" height="1172" fetchpriority="high"' index.html
+          test -s assets/manos-apoyo.webp
+
+      - name: Commit performance upgrade
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html
+          git commit -m "perf: serve optimized hero WebP with PNG fallback" || exit 0
+          git push origin HEAD:production-v9
