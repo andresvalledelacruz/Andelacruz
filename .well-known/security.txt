@@ -1,0 +1,5 @@
+Contact: mailto:info@desgracias.es
+Preferred-Languages: es, en
+Canonical: https://desgracias.es/.well-known/security.txt
+Policy: https://desgracias.es/
+Expires: 2027-08-27T00:00:00.000Z
