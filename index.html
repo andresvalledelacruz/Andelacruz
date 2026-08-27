@@ -37,7 +37,7 @@
   }
   </script>
 
-  <link rel="preload" as="image" href="/assets/manos-apoyo.png" fetchpriority="high" />
+  <link rel="preload" as="image" href="/assets/manos-apoyo.webp" type="image/webp" fetchpriority="high" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -85,7 +85,10 @@
         <h1><span>Hay momentos</span><span>en los que algo en tu vida</span><span>dice basta.</span></h1>
       </div>
       <div class="hero-final-media">
-        <img src="assets/manos-apoyo.png" alt="Manos entrelazadas como símbolo de apoyo y acompañamiento">
+        <picture>
+          <source srcset="assets/manos-apoyo.webp" type="image/webp">
+          <img src="assets/manos-apoyo.png" width="1342" height="1172" fetchpriority="high" decoding="async" alt="Manos entrelazadas como símbolo de apoyo y acompañamiento">
+        </picture>
       </div>
     </div>
 
