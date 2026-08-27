@@ -1,0 +1,52 @@
+name: One-time hero image optimization
+
+on:
+  push:
+    branches: [production-v9]
+    paths:
+      - '.github/workflows/one-time-optimize-hero.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  optimize-hero:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout production
+        uses: actions/checkout@v4
+
+      - name: Install WebP tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y webp imagemagick
+
+      - name: Inspect and optimize hero image
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "SOURCE_INFO=$(identify -format '%wx%h %m %b' assets/manos-apoyo.png)"
+          cwebp -quiet -q 84 -m 6 -metadata none assets/manos-apoyo.png -o assets/manos-apoyo.webp
+          echo "WEBP_INFO=$(identify -format '%wx%h %m %b' assets/manos-apoyo.webp)"
+          python3 - <<'PY'
+          from pathlib import Path
+          src = Path('assets/manos-apoyo.png').stat().st_size
+          dst = Path('assets/manos-apoyo.webp').stat().st_size
+          print(f'SOURCE_BYTES={src}')
+          print(f'WEBP_BYTES={dst}')
+          print(f'SAVING_PERCENT={(1-dst/src)*100:.1f}')
+          if dst >= src:
+              raise SystemExit('Optimized WebP is not smaller than source PNG')
+          PY
+
+      - name: Commit optimized WebP
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/manos-apoyo.webp
+          git commit -m "perf: add optimized hero WebP" || exit 0
+          git push origin HEAD:production-v9
