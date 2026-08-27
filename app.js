@@ -32,7 +32,7 @@ modal?.addEventListener('click', event => {
   if (event.target === modal) modal.close();
 });
 
-const POLICY_VERSION = '2026-08-27-v1';
+const POLICY_VERSION = '2026-08-27-v2';
 
 function installStorySafetyLayer() {
   const form = document.getElementById('story-form');
@@ -42,13 +42,13 @@ function installStorySafetyLayer() {
   const legacyPrivacyCheck = [...form.querySelectorAll('label.check')].find(label => !label.querySelector('[name]'));
   if (legacyPrivacyCheck) {
     legacyPrivacyCheck.className = 'personal-data-guidance';
-    legacyPrivacyCheck.innerHTML = '<span>Evita incluir nombres, teléfonos, direcciones u otros datos que permitan identificarte a ti o a terceras personas, salvo que sean necesarios para explicar una situación de seguridad grave.</span>';
+    legacyPrivacyCheck.innerHTML = '<span>Evita incluir siempre datos personales.</span>';
   }
 
   actions.insertAdjacentHTML('beforebegin', `
     <div class="story-safety-layer" id="story-safety-layer">
       <fieldset class="safety-fieldset safety-compact">
-        <legend>¿Hay peligro inmediato para ti o para otra persona?</legend>
+        <legend>Seguridad: ¿Existe alguna persona en peligro inmediato?</legend>
         <div class="safety-options safety-inline">
           <label><input type="radio" name="safetyLevel" value="normal" required> No</label>
           <label><input type="radio" name="safetyLevel" value="elevated" required> No estoy seguro/a</label>
@@ -72,8 +72,6 @@ function installStorySafetyLayer() {
           <span>Consiento que Desgracias.es reciba y modere mi historia y, si procede, la publique tras su revisión.</span>
         </label>
       </div>
-
-      <p class="story-safety-note">Desgracias.es no es un servicio médico, psicológico ni de emergencias y no garantiza una revisión inmediata. En una situación de peligro inmediato, llama al 112.</p>
 
       <details class="minor-help-compact">
         <summary>Si eres menor de 18 años</summary>
@@ -319,7 +317,6 @@ storyForm?.addEventListener('submit', async e => {
   const adultConfirmed = formData.get('ageGate') === 'adult';
   const safetyLevel = String(formData.get('safetyLevel') || 'normal');
   const privacyConsent = formData.get('privacyConsent') === 'on';
-  const emergencyNoticeAcknowledged = true;
 
   if (!adultConfirmed) {
     if (status) status.textContent = 'Actualmente solo podemos recibir historias de personas de 18 años o más.';
@@ -363,7 +360,6 @@ storyForm?.addEventListener('submit', async e => {
         allowUpdates: true,
         adultConfirmed,
         privacyConsent,
-        emergencyNoticeAcknowledged,
         safetyLevel,
         policyVersion: POLICY_VERSION
       }
