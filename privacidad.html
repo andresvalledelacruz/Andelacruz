@@ -36,10 +36,10 @@
     <p class="eyebrow">Privacidad y protección de datos</p>
     <h1>Política de privacidad</h1>
     <p class="lead">Queremos que sepas con claridad qué información tratamos cuando utilizas Desgracias.es, para qué la utilizamos y qué control mantienes sobre ella.</p>
-    <span class="meta">Versión 2026-08-27-v3 · Actualizada el 27 de agosto de 2026</span>
+    <span class="meta">Versión 2026-08-27-v4 · Actualizada el 27 de agosto de 2026</span>
   </div>
 
-  <div class="notice"><strong>Resumen:</strong> no necesitas indicar tu nombre para contar una historia. La historia se recibe y modera con tu consentimiento. La publicación es opcional y requiere una autorización separada. Evita incluir datos que te identifiquen a ti o a otras personas.</div>
+  <div class="notice"><strong>Resumen:</strong> no necesitas indicar tu nombre para contar una historia. La historia se recibe y modera con tu consentimiento. La publicación es opcional y requiere una autorización separada. Tras el envío recibirás un código privado para poder retirar tu historia sin identificarte.</div>
 
   <section>
     <h2>1. Responsable y contacto</h2>
@@ -54,6 +54,7 @@
       <li><strong>Contenido que decides enviar:</strong> categoría y texto de la historia.</li>
       <li><strong>Confirmaciones del formulario:</strong> mayoría de edad, consentimiento de privacidad, respuesta de seguridad y, si la marcas, autorización opcional de publicación.</li>
       <li><strong>Identificador técnico de sesión:</strong> se utiliza una sesión anónima de Supabase para poder procesar el envío sin pedirte nombre, email o una cuenta pública.</li>
+      <li><strong>Código privado de retirada:</strong> después del envío se genera una clave aleatoria que se muestra una sola vez. Desgracias.es no guarda esa clave en texto; conserva únicamente una huella criptográfica que permite comprobarla cuando solicitas retirar la historia.</li>
       <li><strong>Datos de moderación y seguridad:</strong> estado de revisión, prioridad, eventos de moderación y registros de auditoría necesarios para proteger el servicio y documentar las actuaciones.</li>
       <li><strong>Protección antiabuso:</strong> la función de envío puede recibir técnicamente la dirección IP durante la conexión y la transforma inmediatamente mediante HMAC-SHA256 en un identificador seudónimo para aplicar límites de envío. Desgracias.es no guarda la IP original en su base de datos de historias.</li>
     </ul>
@@ -64,6 +65,7 @@
     <h2>3. Para qué tratamos los datos y con qué base</h2>
     <p><strong>Recibir y moderar tu historia.</strong> La base es tu consentimiento (art. 6.1.a RGPD). Cuando el contenido que tú has decidido incluir contiene categorías especiales, el tratamiento se apoya además en tu consentimiento explícito en los términos del art. 9.2.a RGPD.</p>
     <p><strong>Publicar una historia.</strong> No se publica automáticamente. La casilla de publicación es opcional y constituye una autorización separada para que, tras la moderación, la historia pueda mostrarse públicamente sin tu nombre. Si no la marcas, el sistema impide su aprobación para publicación.</p>
+    <p><strong>Permitir la retirada sin identificarte.</strong> La huella del código privado se utiliza únicamente para comprobar que dispones de la clave correspondiente a esa historia y ejecutar su retirada.</p>
     <p><strong>Prevenir abuso, fraude y ataques y mantener la integridad del servicio.</strong> Tratamos los mínimos datos técnicos necesarios sobre la base del interés legítimo en proteger a las personas usuarias y la plataforma (art. 6.1.f RGPD), aplicando minimización, seudonimización y retención corta.</p>
     <p><strong>Seguridad.</strong> Si seleccionas “No estoy seguro/a” o “Sí, ahora mismo” en la pregunta de peligro inmediato, el sistema eleva automáticamente la prioridad de revisión y te muestra recursos de ayuda. Esa clasificación no es un diagnóstico, no contacta automáticamente con servicios de emergencia y no sustituye una valoración humana.</p>
   </section>
@@ -98,14 +100,17 @@
       <li><strong>Identificador antiabuso derivado de la IP:</strong> se elimina automáticamente una vez superadas aproximadamente 48 horas; la tarea de depuración se ejecuta de forma periódica.</li>
       <li><strong>Historias pendientes:</strong> se conservan mientras sea necesario para realizar la revisión y gestionar posibles incidencias.</li>
       <li><strong>Historias publicadas:</strong> mientras continúe la autorización de publicación y el contenido siga formando parte del servicio, salvo retirada, supresión o necesidad de moderación.</li>
+      <li><strong>Huella del código privado:</strong> se conserva vinculada a la historia para permitir su retirada. La clave original no se almacena. Tras utilizarla, puede conservarse la huella y la constancia técnica mínima de que la retirada se realizó.</li>
+      <li><strong>Historias retiradas:</strong> el texto enviado se sustituye por una referencia neutra, se desvincula la sesión autora y la historia deja de poder publicarse. Se mantienen únicamente registros técnicos mínimos de moderación, seguridad y auditoría cuando sean necesarios.</li>
       <li><strong>Historias rechazadas y registros de moderación/auditoría:</strong> durante el tiempo necesario para documentar la moderación, proteger el servicio, atender derechos o incidencias y, cuando proceda, formular, ejercer o defender reclamaciones. Aplicaremos criterios de minimización y revisaremos estos plazos a medida que el servicio evolucione.</li>
     </ul>
   </section>
 
   <section>
-    <h2>8. Tus derechos</h2>
+    <h2>8. Tus derechos y retirada de una historia</h2>
     <p>Puedes solicitar, cuando proceda, acceso, rectificación, supresión, limitación, portabilidad u oposición al tratamiento. También puedes retirar en cualquier momento un consentimiento que hayas prestado; la retirada no afecta a la licitud del tratamiento realizado con anterioridad.</p>
-    <p>Escribe a <a href="mailto:info@desgracias.es">info@desgracias.es</a>. Como el servicio no exige identificarte, podremos pedirte la referencia de la historia u otro dato mínimo que permita localizar el envío sin solicitar información personal innecesaria.</p>
+    <p>Para facilitar la retirada sin pedirte identidad, al enviar una historia te mostramos un <strong>código privado de retirada</strong>. Puedes introducirlo en <a href="retirar.html">Retirar una historia</a>. Si el código es correcto, el contenido se retira y se desvincula de la sesión anónima.</p>
+    <p>Guarda el código en un lugar seguro: funciona como una llave y no podemos recuperarlo desde su huella criptográfica. Si lo has perdido, puedes escribir a <a href="mailto:info@desgracias.es">info@desgracias.es</a>; estudiaremos la solicitud utilizando únicamente la información mínima necesaria.</p>
     <p>También tienes derecho a presentar una reclamación ante la <a href="https://www.aepd.es" rel="noopener noreferrer">Agencia Española de Protección de Datos (AEPD)</a>.</p>
   </section>
 
@@ -127,6 +132,6 @@
 
   <p class="small">Esta política describe el funcionamiento técnico actual de Desgracias.es y se revisará antes de introducir monetización, nuevas herramientas de analítica, almacenamiento adicional de datos de seguridad o cambios relevantes en el servicio.</p>
 </main>
-<footer><div class="wrap">© 2026 Desgracias.es · <a href="mailto:info@desgracias.es">info@desgracias.es</a></div></footer>
+<footer><div class="wrap">© 2026 Desgracias.es · <a href="retirar.html">Retirar una historia</a> · <a href="mailto:info@desgracias.es">info@desgracias.es</a></div></footer>
 </body>
 </html>
