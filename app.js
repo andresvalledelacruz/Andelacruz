@@ -21,7 +21,6 @@ document.querySelectorAll('[data-open-story]').forEach(btn => {
   btn.addEventListener('click', () => modal?.showModal());
 });
 
-// Cierre explícito del formulario: evita que X/Cancelar se interpreten como envío.
 modal?.querySelectorAll('.close, .modal-actions .btn-ghost').forEach(btn => {
   btn.addEventListener('click', (event) => {
     event.preventDefault();
@@ -29,7 +28,6 @@ modal?.querySelectorAll('.close, .modal-actions .btn-ghost').forEach(btn => {
   });
 });
 
-// También permite cerrar haciendo clic en el fondo oscuro del diálogo.
 modal?.addEventListener('click', (event) => {
   if (event.target === modal) modal.close();
 });
@@ -95,11 +93,25 @@ function makeInternalTitle(body) {
   return title;
 }
 
-function friendlySubmissionError(error) {
-  const text = `${error?.message || ''} ${error?.details || ''}`.toLowerCase();
-  if (text.includes('rate limit')) return 'Has enviado varias historias seguidas. Espera un poco antes de volver a intentarlo.';
-  if (text.includes('category')) return 'Selecciona una categoría válida.';
-  if (text.includes('body') || text.includes('20')) return 'Cuéntanos un poco más para poder revisar bien tu historia.';
+async function extractFunctionErrorCode(error) {
+  const context = error?.context;
+  if (context && typeof context.clone === 'function') {
+    try {
+      const payload = await context.clone().json();
+      if (payload?.error) return String(payload.error).toLowerCase();
+    } catch {
+      // La respuesta puede no ser JSON; se usa el mensaje genérico.
+    }
+  }
+  return String(error?.message || '').toLowerCase();
+}
+
+async function friendlySubmissionError(error) {
+  const code = await extractFunctionErrorCode(error);
+  if (code.includes('rate_limit')) return 'Has enviado varias historias seguidas. Espera un poco antes de volver a intentarlo.';
+  if (code.includes('invalid_story')) return 'Revisa la categoría y cuéntanos un poco más para poder valorar bien tu historia.';
+  if (code.includes('invalid_session') || code.includes('authentication')) return 'La sesión anónima ha caducado. Recarga la página e inténtalo de nuevo.';
+  if (code.includes('origin_not_allowed')) return 'No hemos podido validar el origen de la solicitud. Recarga la página e inténtalo de nuevo.';
   return 'No hemos podido enviar la historia ahora mismo. Inténtalo de nuevo dentro de unos instantes.';
 }
 
@@ -256,69 +268,35 @@ storyForm?.addEventListener('submit', async (e) => {
     const client = await getSupabaseClient();
     await ensureAnonymousSession(client);
 
-    const { data: storyId, error } = await client.rpc('submit_story', {
-      p_category_slug: categorySlug,
-      p_title: makeInternalTitle(body),
-      p_body: body,
-      p_identity_mode: 'anonymous',
-      p_public_alias: null,
-      p_allow_replies: true,
-      p_allow_follow: true,
-      p_allow_updates: true
+    const { data, error } = await client.functions.invoke('submit-story', {
+      body: {
+        categorySlug,
+        title: makeInternalTitle(body),
+        body,
+        identityMode: 'anonymous',
+        publicAlias: null,
+        allowReplies: true,
+        allowFollow: true,
+        allowUpdates: true
+      }
     });
 
     if (error) throw error;
+    if (!data?.id) throw new Error('submission_failed');
 
-    const shortId = storyId ? ` · #${String(storyId).slice(0, 8)}` : '';
+    const shortId = ` · #${String(data.id).slice(0, 8)}`;
     if (status) status.textContent = `Historia recibida${shortId}. Queda pendiente de revisión antes de publicarse.`;
     storyForm.reset();
     setTimeout(() => modal?.close(), 3000);
   } catch (error) {
     console.error('Story submission failed', error);
-    if (status) status.textContent = friendlySubmissionError(error);
+    if (status) status.textContent = await friendlySubmissionError(error);
   } finally {
     if (submitButton) {
       submitButton.disabled = false;
       submitButton.textContent = originalButtonText;
     }
   }
-});
-
-const contactForm = document.getElementById('contact-form');
-contactForm?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const formData = new FormData(contactForm);
-  const name = (formData.get('name') || '').toString().trim();
-  const email = (formData.get('email') || '').toString().trim();
-  const reason = (formData.get('reason') || '').toString().trim();
-  const message = (formData.get('message') || '').toString().trim();
-  const status = contactForm.querySelector('.form-status');
-  const subject = `Contacto Desgracias.es — ${reason || 'Consulta'}`;
-  const body = [
-    `Nombre o alias: ${name || 'No indicado'}`,
-    `Correo de respuesta: ${email}`,
-    `Motivo: ${reason || 'No indicado'}`,
-    '',
-    'Mensaje:',
-    message
-  ].join('\n');
-  const mailto = `mailto:info@desgracias.es?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  if (status) status.textContent = 'Abriendo tu aplicación de correo…';
-  window.location.href = mailto;
-});
-
-document.querySelectorAll('[data-copy-email]').forEach(copyEmailButton => {
-  copyEmailButton.addEventListener('click', async () => {
-    const email = 'info@desgracias.es';
-    try {
-      await navigator.clipboard.writeText(email);
-      const original = copyEmailButton.textContent;
-      copyEmailButton.textContent = 'Email copiado';
-      setTimeout(() => copyEmailButton.textContent = original, 1800);
-    } catch {
-      window.prompt('Copia este correo:', email);
-    }
-  });
 });
 
 const filters = document.querySelectorAll('.filter');
@@ -331,7 +309,7 @@ filters.forEach(btn => {
 });
 
 const sections = [...document.querySelectorAll('main section[id]')];
-const navLinks = [...document.querySelectorAll('.main-nav a')];
+const navLinks = [...document.querySelectorAll('.main-nav a[href^="#"]')];
 
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
