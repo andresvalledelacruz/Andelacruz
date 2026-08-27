@@ -1,0 +1,64 @@
+name: Consent V5 Patch
+
+on:
+  push:
+    branches: [production-v9]
+    paths:
+      - '.github/workflows/consent-v5-patch.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    if: github.event.head_commit.message == 'ops: run consent v5 patch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: production-v9
+          fetch-depth: 0
+
+      - name: Apply consent V5
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          app = Path('app.js')
+          s = app.read_text(encoding='utf-8')
+
+          replacements = [
+              ("const POLICY_VERSION = '2026-08-27-v4';", "const POLICY_VERSION = '2026-08-27-v5';"),
+              ('''        <label class="check">\n          <input type="checkbox" name="privacyConsent" required>\n          <span>Consiento que Desgracias.es reciba y modere mi historia. <a href="privacidad.html" target="_blank" rel="noopener">Privacidad</a></span>\n        </label>\n\n        <label class="check publication-optin">\n          <input type="checkbox" name="publicationConsent">\n          <span>Autorizo publicar mi historia de forma anónima.</span>\n        </label>''', '''        <label class="check">\n          <input type="checkbox" name="privacyConsent" required>\n          <span>Consiento que Desgracias.es modere mi historia y, si supera la revisión, pueda publicarla. <a href="privacidad.html" target="_blank" rel="noopener">Privacidad</a></span>\n        </label>'''),
+              ("  const publicationConsent = formData.get('publicationConsent') === 'on';", "  const publicationConsent = privacyConsent;"),
+              ("Necesitamos tu consentimiento para recibir y moderar la historia.", "Necesitamos tu consentimiento para moderar y, si supera la revisión, poder publicar la historia."),
+          ]
+          for old, new in replacements:
+              if old not in s:
+                  raise SystemExit(f'Expected app.js text not found: {old[:80]!r}')
+              s = s.replace(old, new)
+          app.write_text(s, encoding='utf-8')
+
+          privacy = Path('privacidad.html')
+          p = privacy.read_text(encoding='utf-8')
+          privacy_replacements = [
+              ('Versión 2026-08-27-v4', 'Versión 2026-08-27-v5'),
+              ('La historia se recibe y modera con tu consentimiento. La publicación es opcional y requiere una autorización separada.', 'Tu consentimiento cubre la moderación de la historia y, si supera la revisión, la posibilidad de publicarla. La publicación nunca es automática.'),
+              ('<li><strong>Confirmaciones del formulario:</strong> mayoría de edad, consentimiento de privacidad, respuesta de seguridad y, si la marcas, autorización opcional de publicación.</li>', '<li><strong>Confirmaciones del formulario:</strong> mayoría de edad, consentimiento para moderar y, si supera la revisión, poder publicar la historia, y respuesta de seguridad.</li>'),
+              ('<p><strong>Recibir y moderar tu historia.</strong> La base es tu consentimiento (art. 6.1.a RGPD). Cuando el contenido que tú has decidido incluir contiene categorías especiales, el tratamiento se apoya además en tu consentimiento explícito en los términos del art. 9.2.a RGPD.</p>\n    <p><strong>Publicar una historia.</strong> No se publica automáticamente. La casilla de publicación es opcional y constituye una autorización separada para que, tras la moderación, la historia pueda mostrarse públicamente sin tu nombre. Si no la marcas, el sistema impide su aprobación para publicación.</p>', '<p><strong>Recibir, moderar y, si supera la revisión, poder publicar tu historia.</strong> La base es tu consentimiento (art. 6.1.a RGPD). Cuando el contenido que tú has decidido incluir contiene categorías especiales, el tratamiento se apoya además en tu consentimiento explícito en los términos del art. 9.2.a RGPD. La publicación nunca es automática: requiere moderación previa y puede ser rechazada o editada para reducir datos identificativos o proteger a terceras personas.</p>'),
+          ]
+          for old, new in privacy_replacements:
+              if old not in p:
+                  raise SystemExit(f'Expected privacidad.html text not found: {old[:80]!r}')
+              p = p.replace(old, new)
+          privacy.write_text(p, encoding='utf-8')
+          PY
+
+      - name: Commit patch
+        run: |
+          git config user.name "Desgracias SEO Bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add app.js privacidad.html
+          git diff --cached --check
+          git commit -m "privacy: unify moderation and publication consent"
+          git push origin production-v9
