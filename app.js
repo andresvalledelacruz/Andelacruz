@@ -529,3 +529,19 @@ const observer = new IntersectionObserver(entries => {
 
 sections.forEach(section => observer.observe(section));
 loadPublicStories();
+
+function installSeoResourceLinks() {
+  const card = [...document.querySelectorAll('.resource-grid article')].find(item => item.querySelector('h3')?.textContent?.trim() === 'Rupturas y relaciones');
+  if (!card || card.querySelector('a[data-seo-resource]')) return;
+  const link = document.createElement('a');
+  link.href = '/rupturas/';
+  link.dataset.seoResource = 'rupturas';
+  link.setAttribute('aria-label', 'Ver guía de rupturas y relaciones');
+  link.style.display = 'block';
+  link.style.color = 'inherit';
+  link.style.textDecoration = 'none';
+  while (card.firstChild) link.appendChild(card.firstChild);
+  card.appendChild(link);
+}
+
+installSeoResourceLinks();
