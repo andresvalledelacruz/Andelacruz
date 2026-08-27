@@ -32,6 +32,86 @@ modal?.addEventListener('click', (event) => {
   if (event.target === modal) modal.close();
 });
 
+const POLICY_VERSION = '2026-08-27-v1';
+
+function installStorySafetyLayer() {
+  const form = document.getElementById('story-form');
+  const actions = form?.querySelector('.modal-actions');
+  if (!form || !actions || form.querySelector('#story-safety-layer')) return;
+
+  const legacyPrivacyCheck = [...form.querySelectorAll('label.check')].find(label => !label.querySelector('[name]'));
+  if (legacyPrivacyCheck) {
+    legacyPrivacyCheck.className = 'personal-data-guidance';
+    legacyPrivacyCheck.innerHTML = '<span><strong>Privacidad:</strong> evita incluir nombres, teléfonos, direcciones u otros datos que identifiquen a alguien. Si los incluyes por una situación de seguridad grave, nunca se publicarán sin revisión.</span>';
+  }
+
+  actions.insertAdjacentHTML('beforebegin', `
+    <div class="story-safety-layer" id="story-safety-layer">
+      <fieldset class="safety-fieldset">
+        <legend>Edad</legend>
+        <p>¿Tienes 18 años o más?</p>
+        <div class="safety-options">
+          <label><input type="radio" name="ageGate" value="adult" required> Sí</label>
+          <label><input type="radio" name="ageGate" value="minor" required> No</label>
+        </div>
+      </fieldset>
+
+      <div class="safety-help safety-minor-help" id="minor-help" hidden>
+        <strong>Este espacio todavía no admite historias de menores de 18 años.</strong>
+        <p>Si necesitas hablar con alguien, puedes acudir a ANAR. Si existe un peligro inmediato, llama al <a href="tel:112">112</a>.</p>
+        <p><strong>ANAR:</strong> <a href="tel:900202010">900 20 20 10</a>.</p>
+      </div>
+
+      <fieldset class="safety-fieldset">
+        <legend>Seguridad</legend>
+        <p>Antes de continuar: ¿crees que tú o alguna otra persona podéis estar en peligro inmediato?</p>
+        <div class="safety-options safety-options-stack">
+          <label><input type="radio" name="safetyLevel" value="normal" required> No</label>
+          <label><input type="radio" name="safetyLevel" value="elevated" required> No estoy seguro/a</label>
+          <label><input type="radio" name="safetyLevel" value="urgent" required> Sí, ahora mismo</label>
+        </div>
+      </fieldset>
+
+      <div class="safety-help" id="emergency-help" hidden>
+        <strong>Si existe peligro inmediato, no esperes a que revisemos la historia.</strong>
+        <p>Llama al <a href="tel:112"><strong>112</strong></a>. Si se trata de una crisis relacionada con conducta suicida, también puedes llamar al <a href="tel:024"><strong>024</strong></a>.</p>
+        <p>Desgracias.es no es un servicio de emergencias y no garantiza una revisión inmediata.</p>
+      </div>
+
+      <label class="check safety-consent">
+        <input type="checkbox" name="privacyConsent" required>
+        <span>Consiento el tratamiento de esta historia para su recepción, revisión, moderación y, si procede, publicación. Entiendo que puede contener información sensible.</span>
+      </label>
+
+      <label class="check safety-consent">
+        <input type="checkbox" name="emergencyNoticeAcknowledged" required>
+        <span>Entiendo que Desgracias.es no presta asistencia médica, psicológica ni de emergencias, y que una situación de peligro inmediato debe comunicarse al 112.</span>
+      </label>
+    </div>
+  `);
+
+  const submitButton = form.querySelector('button[type="submit"]');
+  const minorHelp = form.querySelector('#minor-help');
+  const emergencyHelp = form.querySelector('#emergency-help');
+
+  const updateSafetyUi = () => {
+    const age = form.querySelector('input[name="ageGate"]:checked')?.value || '';
+    const safety = form.querySelector('input[name="safetyLevel"]:checked')?.value || '';
+    if (minorHelp) minorHelp.hidden = age !== 'minor';
+    if (emergencyHelp) emergencyHelp.hidden = !['elevated', 'urgent'].includes(safety);
+    if (submitButton) submitButton.disabled = age === 'minor';
+  };
+
+  form.querySelectorAll('input[name="ageGate"], input[name="safetyLevel"]').forEach(input => {
+    input.addEventListener('change', updateSafetyUi);
+  });
+
+  form.addEventListener('reset', () => setTimeout(updateSafetyUi, 0));
+  updateSafetyUi();
+}
+
+installStorySafetyLayer();
+
 const CATEGORY_MAP = {
   'Pareja / ruptura': 'pareja-rupturas',
   'Familia': 'familia',
@@ -109,6 +189,9 @@ async function extractFunctionErrorCode(error) {
 async function friendlySubmissionError(error) {
   const code = await extractFunctionErrorCode(error);
   if (code.includes('rate_limit')) return 'Has enviado varias historias seguidas. Espera un poco antes de volver a intentarlo.';
+  if (code.includes('adult_confirmation')) return 'Actualmente solo podemos recibir historias de personas de 18 años o más.';
+  if (code.includes('privacy_consent')) return 'Necesitamos tu consentimiento para recibir y moderar la historia.';
+  if (code.includes('emergency_notice')) return 'Confirma que has leído el aviso sobre situaciones de emergencia.';
   if (code.includes('invalid_story')) return 'Revisa la categoría y cuéntanos un poco más para poder valorar bien tu historia.';
   if (code.includes('invalid_session') || code.includes('authentication')) return 'La sesión anónima ha caducado. Recarga la página e inténtalo de nuevo.';
   if (code.includes('origin_not_allowed')) return 'No hemos podido validar el origen de la solicitud. Recarga la página e inténtalo de nuevo.';
@@ -247,7 +330,15 @@ storyForm?.addEventListener('submit', async (e) => {
   const categoryLabel = String(formData.get('category') || '').trim();
   const body = String(formData.get('story') || '').trim();
   const categorySlug = CATEGORY_MAP[categoryLabel];
+  const adultConfirmed = formData.get('ageGate') === 'adult';
+  const safetyLevel = String(formData.get('safetyLevel') || 'normal');
+  const privacyConsent = formData.get('privacyConsent') === 'on';
+  const emergencyNoticeAcknowledged = formData.get('emergencyNoticeAcknowledged') === 'on';
 
+  if (!adultConfirmed) {
+    if (status) status.textContent = 'Actualmente solo podemos recibir historias de personas de 18 años o más.';
+    return;
+  }
   if (!categorySlug) {
     if (status) status.textContent = 'Selecciona una categoría válida.';
     return;
@@ -256,13 +347,19 @@ storyForm?.addEventListener('submit', async (e) => {
     if (status) status.textContent = 'Cuéntanos un poco más para poder revisar bien tu historia.';
     return;
   }
+  if (!privacyConsent || !emergencyNoticeAcknowledged) {
+    if (status) status.textContent = 'Revisa y acepta las confirmaciones necesarias antes de enviar.';
+    return;
+  }
 
   const originalButtonText = submitButton?.textContent || 'Enviar historia';
   if (submitButton) {
     submitButton.disabled = true;
     submitButton.textContent = 'Enviando…';
   }
-  if (status) status.textContent = 'Enviando tu historia de forma anónima…';
+  if (status) status.textContent = safetyLevel === 'normal'
+    ? 'Enviando tu historia de forma anónima…'
+    : 'Enviando tu historia y marcándola para revisión prioritaria…';
 
   try {
     const client = await getSupabaseClient();
@@ -277,7 +374,12 @@ storyForm?.addEventListener('submit', async (e) => {
         publicAlias: null,
         allowReplies: true,
         allowFollow: true,
-        allowUpdates: true
+        allowUpdates: true,
+        adultConfirmed,
+        privacyConsent,
+        emergencyNoticeAcknowledged,
+        safetyLevel,
+        policyVersion: POLICY_VERSION
       }
     });
 
@@ -285,9 +387,13 @@ storyForm?.addEventListener('submit', async (e) => {
     if (!data?.id) throw new Error('submission_failed');
 
     const shortId = ` · #${String(data.id).slice(0, 8)}`;
-    if (status) status.textContent = `Historia recibida${shortId}. Queda pendiente de revisión antes de publicarse.`;
+    if (status) {
+      status.textContent = safetyLevel === 'normal'
+        ? `Historia recibida${shortId}. Queda pendiente de revisión antes de publicarse.`
+        : `Historia recibida${shortId}. Se ha marcado para revisión prioritaria. Si existe peligro inmediato, no esperes nuestra revisión: llama al 112.`;
+    }
     storyForm.reset();
-    setTimeout(() => modal?.close(), 3000);
+    setTimeout(() => modal?.close(), safetyLevel === 'normal' ? 3000 : 6500);
   } catch (error) {
     console.error('Story submission failed', error);
     if (status) status.textContent = await friendlySubmissionError(error);
