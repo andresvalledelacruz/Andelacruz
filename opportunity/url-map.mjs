@@ -3,6 +3,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/sobre.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/como-revisamos.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/privacidad.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
+  '/me-preocupa-que-alguien-pueda-suicidarse/':{domain:'suicide_prevention_support',needs:['suicide_risk_support','crisis_support','professional_assessment'],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'restricted',defaultFlags:['suicide_prevention','ask_directly','no_automatic_diagnosis','no_method_details','official_resources_first','no_commercial_crisis_cta','emergency_escalation','no_secrecy_when_safety_at_risk','supporter_self_care','safety_override']},
 
   '/rupturas/':{domain:'relationships',needs:['relationship_support'],intents:[],opportunities:['RELATIONSHIP_SUPPORT','PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/rupturas/mi-pareja-me-ha-dejado/':{domain:'relationships',needs:['relationship_support'],intents:[],opportunities:['RELATIONSHIP_SUPPORT','PSYCHOLOGY','MATCHMAKING'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['matchmaking_explicit_intent_only']},
@@ -60,7 +61,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/':{domain:'grief',needs:['support_grieving_person'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 53;
+export const EXPECTED_PRODUCTION_URL_COUNT = 54;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
