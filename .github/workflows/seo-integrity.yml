@@ -27,10 +27,96 @@ jobs:
           import json
           import re
           import xml.etree.ElementTree as ET
+          from datetime import date
+          from html.parser import HTMLParser
           from pathlib import Path
+          from urllib.parse import urlparse
+
+          ORIGIN = 'https://desgracias.es'
+          ROOT = Path('.')
+
+          class PageParser(HTMLParser):
+              def __init__(self):
+                  super().__init__(convert_charrefs=True)
+                  self.lang = None
+                  self.in_title = False
+                  self.title_parts = []
+                  self.metas = []
+                  self.canonicals = []
+                  self.h1_count = 0
+                  self.hrefs = []
+                  self.jsonld_count = 0
+                  self.og_site_name = False
+                  self.twitter_card = False
+
+              def handle_starttag(self, tag, attrs):
+                  attrs = {k.lower(): (v or '') for k, v in attrs}
+                  tag = tag.lower()
+                  if tag == 'html':
+                      self.lang = attrs.get('lang')
+                  elif tag == 'title':
+                      self.in_title = True
+                  elif tag == 'meta':
+                      self.metas.append(attrs)
+                      if attrs.get('property', '').lower() == 'og:site_name':
+                          self.og_site_name = True
+                      if attrs.get('name', '').lower() == 'twitter:card':
+                          self.twitter_card = True
+                  elif tag == 'link' and 'canonical' in attrs.get('rel', '').lower().split():
+                      self.canonicals.append(attrs.get('href', '').strip())
+                  elif tag == 'h1':
+                      self.h1_count += 1
+                  elif tag == 'a' and attrs.get('href'):
+                      self.hrefs.append(attrs['href'].strip())
+                  elif tag == 'script' and attrs.get('type', '').lower() == 'application/ld+json':
+                      self.jsonld_count += 1
+
+              def handle_endtag(self, tag):
+                  if tag.lower() == 'title':
+                      self.in_title = False
+
+              def handle_data(self, data):
+                  if self.in_title:
+                      self.title_parts.append(data)
+
+              @property
+              def title(self):
+                  return re.sub(r'\s+', ' ', ''.join(self.title_parts)).strip()
+
+              def meta_content(self, name):
+                  matches = [m.get('content', '').strip() for m in self.metas if m.get('name', '').lower() == name.lower()]
+                  return matches
+
+          def route_to_file(url):
+              parsed = urlparse(url)
+              assert parsed.scheme == 'https' and parsed.netloc == 'desgracias.es', f'Non-canonical sitemap origin: {url}'
+              assert not parsed.query and not parsed.fragment, f'Sitemap URL must not contain query/fragment: {url}'
+              path = parsed.path
+              if path == '/':
+                  return Path('index.html')
+              if path.endswith('/'):
+                  return Path(path.lstrip('/')) / 'index.html'
+              return Path(path.lstrip('/'))
+
+          def local_href_to_file(href):
+              if not href.startswith('/') or href.startswith('//'):
+                  return None
+              parsed = urlparse(href)
+              path = parsed.path
+              if path == '/':
+                  return Path('index.html')
+              if not path:
+                  return None
+              candidate = Path(path.lstrip('/'))
+              if path.endswith('/'):
+                  return candidate / 'index.html'
+              # Only validate navigational routes here; assets are handled by the browser/build.
+              if candidate.suffix in {'.html', ''}:
+                  return candidate if candidate.suffix else candidate / 'index.html'
+              return None
 
           index = Path('index.html').read_text(encoding='utf-8')
-          sitemap = Path('sitemap.xml').read_text(encoding='utf-8')
+          sitemap_text = Path('sitemap.xml').read_text(encoding='utf-8')
           robots = Path('robots.txt').read_text(encoding='utf-8')
           withdrawal = Path('retirar.html').read_text(encoding='utf-8')
           friends = Path('webs-amigas.html').read_text(encoding='utf-8')
@@ -55,37 +141,85 @@ jobs:
           hero_bytes = hero_webp.stat().st_size
           assert 10_000 <= hero_bytes <= 100_000, f'Hero WebP size outside guardrail: {hero_bytes} bytes'
 
-          titles = re.findall(r'<title>(.*?)</title>', index, flags=re.S | re.I)
-          assert len(titles) == 1, f'Expected exactly one title, found {len(titles)}'
-          title = re.sub(r'\s+', ' ', titles[0]).strip()
-          assert 25 <= len(title) <= 75, f'Homepage title length out of guardrail: {len(title)}'
-
-          descriptions = re.findall(r'<meta\s+name="description"\s+content="([^"]+)"', index, flags=re.I)
-          assert len(descriptions) == 1, 'Expected exactly one homepage meta description'
-          assert 80 <= len(descriptions[0]) <= 180, f'Meta description length out of guardrail: {len(descriptions[0])}'
-
-          h1_count = len(re.findall(r'<h1\b', index, flags=re.I))
-          assert h1_count == 1, f'Expected exactly one H1, found {h1_count}'
-
-          ld_blocks = re.findall(r'<script\s+type="application/ld\+json">(.*?)</script>', index, flags=re.S | re.I)
-          assert ld_blocks, 'Missing JSON-LD block'
-          website = json.loads(ld_blocks[0])
-          assert website.get('@type') == 'WebSite', 'Homepage JSON-LD must describe a WebSite'
-          assert website.get('name') == 'Desgracias.es', 'Unexpected WebSite name'
-          assert website.get('url') == 'https://desgracias.es/', 'Unexpected WebSite canonical URL'
-
-          root = ET.fromstring(sitemap)
+          root = ET.fromstring(sitemap_text)
           ns = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
-          urls = [el.text.strip() for el in root.findall('s:url/s:loc', ns) if el.text]
+          entries = []
+          for node in root.findall('s:url', ns):
+              loc = node.find('s:loc', ns)
+              lastmod = node.find('s:lastmod', ns)
+              assert loc is not None and loc.text, 'Every sitemap entry needs <loc>'
+              url = loc.text.strip()
+              lm = lastmod.text.strip() if lastmod is not None and lastmod.text else None
+              entries.append((url, lm))
+
+          urls = [url for url, _ in entries]
+          assert urls, 'Sitemap is empty'
           assert 'https://desgracias.es/' in urls, 'Homepage missing from sitemap'
           assert 'https://desgracias.es/retirar.html' not in urls, 'Noindex withdrawal utility must not be in sitemap'
           assert 'https://desgracias.es/webs-amigas.html' not in urls, 'Placeholder page must not be in sitemap'
           assert len(urls) == len(set(urls)), 'Duplicate URLs found in sitemap'
+
+          today = date.today()
+          seen_titles = {}
+          jsonld_pages = 0
+          og_pages = 0
+          twitter_pages = 0
+          checked_internal_links = 0
+
+          for url, lastmod in entries:
+              file_path = route_to_file(url)
+              assert file_path.exists(), f'Sitemap URL has no deployable file: {url} -> {file_path}'
+              assert file_path.is_file(), f'Sitemap route does not resolve to a file: {url} -> {file_path}'
+              assert lastmod, f'Missing lastmod for {url}'
+              try:
+                  lm_date = date.fromisoformat(lastmod)
+              except ValueError as exc:
+                  raise AssertionError(f'Invalid lastmod for {url}: {lastmod}') from exc
+              assert lm_date <= today, f'Future lastmod for {url}: {lastmod}'
+
+              html = file_path.read_text(encoding='utf-8')
+              parser = PageParser()
+              parser.feed(html)
+
+              assert parser.lang and parser.lang.lower().startswith('es'), f'Missing/invalid html lang on {url}'
+              assert parser.title, f'Missing title on {url}'
+              assert 15 <= len(parser.title) <= 90, f'Title length outside guardrail on {url}: {len(parser.title)} chars'
+              if parser.title in seen_titles:
+                  raise AssertionError(f'Duplicate title on {url} and {seen_titles[parser.title]}: {parser.title}')
+              seen_titles[parser.title] = url
+
+              descriptions = parser.meta_content('description')
+              assert len(descriptions) == 1 and descriptions[0], f'Expected exactly one meta description on {url}'
+              assert 40 <= len(descriptions[0]) <= 220, f'Meta description length outside guardrail on {url}: {len(descriptions[0])} chars'
+
+              robots_meta = parser.meta_content('robots')
+              assert len(robots_meta) == 1, f'Expected exactly one robots meta on {url}'
+              robot_tokens = {x.strip().lower() for x in robots_meta[0].split(',')}
+              assert 'index' in robot_tokens and 'noindex' not in robot_tokens, f'Sitemap URL is not indexable: {url}'
+
+              assert len(parser.canonicals) == 1, f'Expected exactly one canonical on {url}, found {len(parser.canonicals)}'
+              assert parser.canonicals[0] == url, f'Canonical mismatch on {url}: {parser.canonicals[0]}'
+              assert parser.h1_count == 1, f'Expected exactly one H1 on {url}, found {parser.h1_count}'
+
+              jsonld_pages += int(parser.jsonld_count > 0)
+              og_pages += int(parser.og_site_name)
+              twitter_pages += int(parser.twitter_card)
+
+              for href in parser.hrefs:
+                  linked_file = local_href_to_file(href)
+                  if linked_file is None:
+                      continue
+                  checked_internal_links += 1
+                  assert linked_file.exists(), f'Broken root-relative internal link on {url}: {href} -> {linked_file}'
 
           assert 'name="robots" content="noindex,follow"' in withdrawal, 'Withdrawal page must stay noindex,follow'
           assert 'name="robots" content="noindex,follow"' in friends, 'Placeholder friends page must stay noindex,follow'
           assert 'Sitemap: https://desgracias.es/sitemap.xml' in robots, 'robots.txt must advertise canonical sitemap'
           assert 'Disallow: /\n' not in robots, 'robots.txt must not block the whole site'
 
-          print(f'SEO integrity checks passed. Hero WebP: {hero_bytes} bytes.')
+          total = len(entries)
+          print(f'SEO integrity checks passed for {total} sitemap URLs.')
+          print(f'Validated {checked_internal_links} root-relative navigational links.')
+          print(f'Coverage report (non-blocking): JSON-LD {jsonld_pages}/{total}, OG site_name {og_pages}/{total}, Twitter card {twitter_pages}/{total}.')
+          print(f'Hero WebP: {hero_bytes} bytes.')
           PY
