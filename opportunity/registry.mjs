@@ -6,6 +6,8 @@ export const OPPORTUNITIES = Object.freeze({
   INTERVIEW_COACHING:{category:'employment',risk:'low',models:['booking','cpl']},
   TRAINING:{category:'education',risk:'medium',models:['affiliate','cpl','revenue_share'],requiresEvidence:true},
   LEGAL_LABOR:{category:'legal',risk:'medium',models:['cpl','booking'],partnerVerification:'required'},
+  LEGAL_FINANCE:{category:'legal_finance',risk:'high',models:['cpl','booking'],partnerVerification:'required'},
+  FAMILY_LEGAL:{category:'family_legal',risk:'medium',models:['cpl','booking'],partnerVerification:'required'},
 
   PSYCHOLOGY:{category:'health',risk:'high',models:['booking','cpl'],explicitNeedPreferred:true,partnerVerification:'required'},
   COUPLES_THERAPY:{category:'health',risk:'high',models:['booking','cpl'],partnerVerification:'required'},
