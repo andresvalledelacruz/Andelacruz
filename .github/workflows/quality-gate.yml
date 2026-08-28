@@ -2,9 +2,9 @@ name: Engineering Quality Gate
 
 on:
   push:
-    branches: [main]
+    branches: [main, production-v9]
   pull_request:
-    branches: [main]
+    branches: [main, production-v9]
 
 permissions:
   contents: read
@@ -31,7 +31,10 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          find src ops tests -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+          find src ops tests opportunity scripts -type f \( -name '*.js' -o -name '*.mjs' \) -print0 | xargs -0 -n1 node --check
 
       - name: Run test suite
         run: npm test
+
+      - name: Smoke test opportunity ranking
+        run: npm run rank:opportunities > /tmp/opportunity-ranking.json
