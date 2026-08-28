@@ -1,0 +1,47 @@
+name: Generate Dependency Lockfile Once
+
+on:
+  push:
+    branches: [production-v9]
+    paths:
+      - .github/workflows/generate-lockfile-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout production
+        uses: actions/checkout@v7
+        with:
+          ref: production-v9
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Generate deterministic dependency lock
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Commit lockfile
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s package-lock.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package-lock.json
+          if git diff --cached --quiet; then
+            echo "No lockfile changes required."
+            exit 0
+          fi
+          git commit -m "build: lock backend dependency graph"
+          git push origin HEAD:production-v9
