@@ -4,7 +4,7 @@ export function buildRuntimeDecision(input={},options={}){
   return recommendNextBestActions(input,options);
 }
 
-export function buildDecisionRow({decisionRef,result,input={},engineVersion=2}={}){
+export function buildDecisionRow({decisionRef,result,input={},engineVersion=2,brainCommit=null}={}){
   if(!decisionRef) throw new Error('Missing decisionRef');
   const situation=result?.situation||{};
   const opportunity=result?.opportunity_state||{};
@@ -30,14 +30,16 @@ export function buildDecisionRow({decisionRef,result,input={},engineVersion=2}={
     recommendation_kinds:recommendations.map(x=>x.kind),
     commercial_suppressed:Boolean(result?.commercial_suppressed),
     decision_reason:result?.reason||null,
-    engine_version:Number(engineVersion)
+    engine_version:Number(engineVersion),
+    brain_commit:brainCommit?String(brainCommit):null
   });
 }
 
-export function publicRuntimeResponse({decisionRef,result}={}){
+export function publicRuntimeResponse({decisionRef,result,brainCommit=null}={}){
   return Object.freeze({
     version:2,
     decisionId:decisionRef,
+    brainCommit,
     situation:result?.situation||null,
     opportunity_state:result?.opportunity_state||null,
     primary_recommendation:result?.primary_recommendation||null,
