@@ -129,3 +129,16 @@
     font-size:.86rem;
   }
 }
+
+/* V9 approved brand refinement: only logo size + identity brown */
+.brand{
+  color:#7B3F1E;
+  font-size:1.78rem;
+  line-height:1;
+}
+
+@media (max-width:760px){
+  .brand{
+    font-size:1.48rem;
+  }
+}
