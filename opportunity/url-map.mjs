@@ -44,10 +44,13 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/dinero/necesito-un-prestamo-pero-no-se-si-puedo-permitirmelo/':{domain:'money',needs:['affordability_check'],intents:['LOAN'],opportunities:['LOAN','DEBT_ADVICE'],risk:'high',consent:'before_lead',commercialPolicy:'restricted',defaultFlags:['affordability_checked','partner_verification_required']},
   '/dinero/no-puedo-pagar-la-vivienda/':{domain:'money',needs:['mortgage_help','housing_protection'],intents:[],opportunities:['MORTGAGE_HELP','DEBT_ADVICE','INSOLVENCY_LEGAL'],risk:'high',consent:'before_lead',commercialPolicy:'restricted',defaultFlags:['essential_housing_first']},
   '/dinero/me-da-miedo-mirar-mi-cuenta/':{domain:'money',needs:['financial_avoidance'],intents:[],opportunities:['DEBT_ADVICE','PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
-  '/dinero/en-casa-discutimos-por-dinero/':{domain:'money_family',needs:['couples_support','financial_conflict'],intents:[],opportunities:['COUPLES_THERAPY','FAMILY_MEDIATION','DEBT_ADVICE','PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['mediation_not_for_active_abuse']}
+  '/dinero/en-casa-discutimos-por-dinero/':{domain:'money_family',needs:['couples_support','financial_conflict'],intents:[],opportunities:['COUPLES_THERAPY','FAMILY_MEDIATION','DEBT_ADVICE','PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['mediation_not_for_active_abuse']},
+
+  '/duelo/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'contextual',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
+  '/duelo/ha-muerto-alguien-que-quiero-y-no-se-como-seguir/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 41;
+export const EXPECTED_PRODUCTION_URL_COUNT = 43;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
