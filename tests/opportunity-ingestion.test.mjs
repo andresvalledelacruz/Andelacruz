@@ -8,6 +8,13 @@ test('normalizes search console rows', () => {
   assert.equal(row.metrics.clicks, 100);
 });
 
+test('auto-resolves candidate id from a full URL', () => {
+  const [row] = ingestBatch(INGESTION_SOURCES.SEARCH_CONSOLE, [{ url:'https://desgracias.es/trabajo/quiero-cambiar-de-trabajo-pero-no-se-a-que/?utm_source=test', impressions:1000, clicks:100, position:7, observedAt:'2026-08-28' }]);
+  assert.equal(row.candidateId, 'work-change-job');
+  assert.equal(row.path, '/trabajo/quiero-cambiar-de-trabajo-pero-no-se-a-que/');
+  assert.equal(row.resolution.method, 'exact_path');
+});
+
 test('rejects direct sensitive fields', () => {
   assert.throws(() => rejectSensitiveFields({ candidateId:'x', email:'a@b.com' }), /Sensitive fields/);
 });
