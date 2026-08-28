@@ -1,0 +1,143 @@
+name: Normalize SEO Metadata Once
+
+on:
+  push:
+    branches: [production-v9]
+    paths:
+      - .github/workflows/normalize-seo-metadata-once.yml
+
+permissions:
+  contents: write
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout production
+        uses: actions/checkout@v4
+        with:
+          ref: production-v9
+          fetch-depth: 0
+
+      - name: Normalize missing metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import html
+          import json
+          import re
+          from pathlib import Path
+          from urllib.parse import urlparse
+
+          targets = [
+              'privacidad.html',
+              'trabajo/index.html',
+              'trabajo/quiero-encontrar-trabajo-cuanto-antes/index.html',
+              'trabajo/mi-curriculum-no-funciona/index.html',
+              'trabajo/hago-entrevistas-pero-no-me-contratan/index.html',
+              'trabajo/necesito-formacion-para-encontrar-trabajo/index.html',
+          ]
+
+          def extract(pattern, text, label, path):
+              match = re.search(pattern, text, flags=re.I | re.S)
+              if not match:
+                  raise RuntimeError(f'{path}: cannot extract {label}')
+              return html.unescape(re.sub(r'\s+', ' ', match.group(1)).strip())
+
+          def esc_attr(value):
+              return html.escape(value, quote=True)
+
+          def insert_before_head_end(text, block):
+              if '</head>' not in text.lower():
+                  raise RuntimeError('Missing </head>')
+              pos = text.lower().index('</head>')
+              return text[:pos] + block + '\n' + text[pos:]
+
+          changed = []
+          for raw_path in targets:
+              path = Path(raw_path)
+              text = path.read_text(encoding='utf-8')
+              title = extract(r'<title>(.*?)</title>', text, 'title', raw_path)
+              description = extract(r'<meta\s+name=["\']description["\']\s+content=["\'](.*?)["\']\s*/?>', text, 'description', raw_path)
+              canonical = extract(r'<link\s+rel=["\']canonical["\']\s+href=["\'](.*?)["\']\s*/?>', text, 'canonical', raw_path)
+              h1 = extract(r'<h1[^>]*>(.*?)</h1>', text, 'h1', raw_path)
+              h1 = re.sub(r'<[^>]+>', '', h1).strip()
+
+              blocks = []
+              if not re.search(r'property=["\']og:site_name["\']', text, flags=re.I):
+                  og_type = 'website' if raw_path in {'privacidad.html', 'trabajo/index.html'} else 'article'
+                  blocks.append(
+                      '  <meta property="og:type" content="' + og_type + '">\n'
+                      '  <meta property="og:locale" content="es_ES">\n'
+                      '  <meta property="og:site_name" content="Desgracias.es">\n'
+                      f'  <meta property="og:title" content="{esc_attr(title)}">\n'
+                      f'  <meta property="og:description" content="{esc_attr(description)}">\n'
+                      f'  <meta property="og:url" content="{esc_attr(canonical)}">\n'
+                      '  <meta property="og:image" content="https://desgracias.es/assets/manos-apoyo.png">'
+                  )
+
+              if not re.search(r'name=["\']twitter:card["\']', text, flags=re.I):
+                  blocks.append(
+                      '  <meta name="twitter:card" content="summary_large_image">\n'
+                      f'  <meta name="twitter:title" content="{esc_attr(title)}">\n'
+                      f'  <meta name="twitter:description" content="{esc_attr(description)}">\n'
+                      '  <meta name="twitter:image" content="https://desgracias.es/assets/manos-apoyo.png">'
+                  )
+
+              if not re.search(r'type=["\']application/ld\+json["\']', text, flags=re.I):
+                  if raw_path == 'privacidad.html':
+                      data = {
+                          '@context': 'https://schema.org',
+                          '@type': 'WebPage',
+                          'name': 'Política de privacidad',
+                          'url': canonical,
+                          'inLanguage': 'es',
+                          'dateModified': '2026-08-28',
+                          'isPartOf': {
+                              '@type': 'WebSite',
+                              'name': 'Desgracias.es',
+                              'url': 'https://desgracias.es/'
+                          },
+                          'about': 'Privacidad y protección de datos en Desgracias.es'
+                      }
+                  else:
+                      items = [
+                          {'@type': 'ListItem', 'position': 1, 'name': 'Inicio', 'item': 'https://desgracias.es/'},
+                          {'@type': 'ListItem', 'position': 2, 'name': 'Trabajo', 'item': 'https://desgracias.es/trabajo/'},
+                      ]
+                      if raw_path != 'trabajo/index.html':
+                          items.append({'@type': 'ListItem', 'position': 3, 'name': h1, 'item': canonical})
+                      data = {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': items}
+                  blocks.append('  <script type="application/ld+json">' + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + '</script>')
+
+              if blocks:
+                  text = insert_before_head_end(text, '\n'.join(blocks))
+                  path.write_text(text, encoding='utf-8')
+                  changed.append(raw_path)
+
+          print('Normalized files:')
+          for path in changed:
+              print(f'  - {path}')
+          if not changed:
+              print('  none (already normalized)')
+          PY
+
+      - name: Commit normalized pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add privacidad.html trabajo/index.html \
+            trabajo/quiero-encontrar-trabajo-cuanto-antes/index.html \
+            trabajo/mi-curriculum-no-funciona/index.html \
+            trabajo/hago-entrevistas-pero-no-me-contratan/index.html \
+            trabajo/necesito-formacion-para-encontrar-trabajo/index.html
+          if git diff --cached --quiet; then
+            echo "No metadata changes required."
+            exit 0
+          fi
+          git commit -m "seo: normalize remaining structured and social metadata"
+          git push origin HEAD:production-v9
