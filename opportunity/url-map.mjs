@@ -8,6 +8,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/rupturas/mi-pareja-me-ha-dejado/':{domain:'relationships',needs:['relationship_support'],intents:[],opportunities:['RELATIONSHIP_SUPPORT','PSYCHOLOGY','MATCHMAKING'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['matchmaking_explicit_intent_only']},
   '/rupturas/no-puedo-dejar-de-pensar-en-mi-ex/':{domain:'relationships',needs:['relationship_support'],intents:[],opportunities:['PSYCHOLOGY','RELATIONSHIP_SUPPORT'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/rupturas/mi-ex-me-ha-bloqueado/':{domain:'relationships',needs:['relationship_support'],intents:[],opportunities:['RELATIONSHIP_SUPPORT','PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
+  '/rupturas/tenemos-hijos-en-comun/':{domain:'family_relationships',needs:['co_parenting','family_legal'],intents:[],opportunities:['FAMILY_MEDIATION','FAMILY_LEGAL','PSYCHOLOGY'],risk:'high',consent:'before_lead',commercialPolicy:'restricted',defaultFlags:['child_interest_first','mediation_not_for_active_abuse','safety_override']},
 
   '/soledad/':{domain:'social',needs:['social_connection'],intents:[],opportunities:['SOCIAL_ACTIVITIES','PSYCHOLOGY','MATCHMAKING'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['matchmaking_explicit_intent_only']},
   '/soledad/me-siento-solo/':{domain:'social',needs:['social_connection'],intents:[],opportunities:['SOCIAL_ACTIVITIES','PSYCHOLOGY','MATCHMAKING'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['matchmaking_explicit_intent_only']},
@@ -54,7 +55,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/':{domain:'grief',needs:['support_grieving_person'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 47;
+export const EXPECTED_PRODUCTION_URL_COUNT = 48;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
