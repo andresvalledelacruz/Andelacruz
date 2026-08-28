@@ -2,8 +2,8 @@ name: Patch Next Step Feature
 
 on:
   push:
-    branches: [production-v9]
-    paths: [.github/workflows/patch-next-step-feature.yml]
+    branches:
+      - production-v9
 
 permissions:
   contents: write
@@ -12,21 +12,30 @@ jobs:
   patch-feature:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout feature branch
+        uses: actions/checkout@v4
         with:
           ref: feature/next-step-guidance
           fetch-depth: 0
-      - name: Verify and patch feature branch only
+      - name: Verify feature inputs
+        shell: bash
         run: |
           set -euo pipefail
           test -f app.js
           test -f next-step-guidance.js
           grep -q "const storyForm = document.getElementById('story-form');" app.js
           grep -q "showSubmissionReceipt(status, receiptMessage, String(data.withdrawalCode));" app.js
-          if grep -q "NEXT_STEP_GUIDANCE_ADAPTER_V1" app.js; then exit 0; fi
+      - name: Append additive adapter
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -q "NEXT_STEP_GUIDANCE_ADAPTER_V1" app.js; then
+            echo "Adapter already present"
+            exit 0
+          fi
           cat >> app.js <<'EOF'
 
-/* NEXT_STEP_GUIDANCE_ADAPTER_V1 — additive only; V9 markup/styles untouched. */
+/* NEXT_STEP_GUIDANCE_ADAPTER_V1 - additive only; V9 markup/styles untouched. */
 (() => {
   let lastGuidance = null;
   const originalGetSupabaseClient = getSupabaseClient;
@@ -47,24 +56,38 @@ jobs:
   showSubmissionReceipt = function patchedShowSubmissionReceipt(status, message, withdrawalCode) {
     originalShowSubmissionReceipt(status, message, withdrawalCode);
     if (!lastGuidance || !status) return;
-    const guidance = lastGuidance; lastGuidance = null;
+    const guidance = lastGuidance;
+    lastGuidance = null;
     const render = () => window.DesgraciasNextStep?.render?.(guidance, status);
     if (window.DesgraciasNextStep) return render();
     const script = document.createElement('script');
-    script.src = '/next-step-guidance.js'; script.defer = true; script.onload = render;
+    script.src = '/next-step-guidance.js';
+    script.defer = true;
+    script.onload = render;
     script.onerror = () => console.warn('Next-step guidance UI could not be loaded.');
     document.head.append(script);
   };
 })();
 EOF
+      - name: Validate JavaScript and invariants
+        shell: bash
+        run: |
+          set -euo pipefail
           node --check app.js
           node --check next-step-guidance.js
           test "$(grep -c 'NEXT_STEP_GUIDANCE_ADAPTER_V1' app.js)" -eq 1
           grep -q "storyForm?.addEventListener('submit'" app.js
           grep -q "loadPublicStories();" app.js
+      - name: Commit feature-only patch
+        shell: bash
+        run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add app.js
-          git diff --cached --quiet && exit 0
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+            exit 0
+          fi
           git commit -m "feat: connect next-step guidance UI safely"
           git push origin HEAD:feature/next-step-guidance
