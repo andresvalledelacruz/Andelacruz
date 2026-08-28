@@ -35,7 +35,7 @@ test('URL57 remains a high-risk restricted child-school-bullying route', () => {
     'no_commercial_crisis_cta',
     'safety_override'
   ]) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
-  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 57);
+  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 58);
 });
 
 test('official school-bullying and emergency help remain highly visible', () => {

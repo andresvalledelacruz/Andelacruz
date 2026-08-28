@@ -31,7 +31,7 @@ test('URL55 remains a high-risk restricted post-attempt family route', () => {
     'no_universal_surveillance',
     'safety_override'
   ]) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
-  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 57);
+  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 58);
 });
 
 test('024 and 112 remain visible across emergency and family-support contexts', () => {
