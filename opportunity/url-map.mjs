@@ -47,10 +47,11 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/dinero/en-casa-discutimos-por-dinero/':{domain:'money_family',needs:['couples_support','financial_conflict'],intents:[],opportunities:['COUPLES_THERAPY','FAMILY_MEDIATION','DEBT_ADVICE','PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['mediation_not_for_active_abuse']},
 
   '/duelo/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'contextual',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
-  '/duelo/ha-muerto-alguien-que-quiero-y-no-se-como-seguir/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
+  '/duelo/ha-muerto-alguien-que-quiero-y-no-se-como-seguir/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
+  '/duelo/no-pude-despedirme/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 43;
+export const EXPECTED_PRODUCTION_URL_COUNT = 44;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
