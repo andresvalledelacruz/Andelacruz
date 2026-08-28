@@ -26,6 +26,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/trabajo-dinero/':{domain:'work_money',needs:[],intents:[],opportunities:['JOB_SEARCH','LEGAL_LABOR','DEBT_ADVICE','PSYCHOLOGY'],risk:'contextual',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/trabajo/':{domain:'work',needs:[],intents:[],opportunities:['JOB_SEARCH','CV_SERVICE','INTERVIEW_COACHING','TRAINING','LEGAL_LABOR','PSYCHOLOGY'],risk:'contextual',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/trabajo/no-puedo-mas-en-el-trabajo/':{domain:'work',needs:['work_stress'],intents:[],opportunities:['PSYCHOLOGY','LEGAL_LABOR','JOB_SEARCH'],risk:'high',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
+  '/trabajo/no-consigo-desconectar-del-trabajo/':{domain:'work',needs:['work_stress'],intents:[],opportunities:['PSYCHOLOGY','LEGAL_LABOR'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/trabajo/me-han-despedido-y-no-se-que-hacer/':{domain:'work',needs:['find_job','labor_legal'],intents:[],opportunities:['JOB_SEARCH','LEGAL_LABOR','CV_SERVICE','TRAINING'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/trabajo/quiero-encontrar-trabajo-cuanto-antes/':{domain:'work',needs:['find_job'],intents:[],opportunities:['JOB_SEARCH','CV_SERVICE','INTERVIEW_COACHING','TRAINING'],risk:'low',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/trabajo/mi-curriculum-no-funciona/':{domain:'work',needs:['cv_help'],intents:[],opportunities:['CV_SERVICE','JOB_SEARCH','INTERVIEW_COACHING'],risk:'low',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
@@ -46,7 +47,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/dinero/en-casa-discutimos-por-dinero/':{domain:'money_family',needs:['couples_support','financial_conflict'],intents:[],opportunities:['COUPLES_THERAPY','FAMILY_MEDIATION','DEBT_ADVICE','PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['mediation_not_for_active_abuse']}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 40;
+export const EXPECTED_PRODUCTION_URL_COUNT = 41;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
