@@ -31,6 +31,9 @@ test('page keeps official crisis resources visible more than once', () => {
   assert.ok(occurrences(html, 'href="tel:024"') >= 3, '024 must be visible in multiple safety contexts');
   assert.ok(occurrences(html, 'href="tel:112"') >= 3, '112 must be visible in multiple safety contexts');
   assert.match(html, /https:\/\/www\.sanidad\.gob\.es\/linea024\/home\.htm/);
+  assert.match(html, /https:\/\/www\.sanidad\.gob\.es\/gabinete\/notasPrensa\.do\?id=6878/);
+  assert.match(html, /204\.449 atenciones/);
+  assert.match(html, /no equivale al número de personas atendidas/i);
   assert.match(html, /gratuito, confidencial/i);
   assert.match(html, /peligro inmediato|emergencia vital/i);
 });
@@ -42,6 +45,7 @@ test('page retains primary evidence and postvention resources', () => {
   assert.match(html, /https:\/\/www\.redaipis\.org\/asociaciones-en-duelo-por-suicidio/);
   assert.match(html, /https:\/\/papageno\.es\/grupos-de-duelo/);
   assert.match(html, /https:\/\/tdssuicidio\.com\/es\/guias-para-supervivientes-de-un-suicidio/);
+  assert.match(html, /https:\/\/www\.who\.int\/publications\/i\/item\/9789240116078/);
 });
 
 test('page remains a substantial public-benefit guide without conversion CTA', () => {
@@ -55,7 +59,7 @@ test('page remains a substantial public-benefit guide without conversion CTA', (
 
 test('external resource links use safe rel attributes', () => {
   const externalAnchors = [...html.matchAll(/<a\s+[^>]*href="https?:\/\/[^\"]+"[^>]*>/gi)].map(match => match[0]);
-  assert.ok(externalAnchors.length >= 10, 'Expected a broad source/resource set');
+  assert.ok(externalAnchors.length >= 12, 'Expected a broad source/resource set');
   for (const anchor of externalAnchors) {
     assert.match(anchor, /rel="noopener noreferrer"/i, `Unsafe external link: ${anchor}`);
   }
