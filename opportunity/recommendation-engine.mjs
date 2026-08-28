@@ -1,5 +1,6 @@
 import { recommendFromSituation } from './recommendation-bridge.mjs';
 import { findEligiblePartners, PARTNERS } from './partners.mjs';
+import { applyLearningPolicy } from './learning-policy.mjs';
 
 const OWN_CONTENT = Object.freeze({
   financial_practical:['/dinero/','/dinero/tengo-deudas-y-no-se-por-donde-empezar/','/dinero/no-llego-a-fin-de-mes/'],
@@ -22,12 +23,12 @@ const OFFICIAL_RESOURCES = Object.freeze({
 
 function ownContentFor(situation){
   const route=situation.primary?.id;
-  return (OWN_CONTENT[route]||['/']).map(path=>({kind:'own_content',path,priority:80,commercial:false}));
+  return (OWN_CONTENT[route]||['/']).map(path=>({kind:'own_content',path,priority:80,commercial:false,userValue:90}));
 }
 
 function officialFor(situation){
   const route=situation.primary?.id;
-  return (OFFICIAL_RESOURCES[route]||[]).map(resource=>({kind:'official_resource',...resource,priority:90,commercial:false}));
+  return (OFFICIAL_RESOURCES[route]||[]).map(resource=>({kind:'official_resource',...resource,priority:90,commercial:false,userValue:100}));
 }
 
 function freeActionFor(situation){
@@ -41,7 +42,7 @@ function freeActionFor(situation){
     wellbeing_habits:'Aplicar una medida práctica de autocuidado y observar evolución',
     emotional_support:'Explicar la situación y elegir un siguiente paso pequeño'
   };
-  return labels[route]?[{kind:'free_action',label:labels[route],priority:85,commercial:false}]:[];
+  return labels[route]?[{kind:'free_action',label:labels[route],priority:85,commercial:false,userValue:95}]:[];
 }
 
 function partnerRecommendations(bridge,{territory='ES',registry=PARTNERS}={}){
@@ -50,26 +51,36 @@ function partnerRecommendations(bridge,{territory='ES',registry=PARTNERS}={}){
   for(const opportunity of bridge.eligible){
     const partners=findEligiblePartners({opportunityId:opportunity.id,territory,registry});
     for(const partner of partners){
-      out.push({kind:'partner',partnerId:partner.id,partnerName:partner.name,opportunityId:opportunity.id,priority:50,commercial:true,verification:partner.verification,disclosure:partner.disclosure||null});
+      out.push({kind:'partner',partnerId:partner.id,partnerName:partner.name,opportunityId:opportunity.id,priority:50,commercial:true,userValue:70,verification:partner.verification,disclosure:partner.disclosure||null});
     }
   }
   return out;
 }
 
+function applyLearningToRecommendations(recommendations,learningSignals={}){
+  return recommendations.map(rec=>{
+    const signal=rec.opportunityId?learningSignals[rec.opportunityId]||{}:{};
+    const policyResult=applyLearningPolicy({userValue:rec.userValue,commercial:rec.commercial},signal);
+    return {...rec,basePriority:rec.priority,learningAdjustment:policyResult.learningAdjustment,learningStatus:policyResult.learningStatus,priority:Number((rec.priority+policyResult.learningAdjustment).toFixed(2))};
+  });
+}
+
 export function recommendNextBestActions(input={},options={}){
   const bridge=recommendFromSituation(input);
   if(bridge.situation.safety_override){
-    return Object.freeze({version:1,situation:bridge.situation,primary_recommendation:officialFor(bridge.situation)[0]||null,recommendations:Object.freeze(officialFor(bridge.situation)),commercial_suppressed:true,reason:'safety_first'});
+    const safetyRecommendations=officialFor(bridge.situation);
+    return Object.freeze({version:2,situation:bridge.situation,primary_recommendation:safetyRecommendations[0]||null,recommendations:Object.freeze(safetyRecommendations),commercial_suppressed:true,reason:'safety_first'});
   }
-  const recommendations=[...officialFor(bridge.situation),...freeActionFor(bridge.situation),...ownContentFor(bridge.situation),...partnerRecommendations(bridge,options)]
-    .sort((a,b)=>b.priority-a.priority);
+  const base=[...officialFor(bridge.situation),...freeActionFor(bridge.situation),...ownContentFor(bridge.situation),...partnerRecommendations(bridge,options)];
+  const recommendations=applyLearningToRecommendations(base,options.learningSignals||{}).sort((a,b)=>b.priority-a.priority || Number(a.commercial)-Number(b.commercial));
   return Object.freeze({
-    version:1,
+    version:2,
     situation:bridge.situation,
     opportunity_state:Object.freeze({eligible:bridge.eligible,pending:bridge.pending,blocked:bridge.blocked}),
     primary_recommendation:recommendations[0]||null,
     recommendations:Object.freeze(recommendations),
     commercial_suppressed:!bridge.commercial_action_allowed,
+    learning_applied:Object.values(options.learningSignals||{}).some(x=>(Number(x.sampleSize)||0)>=10),
     reason:recommendations.length?'ranked_recommendations':'no_recommendation'
   });
 }
