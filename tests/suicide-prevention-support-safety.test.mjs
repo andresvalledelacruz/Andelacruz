@@ -30,7 +30,7 @@ test('URL54 remains a high-risk restricted suicide-prevention support route', ()
     'supporter_self_care',
     'safety_override'
   ]) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
-  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 57);
+  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 58);
 });
 
 test('024 and 112 remain highly visible and Spain-first', () => {
