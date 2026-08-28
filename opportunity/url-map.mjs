@@ -53,10 +53,11 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/duelo/han-pasado-meses-y-sigo-muy-mal/':{domain:'grief',needs:['grief_support','professional_assessment'],intents:[],opportunities:['PSYCHOLOGY'],risk:'high',consent:'before_lead',commercialPolicy:'restricted',defaultFlags:['no_automatic_diagnosis','safety_override']},
   '/duelo/no-pude-despedirme/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/duelo/me-siento-culpable-desde-que-murio/':{domain:'grief',needs:['grief_support','professional_assessment'],intents:[],opportunities:['PSYCHOLOGY'],risk:'high',consent:'before_lead',commercialPolicy:'restricted',defaultFlags:['no_automatic_diagnosis','safety_override']},
+  '/duelo/ha-muerto-mi-mascota-y-estoy-destrozado/':{domain:'grief',needs:['pet_loss_grief','grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['no_automatic_diagnosis','veterinary_boundary']},
   '/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/':{domain:'grief',needs:['support_grieving_person'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 49;
+export const EXPECTED_PRODUCTION_URL_COUNT = 50;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
