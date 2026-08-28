@@ -1,4 +1,5 @@
 import { routeHumanNeeds } from './human-needs-router.js';
+import { extractIntentContext } from './intent-context-extractor.js';
 
 const ROUTE_PRIORITY = Object.freeze({ urgent_safety:100, legal_mediation:72, financial_practical:68, work_career:64, clinical_review:62, relationship_family:58, social_community:54, grief_transition:52, wellbeing_habits:48, emotional_support:40 });
 
@@ -29,6 +30,7 @@ function priorityScore(route, base) {
 
 export function routeSituation(input={}) {
   const base=routeHumanNeeds(input);
+  const intent=extractIntentContext(input);
   const routes=dedupeRoutes(base).map(route=>({
     ...route,
     priority_score:priorityScore(route,base),
@@ -37,18 +39,19 @@ export function routeSituation(input={}) {
 
   const safetyOverride=base.urgent_human_review;
   const ordered=safetyOverride ? routes.sort((a,b)=>a.id==='urgent_safety'?-1:b.id==='urgent_safety'?1:b.priority_score-a.priority_score) : routes;
-  const commercialAllowed=!safetyOverride;
+  const commercialAllowed=!safetyOverride && !intent.negation.present;
 
   return Object.freeze({
-    version:2,
+    version:3,
     diagnostic:false,
     automated_clinical_decision:false,
     safety_override:safetyOverride,
     commercial_allowed:commercialAllowed,
     primary:ordered[0]||null,
     needs:ordered,
+    intent_context:intent,
     next_actions:ordered.slice(0,4).map((route,index)=>Object.freeze({order:index+1,route:route.id,...route.action,commercial:commercialAllowed ? route.action.commercial : false})),
-    routing_basis:Object.freeze({category:input.category||null,declared_needs:Array.isArray(input.needs)?input.needs:[],multi_need:ordered.length>1}),
-    explanation:'Ordena varias necesidades simultáneas. La seguridad prevalece sobre cualquier oportunidad comercial; el sistema no diagnostica ni sustituye profesionales.'
+    routing_basis:Object.freeze({category:input.category||null,declared_needs:Array.isArray(input.needs)?input.needs:[],multi_need:ordered.length>1,urgency:intent.urgency.level,explicit_commercial_intent:intent.explicit_commercial_intent}),
+    explanation:'Ordena varias necesidades simultáneas e incorpora intención explícita, negación, urgencia y contexto. La seguridad prevalece sobre cualquier oportunidad comercial; el sistema no diagnostica ni sustituye profesionales.'
   });
 }
