@@ -92,7 +92,7 @@ test('memory gaps and suspected substances route to medical assessment without u
   assert.match(html, /Tengo lagunas y no sé exactamente qué ocurrió/i);
   assert.match(html, /no necesitas saber qué sustancia fue para pedir atención/i);
   assert.match(html, /No compres pruebas caseras/i);
-  assert.match(html, /no permite a esta web concluir qué ocurrió/i);
+  assert.match(html, /tampoco permite a esta web concluir qué ocurrió/i);
   assert.match(html, /no interpreta pruebas toxicológicas/i);
 });
 
