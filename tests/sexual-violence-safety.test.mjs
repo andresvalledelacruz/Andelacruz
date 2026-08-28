@@ -83,7 +83,7 @@ test('24-hour crisis centres and long-term support remain covered within legal b
 test('minors are protected from repeated interviewing and confrontation', () => {
   assert.match(html, /Si la víctima es una niña, niño o adolescente/i);
   assert.match(html, /No interrogues repetidamente al menor/i);
-  assert.match(html, /redu[c|z]ir la repetición innecesaria del relato/i);
+  assert.match(html, /reducir la repetición innecesaria del relato/i);
   assert.match(html, /no hagas una confrontación que pueda aumentar el riesgo/i);
   assert.match(html, /prevención de victimización secundaria/i);
 });
@@ -92,7 +92,7 @@ test('memory gaps and suspected substances route to medical assessment without u
   assert.match(html, /Tengo lagunas y no sé exactamente qué ocurrió/i);
   assert.match(html, /no necesitas saber qué sustancia fue para pedir atención/i);
   assert.match(html, /No compres pruebas caseras/i);
-  assert.match(html, /no puede concluir qué ocurrió/i);
+  assert.match(html, /no permite a esta web concluir qué ocurrió/i);
   assert.match(html, /no interpreta pruebas toxicológicas/i);
 });
 
