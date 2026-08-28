@@ -24,16 +24,12 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
-          import json
           import re
           import xml.etree.ElementTree as ET
           from datetime import date
           from html.parser import HTMLParser
           from pathlib import Path
           from urllib.parse import urlparse
-
-          ORIGIN = 'https://desgracias.es'
-          ROOT = Path('.')
 
           class PageParser(HTMLParser):
               def __init__(self):
@@ -84,8 +80,7 @@ jobs:
                   return re.sub(r'\s+', ' ', ''.join(self.title_parts)).strip()
 
               def meta_content(self, name):
-                  matches = [m.get('content', '').strip() for m in self.metas if m.get('name', '').lower() == name.lower()]
-                  return matches
+                  return [m.get('content', '').strip() for m in self.metas if m.get('name', '').lower() == name.lower()]
 
           def route_to_file(url):
               parsed = urlparse(url)
@@ -110,7 +105,6 @@ jobs:
               candidate = Path(path.lstrip('/'))
               if path.endswith('/'):
                   return candidate / 'index.html'
-              # Only validate navigational routes here; assets are handled by the browser/build.
               if candidate.suffix in {'.html', ''}:
                   return candidate if candidate.suffix else candidate / 'index.html'
               return None
@@ -134,8 +128,8 @@ jobs:
               'srcset="assets/manos-apoyo.webp" type="image/webp"',
               'width="1342" height="1172" fetchpriority="high"',
           ]
-          missing = [item for item in required_home if item not in index]
-          assert not missing, f'Missing homepage SEO/performance signals: {missing}'
+          missing_home = [item for item in required_home if item not in index]
+          assert not missing_home, f'Missing homepage SEO/performance signals: {missing_home}'
 
           assert hero_webp.exists(), 'Optimized hero WebP is missing'
           hero_bytes = hero_webp.stat().st_size
@@ -161,9 +155,9 @@ jobs:
 
           today = date.today()
           seen_titles = {}
-          jsonld_pages = 0
-          og_pages = 0
-          twitter_pages = 0
+          missing_jsonld = []
+          missing_og = []
+          missing_twitter = []
           checked_internal_links = 0
 
           for url, lastmod in entries:
@@ -201,9 +195,12 @@ jobs:
               assert parser.canonicals[0] == url, f'Canonical mismatch on {url}: {parser.canonicals[0]}'
               assert parser.h1_count == 1, f'Expected exactly one H1 on {url}, found {parser.h1_count}'
 
-              jsonld_pages += int(parser.jsonld_count > 0)
-              og_pages += int(parser.og_site_name)
-              twitter_pages += int(parser.twitter_card)
+              if parser.jsonld_count == 0:
+                  missing_jsonld.append(url)
+              if not parser.og_site_name:
+                  missing_og.append(url)
+              if not parser.twitter_card:
+                  missing_twitter.append(url)
 
               for href in parser.hrefs:
                   linked_file = local_href_to_file(href)
@@ -220,6 +217,18 @@ jobs:
           total = len(entries)
           print(f'SEO integrity checks passed for {total} sitemap URLs.')
           print(f'Validated {checked_internal_links} root-relative navigational links.')
-          print(f'Coverage report (non-blocking): JSON-LD {jsonld_pages}/{total}, OG site_name {og_pages}/{total}, Twitter card {twitter_pages}/{total}.')
+          print(f'Coverage report (non-blocking): JSON-LD {total-len(missing_jsonld)}/{total}, OG site_name {total-len(missing_og)}/{total}, Twitter card {total-len(missing_twitter)}/{total}.')
+          if missing_jsonld:
+              print('Missing JSON-LD:')
+              for url in missing_jsonld:
+                  print(f'  - {url}')
+          if missing_og:
+              print('Missing OG site_name:')
+              for url in missing_og:
+                  print(f'  - {url}')
+          if missing_twitter:
+              print('Missing Twitter card:')
+              for url in missing_twitter:
+                  print(f'  - {url}')
           print(f'Hero WebP: {hero_bytes} bytes.')
           PY
