@@ -1,3 +1,5 @@
+import { attachCandidateId } from './candidate-resolver.mjs';
+
 const SAFE_ID = /^[a-z0-9][a-z0-9-_]{1,120}$/i;
 const SAFE_PATH = /^\/[a-z0-9\-_/]*\/$/i;
 
@@ -27,51 +29,62 @@ function validatePath(path) {
   if (!SAFE_PATH.test(String(path || ''))) throw new Error('Invalid page path');
 }
 
+function resolveRowIdentity(row = {}) {
+  if (row.candidateId && row.path) return row;
+  return attachCandidateId(row);
+}
+
 export function normalizeSearchConsoleRow(row = {}) {
-  validateCandidateId(row.candidateId);
-  validatePath(row.path);
+  const identified = resolveRowIdentity(row);
+  validateCandidateId(identified.candidateId);
+  validatePath(identified.path);
   return Object.freeze({
     source: INGESTION_SOURCES.SEARCH_CONSOLE,
-    candidateId: String(row.candidateId),
-    path: String(row.path),
-    observedAt: isoDate(row.observedAt),
+    candidateId: String(identified.candidateId),
+    path: String(identified.path),
+    observedAt: isoDate(identified.observedAt),
+    resolution: identified.resolution,
     metrics: Object.freeze({
-      impressions: Math.max(0, asNumber(row.impressions)),
-      clicks: Math.max(0, asNumber(row.clicks)),
-      position: Math.max(1, asNumber(row.position, 100))
+      impressions: Math.max(0, asNumber(identified.impressions)),
+      clicks: Math.max(0, asNumber(identified.clicks)),
+      position: Math.max(1, asNumber(identified.position, 100))
     })
   });
 }
 
 export function normalizeAnalyticsRow(row = {}) {
-  validateCandidateId(row.candidateId);
-  validatePath(row.path);
+  const identified = resolveRowIdentity(row);
+  validateCandidateId(identified.candidateId);
+  validatePath(identified.path);
   return Object.freeze({
     source: INGESTION_SOURCES.ANALYTICS,
-    candidateId: String(row.candidateId),
-    path: String(row.path),
-    observedAt: isoDate(row.observedAt),
+    candidateId: String(identified.candidateId),
+    path: String(identified.path),
+    observedAt: isoDate(identified.observedAt),
+    resolution: identified.resolution,
     metrics: Object.freeze({
-      sessions: Math.max(0, asNumber(row.sessions)),
-      engagedSessions: Math.max(0, asNumber(row.engagedSessions)),
-      outboundClicks: Math.max(0, asNumber(row.outboundClicks))
+      sessions: Math.max(0, asNumber(identified.sessions)),
+      engagedSessions: Math.max(0, asNumber(identified.engagedSessions)),
+      outboundClicks: Math.max(0, asNumber(identified.outboundClicks))
     })
   });
 }
 
 export function normalizeConversionRow(row = {}) {
-  validateCandidateId(row.candidateId);
-  validatePath(row.path);
+  const identified = resolveRowIdentity(row);
+  validateCandidateId(identified.candidateId);
+  validatePath(identified.path);
   return Object.freeze({
     source: INGESTION_SOURCES.CONVERSIONS,
-    candidateId: String(row.candidateId),
-    path: String(row.path),
-    observedAt: isoDate(row.observedAt),
+    candidateId: String(identified.candidateId),
+    path: String(identified.path),
+    observedAt: isoDate(identified.observedAt),
+    resolution: identified.resolution,
     metrics: Object.freeze({
-      leads: Math.max(0, asNumber(row.leads)),
-      conversions: Math.max(0, asNumber(row.conversions)),
-      revenue: Math.max(0, asNumber(row.revenue)),
-      sessions: Math.max(0, asNumber(row.sessions))
+      leads: Math.max(0, asNumber(identified.leads)),
+      conversions: Math.max(0, asNumber(identified.conversions)),
+      revenue: Math.max(0, asNumber(identified.revenue)),
+      sessions: Math.max(0, asNumber(identified.sessions))
     })
   });
 }
@@ -128,7 +141,11 @@ export function buildEvidenceSnapshot(records = []) {
         engagedSessions: sumMetric(analytics, 'engagedSessions'),
         outboundClicks: sumMetric(analytics, 'outboundClicks')
       }) : undefined,
-      provenance: Object.freeze({ records: rows.length, sources: [...new Set(rows.map(r => r.source))].sort() })
+      provenance: Object.freeze({
+        records: rows.length,
+        sources: [...new Set(rows.map(r => r.source))].sort(),
+        resolutionMethods: [...new Set(rows.map(r => r.resolution?.method).filter(Boolean))].sort()
+      })
     });
   }
   return Object.freeze(snapshot);
