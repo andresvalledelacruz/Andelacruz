@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout production
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Validate SEO invariants
         shell: bash
@@ -203,7 +203,7 @@ jobs:
                   assert linked_file.exists(), f'Broken root-relative internal link on {url}: {href} -> {linked_file}'
 
           assert 'name="robots" content="noindex,follow"' in withdrawal, 'Withdrawal page must stay noindex,follow'
-          assert 'name="robots" content="noindex,follow"' in friends, 'Placeholder friends page must stay noindex,follow'
+          assert 'name="robots" content="noindex,follow"' in friends, 'Placeholder page must stay noindex,follow'
           assert 'Sitemap: https://desgracias.es/sitemap.xml' in robots, 'robots.txt must advertise canonical sitemap'
           assert 'Disallow: /\n' not in robots, 'robots.txt must not block the whole site'
 
