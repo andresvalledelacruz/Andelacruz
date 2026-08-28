@@ -1,4 +1,5 @@
 import { resolveCandidateEvidence } from './evidence.mjs';
+import { applyLearningPolicy, learningAdjustedScore } from './learning-policy.mjs';
 
 const clamp = (n, min = 0, max = 100) => Math.min(max, Math.max(min, Number(n) || 0));
 
@@ -20,7 +21,13 @@ export function validateCandidate(candidate = {}) {
   return true;
 }
 
-export function scoreCandidate(candidate, config = DEFAULT_SCORING_CONFIG, measuredEvidence = {}) {
+function strongestLearningSignal(candidate, learningSignals = {}) {
+  const signals = (candidate.opportunities || []).map(id => learningSignals[id]).filter(Boolean);
+  if (!signals.length) return {};
+  return signals.sort((a,b)=>(Number(b.sampleSize)||0)-(Number(a.sampleSize)||0) || Math.abs(Number(b.outcomeScore)||0)-Math.abs(Number(a.outcomeScore)||0))[0];
+}
+
+export function scoreCandidate(candidate, config = DEFAULT_SCORING_CONFIG, measuredEvidence = {}, learningSignal = {}) {
   validateCandidate(candidate);
   const w = config.weights;
   const userValue = clamp(candidate.userValue);
@@ -34,7 +41,9 @@ export function scoreCandidate(candidate, config = DEFAULT_SCORING_CONFIG, measu
   const riskPenalty = Number(config.riskPenalty[candidate.risk] ?? 0);
   const rawScore = clamp(weightedValue - riskPenalty);
   const confidenceFactor = config.confidenceFloor + config.confidenceWeight * confidence;
-  const priorityScore = Number((rawScore * confidenceFactor).toFixed(2));
+  const preLearningScore = Number((rawScore * confidenceFactor).toFixed(2));
+  const learning = applyLearningPolicy({userValue,commercial:commercialValue>0},learningSignal);
+  const priorityScore = learningAdjustedScore(preLearningScore, learning);
 
   const reasons = [];
   if (userValue >= 75) reasons.push('high_user_value');
@@ -44,26 +53,29 @@ export function scoreCandidate(candidate, config = DEFAULT_SCORING_CONFIG, measu
   if (candidate.risk === 'high' || candidate.risk === 'critical') reasons.push('manual_review_required');
   if (confidence < 0.5) reasons.push('low_evidence_confidence');
   if (evidenceResolution.evidenceCoverage >= 0.5) reasons.push('measured_evidence_available');
+  if (learning.learningAdjustment > 0) reasons.push('positive_outcome_learning');
+  if (learning.learningAdjustment < 0) reasons.push('negative_outcome_learning');
 
   const blocked = userValue < config.minimumUserValue || candidate.blocked === true;
   return Object.freeze({
     id: candidate.id, slug: candidate.slug, title: candidate.title, domain: candidate.domain,
-    score: priorityScore, rawScore: Number(rawScore.toFixed(2)), confidence, risk: candidate.risk,
+    score: priorityScore, preLearningScore, rawScore: Number(rawScore.toFixed(2)), confidence, risk: candidate.risk,
     riskPenalty, blocked, manualReview: RISK_ORDER[candidate.risk] >= RISK_ORDER[config.manualReviewRisk],
     dimensions: Object.freeze({ userValue, seoValue, commercialValue, strategicFit }),
     evidence: Object.freeze({ ...candidate.evidence, resolution: evidenceResolution }),
+    learning:Object.freeze({adjustment:learning.learningAdjustment,status:learning.learningStatus,sampleSize:Number(learningSignal.sampleSize)||0}),
     opportunities: candidate.opportunities || [], reasons
   });
 }
 
 export function rankCandidates(candidates = [], options = {}) {
-  const { limit = candidates.length, includeBlocked = false, config = DEFAULT_SCORING_CONFIG, evidenceByCandidate = {} } = options;
-  return candidates.map(candidate => scoreCandidate(candidate, config, evidenceByCandidate[candidate.id] || {}))
+  const { limit = candidates.length, includeBlocked = false, config = DEFAULT_SCORING_CONFIG, evidenceByCandidate = {}, learningSignals = {} } = options;
+  return candidates.map(candidate => scoreCandidate(candidate, config, evidenceByCandidate[candidate.id] || {}, strongestLearningSignal(candidate, learningSignals)))
     .filter(result => includeBlocked || !result.blocked)
     .sort((a, b) => b.score - a.score || b.confidence - a.confidence || b.dimensions.userValue - a.dimensions.userValue || a.title.localeCompare(b.title, 'es'))
     .slice(0, limit).map((item, index) => Object.freeze({ rank: index + 1, ...item }));
 }
 
 export function explainScore(result) {
-  return { rankScore: result.score, confidence: result.confidence, risk: result.risk, dimensions: result.dimensions, evidence: result.evidence?.resolution, reasons: result.reasons, note: 'Hypotheses are progressively replaced by measured evidence; provenance remains visible.' };
+  return { rankScore: result.score, preLearningScore:result.preLearningScore, learning:result.learning, confidence: result.confidence, risk: result.risk, dimensions: result.dimensions, evidence: result.evidence?.resolution, reasons: result.reasons, note: 'Outcome learning is bounded by policy and cannot override user-value and safety constraints.' };
 }
