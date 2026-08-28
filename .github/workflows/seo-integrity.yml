@@ -155,9 +155,6 @@ jobs:
 
           today = date.today()
           seen_titles = {}
-          missing_jsonld = []
-          missing_og = []
-          missing_twitter = []
           checked_internal_links = 0
 
           for url, lastmod in entries:
@@ -194,13 +191,9 @@ jobs:
               assert len(parser.canonicals) == 1, f'Expected exactly one canonical on {url}, found {len(parser.canonicals)}'
               assert parser.canonicals[0] == url, f'Canonical mismatch on {url}: {parser.canonicals[0]}'
               assert parser.h1_count == 1, f'Expected exactly one H1 on {url}, found {parser.h1_count}'
-
-              if parser.jsonld_count == 0:
-                  missing_jsonld.append(url)
-              if not parser.og_site_name:
-                  missing_og.append(url)
-              if not parser.twitter_card:
-                  missing_twitter.append(url)
+              assert parser.jsonld_count > 0, f'Missing JSON-LD structured data on {url}'
+              assert parser.og_site_name, f'Missing Open Graph site_name on {url}'
+              assert parser.twitter_card, f'Missing Twitter/X card metadata on {url}'
 
               for href in parser.hrefs:
                   linked_file = local_href_to_file(href)
@@ -217,18 +210,6 @@ jobs:
           total = len(entries)
           print(f'SEO integrity checks passed for {total} sitemap URLs.')
           print(f'Validated {checked_internal_links} root-relative navigational links.')
-          print(f'Coverage report (non-blocking): JSON-LD {total-len(missing_jsonld)}/{total}, OG site_name {total-len(missing_og)}/{total}, Twitter card {total-len(missing_twitter)}/{total}.')
-          if missing_jsonld:
-              print('Missing JSON-LD:')
-              for url in missing_jsonld:
-                  print(f'  - {url}')
-          if missing_og:
-              print('Missing OG site_name:')
-              for url in missing_og:
-                  print(f'  - {url}')
-          if missing_twitter:
-              print('Missing Twitter card:')
-              for url in missing_twitter:
-                  print(f'  - {url}')
+          print(f'Mandatory metadata coverage: JSON-LD {total}/{total}, OG site_name {total}/{total}, Twitter card {total}/{total}.')
           print(f'Hero WebP: {hero_bytes} bytes.')
           PY
