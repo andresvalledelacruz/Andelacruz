@@ -49,6 +49,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
 
   '/duelo/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'contextual',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/duelo/mi-familiar-se-esta-muriendo-y-no-se-que-hacer/':{domain:'grief_end_of_life',needs:['anticipatory_grief','caregiver_support','palliative_information'],intents:[],opportunities:['PSYCHOLOGY'],risk:'high',consent:'before_lead',commercialPolicy:'restricted',defaultFlags:['medical_boundary','no_prognosis','palliative_care_first','safety_override']},
+  '/duelo/he-perdido-a-mi-bebe-durante-el-embarazo/':{domain:'pregnancy_loss_grief',needs:['pregnancy_loss_grief','grief_support','professional_assessment'],intents:[],opportunities:['PSYCHOLOGY'],risk:'high',consent:'before_lead',commercialPolicy:'restricted',defaultFlags:['medical_boundary','no_causal_attribution','no_automatic_diagnosis','safety_override']},
   '/duelo/ha-muerto-alguien-que-quiero-y-no-se-como-seguir/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/duelo/la-muerte-fue-inesperada-o-traumatica/':{domain:'grief',needs:['grief_support','trauma_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'high',consent:'before_lead',commercialPolicy:'restricted',defaultFlags:['trauma_informed','no_automatic_diagnosis']},
   '/duelo/han-pasado-meses-y-sigo-muy-mal/':{domain:'grief',needs:['grief_support','professional_assessment'],intents:[],opportunities:['PSYCHOLOGY'],risk:'high',consent:'before_lead',commercialPolicy:'restricted',defaultFlags:['no_automatic_diagnosis','safety_override']},
@@ -58,7 +59,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/':{domain:'grief',needs:['support_grieving_person'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 51;
+export const EXPECTED_PRODUCTION_URL_COUNT = 52;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
