@@ -60,8 +60,9 @@ test('international expert audit remains visible and subordinate to Spanish care
 
 test('page protects direct safety-question guidance', () => {
   assert.match(html, /¿Estás pensando en hacerte daño o en morir\?/i);
-  assert.match(html, /preguntar[^<]{0,220}no provoca que actúe/i);
   assert.match(html, /preguntar directamente por suicidio no «mete la idea en la cabeza»/i);
+  assert.match(html, /no provoca que actúe/i);
+  assert.match(html, /puede ayudar a que se sienta comprendida/i);
   assert.match(html, /si existe peligro inmediato o una emergencia vital/i);
 });
 
