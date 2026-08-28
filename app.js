@@ -8,6 +8,7 @@
     document.body.append(script);
   };
   load('/app-core.js',()=>{
+    load('/urgent-help-nav.js');
     load('/next-step-guidance.js',()=>load('/next-step-adapter.js'));
   });
 })();
