@@ -137,8 +137,65 @@
   line-height:1;
 }
 
+/* CTA de ayuda urgente aprobado para la cabecera principal */
+.urgent-help-link{
+  min-width:148px;
+  height:72px;
+  padding:0 16px;
+  border:1px solid rgba(123,63,30,.22);
+  border-radius:11px;
+  background:rgba(123,63,30,.08);
+  color:#7B3F1E;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  font-size:.82rem;
+  font-weight:700;
+  line-height:1.25;
+  box-shadow:0 4px 12px rgba(123,63,30,.05);
+}
+
+.urgent-help-link span{display:block;width:100%;text-align:center}
+
+.header-cta{
+  min-width:206px;
+  height:72px;
+  padding-top:0;
+  padding-bottom:0;
+  text-align:center;
+}
+
+@media (min-width:1060px){
+  .header-inner{
+    grid-template-columns:210px 1fr 148px 206px;
+    gap:14px;
+  }
+  .main-nav{gap:15px;font-size:.81rem}
+}
+
+@media (max-width:1050px){
+  .urgent-help-link{
+    height:58px;
+    min-width:136px;
+    font-size:.76rem;
+  }
+}
+
 @media (max-width:760px){
   .brand{
     font-size:1.48rem;
   }
+  .urgent-help-link{
+    display:flex;
+    height:52px;
+    min-width:128px;
+    padding:0 10px;
+    font-size:.72rem;
+  }
+}
+
+@media (max-width:560px){
+  .urgent-help-link{display:none}
 }
