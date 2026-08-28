@@ -1,0 +1,20 @@
+{
+  "release": "brain-v3",
+  "engineVersion": 3,
+  "brainCommit": "aef9791da02f8168215c8a466f5f0bb5e61a3f52",
+  "runtimeFunction": "recommendation-runtime",
+  "runtimeSource": "supabase/functions/recommendation-runtime/index.ts",
+  "contract": "opportunity/runtime-contract.mjs",
+  "safetyPolicy": {
+    "safetyOverrideFirst": true,
+    "commercialSuppressionOnSafety": true,
+    "learningMinimumSample": 10,
+    "learningMeasuredSample": 50
+  },
+  "deploymentPolicy": {
+    "pinImmutableCommit": true,
+    "requireQualityGate": true,
+    "requireSeoIntegrity": true,
+    "persistBrainCommit": true
+  }
+}
