@@ -33,6 +33,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/trabajo/necesito-formacion-para-encontrar-trabajo/':{domain:'work',needs:['training_gap'],intents:[],opportunities:['TRAINING','JOB_SEARCH'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['market_evidence']},
   '/trabajo/odio-mi-trabajo-pero-no-puedo-dejarlo/':{domain:'work',needs:['find_job','financial_transition'],intents:[],opportunities:['JOB_SEARCH','CV_SERVICE','TRAINING','PSYCHOLOGY','DEBT_ADVICE'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/trabajo/mi-jefe-me-hace-la-vida-imposible/':{domain:'work',needs:['labor_legal','work_stress'],intents:[],opportunities:['LEGAL_LABOR','PSYCHOLOGY','JOB_SEARCH'],risk:'high',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
+  '/trabajo/tengo-miedo-de-equivocarme-en-el-trabajo/':{domain:'work',needs:['work_stress'],intents:[],opportunities:['PSYCHOLOGY','LEGAL_LABOR','TRAINING'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
 
   '/dinero/':{domain:'money',needs:[],intents:[],opportunities:['DEBT_ADVICE','DEBT_CONSOLIDATION','LOAN','MORTGAGE_HELP','INSOLVENCY_LEGAL'],risk:'contextual',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/dinero/no-llego-a-fin-de-mes/':{domain:'money',needs:['budget_gap'],intents:[],opportunities:['DEBT_ADVICE','ENERGY_SWITCH','TELECOM_SWITCH'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
@@ -45,7 +46,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/dinero/en-casa-discutimos-por-dinero/':{domain:'money_family',needs:['couples_support','financial_conflict'],intents:[],opportunities:['COUPLES_THERAPY','FAMILY_MEDIATION','DEBT_ADVICE','PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['mediation_not_for_active_abuse']}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 39;
+export const EXPECTED_PRODUCTION_URL_COUNT = 40;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
