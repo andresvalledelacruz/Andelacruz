@@ -48,11 +48,12 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
 
   '/duelo/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'contextual',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/duelo/ha-muerto-alguien-que-quiero-y-no-se-como-seguir/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
+  '/duelo/la-muerte-fue-inesperada-o-traumatica/':{domain:'grief',needs:['grief_support','trauma_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'high',consent:'before_lead',commercialPolicy:'restricted',defaultFlags:['trauma_informed','no_automatic_diagnosis']},
   '/duelo/no-pude-despedirme/':{domain:'grief',needs:['grief_support'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]},
   '/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/':{domain:'grief',needs:['support_grieving_person'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 45;
+export const EXPECTED_PRODUCTION_URL_COUNT = 46;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
