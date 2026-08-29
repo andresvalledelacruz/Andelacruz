@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - name: Use Node.js 24
         uses: actions/setup-node@v7
@@ -34,6 +36,24 @@ jobs:
           set -euo pipefail
           find src ops tests opportunity scripts -type f \( -name '*.js' -o -name '*.mjs' \) -print0 | xargs -0 -n1 node --check
           find . -maxdepth 1 -type f -name '*.js' -print0 | xargs -0 -n1 node --check
+
+      - name: Require explicit owner approval for V9 visual changes
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          V9_OWNER_APPROVED: ${{ contains(github.event.pull_request.labels.*.name, 'v9-owner-approved') }}
+        run: |
+          set -euo pipefail
+          changed_files="$(git diff --name-only "${{ github.event.pull_request.base.sha }}"...HEAD)"
+          locked_pattern='^(styles(-[1-7])?\.css|assets/manos-apoyo\.(png|webp))$'
+
+          if printf '%s\n' "$changed_files" | grep -Eq "$locked_pattern"; then
+            if [ "$V9_OWNER_APPROVED" != "true" ]; then
+              echo "V9 integrity violation: this PR changes the approved visual shell without explicit owner approval."
+              echo "Add the 'v9-owner-approved' label only after Andrés explicitly approves the visual change."
+              exit 1
+            fi
+          fi
 
       - name: Verify locked V9 application core
         shell: bash
