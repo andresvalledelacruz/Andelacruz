@@ -8,11 +8,16 @@ const priorityByLevel = {
 };
 
 function caseInput(payload = {}) {
+  const isStoryUpdate = payload.kind === 'story_update_submission';
   return {
     kind: 'user_case',
     category: typeof payload.category === 'string' ? payload.category : '',
-    title: typeof payload.title === 'string' ? payload.title : '',
-    story: typeof payload.story === 'string' ? payload.story : '',
+    title: typeof payload.title === 'string'
+      ? payload.title
+      : isStoryUpdate ? 'Actualización de una historia' : '',
+    story: isStoryUpdate
+      ? (typeof payload.text === 'string' ? payload.text : '')
+      : (typeof payload.story === 'string' ? payload.story : ''),
     needs: Array.isArray(payload.needs) ? payload.needs : []
   };
 }
