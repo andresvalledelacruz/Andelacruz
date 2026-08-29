@@ -200,7 +200,7 @@
   .urgent-help-link{display:none}
 }
 
-/* V9 · integración orgánica de la imagen de apoyo */
+/* V9 · integración orgánica de la imagen de apoyo con transparencia real */
 @media (min-width:1060px){
   .hero-final-media{
     margin-left:24px;
@@ -210,12 +210,6 @@
     position:absolute;
     inset:0;
     display:block;
-    -webkit-mask-image:radial-gradient(ellipse 58% 64% at 58% 53%,#000 42%,rgba(0,0,0,.9) 58%,rgba(0,0,0,.45) 76%,transparent 100%);
-    mask-image:radial-gradient(ellipse 58% 64% at 58% 53%,#000 42%,rgba(0,0,0,.9) 58%,rgba(0,0,0,.45) 76%,transparent 100%);
-    -webkit-mask-repeat:no-repeat;
-    mask-repeat:no-repeat;
-    -webkit-mask-size:100% 100%;
-    mask-size:100% 100%;
   }
 
   .hero-final-media img{
@@ -223,18 +217,14 @@
     object-position:58% center;
   }
 
-  /* El color del hero cubre progresivamente los cuatro bordes. */
+  /* El activo ya no tiene fondo rectangular; solo se suaviza la entrada izquierda. */
   .hero-final-media::before{
     inset:-1px;
-    background:
-      linear-gradient(180deg,#f9e8d5 0%,rgba(249,232,213,.9) 7%,rgba(249,232,213,0) 26%),
-      linear-gradient(0deg,#f8e1c7 0%,rgba(248,225,199,.86) 7%,rgba(248,225,199,0) 25%),
-      linear-gradient(270deg,#f8e1c7 0%,rgba(248,225,199,.92) 8%,rgba(248,225,199,0) 25%),
-      linear-gradient(90deg,#fbf0e3 0%,rgba(251,240,227,.92) 8%,rgba(251,240,227,.42) 23%,rgba(251,240,227,0) 43%);
+    background:linear-gradient(90deg,#fbf0e3 0%,rgba(251,240,227,.72) 10%,rgba(251,240,227,.18) 24%,transparent 40%);
   }
 
   .hero-final-media::after{
-    background:radial-gradient(ellipse at 58% 52%,rgba(255,255,255,0) 48%,rgba(248,225,199,.12) 72%,rgba(248,225,199,.38) 100%);
+    background:none;
   }
 }
 
@@ -244,3 +234,4 @@
     object-position:center;
   }
 }
+
