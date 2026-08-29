@@ -6,6 +6,13 @@ import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { evaluateExecutiveDecision } from './executive-decision-engine.js';
 import { buildModerationTriage, sortModerationItems, moderationTriageSummary } from './moderation-triage.js';
+import {
+  buildStoryUpdateDecisionTask,
+  candidateStatusForDecision,
+  isStoryUpdateSubmission,
+  normalizeStoryUpdateCandidateId,
+  safetyLevelBlocksAutomaticUpdatePublication
+} from './story-update-moderation.js';
 
 const { Pool } = pg;
 const app = Fastify({ logger: true, bodyLimit: 16 * 1024 });
@@ -220,7 +227,7 @@ function publishedSummary(row) {
   };
 }
 
-function publishedDetail(row) {
+function publishedDetail(row, updates = []) {
   return {
     ...publishedSummary(row),
     body: [row.story],
@@ -228,7 +235,12 @@ function publishedDetail(row) {
       {
         label: 'Publicada',
         text: 'Esta prueba pasó por revisión humana antes de incorporarse al entorno de staging.'
-      }
+      },
+      ...updates.map((update) => ({
+        label: update.phase,
+        text: update.update_text,
+        published_at: update.published_at
+      }))
     ],
     helped: [],
     nextSteps: [],
@@ -357,12 +369,19 @@ app.get('/public/stories/:slug', async (request, reply) => {
       [slug]
     );
     if (!rows[0]) return reply.code(404).send({ error: 'story_not_found' });
+    const updatesResult = await pool.query(
+      `select phase, update_text, published_at
+       from staging_story_updates
+       where story_id = $1 and status = 'published' and synthetic = true
+       order by published_at asc, id asc`,
+      [rows[0].id]
+    );
     return {
       environment,
       synthetic: true,
       source: 'human_moderated_staging',
       disclaimer: 'Historia ficticia aprobada por moderación humana en staging.',
-      story: publishedDetail(rows[0])
+      story: publishedDetail(rows[0], updatesResult.rows)
     };
   } catch (error) {
     app.log.error({ err: error, slug }, 'published staging story unavailable');
@@ -602,7 +621,10 @@ app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, asyn
     const executiveResult = evaluateCase(original);
     const executiveSummary = executiveAuditSummary(executiveResult);
 
-    if (executiveResult.decision === 'SAFETY_GATEWAY' && decision !== 'escalate') {
+    const isStoryUpdate = isStoryUpdateSubmission(original);
+    const updateSafetyBlocked = isStoryUpdate &&
+      safetyLevelBlocksAutomaticUpdatePublication(executiveSummary.safety_level);
+    if ((executiveResult.decision === 'SAFETY_GATEWAY' || updateSafetyBlocked) && decision !== 'escalate') {
       await client.query('rollback');
       return reply.code(409).send({
         error: 'safety_gateway_requires_escalation',
@@ -632,23 +654,36 @@ app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, asyn
       executive_brief: executiveSummary
     };
 
+    if (isStoryUpdate) {
+      const candidateId = normalizeStoryUpdateCandidateId(original);
+      const candidateStatus = candidateStatusForDecision(decision);
+      const candidateResult = await client.query(
+        `update staging_story_update_candidates
+            set status = $1, decided_at = $2, decision_reason = $3
+          where id = $4
+            and moderation_message_id = $5::bigint
+            and status = 'pending_moderation'
+        returning id`,
+        [candidateStatus, decidedAt, reasonCode, candidateId, messageId]
+      );
+      if (!candidateResult.rows[0]) throw new Error('story_update_candidate_state_mismatch');
+    }
+
     if (decision === 'approve') {
+      const task = isStoryUpdate
+        ? buildStoryUpdateDecisionTask({ auditEvent, submission: original, decision })
+        : { ...auditEvent, task: 'publish_story_candidate', story_submission: original };
       await client.query(
         'select pgmq.send($1, $2::jsonb)',
-        ['internal_tasks', JSON.stringify({
-          ...auditEvent,
-          task: 'publish_story_candidate',
-          story_submission: original
-        })]
+        ['internal_tasks', JSON.stringify(task)]
       );
     } else if (decision === 'escalate') {
+      const task = isStoryUpdate
+        ? buildStoryUpdateDecisionTask({ auditEvent, submission: original, decision })
+        : { ...auditEvent, task: 'human_safety_review', story_submission: original };
       await client.query(
         'select pgmq.send($1, $2::jsonb)',
-        ['safety', JSON.stringify({
-          ...auditEvent,
-          task: 'human_safety_review',
-          story_submission: original
-        })]
+        ['safety', JSON.stringify(task)]
       );
     } else {
       await client.query(
@@ -727,3 +762,4 @@ process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);
 
 await app.listen({ port, host });
+
