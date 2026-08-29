@@ -45,4 +45,3 @@ export function buildStoryUpdateDecisionTask({ auditEvent, submission, decision 
 export function safetyLevelBlocksAutomaticUpdatePublication(level) {
   return level === 'P0' || level === 'P1';
 }
-
