@@ -5,6 +5,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { evaluateExecutiveDecision } from './executive-decision-engine.js';
+import { registerPrivacySafeHttpObservability } from './fastify-privacy-safe-observability.js';
 import { buildModerationTriage, sortModerationItems, moderationTriageSummary } from './moderation-triage.js';
 import {
   buildStoryUpdateDecisionTask,
@@ -16,6 +17,7 @@ import {
 
 const { Pool } = pg;
 const app = Fastify({ logger: true, bodyLimit: 16 * 1024 });
+registerPrivacySafeHttpObservability(app, { service: 'desgracias-ops-api' });
 
 const port = Number(process.env.OPS_PORT || process.env.PORT || 10001);
 const host = '0.0.0.0';
