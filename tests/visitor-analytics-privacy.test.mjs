@@ -4,9 +4,16 @@ import { readFile } from 'node:fs/promises';
 
 const source = await readFile(new URL('../visitor-analytics.js', import.meta.url), 'utf8');
 const loader = await readFile(new URL('../app.js', import.meta.url), 'utf8');
+const publicRuntime = await readFile(new URL('../public-page-runtime.js', import.meta.url), 'utf8');
 
 test('visitor analytics is loaded without changing homepage markup', () => {
   assert.match(loader, /load\('\/visitor-analytics\.js'\);/);
+});
+
+test('public content runtime loads the same privacy-safe analytics beacon', () => {
+  assert.match(publicRuntime, /script\.src = '\/visitor-analytics\.js'/);
+  assert.equal(publicRuntime.includes('innerHTML'), false);
+  assert.equal(publicRuntime.includes('document.write'), false);
 });
 
 test('visitor analytics never reads or sends persistent identifiers or URL query data', () => {
