@@ -1,5 +1,6 @@
 import Fastify from 'fastify';
 import pg from 'pg';
+import { queueStorySubmissionWithAuthorCredential } from './story-submission-author-credential-service.js';
 
 const { Pool } = pg;
 const app = Fastify({
@@ -10,6 +11,7 @@ const app = Fastify({
 const port = Number(process.env.PORT || 10000);
 const host = '0.0.0.0';
 const environment = process.env.NODE_ENV || 'staging';
+const authorUpdatePepper = process.env.STORY_AUTHOR_UPDATE_PEPPER || '';
 const queueNames = ['moderation', 'safety', 'internal_tasks'];
 const categories = [
   'Duelo y Pérdidas',
@@ -354,11 +356,11 @@ app.post('/api/stories', async (request, reply) => {
     return reply.code(429).send({ error: 'rate_limit', retry_after_seconds: 3600 });
   }
 
-  const message = {
+  const submission = {
     kind: 'story_submission',
     version: 1,
     environment,
-    source: 'web_staging',
+    source: environment === 'staging' ? 'web_staging' : 'web',
     submitted_at: new Date().toISOString(),
     alias: alias || null,
     category,
@@ -368,22 +370,30 @@ app.post('/api/stories', async (request, reply) => {
     synthetic
   };
 
-  try {
-    const { rows } = await pool.query(
-      'select pgmq.send($1, $2::jsonb) as msg_id',
-      ['moderation', JSON.stringify(message)]
-    );
-    const msgId = rows[0]?.msg_id ?? null;
-    app.log.info({ msgId, category, synthetic }, 'story submission queued for moderation');
-    return reply.code(202).send({
-      status: 'queued_for_moderation',
-      submission_id: msgId,
-      environment
-    });
-  } catch (error) {
-    app.log.error({ err: error }, 'story submission queue failed');
+  const result = await queueStorySubmissionWithAuthorCredential({
+    db: pool,
+    submission,
+    pepper: authorUpdatePepper,
+    environment
+  });
+
+  if (!result.ok) {
+    const error = result.error || 'queue_unavailable';
+    app.log.error({ error, category, synthetic }, 'story submission queue failed');
+    if (error === 'staging_requires_synthetic_content') {
+      return reply.code(400).send({ error });
+    }
+    if (error === 'database_not_configured') {
+      return reply.code(503).send({ error });
+    }
+    if (error === 'author_update_pepper_not_configured') {
+      return reply.code(503).send({ error });
+    }
     return reply.code(503).send({ error: 'queue_unavailable' });
   }
+
+  app.log.info({ submissionId: result.value.submission_id, category, synthetic }, 'story submission queued for moderation');
+  return reply.code(202).send(result.value);
 });
 
 app.post('/api/stories/:slug/interactions', async (request, reply) => {
