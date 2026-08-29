@@ -31,9 +31,9 @@ test('POST /api/stories no longer sends directly to moderation', () => {
   assert.doesNotMatch(route, /author_update_key_hash\s*:/);
 });
 
-test('endpoint never logs or re-serializes the raw author secret', () => {
+test('endpoint never names, logs or re-serializes the raw author secret', () => {
   const route = storyPostRoute(apiSource);
+  assert.doesNotMatch(route, /author_update_secret/);
   assert.doesNotMatch(route, /JSON\.stringify\s*\(\s*result\.value/);
-  assert.doesNotMatch(route, /log\.(?:info|error|warn|debug)\([^\n]*author_update_secret/);
-  assert.match(route, /author_update_secret/);
+  assert.doesNotMatch(route, /log\.(?:info|error|warn|debug)\([^\n]*(?:secret|credential)/i);
 });
