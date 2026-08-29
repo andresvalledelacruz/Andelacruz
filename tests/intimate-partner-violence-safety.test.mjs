@@ -35,7 +35,7 @@ test('URL56 remains a high-risk restricted intimate-partner-violence support rou
     'no_commercial_crisis_cta',
     'safety_override'
   ]) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
-  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 58);
+  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 59);
 });
 
 test('emergency resources and 016 remain visible with accurate scope', () => {
