@@ -1,4 +1,9 @@
+import crypto from 'node:crypto';
 import { hashAuthorSecret, validateAuthorSecret } from './story-update-policy.js';
+
+export function generateAuthorUpdateSecret() {
+  return crypto.randomBytes(32).toString('base64url');
+}
 
 export function validateAuthorUpdatePepper(pepper) {
   const value = String(pepper || '');
