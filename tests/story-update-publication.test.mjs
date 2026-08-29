@@ -60,4 +60,3 @@ test('moderation decision synchronizes candidate before queueing publication', (
   assert.match(opsApi, /status = 'pending_moderation'/i);
   assert.match(opsApi, /story_update_candidate_state_mismatch/);
 });
-
