@@ -16,6 +16,13 @@ test('public content runtime loads the same privacy-safe analytics beacon', () =
   assert.equal(publicRuntime.includes('document.write'), false);
 });
 
+test('core public hubs load the markup-free analytics runtime', async () => {
+  for (const relativePath of ['../familia/index.html', '../rupturas/index.html', '../duelo/index.html']) {
+    const html = await readFile(new URL(relativePath, import.meta.url), 'utf8');
+    assert.match(html, /<script src="\/public-page-runtime\.js" async><\/script>\s*<\/body>/);
+  }
+});
+
 test('visitor analytics never reads or sends persistent identifiers or URL query data', () => {
   for (const forbidden of [
     'document.cookie',
