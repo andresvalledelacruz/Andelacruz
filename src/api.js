@@ -2,12 +2,14 @@ import Fastify from 'fastify';
 import pg from 'pg';
 import { queueStorySubmissionWithAuthorCredential } from './story-submission-author-credential-service.js';
 import { handleStoryUpdateSubmission } from './story-update-http-handler.js';
+import { registerPrivacySafeHttpObservability } from './fastify-privacy-safe-observability.js';
 
 const { Pool } = pg;
 const app = Fastify({
   logger: true,
   bodyLimit: 32 * 1024
 });
+registerPrivacySafeHttpObservability(app, { service: 'desgracias-api' });
 
 const port = Number(process.env.PORT || 10000);
 const host = '0.0.0.0';
