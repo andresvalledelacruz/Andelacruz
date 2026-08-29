@@ -39,7 +39,7 @@ test('URL58 remains a high-risk restricted sexual-violence support route', () =>
     'no_commercial_crisis_cta',
     'safety_override'
   ]) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
-  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 58);
+  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 59);
 });
 
 test('emergency and healthcare-first guidance remains explicit', () => {
