@@ -7,6 +7,7 @@
     script.onerror=()=>console.error(`No se ha podido cargar ${src}`);
     document.body.append(script);
   };
+  load('/visitor-analytics.js');
   load('/app-core.js',()=>{
     load('/urgent-help-nav.js');
     load('/next-step-guidance.js',()=>load('/next-step-adapter.js'));
