@@ -45,6 +45,64 @@ export function secureHashEqual(left, right) {
   return a.length > 0 && a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
+export function authorizeStoryUpdate({ secret, expectedHash, pepper = '' } = {}) {
+  const checked = validateAuthorSecret(secret);
+  if (!checked.ok) return checked;
+  if (!/^[a-f0-9]{64}$/i.test(String(expectedHash || ''))) {
+    return { ok: false, error: 'author_authorization_unavailable' };
+  }
+
+  const actualHash = hashAuthorSecret(checked.value, pepper);
+  if (!secureHashEqual(actualHash, expectedHash)) {
+    return { ok: false, error: 'author_authorization_failed' };
+  }
+
+  return { ok: true };
+}
+
+export function buildStoryUpdateModerationMessage({
+  storyId,
+  storySlug,
+  phase,
+  text,
+  synthetic = false,
+  environment = 'staging',
+  submittedAt = new Date().toISOString()
+} = {}) {
+  const update = validateUpdateInput({ phase, text, synthetic });
+  if (!update.ok) return update;
+
+  const normalizedStoryId = String(storyId || '').trim();
+  const normalizedStorySlug = String(storySlug || '').trim();
+  if (!normalizedStoryId || !normalizedStorySlug) {
+    return { ok: false, error: 'story_identity_required' };
+  }
+  if (environment === 'staging' && update.value.synthetic !== true) {
+    return { ok: false, error: 'staging_requires_synthetic_content' };
+  }
+  if (!submittedAt || Number.isNaN(Date.parse(submittedAt))) {
+    return { ok: false, error: 'invalid_submitted_at' };
+  }
+
+  return {
+    ok: true,
+    value: {
+      kind: 'story_update_submission',
+      version: 1,
+      environment,
+      source: 'author_update',
+      submitted_at: submittedAt,
+      story_id: normalizedStoryId,
+      story_slug: normalizedStorySlug,
+      phase: update.value.phase,
+      text: update.value.text,
+      synthetic: update.value.synthetic,
+      moderation_required: true,
+      publish_directly: false
+    }
+  };
+}
+
 export function publicPhaseLabel(phase) {
   return {
     dias_despues: 'Días después',
