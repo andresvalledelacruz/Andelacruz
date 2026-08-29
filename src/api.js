@@ -1,6 +1,7 @@
 import Fastify from 'fastify';
 import pg from 'pg';
 import { queueStorySubmissionWithAuthorCredential } from './story-submission-author-credential-service.js';
+import { handleStoryUpdateSubmission } from './story-update-http-handler.js';
 
 const { Pool } = pg;
 const app = Fastify({
@@ -175,6 +176,7 @@ const pool = process.env.DATABASE_URL
 const rateWindowMs = 60 * 60 * 1000;
 const rateMax = 3;
 const submissionsByIp = new Map();
+const storyUpdateSubmissionsByIp = new Map();
 const interactionWindowMs = 10 * 60 * 1000;
 const interactionMax = 30;
 const interactionsByIp = new Map();
@@ -244,6 +246,12 @@ app.addHook('onSend', async (request, reply, payload) => {
 });
 
 app.options('/api/stories', async (request, reply) => {
+  if (!allowOriginOrDeny(request, reply)) return;
+  applyCors(request, reply);
+  return reply.code(204).send();
+});
+
+app.options('/api/stories/:storyId/updates', async (request, reply) => {
   if (!allowOriginOrDeny(request, reply)) return;
   applyCors(request, reply);
   return reply.code(204).send();
@@ -394,6 +402,30 @@ app.post('/api/stories', async (request, reply) => {
 
   app.log.info({ submissionId: result.value.submission_id, category, synthetic }, 'story submission queued for moderation');
   return reply.code(202).send(result.value);
+});
+
+app.post('/api/stories/:storyId/updates', async (request, reply) => {
+  if (!allowOriginOrDeny(request, reply)) return;
+  if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
+
+  const ip = request.ip || 'unknown';
+  if (!withinRateLimit(storyUpdateSubmissionsByIp, ip, rateWindowMs, rateMax)) {
+    return reply.code(429).send({ error: 'rate_limit', retry_after_seconds: 3600 });
+  }
+
+  const storyId = String(request.params?.storyId || '').trim();
+  const result = await handleStoryUpdateSubmission({
+    db: pool,
+    storyId,
+    body: request.body ?? {},
+    environment,
+    pepper: authorUpdatePepper
+  });
+
+  if (result.statusCode >= 500) {
+    app.log.error({ storyId, error: result.body?.error || 'story_update_unavailable' }, 'story update submission failed');
+  }
+  return reply.code(result.statusCode).send(result.body);
 });
 
 app.post('/api/stories/:slug/interactions', async (request, reply) => {
