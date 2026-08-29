@@ -1,5 +1,6 @@
 import pg from 'pg';
 import { evaluateCriticalSafety } from './critical-safety-taxonomy.js';
+import { normalizeAuthorUpdateKeyHash } from './story-publish-author-key.js';
 
 const { Pool } = pg;
 const environment = process.env.NODE_ENV || 'staging';
@@ -41,8 +42,13 @@ async function ensureSchema() {
       published_at timestamptz not null default now(),
       nadie_solo_eligible boolean not null default true,
       publication_version integer not null default 1,
-      status text not null default 'published' check (status in ('published','withdrawn'))
+      status text not null default 'published' check (status in ('published','withdrawn')),
+      author_update_key_hash char(64)
     )
+  `);
+  await pool.query(`
+    alter table staging_published_stories
+      add column if not exists author_update_key_hash char(64)
   `);
   await pool.query(`
     create index if not exists staging_published_stories_published_at_idx
@@ -138,12 +144,14 @@ async function processOne(messageId) {
     const needs = Array.isArray(submission.needs) ? submission.needs.slice(0, 4) : [];
     const approvedAt = event.decided_at ? new Date(event.decided_at) : new Date();
     const submittedAt = submission.submitted_at ? new Date(submission.submitted_at) : null;
+    const authorUpdateKeyHash = normalizeAuthorUpdateKeyHash(submission.author_update_key_hash);
 
     await client.query(
       `insert into staging_published_stories (
          source_moderation_message_id, slug, alias, category, title, story, needs,
-         synthetic, submitted_at, approved_at, published_at, nadie_solo_eligible
-       ) values ($1,$2,$3,$4,$5,$6,$7::jsonb,$8,$9,$10,now(),true)
+         synthetic, submitted_at, approved_at, published_at, nadie_solo_eligible,
+         author_update_key_hash
+       ) values ($1,$2,$3,$4,$5,$6,$7::jsonb,$8,$9,$10,now(),true,$11)
        on conflict (source_moderation_message_id) do nothing`,
       [
         moderationId,
@@ -155,7 +163,8 @@ async function processOne(messageId) {
         JSON.stringify(needs),
         submission.synthetic === true,
         submittedAt,
-        approvedAt
+        approvedAt,
+        authorUpdateKeyHash
       ]
     );
 
