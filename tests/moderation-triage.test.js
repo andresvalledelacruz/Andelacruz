@@ -15,6 +15,33 @@ test('P0 self-harm language receives emergency priority and safety gateway', () 
   assert.ok(triage.official_resources_spain.includes('024'));
 });
 
+test('P0 language inside an author story update is triaged from update text', () => {
+  const triage = buildModerationTriage({
+    kind: 'story_update_submission',
+    story_id: '42',
+    phase: 'mes_1',
+    text: 'Desde la última vez estoy pensando en quitarme la vida y necesito ayuda inmediata.',
+    synthetic: true
+  });
+  assert.equal(triage.safety_level, 'P0');
+  assert.equal(triage.priority_label, 'EMERGENCIA');
+  assert.equal(triage.safety_gateway, true);
+  assert.ok(triage.official_resources_spain.includes('112'));
+  assert.ok(triage.official_resources_spain.includes('024'));
+});
+
+test('ordinary author update remains normal when its update text contains no safety signal', () => {
+  const triage = buildModerationTriage({
+    kind: 'story_update_submission',
+    story_id: '42',
+    phase: 'mes_3',
+    text: 'Han pasado tres meses y sigo reorganizando mis rutinas. Poco a poco he recuperado contacto con amistades y ahora tengo días más estables.',
+    synthetic: true
+  });
+  assert.equal(triage.safety_level, 'NONE');
+  assert.equal(triage.priority_label, 'NORMAL');
+});
+
 test('ordinary work distress remains normal triage and routes to work/career', () => {
   const triage = buildModerationTriage({
     category: 'Trabajo',
