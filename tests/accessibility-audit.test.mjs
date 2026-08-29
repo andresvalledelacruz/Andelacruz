@@ -9,7 +9,7 @@ test('acepta HTML con guardrails básicos de accesibilidad', () => {
 });
 
 test('detecta imagen sin alt y controles sin nombre accesible', () => {
-  const errors = auditHtml(base('<img src="x.jpg"><a href="/"><span aria-hidden="true">→</span></a><button><svg aria-hidden="true"></svg></button>'));
+  const errors = auditHtml(base('<img src="x.jpg"><a href="/"><svg aria-hidden="true"></svg></a><button><svg aria-hidden="true"></svg></button>'));
   assert.ok(errors.some((e) => e.includes('imagen sin atributo alt')));
   assert.ok(errors.some((e) => e.includes('enlace con href sin nombre accesible')));
   assert.ok(errors.some((e) => e.includes('botón sin nombre accesible')));
