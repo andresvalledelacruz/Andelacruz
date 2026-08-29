@@ -2,12 +2,25 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   buildQueuedStorySubmission,
+  generateAuthorUpdateSecret,
   prepareStoryAuthorUpdateKey,
   validateAuthorUpdatePepper
 } from '../src/story-author-key-envelope.js';
 
 const secret = 'Abcdefghijklmnopqrstuvwxyz_123456';
 const pepper = 'staging-test-pepper-2026';
+
+test('generates a strong URL-safe author update secret', () => {
+  const generated = generateAuthorUpdateSecret();
+  assert.match(generated, /^[A-Za-z0-9_-]{43}$/);
+  assert.equal(prepareStoryAuthorUpdateKey({ secret: generated, pepper }).ok, true);
+});
+
+test('generates a fresh author update secret for each story', () => {
+  const first = generateAuthorUpdateSecret();
+  const second = generateAuthorUpdateSecret();
+  assert.notEqual(first, second);
+});
 
 test('requires a configured server pepper before deriving an author update hash', () => {
   assert.equal(validateAuthorUpdatePepper('').ok, false);
