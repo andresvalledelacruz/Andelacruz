@@ -46,5 +46,8 @@ jobs:
       - name: Run test suite
         run: npm test
 
+      - name: Accessibility audit
+        run: npm run audit:accessibility
+
       - name: Smoke test opportunity ranking
         run: npm run rank:opportunities > /tmp/opportunity-ranking.json

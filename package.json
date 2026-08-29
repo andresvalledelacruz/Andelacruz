@@ -10,6 +10,7 @@
     "worker": "node src/worker.js",
     "rank:opportunities": "node scripts/rank-opportunities.mjs --limit=20",
     "report:opportunities": "node scripts/decision-report.mjs",
+    "audit:accessibility": "node scripts/audit-accessibility.mjs",
     "test:story-updates": "node --test tests/story-update-policy.test.js",
     "test:needs-router": "node --test tests/human-needs-router.test.js",
     "test:decision-ledger": "node --test tests/decision-ledger.test.js",
