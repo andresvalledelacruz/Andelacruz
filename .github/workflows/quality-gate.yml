@@ -67,7 +67,7 @@ jobs:
           verify_locked_file "styles-4.css" "2b7b48330f57f451941a5215f5c3b6dfe9920eb1"
           verify_locked_file "styles-5.css" "30cc0d172012f1afa7ab018d6084da8b80a1eb60"
           verify_locked_file "styles-6.css" "5e8115dc337af2901714d4bd79573e066e39447f"
-          verify_locked_file "styles-7.css" "d2029c20584f5ea882667a8323a996008a9c01df"
+          verify_locked_file "styles-7.css" "512b94df06c228b0872159f48e46f76d90a7d118"
           verify_locked_file "assets/manos-apoyo.png" "df1cd2a23b0d2e960f2555a782260e596959d38f"
           verify_locked_file "assets/manos-apoyo.webp" "7dbedbd313ed103b445022c63fd709996d7372fc"
 
