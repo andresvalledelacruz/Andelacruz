@@ -43,6 +43,34 @@ jobs:
             test "$(git hash-object app-core.js)" = "aba744d73a3afdf5b38cd3eb0575e2b82b81ae93"
           fi
 
+      - name: Verify locked V9 visual shell
+        shell: bash
+        run: |
+          set -euo pipefail
+          verify_locked_file() {
+            local path="$1"
+            local expected="$2"
+            test -f "$path"
+            local actual
+            actual="$(git hash-object "$path")"
+            if [ "$actual" != "$expected" ]; then
+              echo "V9 integrity violation: $path changed (expected $expected, got $actual)."
+              echo "The approved V9 visual shell is locked. Any intentional visual change requires explicit owner approval and an updated baseline."
+              exit 1
+            fi
+          }
+
+          verify_locked_file "styles.css" "737820dced73ddfa51afc789834a5b2b16be75b8"
+          verify_locked_file "styles-1.css" "598bd9c2ba87732a675411b970bf1aac1c9165b3"
+          verify_locked_file "styles-2.css" "2c6fd743984101a1d7755820eb46b943c7c30253"
+          verify_locked_file "styles-3.css" "d2258f4c098fc2047cea33934f3b127f53412a68"
+          verify_locked_file "styles-4.css" "2b7b48330f57f451941a5215f5c3b6dfe9920eb1"
+          verify_locked_file "styles-5.css" "30cc0d172012f1afa7ab018d6084da8b80a1eb60"
+          verify_locked_file "styles-6.css" "5e8115dc337af2901714d4bd79573e066e39447f"
+          verify_locked_file "styles-7.css" "d2029c20584f5ea882667a8323a996008a9c01df"
+          verify_locked_file "assets/manos-apoyo.png" "df1cd2a23b0d2e960f2555a782260e596959d38f"
+          verify_locked_file "assets/manos-apoyo.webp" "7dbedbd313ed103b445022c63fd709996d7372fc"
+
       - name: Run test suite
         run: npm test
 
