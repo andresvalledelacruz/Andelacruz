@@ -353,4 +353,3 @@ if (environment === 'staging' && pool) {
 }
 
 process.once('beforeExit', shutdown);
-
