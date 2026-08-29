@@ -215,6 +215,7 @@
   .hero-final-media img{
     display:block;
     object-position:58% 82%;
+    transform:translateY(-8%);
   }
 
   /* El activo ya no tiene fondo rectangular; solo se suaviza la entrada izquierda. */
