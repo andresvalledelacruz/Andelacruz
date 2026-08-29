@@ -199,3 +199,42 @@
 @media (max-width:560px){
   .urgent-help-link{display:none}
 }
+
+/* V9 · integración orgánica de la imagen de apoyo */
+@media (min-width:1060px){
+  .hero-final-media{
+    margin-left:24px;
+  }
+
+  .hero-final-media picture{
+    position:absolute;
+    inset:0;
+    display:block;
+  }
+
+  .hero-final-media img{
+    display:block;
+    object-position:58% center;
+  }
+
+  /* El color del hero cubre progresivamente los cuatro bordes. */
+  .hero-final-media::before{
+    inset:-1px;
+    background:
+      linear-gradient(180deg,#f9e8d5 0%,rgba(249,232,213,.82) 5%,rgba(249,232,213,0) 22%),
+      linear-gradient(0deg,#f8e1c7 0%,rgba(248,225,199,.78) 5%,rgba(248,225,199,0) 21%),
+      linear-gradient(270deg,#f8e1c7 0%,rgba(248,225,199,.84) 5%,rgba(248,225,199,0) 20%),
+      linear-gradient(90deg,#fbf0e3 0%,rgba(251,240,227,.92) 8%,rgba(251,240,227,.42) 23%,rgba(251,240,227,0) 43%);
+  }
+
+  .hero-final-media::after{
+    background:radial-gradient(ellipse at 58% 52%,rgba(255,255,255,0) 48%,rgba(248,225,199,.12) 72%,rgba(248,225,199,.38) 100%);
+  }
+}
+
+@media (max-width:1059px){
+  .hero-final-media img{
+    display:block;
+    object-position:center;
+  }
+}
