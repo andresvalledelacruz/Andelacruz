@@ -1,5 +1,6 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';
+import { isIndexable } from './lib/robots-indexability.mjs';
 
 const root = new URL('..', import.meta.url).pathname;
 const ignoredDirs = new Set(['.git', 'node_modules', 'ops-api', 'supabase', 'tests', 'scripts', '.github']);
@@ -15,14 +16,6 @@ async function walk(dir, out = []) {
     else if (name.endsWith('.html') && !ignoredFiles.has(name)) out.push(full);
   }
   return out;
-}
-
-function isIndexable(html) {
-  const robotsMeta = html.match(/<meta\s+[^>]*name=["']robots["'][^>]*>/i)?.[0];
-  if (!robotsMeta) return true;
-  const content = robotsMeta.match(/content=["']([^"']*)["']/i)?.[1] ?? '';
-  const directives = content.toLowerCase().split(/[,\s]+/).filter(Boolean);
-  return !directives.includes('noindex');
 }
 
 const files = await walk(root);
