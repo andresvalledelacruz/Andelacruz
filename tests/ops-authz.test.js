@@ -53,11 +53,34 @@ test('identity principals still obey RBAC and AAL2 independently of legacy auth'
   }), { allowed: false, reason: 'safety_role_required' });
 });
 
-test('legacy staging bridge remains compatible while being explicit and auditable', () => {
+test('legacy staging bridge remains compatible for non-safety decisions', () => {
   const result = buildOpsAuthorizationContext({
     authorization: 'Bearer secret', configuredToken: 'secret', method: 'POST', route: '/ops/moderation/:messageId/decision'
   });
   assert.equal(result.allowed, true);
   assert.equal(result.principal.subject, 'legacy:staging-ops-token');
   assert.equal(result.capability, OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD);
+});
+
+test('legacy staging bridge cannot decide P0 or P1 cases', () => {
+  for (const safetyLevel of ['P0', 'P1', 'p0', 'p1']) {
+    const result = buildOpsAuthorizationContext({
+      authorization: 'Bearer secret',
+      configuredToken: 'secret',
+      method: 'POST',
+      route: '/ops/moderation/:messageId/decision',
+      safetyLevel
+    });
+    assert.equal(result.allowed, false);
+    assert.equal(result.reason, 'individual_identity_required_for_safety');
+    assert.equal(result.principal.transitional, true);
+  }
+});
+
+test('named safety reviewer with AAL2 can still decide P0/P1', () => {
+  assert.deepEqual(authorizeOpsPrincipal({
+    principal: { subject: 'user:reviewer', role: 'safety_reviewer', aal: 'aal2', transitional: false },
+    capability: OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD,
+    safetyLevel: 'P0'
+  }), { allowed: true, reason: 'authorized' });
 });
