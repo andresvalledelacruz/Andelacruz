@@ -12,8 +12,10 @@ test('ops-api routes are wired through the RBAC authorization bridge', () => {
 
 test('moderation decisions re-authorize against the evaluated safety level', () => {
   assert.match(source, /authorizeOpsPrincipal/);
+  assert.match(source, /principal:\s*request\.opsAuthorization\?\.principal/);
+  assert.match(source, /capability:\s*request\.opsAuthorization\?\.capability/);
   assert.match(source, /safetyLevel:\s*executiveSummary\.safety_level/);
-  assert.match(source, /individual_identity_required_for_safety/);
+  assert.match(source, /if\s*\(!safetyAuthorization\.allowed\)/);
 });
 
 test('moderation audit actor comes from the authenticated principal', () => {
