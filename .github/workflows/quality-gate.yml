@@ -102,3 +102,10 @@ jobs:
 
       - name: Smoke test opportunity ranking
         run: npm run rank:opportunities > /tmp/opportunity-ranking.json
+
+      - name: Audit privacy-first analytics coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/analytics-coverage-inventory.mjs > /tmp/analytics-coverage.json
+          cat /tmp/analytics-coverage.json
