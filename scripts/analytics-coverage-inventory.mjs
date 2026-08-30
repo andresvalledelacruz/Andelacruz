@@ -17,13 +17,20 @@ async function walk(dir, out = []) {
   return out;
 }
 
+function isIndexable(html) {
+  const robotsMeta = html.match(/<meta\s+[^>]*name=["']robots["'][^>]*>/i)?.[0];
+  if (!robotsMeta) return true;
+  const content = robotsMeta.match(/content=["']([^"']*)["']/i)?.[1] ?? '';
+  const directives = content.toLowerCase().split(/[,\s]+/).filter(Boolean);
+  return !directives.includes('noindex');
+}
+
 const files = await walk(root);
 const rows = [];
 for (const file of files) {
   const html = await readFile(file, 'utf8');
   const rel = relative(root, file).split(sep).join('/');
-  const indexable = /<meta\s+name=["']robots["'][^>]*index/i.test(html) || !/noindex/i.test(html);
-  if (!indexable) continue;
+  if (!isIndexable(html)) continue;
   const homepage = rel === 'index.html';
   const hasAnalytics = homepage
     ? /<script\s+src=["']app\.js["']/i.test(html)
