@@ -3,6 +3,11 @@ import { OPS_CAPABILITIES, authorizeOpsAction } from './ops-rbac.js';
 
 const LEGACY_STAGING_ROLE = 'admin';
 const LEGACY_STAGING_AAL = 'aal2';
+const SAFETY_LEVELS = new Set(['P0', 'P1']);
+const SAFETY_DECISION_CAPABILITIES = new Set([
+  OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD,
+  OPS_CAPABILITIES.MODERATION_DECIDE_SAFETY
+]);
 
 function secureEqual(a, b) {
   const left = Buffer.from(String(a || ''));
@@ -28,6 +33,14 @@ export function stagingPrincipalFromBearer({ authorization, configuredToken } = 
 export function authorizeOpsPrincipal({ principal, capability, safetyLevel = 'NONE' } = {}) {
   if (!principal || typeof principal !== 'object') {
     return { allowed: false, reason: 'unauthenticated' };
+  }
+
+  if (
+    principal.transitional === true &&
+    SAFETY_LEVELS.has(String(safetyLevel).toUpperCase()) &&
+    SAFETY_DECISION_CAPABILITIES.has(capability)
+  ) {
+    return { allowed: false, reason: 'individual_identity_required_for_safety' };
   }
 
   return authorizeOpsAction({
