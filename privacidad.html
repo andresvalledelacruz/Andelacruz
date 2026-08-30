@@ -34,7 +34,7 @@
   <meta name="twitter:title" content="Política de privacidad — Desgracias.es">
   <meta name="twitter:description" content="Política de privacidad de Desgracias.es.">
   <meta name="twitter:image" content="https://desgracias.es/assets/manos-apoyo.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Política de privacidad","url":"https://desgracias.es/privacidad.html","inLanguage":"es","dateModified":"2026-08-28","isPartOf":{"@type":"WebSite","name":"Desgracias.es","url":"https://desgracias.es/"},"about":"Privacidad y protección de datos en Desgracias.es"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Política de privacidad","url":"https://desgracias.es/privacidad.html","inLanguage":"es","dateModified":"2026-08-30","isPartOf":{"@type":"WebSite","name":"Desgracias.es","url":"https://desgracias.es/"},"about":"Privacidad y protección de datos en Desgracias.es"}</script>
 </head>
 <body>
 <header>
@@ -48,7 +48,7 @@
     <p class="eyebrow">Privacidad y protección de datos</p>
     <h1>Política de privacidad</h1>
     <p class="lead">Queremos que sepas con claridad qué información tratamos cuando utilizas Desgracias.es, para qué la utilizamos y qué control mantienes sobre ella.</p>
-    <span class="meta">Versión 2026-08-27-v5 · Actualizada el 27 de agosto de 2026</span>
+    <span class="meta">Versión 2026-08-30-v6 · Actualizada el 30 de agosto de 2026</span>
   </div>
 
   <div class="notice"><strong>Resumen:</strong> no necesitas indicar tu nombre para contar una historia. Tu consentimiento cubre la moderación de la historia y, si supera la revisión, la posibilidad de publicarla. La publicación nunca es automática. Tras el envío recibirás un código privado para poder retirar tu historia sin identificarte.</div>
@@ -69,6 +69,7 @@
       <li><strong>Código privado de retirada:</strong> después del envío se genera una clave aleatoria que se muestra una sola vez. Desgracias.es no guarda esa clave en texto; conserva únicamente una huella criptográfica que permite comprobarla cuando solicitas retirar la historia.</li>
       <li><strong>Datos de moderación y seguridad:</strong> estado de revisión, prioridad, eventos de moderación y registros de auditoría necesarios para proteger el servicio y documentar las actuaciones.</li>
       <li><strong>Protección antiabuso:</strong> la función de envío puede recibir técnicamente la dirección IP durante la conexión y la transforma inmediatamente mediante HMAC-SHA256 en un identificador seudónimo para aplicar límites de envío. Desgracias.es no guarda la IP original en su base de datos de historias.</li>
+      <li><strong>Analítica interna agregada:</strong> en las páginas habilitadas registramos únicamente día, ruta sin parámetros ni fragmentos, procedencia resumida por dominio, clase aproximada de dispositivo y un código de país orientativo inferido del idioma/configuración regional del navegador. No usamos esta analítica para identificar personas ni guardamos en ella IP, cookies, identificadores de usuario o sesión, user-agent completo, coordenadas ni texto libre.</li>
     </ul>
     <p>Una historia puede contener, si tú decides escribirlos, datos especialmente protegidos —por ejemplo relativos a salud, creencias, orientación sexual u otras categorías del artículo 9 del RGPD—. Por eso la recepción, moderación y eventual publicación se realizan sobre la base de tu consentimiento, y te pedimos que no incluyas información personal que no sea necesaria.</p>
   </section>
@@ -78,6 +79,7 @@
     <p><strong>Recibir, moderar y, si supera la revisión, poder publicar tu historia.</strong> La base es tu consentimiento (art. 6.1.a RGPD). Cuando el contenido que tú has decidido incluir contiene categorías especiales, el tratamiento se apoya además en tu consentimiento explícito en los términos del art. 9.2.a RGPD. La publicación nunca es automática: requiere moderación previa y puede ser rechazada o editada para reducir datos identificativos o proteger a terceras personas.</p>
     <p><strong>Permitir la retirada sin identificarte.</strong> La huella del código privado se utiliza únicamente para comprobar que dispones de la clave correspondiente a esa historia y ejecutar su retirada.</p>
     <p><strong>Prevenir abuso, fraude y ataques y mantener la integridad del servicio.</strong> Tratamos los mínimos datos técnicos necesarios sobre la base del interés legítimo en proteger a las personas usuarias y la plataforma (art. 6.1.f RGPD), aplicando minimización, seudonimización y retención corta.</p>
+    <p><strong>Medir de forma agregada el funcionamiento del sitio.</strong> Utilizamos contadores internos minimizados para conocer qué páginas se consultan, detectar problemas de UX o rendimiento y orientar mejoras de contenido, seguridad y SEO sin crear perfiles de navegación ni decisiones individualizadas. Esta medición se diseña sin cookies de analítica, sin identificadores persistentes y sin recoger el contenido de historias o formularios.</p>
     <p><strong>Seguridad.</strong> Si seleccionas “No estoy seguro/a” o “Sí, ahora mismo” en la pregunta de peligro inmediato, el sistema eleva automáticamente la prioridad de revisión y te muestra recursos de ayuda. Esa clasificación no es un diagnóstico, no contacta automáticamente con servicios de emergencia y no sustituye una valoración humana.</p>
   </section>
 
@@ -96,7 +98,7 @@
     <h2>6. Proveedores tecnológicos</h2>
     <p>Para prestar el servicio utilizamos proveedores tecnológicos. En la arquitectura actual:</p>
     <ul>
-      <li><strong>Supabase</strong> presta servicios de autenticación técnica, base de datos y funciones de servidor; es el proveedor al que se transmite el contenido de la historia para procesarlo.</li>
+      <li><strong>Supabase</strong> presta servicios de autenticación técnica, base de datos y funciones de servidor; es el proveedor al que se transmite el contenido de la historia para procesarlo y donde se almacenan los contadores agregados de analítica interna.</li>
       <li><strong>GitHub Pages</strong> sirve los archivos estáticos de la web.</li>
       <li><strong>jsDelivr</strong> distribuye la biblioteca JavaScript necesaria para conectar el formulario con Supabase.</li>
       <li><strong>Google Fonts</strong> sirve las tipografías utilizadas por la portada.</li>
@@ -114,6 +116,7 @@
       <li><strong>Huella del código privado:</strong> se conserva vinculada a la historia para permitir su retirada. La clave original no se almacena. Tras utilizarla, puede conservarse la huella y la constancia técnica mínima de que la retirada se realizó.</li>
       <li><strong>Historias retiradas:</strong> el texto enviado se sustituye por una referencia neutra, se desvincula la sesión autora y la historia deja de poder publicarse. Se mantienen únicamente registros técnicos mínimos de moderación, seguridad y auditoría cuando sean necesarios.</li>
       <li><strong>Historias rechazadas y registros de moderación/auditoría:</strong> durante el tiempo necesario para documentar la moderación, proteger el servicio, atender derechos o incidencias y, cuando proceda, formular, ejercer o defender reclamaciones. Aplicaremos criterios de minimización y revisaremos estos plazos a medida que el servicio evolucione.</li>
+      <li><strong>Contadores agregados de uso:</strong> se conservan como series estadísticas sin identificadores personales para analizar la evolución del servicio; revisaremos periódicamente su utilidad y nivel de agregación.</li>
     </ul>
   </section>
 
@@ -132,7 +135,7 @@
 
   <section>
     <h2>10. Cookies y almacenamiento local</h2>
-    <p>Desgracias.es no utiliza actualmente publicidad comportamental ni analítica propia basada en cookies. El navegador puede utilizar almacenamiento local para mantener la sesión técnica anónima necesaria para el envío de historias. Los proveedores externos descritos anteriormente pueden tratar datos técnicos de conexión conforme a sus políticas.</p>
+    <p>Desgracias.es no utiliza actualmente publicidad comportamental ni analítica propia basada en cookies. La analítica interna descrita en esta política funciona sin cookies de analítica, sin identificadores persistentes, sin parámetros de URL y sin texto libre. El navegador puede utilizar almacenamiento local para mantener la sesión técnica anónima necesaria para el envío de historias. Los proveedores externos descritos anteriormente pueden tratar datos técnicos de conexión conforme a sus políticas.</p>
     <p>Antes de incorporar cookies o tecnologías no esenciales para analítica, publicidad o personalización, implantaremos el mecanismo de información y consentimiento que corresponda.</p>
   </section>
 
@@ -141,8 +144,9 @@
     <p>Actualizaremos esta política cuando cambien de forma relevante las finalidades, los datos tratados, los proveedores o la estructura del proyecto. La versión y fecha de actualización aparecerán siempre al comienzo del documento.</p>
   </section>
 
-  <p class="small">Esta política describe el funcionamiento técnico actual de Desgracias.es y se revisará antes de introducir monetización, nuevas herramientas de analítica, almacenamiento adicional de datos de seguridad o cambios relevantes en el servicio.</p>
+  <p class="small">Esta política describe el funcionamiento técnico actual de Desgracias.es y se revisará antes de introducir monetización, analítica que amplíe las dimensiones actuales, almacenamiento adicional de datos de seguridad o cambios relevantes en el servicio.</p>
 </main>
 <footer><div class="wrap">© 2026 Desgracias.es · <a href="retirar.html">Retirar una historia</a> · <a href="mailto:info@desgracias.es">info@desgracias.es</a></div></footer>
+<script src="/public-page-runtime.js" defer></script>
 </body>
 </html>
