@@ -17,14 +17,20 @@ Para superficies P0/P1:
 - sin experimentos de conversión que compitan con la salida segura;
 - sí se permiten enlaces y teléfonos oficiales necesarios para la ayuda.
 
-## Cobertura inicial automatizada
+## Inventario automatizado actual
 
-El test `tests/p0-p1-noncommercial-invariant.test.mjs` protege inicialmente:
+El test `tests/p0-p1-noncommercial-invariant.test.mjs` protege actualmente las superficies públicas críticas ya publicadas:
 
 - `/ayuda-urgente.html`;
-- `/alguien-cercano-ha-intentado-suicidarse/`.
+- `/me-preocupa-que-alguien-pueda-suicidarse/`;
+- `/alguien-cercano-ha-intentado-suicidarse/`;
+- `/mi-pareja-me-maltrata-y-no-se-que-hacer/`;
+- `/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/`;
+- `/duelo/ha-muerto-por-suicidio-alguien-que-quiero/`.
 
-Cada nueva URL P0/P1 deberá añadirse al inventario protegido en el mismo PR que la crea. No se considera completa una nueva ruta crítica sin esta cobertura.
+Las rutas de suicidio incluidas en este inventario conservan además una comprobación específica de acceso al 112, 024 y fuente oficial del Ministerio de Sanidad.
+
+Este inventario es deliberadamente conservador: incluir una ruta impide monetizarla por accidente; excluirla no autoriza monetización. Cada nueva URL P0/P1 deberá añadirse al inventario protegido en el mismo PR que la crea. No se considera completa una nueva ruta crítica sin esta cobertura.
 
 ## Regla de revisión
 
