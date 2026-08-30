@@ -37,3 +37,51 @@ test('acute medical language activates P0', () => {
   assert.equal(result.level, 'P0');
   assert.ok(result.official_resources_spain.includes('112'));
 });
+
+test('harm to others is treated as P0 and suppresses commercial UI', () => {
+  const result = evaluateCriticalSafety({ story: 'Voy a matar a alguien esta noche.' });
+  assert.equal(result.level, 'P0');
+  assert.equal(result.safety_gateway, true);
+  assert.equal(result.human_review_required, true);
+  assert.equal(result.suppress_commercial_ui, true);
+  assert.ok(result.official_resources_spain.includes('112'));
+});
+
+test('overdose and severe withdrawal are P0 and never commercial', () => {
+  const result = evaluateCriticalSafety({ story: 'Creo que es una sobredosis.' });
+  assert.equal(result.level, 'P0');
+  assert.equal(result.suppress_commercial_ui, true);
+  assert.equal(result.automated_clinical_decision, false);
+  assert.ok(result.official_resources_spain.includes('112'));
+});
+
+test('vulnerable-person abuse requires P1 human review and suppresses commerce', () => {
+  const result = evaluateCriticalSafety({ story: 'Necesito ayuda por maltrato infantil.' });
+  assert.equal(result.level, 'P1');
+  assert.equal(result.safety_gateway, true);
+  assert.equal(result.human_review_required, true);
+  assert.equal(result.suppress_commercial_ui, true);
+});
+
+test('trafficking and coercion require P1 review and suppress commerce', () => {
+  const result = evaluateCriticalSafety({ story: 'Estoy sufriendo trabajo forzoso y control coercitivo.' });
+  assert.equal(result.level, 'P1');
+  assert.equal(result.human_review_required, true);
+  assert.equal(result.suppress_commercial_ui, true);
+  assert.equal(result.diagnostic, false);
+});
+
+test('housing exposure remains P1 instead of being silently downgraded', () => {
+  const result = evaluateCriticalSafety({ story: 'Duermo en la calle y necesito ayuda.' });
+  assert.equal(result.level, 'P1');
+  assert.equal(result.safety_gateway, true);
+  assert.equal(result.human_review_required, true);
+  assert.equal(result.suppress_commercial_ui, true);
+});
+
+test('disaster language is P0 with 112 and no commercial UI', () => {
+  const result = evaluateCriticalSafety({ story: 'Hay un incendio ahora en el edificio.' });
+  assert.equal(result.level, 'P0');
+  assert.ok(result.official_resources_spain.includes('112'));
+  assert.equal(result.suppress_commercial_ui, true);
+});
