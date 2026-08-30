@@ -4,7 +4,11 @@ import { readFile } from 'node:fs/promises';
 
 const CRITICAL_PUBLIC_ROUTES = [
   'ayuda-urgente.html',
+  'me-preocupa-que-alguien-pueda-suicidarse/index.html',
   'alguien-cercano-ha-intentado-suicidarse/index.html',
+  'mi-pareja-me-maltrata-y-no-se-que-hacer/index.html',
+  'he-sufrido-una-agresion-sexual-y-no-se-que-hacer/index.html',
+  'duelo/ha-muerto-por-suicidio-alguien-que-quiero/index.html',
 ];
 
 const FORBIDDEN_COMMERCIAL_PATTERNS = [
@@ -30,9 +34,17 @@ test('P0/P1 public routes remain non-commercial by construction', async () => {
   }
 });
 
-test('P0/P1 suicide-support route preserves official emergency access', async () => {
-  const html = await readFile(new URL('../alguien-cercano-ha-intentado-suicidarse/index.html', import.meta.url), 'utf8');
-  assert.match(html, /href=['"]tel:112['"]/i);
-  assert.match(html, /href=['"]tel:024['"]/i);
-  assert.match(html, /sanidad\.gob\.es\/linea024/i);
+test('P0/P1 suicide-support routes preserve official emergency access', async () => {
+  const suicideSupportRoutes = [
+    'me-preocupa-que-alguien-pueda-suicidarse/index.html',
+    'alguien-cercano-ha-intentado-suicidarse/index.html',
+    'duelo/ha-muerto-por-suicidio-alguien-que-quiero/index.html',
+  ];
+
+  for (const route of suicideSupportRoutes) {
+    const html = await readFile(new URL(`../${route}`, import.meta.url), 'utf8');
+    assert.match(html, /href=['\"]tel:112['\"]/i, `${route} must preserve 112 access`);
+    assert.match(html, /href=['\"]tel:024['\"]/i, `${route} must preserve 024 access`);
+    assert.match(html, /sanidad\.gob\.es\/linea024/i, `${route} must preserve the official Ministry of Health 024 source`);
+  }
 });
