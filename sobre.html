@@ -19,12 +19,32 @@
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
-    "@type":"AboutPage",
-    "name":"Sobre Desgracias.es",
-    "url":"https://desgracias.es/sobre.html",
-    "inLanguage":"es",
-    "isPartOf":{"@type":"WebSite","name":"Desgracias.es","url":"https://desgracias.es/"},
-    "about":{"@type":"WebSite","name":"Desgracias.es","url":"https://desgracias.es/"}
+    "@graph":[
+      {
+        "@type":"Person",
+        "@id":"https://desgracias.es/sobre.html#responsable",
+        "name":"Andrés Valle de la Cruz"
+      },
+      {
+        "@type":"WebSite",
+        "@id":"https://desgracias.es/#website",
+        "name":"Desgracias.es",
+        "url":"https://desgracias.es/",
+        "inLanguage":"es",
+        "creator":{"@id":"https://desgracias.es/sobre.html#responsable"},
+        "publisher":{"@id":"https://desgracias.es/sobre.html#responsable"}
+      },
+      {
+        "@type":"AboutPage",
+        "@id":"https://desgracias.es/sobre.html#webpage",
+        "name":"Sobre Desgracias.es",
+        "url":"https://desgracias.es/sobre.html",
+        "inLanguage":"es",
+        "dateModified":"2026-08-30",
+        "isPartOf":{"@id":"https://desgracias.es/#website"},
+        "about":{"@id":"https://desgracias.es/#website"}
+      }
+    ]
   }
   </script>
   <style>
