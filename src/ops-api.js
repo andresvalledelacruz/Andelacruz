@@ -7,6 +7,7 @@ import pg from 'pg';
 import { evaluateExecutiveDecision } from './executive-decision-engine.js';
 import { registerPrivacySafeHttpObservability } from './fastify-privacy-safe-observability.js';
 import { buildModerationTriage, sortModerationItems, moderationTriageSummary } from './moderation-triage.js';
+import { buildOpsAuthorizationContext, authorizeOpsPrincipal } from './ops-authz.js';
 import {
   buildStoryUpdateDecisionTask,
   candidateStatusForDecision,
@@ -52,20 +53,23 @@ const publicInteractionWindowMs = 10 * 60 * 1000;
 const publicInteractionMax = 60;
 const publicInteractionsByIp = new Map();
 
-function secureEqual(a, b) {
-  const left = Buffer.from(String(a));
-  const right = Buffer.from(String(b));
-  if (left.length !== right.length || left.length === 0) return false;
-  return crypto.timingSafeEqual(left, right);
-}
+function requireOpsCapability(method, route) {
+  return async function requireOpsCapabilityHandler(request, reply) {
+    if (environment !== 'staging') return reply.code(404).send({ error: 'not_found' });
+    if (!opsToken) return reply.code(503).send({ error: 'ops_not_configured' });
 
-async function requireOps(request, reply) {
-  if (environment !== 'staging') return reply.code(404).send({ error: 'not_found' });
-  if (!opsToken) return reply.code(503).send({ error: 'ops_not_configured' });
-
-  const auth = String(request.headers.authorization || '');
-  const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
-  if (!secureEqual(token, opsToken)) return reply.code(401).send({ error: 'unauthorized' });
+    const authorization = buildOpsAuthorizationContext({
+      authorization: request.headers.authorization,
+      configuredToken: opsToken,
+      method,
+      route
+    });
+    if (!authorization.allowed) {
+      const status = authorization.reason === 'unauthenticated' ? 401 : 403;
+      return reply.code(status).send({ error: 'unauthorized', reason: authorization.reason });
+    }
+    request.opsAuthorization = authorization;
+  };
 }
 
 function setSecurityHeaders(reply) {
@@ -502,7 +506,7 @@ app.get('/public/nadie-solo', async (request, reply) => {
   }
 });
 
-app.get('/ops/summary', { preHandler: requireOps }, async (_request, reply) => {
+app.get('/ops/summary', { preHandler: requireOpsCapability('GET', '/ops/summary') }, async (_request, reply) => {
   if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
   try {
     const queues = {};
@@ -517,7 +521,7 @@ app.get('/ops/summary', { preHandler: requireOps }, async (_request, reply) => {
   }
 });
 
-app.get('/ops/moderation/pending', { preHandler: requireOps }, async (request, reply) => {
+app.get('/ops/moderation/pending', { preHandler: requireOpsCapability('GET', '/ops/moderation/pending') }, async (request, reply) => {
   if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
   const requestedLimit = Number(request.query?.limit || 10);
   const limit = Number.isInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 25) : 10;
@@ -555,7 +559,7 @@ app.get('/ops/moderation/pending', { preHandler: requireOps }, async (request, r
   }
 });
 
-app.get('/ops/moderation/:messageId/brief', { preHandler: requireOps }, async (request, reply) => {
+app.get('/ops/moderation/:messageId/brief', { preHandler: requireOpsCapability('GET', '/ops/moderation/:messageId/brief') }, async (request, reply) => {
   if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
   const messageId = String(request.params?.messageId || '').trim();
   if (!/^\d+$/.test(messageId)) return reply.code(400).send({ error: 'invalid_message_id' });
@@ -585,7 +589,7 @@ app.get('/ops/moderation/:messageId/brief', { preHandler: requireOps }, async (r
   }
 });
 
-app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, async (request, reply) => {
+app.post('/ops/moderation/:messageId/decision', { preHandler: requireOpsCapability('POST', '/ops/moderation/:messageId/decision') }, async (request, reply) => {
   if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
 
   const messageId = String(request.params?.messageId || '').trim();
@@ -622,6 +626,20 @@ app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, asyn
     const original = item.message || {};
     const executiveResult = evaluateCase(original);
     const executiveSummary = executiveAuditSummary(executiveResult);
+    const safetyAuthorization = authorizeOpsPrincipal({
+      principal: request.opsAuthorization?.principal,
+      capability: request.opsAuthorization?.capability,
+      safetyLevel: executiveSummary.safety_level
+    });
+    if (!safetyAuthorization.allowed) {
+      await client.query('rollback');
+      const status = safetyAuthorization.reason === 'unauthenticated' ? 401 : 403;
+      return reply.code(status).send({
+        error: 'moderation_decision_not_authorized',
+        reason: safetyAuthorization.reason,
+        safety_level: executiveSummary.safety_level
+      });
+    }
 
     const isStoryUpdate = isStoryUpdateSubmission(original);
     const updateSafetyBlocked = isStoryUpdate &&
@@ -646,7 +664,7 @@ app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, asyn
       version: 2,
       environment,
       source: 'ops_staging',
-      actor: 'staging_ops_token',
+      actor: request.opsAuthorization?.principal?.subject || 'unknown',
       moderation_message_id: String(item.msg_id),
       decision,
       reason_code: reasonCode,
@@ -723,7 +741,7 @@ app.post('/ops/moderation/:messageId/decision', { preHandler: requireOps }, asyn
   }
 });
 
-app.post('/ops/product/evaluate', { preHandler: requireOps }, async (request, reply) => {
+app.post('/ops/product/evaluate', { preHandler: requireOpsCapability('POST', '/ops/product/evaluate') }, async (request, reply) => {
   const body = request.body ?? {};
   const proposal = typeof body.proposal === 'string' ? body.proposal.trim().slice(0, 120) : '';
   const scores = body.scores && typeof body.scores === 'object' ? body.scores : {};
