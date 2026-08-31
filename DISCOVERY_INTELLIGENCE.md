@@ -154,3 +154,22 @@ necesidad humana → SERP/intención → fuentes oficiales actuales → canibali
 - acuerdos o colaboraciones externas que impliquen compromiso contractual.
 
 Cuando uno de estos puntos bloquee una acción, marcarlo `Pendiente de Andrés` y continuar con investigación o preparación independiente.
+
+## 13. Nuevos frentes priorizados — 2026-08-31
+
+### Cáncer
+
+- hub independiente, nunca bajo Accidentes;
+- GO estratégico para investigación y arquitectura;
+- HOLD de publicación hasta Safety Gate sanitario y revisión clínica/profesional humana;
+- recorrido: espera de pruebas → diagnóstico reciente → tratamiento/efectos → cuidadores → trabajo/trámites → duelo anticipado → supervivencia;
+- fuente de detalle: `CANCER_INTELLIGENCE.md`.
+
+### Ahogamiento, sumersión y sofocación accidentales
+
+- subfrente de Accidentes/Emergencias accidentales;
+- separar emergencia inmediata, prevención y después;
+- diferenciar medio acuático de atragantamiento/asfixia/estrangulamiento;
+- GO para arquitectura y prevención no publicada; HOLD para maniobras y contenido posterior hasta revisión profesional;
+- fuente de detalle: `ACCIDENTS_INTELLIGENCE.md`.
+
