@@ -17,7 +17,7 @@ test('public content runtime loads the same privacy-safe analytics beacon', () =
 });
 
 test('core public hubs load the markup-free analytics runtime', async () => {
-  for (const relativePath of ['../familia/index.html', '../rupturas/index.html', '../duelo/index.html']) {
+  for (const relativePath of ['../familia/index.html', '../rupturas/index.html', '../duelo/index.html', '../gestion-emocional/index.html']) {
     const html = await readFile(new URL(relativePath, import.meta.url), 'utf8');
     assert.match(html, /<script src="\/public-page-runtime\.js" async><\/script>\s*<\/body>/);
   }
