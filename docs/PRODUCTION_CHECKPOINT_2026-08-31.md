@@ -5,63 +5,85 @@ Fecha: 2026-08-31
 ## Producción verificada
 
 - Rama: `production-v9`
-- SHA verificado al iniciar este checkpoint: `a047f21d423b9e8344d398b1e0d8dceb93446061`
-- Último cambio fusionado: `safety: exigir evidencia mínima antes de escalar (#97)`.
-- La rama sigue sin protección nativa de GitHub (`protected: false`).
-- No había pull requests abiertos al iniciar este checkpoint.
+- SHA verificado: `106d3366e93597b0665a1a8cbd1d62132bfed9bc`
+- Último cambio fusionado: `feat: crear hub propio de Gestión emocional (#124)`.
+- Resultado funcional del cambio: `/gestion-emocional/`, conexión desde Recursos, sitemap y Opportunity Map ampliados a 60 URLs, manteniendo Safety/SEO y la portada V9 sin cambios visuales.
+- Pull requests abiertos al iniciar este checkpoint: 0.
+- La rama continúa sin protección nativa de GitHub (`protected: false`).
 
 ## Certificación del SHA actual
 
-El SHA `a047f21d423b9e8344d398b1e0d8dceb93446061` tiene `Engineering Quality Gate` completado con éxito en `production-v9`.
+Para `106d3366e93597b0665a1a8cbd1d62132bfed9bc` se ha verificado `Production SEO Integrity` completado con éxito sobre `production-v9`.
 
-Antes de cualquier siguiente merge deben mantenerse los gates existentes sin rebajar tests ni aserciones de Safety.
+Antes de cualquier siguiente merge deben mantenerse todos los gates existentes. No se permite rebajar tests, aserciones Safety ni la protección lógica de V9 para acelerar entregas.
 
-## Estado Safety / gobernanza
+## Safety / gobernanza
 
-La base actual incluye, entre otros:
+La base vigente incluye:
 
 - Critical Safety Gateway P0/P1/P2;
 - inventario y tests de rutas críticas;
 - invariante no comercial para P0/P1;
-- RBAC/autorización del backoffice en evolución;
-- decision ledger con saneado y fingerprinting;
-- Meta-Brain estratégico gobernado por Safety;
-- suelo mínimo de evidencia antes de `SCALE_CANDIDATE`.
+- RBAC/autorización en evolución;
+- decisión sensible fail-closed cuando falta identidad/AAL2;
+- decision ledger y trazabilidad;
+- Meta-Brain gobernado por Safety;
+- suelo mínimo de evidencia antes de escalar recomendaciones;
+- Safety Gates específicos para piezas sensibles ya incorporadas.
 
-La portada V9 permanece fuera del alcance de este cambio y debe seguir tratándose como inmutable salvo petición explícita del propietario.
+## Portada V9
 
-## Frentes humanos pendientes
+La portada V9 permanece **inmutable** salvo petición explícita de Andrés. Nuevos hubs, contenido, SEO, narrativa y producto deben evolucionar sin alterar su diseño, estructura visual, tarjetas, espaciados, colores o composición salvo instrucción expresa.
 
-### Pendiente de Andrés — protección nativa de `production-v9`
+## Pendientes humanos abiertos
 
-Issue #78. Configurar ruleset/branch protection que exija PR y gates obligatorios, impida force-push/borrado y limite bypass administrativo.
+### Issue #117 — identidad individual + AAL2 para moderación sensible
 
-### Pendiente de Andrés — backup independiente + restore drill real
+**Pendiente de Andrés.** Falta seleccionar/autorizar proveedor de identidad de staff y validar identidad nominal, MFA/AAL2, revocación y roles. Mientras tanto, las capacidades sensibles permanecen fail-closed.
 
-Issue #83. Falta destino independiente, custodia de credenciales/cifrado, primera copia completa y restauración verificada.
+### Issue #110 — frente Cáncer
 
-### Pendiente de Andrés — cobertura y gestión de riesgo antes de escalar adquisición
+**Pendiente de Andrés.** Inteligencia y arquitectura pueden seguir avanzando; publicación clínica queda en HOLD hasta revisión profesional, legal y de credenciales.
 
-Issue #1. Mantener bloqueado el escalado significativo de adquisición hasta cerrar protocolo de seguridad, EIPD/RGPD, clausulado y cobertura de riesgo adecuada.
+### Issue #111 — ahogamiento, sumersión y sofocación
+
+**Pendiente de Andrés.** Prevención y preparación interna pueden avanzar; publicación de emergencia/maniobras/postevento queda en HOLD hasta revisión profesional.
+
+### Issue #83 — backup independiente + restore drill
+
+**Pendiente de Andrés.** Falta destino externo independiente, custodia de credenciales/cifrado, primera copia y restauración real verificable.
+
+### Issue #78 — protección de `production-v9`
+
+**Pendiente de Andrés.** Falta ruleset/branch protection nativa que exija PR y checks y bloquee force-push/borrado.
+
+### Issue #1 — seguro y gestión de riesgo antes de escalar tráfico
+
+**Pendiente de Andrés.** No escalar adquisición significativa hasta cerrar protocolo, cobertura, privacidad/EIPD y revisión jurídica aplicable.
+
+## Frentes autónomos activos
+
+1. Safety Brain / P0-P1 / RBAC / moderación y trazabilidad.
+2. Knowledge → Narrative Engine para explotar el corpus documental de Andrés.
+3. Human Demand Intelligence y radar de nuevas necesidades.
+4. SEO técnico, indexación, hubs, interlinking, E-E-A-T y AI/GEO.
+5. UX móvil, accesibilidad y rendimiento sin tocar V9.
+6. Backoffice, observabilidad y Product Readiness.
+7. Resiliencia, tests, deuda técnica y DR preparado hasta el límite de credenciales disponibles.
+8. Monetización segura solo en contextos no sensibles; P0/P1 y alto riesgo sin monetización.
+9. International Expansion & Localization Intelligence Native-First, sin fingir expertos locales reales.
+
+## Protocolo obligatorio para nuevas URLs
+
+`necesidad humana real → demanda/SERP/intención → fuentes oficiales actuales → canibalización → YMYL → GO/NO-GO → rama aislada → implementación → Safety Gate específico → Engineering Quality Gate → Production SEO Integrity → revisión editorial → merge solo todo verde → certificación post-merge Engineering + SEO + Pages sobre el mismo SHA`
 
 ## Siguiente prioridad autónoma
 
-Mientras los tres puntos humanos anteriores permanecen abiertos, el trabajo autónomo debe seguir priorizando, por este orden:
+Con producción limpia y sin PRs abiertos, el siguiente ciclo debe:
 
-1. Safety Brain / P0-P1 / RBAC / moderación y trazabilidad.
-2. Resiliencia, observabilidad, tests y deuda técnica.
-3. UX móvil, accesibilidad y rendimiento sin modificar la portada V9.
-4. SEO técnico, indexación, hubs, enlazado, E-E-A-T y AI/GEO.
-5. Human Demand Intelligence e internacionalización Native-First.
-6. Monetización segura únicamente en rutas y contextos no sensibles.
-
-Para nuevas URLs se mantiene el protocolo completo: necesidad humana real → demanda/SERP/intención → fuentes oficiales actuales → canibalización → YMYL → GO/NO-GO → rama aislada → implementación → Safety Gate específico → Engineering Quality Gate → Production SEO Integrity → revisión editorial → merge solo todo verde → certificación post-merge Engineering + SEO + Pages sobre el mismo SHA.
-
-## Anexo de continuidad — Cáncer y Emergencias accidentales
-
-- Producción real comprobada antes de este ciclo: `a5da17d89e5782c41dac30d8edcec76e33bfc4fc`.
-- Ese SHA tiene Engineering Quality Gate, Production SEO Integrity y Pages en verde.
-- Cáncer entra como frente independiente: GO estratégico, HOLD de publicación hasta revisión clínica/profesional.
-- Ahogamiento, sumersión y sofocación accidentales entra bajo Accidentes/Emergencias accidentales: prevención y arquitectura pueden prepararse; emergencia y contenido posterior quedan en HOLD hasta gate y revisión profesional.
-- La portada V9 permanece intacta.
-
+- convertir el corpus de conocimiento ya disponible en profundidad narrativa visible;
+- enriquecer primero URLs existentes de alto valor antes de inflar volumen;
+- mantener investigación paralela de nuevas URLs;
+- continuar endurecimiento Safety/observabilidad/DR sin bloquear contenido independiente;
+- crear ramas aisladas por frente y evitar editar los mismos archivos desde bases divergentes;
+- registrar cualquier dependencia humana y continuar por otro frente inmediatamente.
