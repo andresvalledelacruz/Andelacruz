@@ -16,7 +16,13 @@ function secureEqual(a, b) {
   return crypto.timingSafeEqual(left, right);
 }
 
-export function stagingPrincipalFromBearer({ authorization, configuredToken } = {}) {
+function normalizedEnvironment(environment) {
+  return String(environment || process.env.NODE_ENV || 'staging').trim().toLowerCase();
+}
+
+export function stagingPrincipalFromBearer({ authorization, configuredToken, environment } = {}) {
+  if (normalizedEnvironment(environment) !== 'staging') return null;
+
   const auth = String(authorization || '');
   const token = auth.startsWith('Bearer ') ? auth.slice(7) : '';
   if (!secureEqual(token, configuredToken)) return null;
@@ -63,11 +69,11 @@ export function capabilityForOpsRoute(method, route) {
   return capabilities.get(key) || null;
 }
 
-export function buildOpsAuthorizationContext({ authorization, configuredToken, method, route, safetyLevel = 'NONE' } = {}) {
+export function buildOpsAuthorizationContext({ authorization, configuredToken, environment, method, route, safetyLevel = 'NONE' } = {}) {
   const capability = capabilityForOpsRoute(method, route);
   if (!capability) return { allowed: false, reason: 'unmapped_route', principal: null, capability: null };
 
-  const principal = stagingPrincipalFromBearer({ authorization, configuredToken });
+  const principal = stagingPrincipalFromBearer({ authorization, configuredToken, environment });
   if (!principal) return { allowed: false, reason: 'unauthenticated', principal: null, capability };
 
   const decision = authorizeOpsPrincipal({ principal, capability, safetyLevel });
