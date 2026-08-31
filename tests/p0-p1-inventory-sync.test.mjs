@@ -17,12 +17,13 @@ test('documented P0/P1 inventory stays synchronized with the protected route set
   const invariant = await readFile(new URL('./p0-p1-noncommercial-invariant.test.mjs', import.meta.url), 'utf8');
 
   for (const route of ROUTES) {
-    assert.match(policy, new RegExp(route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), `${route} missing from monetization policy`);
-    assert.match(inventory, new RegExp(route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), `${route} missing from Safety inventory`);
-
-    const fileRoute = route.endsWith('.html')
-      ? route.slice(1)
-      : `${route.slice(1)}index.html`;
-    assert.match(invariant, new RegExp(fileRoute.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), `${route} missing from automated invariant`);
+    const escapedRoute = new RegExp(route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    assert.match(policy, escapedRoute, `${route} missing from monetization policy`);
+    assert.match(inventory, escapedRoute, `${route} missing from Safety inventory`);
   }
+
+  assert.match(invariant, /SAFETY_ROUTE_INVENTORY\.md/, 'automated invariant must read the Safety inventory');
+  assert.match(invariant, /readCriticalInventory\(\)/, 'automated invariant must derive its protected routes from the inventory');
+  assert.match(invariant, /routeToFile\(route\)/, 'automated invariant must map inventory routes to public files');
+  assert.doesNotMatch(invariant, /const\s+CRITICAL_PUBLIC_ROUTES\s*=/, 'automated invariant must not restore a duplicated critical-route list');
 });
