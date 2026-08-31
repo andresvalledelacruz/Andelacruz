@@ -62,6 +62,38 @@ test('decision ledger recursively removes sensitive keys from nested metadata an
   assert.equal(event.metadata.evidence[1].safety_signal, 'P1');
 });
 
+test('decision ledger removes compound and camelCase variants of sensitive keys', () => {
+  const event = sanitizeDecisionEvent({
+    event_type: 'moderation',
+    entity_type: 'story',
+    entity_ref: 'compound-sensitive-keys',
+    decision: 'escalate',
+    safety_level: 'P1',
+    occurred_at: '2026-08-31T14:10:00.000Z',
+    metadata: {
+      user_email: 'persona@example.test',
+      contactPhone: '+34000000000',
+      story_text: 'texto libre muy sensible',
+      messageBody: 'otro texto libre sensible',
+      auth_token: 'secret-token',
+      apiSecret: 'secret-value',
+      authorization_header: 'Bearer secret',
+      source_class: 'official',
+      nested: {
+        authorAlias: 'Persona',
+        safety_signal: 'P1'
+      }
+    }
+  });
+
+  assert.equal(event.metadata.source_class, 'official');
+  assert.equal(event.metadata.nested.safety_signal, 'P1');
+  for (const key of ['user_email', 'contactPhone', 'story_text', 'messageBody', 'auth_token', 'apiSecret', 'authorization_header']) {
+    assert.equal(key in event.metadata, false);
+  }
+  assert.equal('authorAlias' in event.metadata.nested, false);
+});
+
 test('decision ledger bounds nested strings, arrays and excessive depth', () => {
   const event = sanitizeDecisionEvent({
     event_type: 'system',
