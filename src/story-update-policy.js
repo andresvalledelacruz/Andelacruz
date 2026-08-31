@@ -96,6 +96,9 @@ export function buildStoryUpdateModerationMessage({
       story_slug: normalizedStorySlug,
       phase: update.value.phase,
       text: update.value.text,
+      // Mirror only while the item is in moderation so the generic Executive/Safety
+      // evaluator receives the update body through its canonical `story` field.
+      story: update.value.text,
       synthetic: update.value.synthetic,
       moderation_required: true,
       publish_directly: false
