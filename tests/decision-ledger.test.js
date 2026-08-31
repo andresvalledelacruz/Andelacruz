@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildDecisionFingerprint, sanitizeDecisionEvent } from '../src/decision-ledger.js';
+import { buildDecisionFingerprint, sanitizeDecisionEvent, verifyDecisionFingerprint } from '../src/decision-ledger.js';
 
 test('decision ledger removes sensitive free-text fields from metadata', () => {
   const event = sanitizeDecisionEvent({
@@ -108,6 +108,64 @@ test('fingerprint changes when the decision changes', () => {
     buildDecisionFingerprint({ ...base, decision: 'EXPERIMENT' }),
     buildDecisionFingerprint({ ...base, decision: 'HOLD' })
   );
+});
+
+test('v2 fingerprint protects sanitized metadata from later mutation', () => {
+  const event = sanitizeDecisionEvent({
+    event_type: 'safety_review',
+    entity_type: 'safety_case',
+    entity_ref: 'case-integrity',
+    decision: 'escalate',
+    safety_level: 'P1',
+    occurred_at: '2026-08-31T06:30:00.000Z',
+    metadata: { source_class: 'official', commercial_ui_allowed: false }
+  });
+
+  assert.equal(event.version, 2);
+  assert.equal(verifyDecisionFingerprint(event), true);
+  assert.equal(verifyDecisionFingerprint({
+    ...event,
+    metadata: { ...event.metadata, commercial_ui_allowed: true }
+  }), false);
+});
+
+test('v2 fingerprint is stable across metadata key order', () => {
+  const base = {
+    version: 2,
+    event_type: 'system',
+    entity_type: 'system',
+    decision: 'audit',
+    occurred_at: '2026-08-31T06:35:00.000Z'
+  };
+
+  assert.equal(
+    buildDecisionFingerprint({ ...base, metadata: { b: 2, a: { y: 2, x: 1 } } }),
+    buildDecisionFingerprint({ ...base, metadata: { a: { x: 1, y: 2 }, b: 2 } })
+  );
+});
+
+test('v1 fingerprints remain verifiable for historical ledger events', () => {
+  const legacy = {
+    version: 1,
+    event_type: 'moderation',
+    entity_type: 'story',
+    entity_ref: 'legacy-1',
+    decision: 'approve',
+    reason_code: null,
+    score: null,
+    safety_level: 'NONE',
+    actor_class: 'staging_ops',
+    occurred_at: '2026-08-26T20:00:00.000Z',
+    metadata: { mutable_under_v1: true }
+  };
+  const fingerprint = buildDecisionFingerprint(legacy);
+
+  assert.equal(verifyDecisionFingerprint({ ...legacy, fingerprint }), true);
+  assert.equal(verifyDecisionFingerprint({
+    ...legacy,
+    metadata: { mutable_under_v1: false },
+    fingerprint
+  }), true);
 });
 
 test('invalid event types are rejected', () => {
