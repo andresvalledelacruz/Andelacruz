@@ -55,8 +55,9 @@ function sanitizeMetadataValue(value, depth = 0) {
 }
 
 export function buildDecisionFingerprint(event = {}) {
+  const version = Number(event.version || 1);
   const safe = {
-    version: Number(event.version || 1),
+    version,
     event_type: String(event.event_type || ''),
     entity_type: String(event.entity_type || ''),
     entity_ref: event.entity_ref == null ? null : String(event.entity_ref),
@@ -67,7 +68,24 @@ export function buildDecisionFingerprint(event = {}) {
     actor_class: String(event.actor_class || 'staging_ops'),
     occurred_at: String(event.occurred_at || '')
   };
+
+  // v1 se conserva para poder verificar eventos históricos. Desde v2 la metadata
+  // ya saneada forma parte de la huella: una alteración posterior deja de pasar
+  // inadvertida aunque los campos principales de la decisión no cambien.
+  if (version >= 2) safe.metadata = event.metadata && typeof event.metadata === 'object' ? event.metadata : {};
+
   return sha256(JSON.stringify(canonical(safe)));
+}
+
+export function verifyDecisionFingerprint(event = {}) {
+  const fingerprint = String(event.fingerprint || '');
+  return /^[a-f0-9]{64}$/i.test(fingerprint) && secureFingerprintEqual(fingerprint, buildDecisionFingerprint(event));
+}
+
+function secureFingerprintEqual(left, right) {
+  const a = Buffer.from(String(left));
+  const b = Buffer.from(String(right));
+  return a.length === b.length && a.length > 0 && crypto.timingSafeEqual(a, b);
 }
 
 export function sanitizeDecisionEvent(input = {}) {
@@ -86,7 +104,7 @@ export function sanitizeDecisionEvent(input = {}) {
   if (Number.isNaN(occurredAt.getTime())) throw new Error('invalid_occurred_at');
 
   const event = {
-    version: 1,
+    version: 2,
     event_type: eventType,
     entity_type: entityType,
     entity_ref: input.entity_ref == null ? null : String(input.entity_ref).slice(0, 120),
@@ -179,7 +197,7 @@ export async function recentDecisionEvents(pool, { limit = 50, entityType = '' }
   }
   values.push(safeLimit);
   const { rows } = await pool.query(
-    `select id, event_type, entity_type, entity_ref, decision, reason_code, score,
+    `select id, version, event_type, entity_type, entity_ref, decision, reason_code, score,
             safety_level, actor_class, occurred_at, metadata, fingerprint
        from staging_decision_ledger
        ${where}
