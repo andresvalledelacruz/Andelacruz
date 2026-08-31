@@ -48,25 +48,29 @@ export const BUSINESS_PROMPT_MATRIX = Object.freeze(Array.from({ length: 120 }, 
 
 const SENSITIVE_FLAGS = new Set(['ymyl','mental_health','p0_p1','immediate_risk','sensitive_data','testimonials','legal','fiscal','insurance','referral','professional_services']);
 const NON_SENSITIVE_FLAGS = new Set(['operational','seo','ai_geo','ux','accessibility','performance','backup_dr','analytics','content','native_first','product_readiness']);
+const KNOWN_FRONTS = new Set(Object.keys(FRONT_FRAMEWORKS));
 
-function normalizeFlag(flag) {
-  return String(flag).trim().toLowerCase().replace(/[\s-]+/g, '_');
+function normalizeToken(value) {
+  return String(value).trim().toLowerCase().replace(/[\s-]+/g, '_');
 }
 
 export function selectStrategicFrameworks({ front, flags = [], evidence = [] } = {}) {
-  const normalizedFlags = new Set(flags.map(normalizeFlag).filter(Boolean));
+  const normalizedFront = normalizeToken(front ?? 'unclassified');
+  const unknownFront = !KNOWN_FRONTS.has(normalizedFront);
+  const normalizedFlags = new Set(flags.map(normalizeToken).filter(Boolean));
   const knownFlags = new Set([...SENSITIVE_FLAGS, ...NON_SENSITIVE_FLAGS]);
   const unknownFlags = [...normalizedFlags].filter((flag) => !knownFlags.has(flag));
-  const selected = new Set(FRONT_FRAMEWORKS[front] ?? ['firstprinciples','blindspots','tradeoffs','score','nextmove']);
+  const selected = new Set(FRONT_FRAMEWORKS[normalizedFront] ?? ['firstprinciples','blindspots','tradeoffs','score','nextmove']);
   const sensitive = [...normalizedFlags].some((flag) => SENSITIVE_FLAGS.has(flag));
   const critical = normalizedFlags.has('p0_p1') || normalizedFlags.has('immediate_risk');
-  const requiresReview = sensitive || unknownFlags.length > 0;
+  const requiresReview = sensitive || unknownFlags.length > 0 || unknownFront;
 
   if (requiresReview) ['redteam','premortem','stresstest','biascheck'].forEach((id) => selected.add(id));
 
   return {
     version: 1,
-    front: front ?? 'unclassified',
+    front: normalizedFront,
+    unknown_front: unknownFront ? normalizedFront : null,
     frameworks: [...selected].map((id) => `/${id}`),
     evidence_count: evidence.length,
     unknown_flags: unknownFlags,
