@@ -17,32 +17,36 @@ Las decisiones se ejecutan dentro de una transacción PostgreSQL para evitar una
 ## Seguridad de staging
 
 - Solo funciona cuando `NODE_ENV=staging`.
-- Requiere `STAGING_OPS_TOKEN` y `Authorization: Bearer <token>`.
+- `STAGING_OPS_TOKEN` es un puente transitorio exclusivamente para operaciones no sensibles.
+- El token compartido no puede leer cola/brief de moderación ni emitir ninguna decisión `approve`, `reject` o `escalate`.
+- Toda lectura de casos y toda decisión de moderación requieren identidad individual de staff y AAL2/MFA.
+- Los casos P0/P1 requieren además rol/capability de Safety.
 - Comparación del token con `crypto.timingSafeEqual`.
 - `Cache-Control: no-store`.
 - `X-Robots-Tag: noindex, nofollow, noarchive`.
 - No se habilita CORS de forma general.
 - Los logs de decisión no incluyen el texto de la historia.
 
-`STAGING_OPS_TOKEN` es únicamente un mecanismo temporal de staging. Producción debe sustituirlo por identidad de staff real, MFA AAL2, RBAC, separación de funciones y auditoría persistente.
+`STAGING_OPS_TOKEN` no sustituye identidad de staff. Producción debe usar identidad real, MFA AAL2, RBAC, separación de funciones y auditoría persistente.
 
 ## Roles previstos para producción
 
-- `companion_reviewer` / `moderation_reviewer`: revisión y propuesta de decisión.
-- `safety_reviewer`: escalados de seguridad.
-- `moderation_admin`: políticas, reinstalaciones y excepciones.
+- `moderator`: decisiones estándar con identidad individual y AAL2.
+- `safety_reviewer`: revisión y decisión de casos P0/P1 con identidad individual y AAL2.
+- `admin`: administración de políticas y accesos con mínimo privilegio.
 - `analyst`: métricas agregadas sin acceso innecesario al texto sensible.
 
 ## AAL2 y RBAC
 
-Las acciones `approve`, `reject`, `escalate`, suspensión, revocación y reinstalación deberán comprobar sesión AAL2 y capability específica antes de ejecutarse. El token de staging no sustituye este control.
+Las acciones `approve`, `reject`, `escalate`, suspensión, revocación y reinstalación deben comprobar sesión AAL2 y capability específica antes de ejecutarse. El token de staging no puede usarse como identidad individual ni como bypass de este control.
 
 ## Endpoints preparados
 
 - `GET /health`
 - `GET /ready`
-- `GET /ops/moderation/pending?limit=10`
-- `POST /ops/moderation/:messageId/decision`
+- `GET /ops/moderation/pending?limit=10` — identidad individual + AAL2
+- `GET /ops/moderation/:messageId/brief` — identidad individual + AAL2
+- `POST /ops/moderation/:messageId/decision` — identidad individual + AAL2; P0/P1 además Safety
 
 Payload de decisión:
 
@@ -56,4 +60,4 @@ Payload de decisión:
 
 ## Importante
 
-Este módulo está preparado en código pero no está desplegado como servicio interno. No crear un enlace desde Cloudflare Pages público. El siguiente paso es levantarlo como servicio interno/privado de staging y construir el backoffice separado con autenticación de staff.
+Este módulo está preparado en código pero la moderación permanece deliberadamente fail-closed hasta conectar y verificar identidad individual de staff + AAL2 en backend. No crear un enlace desde Cloudflare Pages público y no reactivar decisiones mediante el token compartido.
