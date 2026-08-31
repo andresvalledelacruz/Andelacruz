@@ -2,15 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
-const CRITICAL_PUBLIC_ROUTES = [
-  'ayuda-urgente.html',
-  'me-preocupa-que-alguien-pueda-suicidarse/index.html',
-  'alguien-cercano-ha-intentado-suicidarse/index.html',
-  'mi-pareja-me-maltrata-y-no-se-que-hacer/index.html',
-  'he-sufrido-una-agresion-sexual-y-no-se-que-hacer/index.html',
-  'duelo/ha-muerto-por-suicidio-alguien-que-quiero/index.html',
-];
-
 const FORBIDDEN_COMMERCIAL_PATTERNS = [
   /adsbygoogle/i,
   /pagead2\.googlesyndication\.com/i,
@@ -25,24 +16,48 @@ const FORBIDDEN_COMMERCIAL_PATTERNS = [
   /\boferta comercial\b/i,
 ];
 
+function routeToFile(route) {
+  if (route.endsWith('.html')) return route.slice(1);
+  return `${route.slice(1)}index.html`;
+}
+
+async function readCriticalInventory() {
+  const markdown = await readFile(new URL('../SAFETY_ROUTE_INVENTORY.md', import.meta.url), 'utf8');
+  const rows = markdown
+    .split('\n')
+    .filter((line) => /^\| `\//.test(line))
+    .map((line) => line.split('|').slice(1, -1).map((cell) => cell.trim()))
+    .map(([routeCell, reason, invariant]) => ({
+      route: routeCell.replace(/^`|`$/g, ''),
+      reason,
+      invariant,
+    }));
+
+  assert.ok(rows.length > 0, 'SAFETY_ROUTE_INVENTORY.md must contain at least one P0/P1 route');
+  return rows;
+}
+
 test('P0/P1 public routes remain non-commercial by construction', async () => {
-  for (const route of CRITICAL_PUBLIC_ROUTES) {
-    const html = await readFile(new URL(`../${route}`, import.meta.url), 'utf8');
+  const criticalRoutes = await readCriticalInventory();
+
+  for (const { route } of criticalRoutes) {
+    const file = routeToFile(route);
+    const html = await readFile(new URL(`../${file}`, import.meta.url), 'utf8');
     for (const pattern of FORBIDDEN_COMMERCIAL_PATTERNS) {
       assert.equal(pattern.test(html), false, `${route} contains forbidden commercial marker ${pattern}`);
     }
   }
 });
 
-test('P0/P1 suicide-support routes preserve official emergency access', async () => {
-  const suicideSupportRoutes = [
-    'me-preocupa-que-alguien-pueda-suicidarse/index.html',
-    'alguien-cercano-ha-intentado-suicidarse/index.html',
-    'duelo/ha-muerto-por-suicidio-alguien-que-quiero/index.html',
-  ];
+test('P0/P1 routes requiring 112 + 024 preserve official emergency access', async () => {
+  const criticalRoutes = await readCriticalInventory();
+  const suicideSupportRoutes = criticalRoutes.filter(({ invariant }) => /112\s*\+\s*024/i.test(invariant));
 
-  for (const route of suicideSupportRoutes) {
-    const html = await readFile(new URL(`../${route}`, import.meta.url), 'utf8');
+  assert.ok(suicideSupportRoutes.length > 0, 'inventory must identify routes requiring 112 + 024');
+
+  for (const { route } of suicideSupportRoutes) {
+    const file = routeToFile(route);
+    const html = await readFile(new URL(`../${file}`, import.meta.url), 'utf8');
     assert.match(html, /href=['\"]tel:112['\"]/i, `${route} must preserve 112 access`);
     assert.match(html, /href=['\"]tel:024['\"]/i, `${route} must preserve 024 access`);
     assert.match(html, /sanidad\.gob\.es\/linea024/i, `${route} must preserve the official Ministry of Health 024 source`);
