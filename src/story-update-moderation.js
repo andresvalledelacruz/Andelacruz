@@ -22,20 +22,26 @@ export function candidateStatusForDecision(decision) {
   return status;
 }
 
+function publicationSubmission(submission = {}) {
+  const { story: _moderationSafetyMirror, ...value } = submission;
+  return value;
+}
+
 export function buildStoryUpdateDecisionTask({ auditEvent, submission, decision } = {}) {
   normalizeStoryUpdateCandidateId(submission);
+  const safeSubmission = publicationSubmission(submission);
   if (decision === 'approve') {
     return {
       ...auditEvent,
       task: 'publish_story_update_candidate',
-      story_update_submission: submission
+      story_update_submission: safeSubmission
     };
   }
   if (decision === 'escalate') {
     return {
       ...auditEvent,
       task: 'human_safety_review',
-      story_update_submission: submission
+      story_update_submission: safeSubmission
     };
   }
   if (decision === 'reject') return auditEvent;
