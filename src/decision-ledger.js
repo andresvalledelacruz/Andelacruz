@@ -11,6 +11,26 @@ const FORBIDDEN_METADATA_KEYS = new Set([
   'secret',
   'authorization'
 ]);
+const FORBIDDEN_COMPOUND_SEGMENTS = new Set([
+  'story',
+  'body',
+  'alias',
+  'email',
+  'phone',
+  'token',
+  'secret',
+  'authorization'
+]);
+const FREE_TEXT_CONTEXT_SEGMENTS = new Set([
+  'story',
+  'message',
+  'content',
+  'description',
+  'detail',
+  'update',
+  'author',
+  'user'
+]);
 const MAX_METADATA_ENTRIES = 20;
 const MAX_METADATA_ARRAY_ITEMS = 20;
 const MAX_METADATA_STRING_LENGTH = 240;
@@ -40,7 +60,12 @@ function metadataKeySegments(key) {
 function isForbiddenMetadataKey(key) {
   const normalized = String(key || '').trim().toLowerCase();
   if (FORBIDDEN_METADATA_KEYS.has(normalized)) return true;
-  return metadataKeySegments(key).some((segment) => FORBIDDEN_METADATA_KEYS.has(segment));
+
+  const segments = metadataKeySegments(key);
+  if (segments.some((segment) => FORBIDDEN_COMPOUND_SEGMENTS.has(segment))) return true;
+
+  return segments.includes('text') &&
+    segments.some((segment) => FREE_TEXT_CONTEXT_SEGMENTS.has(segment));
 }
 
 function sanitizeMetadataValue(value, depth = 0) {
