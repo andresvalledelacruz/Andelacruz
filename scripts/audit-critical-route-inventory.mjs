@@ -20,7 +20,7 @@ const CRITICAL_PATH_HINTS = [
   /ayuda-urgente/i,
   /sobredosis/i,
   /abstinencia/i,
-  /trata(?:-de-personas)?/i,
+  /(?:^|\/)trata(?:-de-personas)?(?:\/|-|$)/i,
   /coaccion/i,
   /secuestro/i,
   /desahucio/i,
