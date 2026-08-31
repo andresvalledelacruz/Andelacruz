@@ -42,6 +42,29 @@ test('holds a product change when safety is weak regardless of aggregate score',
   assert.equal(result.decision, 'HOLD');
 });
 
+test('holds a product change with weak evidence even when every other score is maximal', () => {
+  const result = evaluateExecutiveDecision({
+    kind: 'product_change',
+    evidence: ['hypothesis-only'],
+    scores: {
+      user_value: 5,
+      evidence_strength: 2,
+      ux_clarity: 5,
+      engineering_readiness: 5,
+      security_privacy: 5,
+      safety: 5,
+      google_quality: 5,
+      measurement: 5,
+      business_value: 5,
+      maintainability: 5
+    }
+  });
+  assert.equal(result.score >= 80, true);
+  assert.equal(result.decision, 'HOLD');
+  assert.ok(result.requirements.some((item) => item.includes('evidencia suficiente')));
+  assert.equal(result.guardrails.evidence_required_before_scale, true);
+});
+
 test('allows a strong balanced feature to become a scale candidate', () => {
   const result = evaluateExecutiveDecision({
     kind: 'product_change',
