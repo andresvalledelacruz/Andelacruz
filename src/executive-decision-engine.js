@@ -1,5 +1,6 @@
 import { evaluateCriticalSafety } from './critical-safety-taxonomy.js';
 import { buildMultidisciplinaryCaseMap } from './multidisciplinary-case-map.js';
+import { selectStrategicFrameworks } from './strategic-meta-brain.js';
 
 const productWeights = {
   user_value: 0.20,
@@ -61,6 +62,11 @@ function productRequirements(scores) {
 }
 
 function evaluateProductChange(input = {}) {
+  const strategicGovernance = selectStrategicFrameworks({
+    front: input.front ?? 'product_readiness',
+    flags: Array.isArray(input.flags) ? input.flags : [],
+    evidence: Array.isArray(input.evidence) ? input.evidence : []
+  });
   const scores = normalizedProductScores(input.scores);
   const hardBlocks = Object.entries(hardBlockCatalog)
     .filter(([key]) => input.hard_blocks?.[key] === true)
@@ -70,7 +76,8 @@ function evaluateProductChange(input = {}) {
   const requirements = productRequirements(scores);
 
   let decision = 'EXPERIMENT';
-  if (hardBlocks.length) decision = 'BLOCKED';
+  if (hardBlocks.length || strategicGovernance.decision === 'SAFETY_GATEWAY') decision = 'BLOCKED';
+  else if (strategicGovernance.decision === 'HUMAN_REVIEW_REQUIRED') decision = 'HOLD';
   else if (scores.security_privacy < 3 || scores.safety < 3) decision = 'HOLD';
   else if (score >= 80 && requirements.length <= 2) decision = 'SCALE_CANDIDATE';
   else if (score < 55) decision = 'HOLD';
@@ -82,6 +89,7 @@ function evaluateProductChange(input = {}) {
     score,
     scores,
     hard_blocks: hardBlocks,
+    strategic_governance: strategicGovernance,
     requirements,
     authority_order: [
       'critical_safety',

@@ -86,3 +86,52 @@ test('non-critical dismissal routes multidisciplinary support without medicalizi
   assert.equal(result.multidisciplinary.primary_need.id, 'work_career');
   assert.equal(result.diagnostic, false);
 });
+
+
+test('Meta-Brain holds sensitive business proposals for human professional review', () => {
+  const result = evaluateExecutiveDecision({
+    kind: 'product_change',
+    front: 'ethical_business',
+    flags: ['mental_health', 'professional_services'],
+    evidence: ['market-signal'],
+    scores: {
+      user_value: 5,
+      evidence_strength: 5,
+      ux_clarity: 5,
+      engineering_readiness: 5,
+      security_privacy: 5,
+      safety: 5,
+      google_quality: 5,
+      measurement: 5,
+      business_value: 5,
+      maintainability: 5
+    }
+  });
+  assert.equal(result.decision, 'HOLD');
+  assert.equal(result.strategic_governance.decision, 'HUMAN_REVIEW_REQUIRED');
+  assert.equal(result.strategic_governance.monetization_allowed, false);
+  assert.ok(result.strategic_governance.frameworks.includes('/redteam'));
+});
+
+test('Meta-Brain attaches governed next-move frameworks to ordinary product work', () => {
+  const result = evaluateExecutiveDecision({
+    kind: 'product_change',
+    front: 'product_readiness',
+    evidence: ['verified-user-need'],
+    scores: {
+      user_value: 4,
+      evidence_strength: 4,
+      ux_clarity: 4,
+      engineering_readiness: 4,
+      security_privacy: 4,
+      safety: 4,
+      google_quality: 4,
+      measurement: 4,
+      business_value: 4,
+      maintainability: 4
+    }
+  });
+  assert.equal(result.strategic_governance.decision, 'PROCEED_WITH_GUARDRAILS');
+  assert.equal(result.strategic_governance.evidence_count, 1);
+  assert.ok(result.strategic_governance.frameworks.includes('/nextmove'));
+});
