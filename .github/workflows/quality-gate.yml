@@ -41,6 +41,9 @@ jobs:
           find src ops tests opportunity scripts -type f \( -name '*.js' -o -name '*.mjs' \) -print0 | xargs -0 -n1 node --check
           find . -maxdepth 1 -type f -name '*.js' -print0 | xargs -0 -n1 node --check
 
+      - name: Block internal drafts from deployable production tree
+        run: node scripts/audit-no-internal-drafts.mjs
+
       - name: Require explicit owner approval for V9 visual changes
         if: github.event_name == 'pull_request'
         shell: bash
