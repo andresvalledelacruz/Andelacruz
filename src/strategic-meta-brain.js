@@ -15,6 +15,8 @@ export const STRATEGIC_FRAMEWORKS = Object.freeze(FRAMEWORK_NAMES.map((id) => Ob
 export const FRONT_FRAMEWORKS = Object.freeze({
   safety: ['redteam','blindspots','secondorder','premortem','stresstest','worstcase','probability','counterargument','biascheck'],
   human_demand: ['detective','psychologist','contentgap','trendjack','signalnoise','probability','futureproof'],
+  cancer: ['detective','psychologist','redteam','blindspots','secondorder','premortem','stresstest','trust','authority','biascheck'],
+  accidental_emergencies: ['redteam','blindspots','secondorder','premortem','stresstest','worstcase','probability','simplestpath','teachback'],
   seo_ai_geo: ['80-20','bottleneck','leverage','reverseengineer','authority','trust','contentgap','score','nextmove'],
   ux: ['simplestpath','psychologist','misconceptions','intuition','teachback','minimal','stresstest'],
   international_native_first: ['detective','psychologist','secondorder','blindspots','reverseengineer','futureproof','biascheck'],
@@ -46,7 +48,7 @@ export const BUSINESS_PROMPT_MATRIX = Object.freeze(Array.from({ length: 120 }, 
   return Object.freeze({ id, section: sectionFor(id), classification });
 }));
 
-const SENSITIVE_FLAGS = new Set(['ymyl','mental_health','p0_p1','immediate_risk','sensitive_data','testimonials','legal','fiscal','insurance','referral','professional_services']);
+const SENSITIVE_FLAGS = new Set(['ymyl','health','cancer','minors','mental_health','p0_p1','immediate_risk','sensitive_data','testimonials','legal','fiscal','insurance','referral','professional_services']);
 const NON_SENSITIVE_FLAGS = new Set(['operational','seo','ai_geo','ux','accessibility','performance','backup_dr','analytics','content','native_first','product_readiness']);
 const KNOWN_FRONTS = new Set(Object.keys(FRONT_FRAMEWORKS));
 
@@ -82,3 +84,4 @@ export function selectStrategicFrameworks({ front, flags = [], evidence = [] } =
     prohibitions: ['invented_credentials','fictional_testimonials_as_real','vulnerability_manipulation','dark_patterns','sensitive_targeting']
   };
 }
+

@@ -70,3 +70,23 @@ test('unknown strategic fronts fail closed and remain auditable', () => {
   assert.equal(result.requires_human_professional_review, true);
   assert.ok(result.frameworks.includes('/redteam'));
 });
+
+test('cancer front always remains under human professional review', () => {
+  const result = selectStrategicFrameworks({ front: 'cancer', flags: ['ymyl', 'health', 'cancer'], evidence: ['ministerio-sanidad', 'seom'] });
+  assert.equal(result.decision, 'HUMAN_REVIEW_REQUIRED');
+  assert.equal(result.monetization_allowed, false);
+  assert.equal(result.requires_official_current_sources, true);
+  assert.equal(result.requires_human_professional_review, true);
+  assert.equal(result.unknown_front, null);
+  assert.deepEqual(result.unknown_flags, []);
+});
+
+test('accidental emergency becomes Safety Gateway for immediate risk', () => {
+  const result = selectStrategicFrameworks({ front: 'accidental-emergencies', flags: ['p0-p1', 'immediate-risk', 'health', 'minors'] });
+  assert.equal(result.decision, 'SAFETY_GATEWAY');
+  assert.equal(result.monetization_allowed, false);
+  assert.equal(result.automated_individual_advice_allowed, false);
+  assert.equal(result.unknown_front, null);
+  assert.deepEqual(result.unknown_flags, []);
+});
+

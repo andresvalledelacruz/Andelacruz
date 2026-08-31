@@ -16,6 +16,8 @@ Ninguna puntuación, oportunidad SEO o ingreso compensa un hard block. P0/P1 act
 
 - Safety Brain: red-team, blindspots, second-order, premortem, stress-test, worst-case y probability.
 - Human Demand Intelligence: detective, psychologist, content-gap, signal/noise, probability y futureproof.
+- Cáncer: detective, psychologist, red-team, blindspots, second-order, premortem, stress-test, trust, authority y bias-check; siempre YMYL/salud y con revisión profesional.
+- Emergencias accidentales: red-team, blindspots, second-order, premortem, stress-test, worst-case, probability, simplest-path y teachback; el riesgo inmediato activa Safety Gateway.
 - SEO / AI-GEO: 80/20, bottleneck, leverage, reverse-engineer, authority, trust, score y nextmove.
 - UX: simplest-path, misconceptions, intuition, teachback, minimal y stress-test.
 - Internacionalización Native-First: detective, psychologist, second-order, reverse-engineer, futureproof y bias-check.
@@ -72,3 +74,4 @@ Prohibiciones permanentes: credenciales inventadas, testimonios ficticios public
 - asesoría jurídica/fiscal/RGPD y validación profesional sanitaria cuando se active un caso aplicable;
 - credenciales y acuerdos con profesionales reales antes de ofrecer o derivar servicios;
 - seguro y gestión de riesgo (#1), protección de `production-v9` (#78), destino independiente y restore drill (#83).
+
