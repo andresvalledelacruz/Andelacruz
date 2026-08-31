@@ -50,6 +50,7 @@ function weightedProductScore(scores) {
 function productRequirements(scores) {
   const requirements = [];
   if (scores.user_value < 3) requirements.push('Demostrar mejor el valor real para la persona usuaria.');
+  if (scores.evidence_strength < 3) requirements.push('Aportar evidencia suficiente antes de escalar la propuesta.');
   if (scores.ux_clarity < 3) requirements.push('Resolver fricción o ambigüedad de UX antes de escalar.');
   if (scores.engineering_readiness < 3) requirements.push('Completar arquitectura, pruebas, observabilidad o rollback.');
   if (scores.security_privacy < 4) requirements.push('Revisión de seguridad/privacidad obligatoria.');
@@ -78,7 +79,7 @@ function evaluateProductChange(input = {}) {
   let decision = 'EXPERIMENT';
   if (hardBlocks.length || strategicGovernance.decision === 'SAFETY_GATEWAY') decision = 'BLOCKED';
   else if (strategicGovernance.decision === 'HUMAN_REVIEW_REQUIRED') decision = 'HOLD';
-  else if (scores.security_privacy < 3 || scores.safety < 3) decision = 'HOLD';
+  else if (scores.security_privacy < 3 || scores.safety < 3 || scores.evidence_strength < 3) decision = 'HOLD';
   else if (score >= 80 && requirements.length <= 2) decision = 'SCALE_CANDIDATE';
   else if (score < 55) decision = 'HOLD';
 
@@ -110,6 +111,7 @@ function evaluateProductChange(input = {}) {
       safety_can_block_business: true,
       privacy_can_block_growth: true,
       human_value_can_block_cro: true,
+      evidence_required_before_scale: true,
       no_sensitive_commercial_targeting: true,
       no_vanity_metric_approval: true
     }
@@ -158,6 +160,7 @@ export function executiveDecisionFramework() {
     product_thresholds: {
       scale_candidate: 80,
       hold_below: 55,
+      minimum_evidence_strength: 3,
       minimum_security_privacy: 3,
       minimum_safety: 3
     }
