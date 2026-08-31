@@ -28,6 +28,21 @@ function sha256(value) {
   return crypto.createHash('sha256').update(value).digest('hex');
 }
 
+function metadataKeySegments(key) {
+  return String(key || '')
+    .trim()
+    .replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+    .toLowerCase()
+    .split(/[^a-z0-9]+/)
+    .filter(Boolean);
+}
+
+function isForbiddenMetadataKey(key) {
+  const normalized = String(key || '').trim().toLowerCase();
+  if (FORBIDDEN_METADATA_KEYS.has(normalized)) return true;
+  return metadataKeySegments(key).some((segment) => FORBIDDEN_METADATA_KEYS.has(segment));
+}
+
 function sanitizeMetadataValue(value, depth = 0) {
   if (depth >= MAX_METADATA_DEPTH) return null;
   if (typeof value === 'string') return value.slice(0, MAX_METADATA_STRING_LENGTH);
@@ -42,7 +57,7 @@ function sanitizeMetadataValue(value, depth = 0) {
   if (typeof value === 'object') {
     return Object.fromEntries(
       Object.entries(value)
-        .filter(([key]) => !FORBIDDEN_METADATA_KEYS.has(String(key).toLowerCase()))
+        .filter(([key]) => !isForbiddenMetadataKey(key))
         .slice(0, MAX_METADATA_ENTRIES)
         .map(([key, nestedValue]) => [
           String(key).slice(0, 80),
@@ -118,7 +133,7 @@ export function sanitizeDecisionEvent(input = {}) {
   };
 
   // El ledger nunca conserva texto libre de historias ni identificadores/credenciales sensibles,
-  // tampoco cuando llegan anidados dentro de objetos o arrays de metadata.
+  // tampoco cuando llegan anidados o con nombres compuestos como user_email, storyText o auth_token.
   event.metadata = sanitizeMetadataValue(event.metadata) || {};
 
   return { ...event, fingerprint: buildDecisionFingerprint(event) };
