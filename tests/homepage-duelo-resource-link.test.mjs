@@ -17,14 +17,13 @@ test('Rupturas y relaciones enlaza al hub público de rupturas', () => {
   assert.match(adapter, /\['Rupturas y relaciones', '\/rupturas\/'\]/);
 });
 
-test('las tarjetas con destino muestran una pista visible de navegación', () => {
-  assert.match(adapter, /cue\.textContent = 'Ver recursos →'/);
-  assert.match(adapter, /cue\.dataset\.resourceLinkCue = ''/);
-  assert.match(adapter, /article\.append\(cue\)/);
+test('Gestión emocional enlaza solo a su hub público específico', () => {
+  assert.match(adapter, /\['Gestión emocional', '\/gestion-emocional\/'\]/);
+  assert.doesNotMatch(adapter, /En preparación/);
+  assert.doesNotMatch(adapter, /\['Gestión emocional',\s*'\/(?:soledad|duelo|rupturas)\//);
 });
 
-test('Gestión emocional no recibe un destino aproximado y se marca como en preparación', () => {
-  assert.match(adapter, /Gestión emocional/);
-  assert.match(adapter, /status\.textContent = 'En preparación'/);
-  assert.doesNotMatch(adapter, /\['Gestión emocional',\s*'\/(?:soledad|duelo|rupturas)\//);
+test('las tarjetas con destino muestran una pista visible de navegación', () => {
+  assert.match(adapter, /Ver recursos →/);
+  assert.match(adapter, /dataset\.resourceLinkCue/);
 });
