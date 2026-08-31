@@ -158,3 +158,49 @@ test('Meta-Brain attaches governed next-move frameworks to ordinary product work
   assert.equal(result.strategic_governance.evidence_count, 1);
   assert.ok(result.strategic_governance.frameworks.includes('/nextmove'));
 });
+
+
+test('Meta-Brain safety gateway records an explicit auditable hard block', () => {
+  const result = evaluateExecutiveDecision({
+    kind: 'product_change',
+    front: 'ethical_business',
+    flags: ['p0_p1', 'mental_health'],
+    scores: {
+      user_value: 5,
+      evidence_strength: 5,
+      ux_clarity: 5,
+      engineering_readiness: 5,
+      security_privacy: 5,
+      safety: 5,
+      google_quality: 5,
+      measurement: 5,
+      business_value: 5,
+      maintainability: 5
+    }
+  });
+  assert.equal(result.decision, 'BLOCKED');
+  assert.ok(result.hard_blocks.some(({ id }) => id === 'meta_brain_safety_gateway'));
+});
+
+test('Meta-Brain human review hold explains the required next action', () => {
+  const result = evaluateExecutiveDecision({
+    kind: 'product_change',
+    front: 'ethical_business',
+    flags: ['legal'],
+    scores: {
+      user_value: 5,
+      evidence_strength: 5,
+      ux_clarity: 5,
+      engineering_readiness: 5,
+      security_privacy: 5,
+      safety: 5,
+      google_quality: 5,
+      measurement: 5,
+      business_value: 5,
+      maintainability: 5
+    }
+  });
+  assert.equal(result.decision, 'HOLD');
+  assert.ok(result.requirements.some((item) => item.includes('revisión humana/profesional')));
+  assert.equal(result.strategic_governance.requires_official_current_sources, true);
+});
