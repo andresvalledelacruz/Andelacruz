@@ -1,5 +1,6 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
+import { isCriticalRoutePath } from './critical-route-signals.mjs';
 
 const ROOT = process.cwd();
 
@@ -11,25 +12,6 @@ const INVENTORY = new Set([
   'he-sufrido-una-agresion-sexual-y-no-se-que-hacer/index.html',
   'duelo/ha-muerto-por-suicidio-alguien-que-quiero/index.html',
 ]);
-
-const CRITICAL_PATH_HINTS = [
-  /suicid/i,
-  /agresion-sexual/i,
-  /maltrat/i,
-  /violencia/i,
-  /ayuda-urgente/i,
-  /sobredosis/i,
-  /abstinencia/i,
-  /(?:^|\/)trata(?:-de-personas)?(?:\/|-|$)/i,
-  /coaccion/i,
-  /secuestro/i,
-  /desahucio/i,
-  /sin-hogar/i,
-  /persona-vulnerable/i,
-  /menor-en-riesgo/i,
-  /desastre/i,
-  /catastrofe/i,
-];
 
 const SKIP_DIRS = new Set(['.git', 'node_modules']);
 
@@ -46,7 +28,7 @@ async function walk(dir, out = []) {
 }
 
 const routes = await walk(ROOT);
-const suspicious = routes.filter((route) => CRITICAL_PATH_HINTS.some((pattern) => pattern.test(route)));
+const suspicious = routes.filter(isCriticalRoutePath);
 const missing = suspicious.filter((route) => !INVENTORY.has(route));
 const absent = [...INVENTORY].filter((route) => !routes.includes(route));
 
