@@ -50,6 +50,7 @@ export const BUSINESS_PROMPT_MATRIX = Object.freeze(Array.from({ length: 120 }, 
 
 const SENSITIVE_FLAGS = new Set(['ymyl','health','cancer','minors','mental_health','p0_p1','immediate_risk','sensitive_data','testimonials','legal','fiscal','insurance','referral','professional_services']);
 const NON_SENSITIVE_FLAGS = new Set(['operational','seo','ai_geo','ux','accessibility','performance','backup_dr','analytics','content','native_first','product_readiness']);
+const SENSITIVE_FRONTS = new Set(['cancer','accidental_emergencies']);
 const KNOWN_FRONTS = new Set(Object.keys(FRONT_FRAMEWORKS));
 
 function normalizeToken(value) {
@@ -63,7 +64,8 @@ export function selectStrategicFrameworks({ front, flags = [], evidence = [] } =
   const knownFlags = new Set([...SENSITIVE_FLAGS, ...NON_SENSITIVE_FLAGS]);
   const unknownFlags = [...normalizedFlags].filter((flag) => !knownFlags.has(flag));
   const selected = new Set(FRONT_FRAMEWORKS[normalizedFront] ?? ['firstprinciples','blindspots','tradeoffs','score','nextmove']);
-  const sensitive = [...normalizedFlags].some((flag) => SENSITIVE_FLAGS.has(flag));
+  const sensitiveFront = SENSITIVE_FRONTS.has(normalizedFront);
+  const sensitive = sensitiveFront || [...normalizedFlags].some((flag) => SENSITIVE_FLAGS.has(flag));
   const critical = normalizedFlags.has('p0_p1') || normalizedFlags.has('immediate_risk');
   const requiresReview = sensitive || unknownFlags.length > 0 || unknownFront;
 
