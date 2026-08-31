@@ -18,6 +18,17 @@ const CRITICAL_PATH_HINTS = [
   /maltrat/i,
   /violencia/i,
   /ayuda-urgente/i,
+  /sobredosis/i,
+  /abstinencia/i,
+  /trata(?:-de-personas)?/i,
+  /coaccion/i,
+  /secuestro/i,
+  /desahucio/i,
+  /sin-hogar/i,
+  /persona-vulnerable/i,
+  /menor-en-riesgo/i,
+  /desastre/i,
+  /catastrofe/i,
 ];
 
 const SKIP_DIRS = new Set(['.git', 'node_modules']);
