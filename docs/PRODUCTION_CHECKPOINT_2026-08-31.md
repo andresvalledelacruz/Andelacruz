@@ -56,3 +56,12 @@ Mientras los tres puntos humanos anteriores permanecen abiertos, el trabajo aut�
 6. Monetización segura únicamente en rutas y contextos no sensibles.
 
 Para nuevas URLs se mantiene el protocolo completo: necesidad humana real → demanda/SERP/intención → fuentes oficiales actuales → canibalización → YMYL → GO/NO-GO → rama aislada → implementación → Safety Gate específico → Engineering Quality Gate → Production SEO Integrity → revisión editorial → merge solo todo verde → certificación post-merge Engineering + SEO + Pages sobre el mismo SHA.
+
+## Anexo de continuidad — Cáncer y Emergencias accidentales
+
+- Producción real comprobada antes de este ciclo: `a5da17d89e5782c41dac30d8edcec76e33bfc4fc`.
+- Ese SHA tiene Engineering Quality Gate, Production SEO Integrity y Pages en verde.
+- Cáncer entra como frente independiente: GO estratégico, HOLD de publicación hasta revisión clínica/profesional.
+- Ahogamiento, sumersión y sofocación accidentales entra bajo Accidentes/Emergencias accidentales: prevención y arquitectura pueden prepararse; emergencia y contenido posterior quedan en HOLD hasta gate y revisión profesional.
+- La portada V9 permanece intacta.
+
