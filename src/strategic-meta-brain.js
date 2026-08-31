@@ -46,26 +46,35 @@ export const BUSINESS_PROMPT_MATRIX = Object.freeze(Array.from({ length: 120 }, 
   return Object.freeze({ id, section: sectionFor(id), classification });
 }));
 
-const SENSITIVE_FLAGS = new Set(['ymyl','mental_health','p0_p1','sensitive_data','testimonials','legal','fiscal','insurance','referral','professional_services']);
+const SENSITIVE_FLAGS = new Set(['ymyl','mental_health','p0_p1','immediate_risk','sensitive_data','testimonials','legal','fiscal','insurance','referral','professional_services']);
+const NON_SENSITIVE_FLAGS = new Set(['operational','seo','ai_geo','ux','accessibility','performance','backup_dr','analytics','content','native_first','product_readiness']);
+
+function normalizeFlag(flag) {
+  return String(flag).trim().toLowerCase().replace(/[\s-]+/g, '_');
+}
 
 export function selectStrategicFrameworks({ front, flags = [], evidence = [] } = {}) {
-  const normalizedFlags = new Set(flags.map((flag) => String(flag).toLowerCase()));
+  const normalizedFlags = new Set(flags.map(normalizeFlag).filter(Boolean));
+  const knownFlags = new Set([...SENSITIVE_FLAGS, ...NON_SENSITIVE_FLAGS]);
+  const unknownFlags = [...normalizedFlags].filter((flag) => !knownFlags.has(flag));
   const selected = new Set(FRONT_FRAMEWORKS[front] ?? ['firstprinciples','blindspots','tradeoffs','score','nextmove']);
   const sensitive = [...normalizedFlags].some((flag) => SENSITIVE_FLAGS.has(flag));
   const critical = normalizedFlags.has('p0_p1') || normalizedFlags.has('immediate_risk');
+  const requiresReview = sensitive || unknownFlags.length > 0;
 
-  if (sensitive) ['redteam','premortem','stresstest','biascheck'].forEach((id) => selected.add(id));
+  if (requiresReview) ['redteam','premortem','stresstest','biascheck'].forEach((id) => selected.add(id));
 
   return {
     version: 1,
     front: front ?? 'unclassified',
     frameworks: [...selected].map((id) => `/${id}`),
     evidence_count: evidence.length,
-    decision: critical ? 'SAFETY_GATEWAY' : sensitive ? 'HUMAN_REVIEW_REQUIRED' : 'PROCEED_WITH_GUARDRAILS',
-    monetization_allowed: !sensitive,
+    unknown_flags: unknownFlags,
+    decision: critical ? 'SAFETY_GATEWAY' : requiresReview ? 'HUMAN_REVIEW_REQUIRED' : 'PROCEED_WITH_GUARDRAILS',
+    monetization_allowed: !requiresReview,
     automated_individual_advice_allowed: false,
     requires_official_current_sources: sensitive,
-    requires_human_professional_review: sensitive,
+    requires_human_professional_review: requiresReview,
     prohibitions: ['invented_credentials','fictional_testimonials_as_real','vulnerability_manipulation','dark_patterns','sensitive_targeting']
   };
 }
