@@ -337,6 +337,10 @@ No confundir esto con “producción lista”. Todavía faltan endurecimiento, i
 
 ## 18. Prioridades inmediatas recomendadas
 
+### Meta-Brain estratégico (PREPARADO)
+
+El sistema interno incorpora una biblioteca gobernada de 99 marcos de razonamiento y la clasificación completa de los 120 prompts de negocio/gestión emocional. Safety conserva autoridad de bloqueo; P0/P1 no se monetiza y YMYL/legal/fiscal/datos sensibles/servicios profesionales requieren fuentes oficiales actuales y revisión humana/profesional. Ver `docs/STRATEGIC_META_BRAIN.md` y `src/strategic-meta-brain.js`.
+
 ### P0 — Verificación live del Centro de Mando
 1. Confirmar que Render ha desplegado la versión actual de `ops-api` y `ops/`.
 2. Probar una historia sintética normal y comprobar `ROUTE_WITH_GUARDRAILS`.
@@ -382,3 +386,4 @@ Usar siempre estas etiquetas:
 - **PRODUCCIÓN VERIFICADA**: desplegado, observado y validado en producción.
 
 No saltar de PREPARADO a PRODUCCIÓN VERIFICADA sin evidencia real.
+
