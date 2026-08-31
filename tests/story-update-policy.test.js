@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { evaluateExecutiveDecision } from '../src/executive-decision-engine.js';
 import {
   authorizeStoryUpdate,
   buildStoryUpdateModerationMessage,
@@ -77,6 +78,28 @@ test('story update message always enters moderation and never direct publication
   assert.equal(result.value.moderation_required, true);
   assert.equal(result.value.publish_directly, false);
   assert.equal(result.value.story_id, 'story-123');
+  assert.equal(result.value.story, result.value.text);
+});
+
+test('critical update is visible to the generic executive safety evaluator before moderation decision', () => {
+  const result = buildStoryUpdateModerationMessage({
+    storyId: '41',
+    storySlug: 'historia-sintetica',
+    phase: 'mes_1',
+    text: 'Estoy pensando en quitarme la vida ahora y esta actualización ficticia añade suficiente texto para superar el mínimo del contrato y llegar obligatoriamente a revisión urgente.',
+    synthetic: true,
+    environment: 'staging',
+    submittedAt: '2026-08-31T08:00:00.000Z'
+  });
+
+  assert.equal(result.ok, true);
+  const executive = evaluateExecutiveDecision({
+    kind: 'user_case',
+    story: result.value.story
+  });
+  assert.equal(executive.decision, 'SAFETY_GATEWAY');
+  assert.equal(executive.safety.level, 'P0');
+  assert.equal(executive.commercial_ui_allowed, false);
 });
 
 test('staging rejects non-synthetic author updates', () => {
