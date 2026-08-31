@@ -17,7 +17,7 @@ function secureEqual(a, b) {
 }
 
 function normalizedEnvironment(environment) {
-  return String(environment || process.env.NODE_ENV || 'staging').trim().toLowerCase();
+  return String(environment || process.env.NODE_ENV || 'unknown').trim().toLowerCase();
 }
 
 export function stagingPrincipalFromBearer({ authorization, configuredToken, environment } = {}) {

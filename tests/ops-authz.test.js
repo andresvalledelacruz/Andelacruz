@@ -37,6 +37,34 @@ test('legacy staging bearer is rejected outside staging even with a valid token'
   }
 });
 
+test('legacy staging bearer fails closed when environment is missing or blank', () => {
+  const previousNodeEnv = process.env.NODE_ENV;
+  try {
+    delete process.env.NODE_ENV;
+    for (const environment of [undefined, null, '']) {
+      assert.equal(stagingPrincipalFromBearer({
+        authorization: 'Bearer secret',
+        configuredToken: 'secret',
+        environment
+      }), null);
+
+      const denied = buildOpsAuthorizationContext({
+        authorization: 'Bearer secret',
+        configuredToken: 'secret',
+        environment,
+        method: 'GET',
+        route: '/ops/summary'
+      });
+      assert.equal(denied.allowed, false);
+      assert.equal(denied.reason, 'unauthenticated');
+      assert.equal(denied.principal, null);
+    }
+  } finally {
+    if (previousNodeEnv === undefined) delete process.env.NODE_ENV;
+    else process.env.NODE_ENV = previousNodeEnv;
+  }
+});
+
 test('invalid or absent bearer fails closed', () => {
   assert.equal(stagingPrincipalFromBearer({ authorization: 'Bearer wrong', configuredToken: 'secret', environment: 'staging' }), null);
   assert.equal(stagingPrincipalFromBearer({ authorization: '', configuredToken: 'secret', environment: 'staging' }), null);
