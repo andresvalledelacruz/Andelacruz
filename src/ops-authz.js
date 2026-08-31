@@ -8,6 +8,10 @@ const SAFETY_DECISION_CAPABILITIES = new Set([
   OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD,
   OPS_CAPABILITIES.MODERATION_DECIDE_SAFETY
 ]);
+const INDIVIDUAL_IDENTITY_REQUIRED_CAPABILITIES = new Set([
+  OPS_CAPABILITIES.MODERATION_QUEUE_READ,
+  OPS_CAPABILITIES.MODERATION_BRIEF_READ
+]);
 
 function secureEqual(a, b) {
   const left = Buffer.from(String(a || ''));
@@ -39,6 +43,13 @@ export function stagingPrincipalFromBearer({ authorization, configuredToken, env
 export function authorizeOpsPrincipal({ principal, capability, safetyLevel = 'NONE' } = {}) {
   if (!principal || typeof principal !== 'object') {
     return { allowed: false, reason: 'unauthenticated' };
+  }
+
+  if (
+    principal.transitional === true &&
+    INDIVIDUAL_IDENTITY_REQUIRED_CAPABILITIES.has(capability)
+  ) {
+    return { allowed: false, reason: 'individual_identity_required_for_moderation_data' };
   }
 
   if (

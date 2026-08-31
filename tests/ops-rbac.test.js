@@ -14,11 +14,17 @@ test('roles normalize strictly and unknown roles fail closed', () => {
   assert.equal(normalizeOpsRole(''), null);
 });
 
-test('analyst is read-only', () => {
+test('analyst is read-only without access to moderation case data', () => {
   assert.equal(hasOpsCapability('analyst', OPS_CAPABILITIES.SUMMARY_READ), true);
-  assert.equal(hasOpsCapability('analyst', OPS_CAPABILITIES.MODERATION_QUEUE_READ), true);
+  assert.equal(hasOpsCapability('analyst', OPS_CAPABILITIES.MODERATION_QUEUE_READ), false);
+  assert.equal(hasOpsCapability('analyst', OPS_CAPABILITIES.MODERATION_BRIEF_READ), false);
   assert.equal(hasOpsCapability('analyst', OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD), false);
   assert.equal(hasOpsCapability('analyst', OPS_CAPABILITIES.ACCESS_MANAGE), false);
+});
+
+test('ordinary moderator cannot read raw moderation queue or executive briefs', () => {
+  assert.equal(hasOpsCapability('moderator', OPS_CAPABILITIES.MODERATION_QUEUE_READ), false);
+  assert.equal(hasOpsCapability('moderator', OPS_CAPABILITIES.MODERATION_BRIEF_READ), false);
 });
 
 test('moderator can decide standard cases only with AAL2', () => {
@@ -57,7 +63,17 @@ test('P0/P1 moderation cannot be decided by ordinary moderator even with AAL2', 
   }
 });
 
-test('safety reviewer can handle P0/P1 after AAL2', () => {
+test('safety reviewer can read moderation data and handle P0/P1 after AAL2', () => {
+  assert.equal(hasOpsCapability('safety_reviewer', OPS_CAPABILITIES.MODERATION_QUEUE_READ), true);
+  assert.equal(hasOpsCapability('safety_reviewer', OPS_CAPABILITIES.MODERATION_BRIEF_READ), true);
+  assert.deepEqual(
+    authorizeOpsAction({
+      role: 'safety_reviewer',
+      capability: OPS_CAPABILITIES.MODERATION_QUEUE_READ,
+      aal: 'aal1'
+    }),
+    { allowed: false, reason: 'aal2_required' }
+  );
   assert.deepEqual(
     authorizeOpsAction({
       role: 'safety_reviewer',
@@ -97,6 +113,8 @@ test('only admin can manage access and it requires AAL2', () => {
 test('role capability output is deterministic and excludes privilege inflation', () => {
   const moderatorCapabilities = capabilitiesForRole('moderator');
   assert.deepEqual([...moderatorCapabilities].sort(), moderatorCapabilities);
+  assert.equal(moderatorCapabilities.includes(OPS_CAPABILITIES.MODERATION_QUEUE_READ), false);
+  assert.equal(moderatorCapabilities.includes(OPS_CAPABILITIES.MODERATION_BRIEF_READ), false);
   assert.equal(moderatorCapabilities.includes(OPS_CAPABILITIES.MODERATION_DECIDE_SAFETY), false);
   assert.equal(moderatorCapabilities.includes(OPS_CAPABILITIES.ACCESS_MANAGE), false);
 });
