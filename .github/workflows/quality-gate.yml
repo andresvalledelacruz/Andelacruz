@@ -44,6 +44,9 @@ jobs:
       - name: Block internal drafts from deployable production tree
         run: node scripts/audit-no-internal-drafts.mjs
 
+      - name: Audit ops route authorization
+        run: node scripts/audit-ops-route-auth.mjs
+
       - name: Require explicit owner approval for V9 visual changes
         if: github.event_name == 'pull_request'
         shell: bash
