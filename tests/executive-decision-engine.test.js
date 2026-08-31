@@ -97,6 +97,32 @@ test('critical user case switches the whole experience into safety gateway', () 
   assert.equal(result.diagnostic, false);
 });
 
+test('critical safety also reads alternate consumer text fields', () => {
+  for (const [field, value] of [
+    ['text', 'Tengo dolor en el pecho y necesito ayuda.'],
+    ['body', 'Estoy pensando en quitarme la vida.'],
+    ['content', 'Me está pegando ahora mismo.'],
+    ['message', 'No puedo respirar.'],
+    ['description', 'Hay un incendio ahora.'],
+    ['detail', 'Creo que ha sufrido una sobredosis.'],
+    ['moderation_safety_text', 'Estoy pensando en quitarme la vida.']
+  ]) {
+    const result = evaluateExecutiveDecision({ kind: 'user_case', [field]: value });
+    assert.equal(result.decision, 'SAFETY_GATEWAY', `expected ${field} to reach the safety gateway`);
+    assert.equal(result.commercial_ui_allowed, false);
+  }
+});
+
+test('critical safety combines story with alternate fields instead of replacing either source', () => {
+  const result = evaluateExecutiveDecision({
+    kind: 'user_case',
+    story: 'Quiero explicar una actualización.',
+    message: 'Ahora no puedo respirar.'
+  });
+  assert.equal(result.decision, 'SAFETY_GATEWAY');
+  assert.ok(result.safety.matched_groups.some(({ group }) => group === 'acute_medical'));
+});
+
 test('non-critical dismissal routes multidisciplinary support without medicalizing by default', () => {
   const result = evaluateExecutiveDecision({
     kind: 'user_case',
