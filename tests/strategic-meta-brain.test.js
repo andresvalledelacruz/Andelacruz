@@ -81,6 +81,22 @@ test('cancer front always remains under human professional review', () => {
   assert.deepEqual(result.unknown_flags, []);
 });
 
+test('cancer front fails closed even when caller omits sensitive flags', () => {
+  const result = selectStrategicFrameworks({ front: 'cancer' });
+  assert.equal(result.decision, 'HUMAN_REVIEW_REQUIRED');
+  assert.equal(result.monetization_allowed, false);
+  assert.equal(result.requires_official_current_sources, true);
+  assert.equal(result.requires_human_professional_review, true);
+});
+
+test('accidental emergency front fails closed even when caller omits sensitive flags', () => {
+  const result = selectStrategicFrameworks({ front: 'accidental-emergencies' });
+  assert.equal(result.decision, 'HUMAN_REVIEW_REQUIRED');
+  assert.equal(result.monetization_allowed, false);
+  assert.equal(result.requires_official_current_sources, true);
+  assert.equal(result.requires_human_professional_review, true);
+});
+
 test('accidental emergency becomes Safety Gateway for immediate risk', () => {
   const result = selectStrategicFrameworks({ front: 'accidental-emergencies', flags: ['p0-p1', 'immediate-risk', 'health', 'minors'] });
   assert.equal(result.decision, 'SAFETY_GATEWAY');
@@ -89,4 +105,3 @@ test('accidental emergency becomes Safety Gateway for immediate risk', () => {
   assert.equal(result.unknown_front, null);
   assert.deepEqual(result.unknown_flags, []);
 });
-
