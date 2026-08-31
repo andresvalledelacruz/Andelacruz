@@ -9,17 +9,38 @@ import {
 } from '../src/ops-authz.js';
 
 test('legacy staging bearer becomes an explicit transitional principal', () => {
-  const principal = stagingPrincipalFromBearer({ authorization: 'Bearer secret', configuredToken: 'secret' });
+  const principal = stagingPrincipalFromBearer({ authorization: 'Bearer secret', configuredToken: 'secret', environment: 'staging' });
   assert.equal(principal.role, 'admin');
   assert.equal(principal.aal, 'aal2');
   assert.equal(principal.transitional, true);
   assert.equal(principal.auth_source, 'legacy_staging_token');
 });
 
+test('legacy staging bearer is rejected outside staging even with a valid token', () => {
+  for (const environment of ['production', 'preview', 'development', 'test']) {
+    assert.equal(stagingPrincipalFromBearer({
+      authorization: 'Bearer secret',
+      configuredToken: 'secret',
+      environment
+    }), null);
+
+    const denied = buildOpsAuthorizationContext({
+      authorization: 'Bearer secret',
+      configuredToken: 'secret',
+      environment,
+      method: 'GET',
+      route: '/ops/summary'
+    });
+    assert.equal(denied.allowed, false);
+    assert.equal(denied.reason, 'unauthenticated');
+    assert.equal(denied.principal, null);
+  }
+});
+
 test('invalid or absent bearer fails closed', () => {
-  assert.equal(stagingPrincipalFromBearer({ authorization: 'Bearer wrong', configuredToken: 'secret' }), null);
-  assert.equal(stagingPrincipalFromBearer({ authorization: '', configuredToken: 'secret' }), null);
-  assert.equal(stagingPrincipalFromBearer({ authorization: 'Bearer secret', configuredToken: '' }), null);
+  assert.equal(stagingPrincipalFromBearer({ authorization: 'Bearer wrong', configuredToken: 'secret', environment: 'staging' }), null);
+  assert.equal(stagingPrincipalFromBearer({ authorization: '', configuredToken: 'secret', environment: 'staging' }), null);
+  assert.equal(stagingPrincipalFromBearer({ authorization: 'Bearer secret', configuredToken: '', environment: 'staging' }), null);
 });
 
 test('every current privileged ops API route has an explicit capability', () => {
@@ -34,7 +55,7 @@ test('every current privileged ops API route has an explicit capability', () => 
 test('unmapped routes and unauthenticated requests are denied', () => {
   assert.equal(buildOpsAuthorizationContext({ method: 'DELETE', route: '/ops/unknown' }).reason, 'unmapped_route');
   const denied = buildOpsAuthorizationContext({
-    authorization: 'Bearer wrong', configuredToken: 'secret', method: 'GET', route: '/ops/summary'
+    authorization: 'Bearer wrong', configuredToken: 'secret', environment: 'staging', method: 'GET', route: '/ops/summary'
   });
   assert.equal(denied.allowed, false);
   assert.equal(denied.reason, 'unauthenticated');
@@ -55,7 +76,7 @@ test('identity principals still obey RBAC and AAL2 independently of legacy auth'
 
 test('legacy staging bridge remains compatible for non-safety decisions', () => {
   const result = buildOpsAuthorizationContext({
-    authorization: 'Bearer secret', configuredToken: 'secret', method: 'POST', route: '/ops/moderation/:messageId/decision'
+    authorization: 'Bearer secret', configuredToken: 'secret', environment: 'staging', method: 'POST', route: '/ops/moderation/:messageId/decision'
   });
   assert.equal(result.allowed, true);
   assert.equal(result.principal.subject, 'legacy:staging-ops-token');
@@ -67,6 +88,7 @@ test('legacy staging bridge cannot decide P0 or P1 cases', () => {
     const result = buildOpsAuthorizationContext({
       authorization: 'Bearer secret',
       configuredToken: 'secret',
+      environment: 'staging',
       method: 'POST',
       route: '/ops/moderation/:messageId/decision',
       safetyLevel
