@@ -3,6 +3,7 @@
   if (!resourceGrid) return;
 
   const cardDestinations = new Map([
+    ['Gestión emocional', '/gestion-emocional/'],
     ['Rupturas y relaciones', '/rupturas/'],
     ['Duelo y pérdidas', '/duelo/']
   ]);
@@ -38,17 +39,5 @@
     cue.textContent = 'Ver recursos →';
     cue.style.cssText = 'display:block;margin-top:12px;font-weight:700;font-size:.9rem';
     article.append(cue);
-  }
-
-  const emotionalCard = [...resourceGrid.children].find((element) =>
-    element.tagName === 'ARTICLE' && element.querySelector('h3')?.textContent?.trim() === 'Gestión emocional'
-  );
-
-  if (emotionalCard && !emotionalCard.querySelector('[data-resource-status]')) {
-    const status = document.createElement('span');
-    status.dataset.resourceStatus = '';
-    status.textContent = 'En preparación';
-    status.style.cssText = 'display:block;margin-top:12px;font-weight:600;font-size:.88rem;opacity:.72';
-    emotionalCard.append(status);
   }
 })();

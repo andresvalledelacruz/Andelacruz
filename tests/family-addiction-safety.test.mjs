@@ -21,7 +21,7 @@ test('URL59 remains a high-risk restricted family-addiction route', () => {
     'minors_safeguarding', 'violence_separation', 'emergency_escalation',
     'suicide_risk_bridge', 'supporter_self_care', 'no_commercial_crisis_cta', 'safety_override'
   ]) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
-  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 59);
+  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 60);
 });
 
 test('guidance avoids diagnosis and coercive treatment promises', () => {
