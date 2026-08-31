@@ -17,7 +17,7 @@ Estado: **PREPARADO**. Control interno; no publica páginas ni modifica la porta
 - todos los modos exigen revisión clínica y editorial con credencial verificada;
 - trabajo/trámites exige además revisión legal;
 - nunca habilita consejo individual automatizado ni interfaz comercial;
-- una fuente debe ser oficial o clínica consensuada, HTTPS y verificada en los últimos 120 días;
+- una fuente debe estar en el registro interno, ser oficial o clínica consensuada, HTTPS, aplicable al frente/modo y verificada en los últimos 120 días;
 - diagnóstico, pronóstico, prescripción y CTA comercial permanecen prohibidos.
 
 ## Reglas de Emergencias accidentales
@@ -39,7 +39,12 @@ El gate solo acepta aprobaciones estructuradas con:
 
 No almacena nombres, documentos de identidad ni copias de credenciales. El expediente de acreditación debe residir en el sistema autorizado que se adopte posteriormente.
 
+## Registro de fuentes
+
+`src/sensitive-source-registry.js` es la lista cerrada de fuentes aceptables. El gate recibe identificadores del registro, no URLs ni un booleano `official` controlado por el llamante. Una URL arbitraria, una fuente de otro frente o una entrada caducada falla cerrada. Añadir una fuente requiere cambio revisable en código, fecha de verificación y clasificación de autoridad.
+
 ## Límite
 
 Este gate evita una liberación accidental desde código. No afirma que exista ya un oncólogo, profesional de emergencias o asesor jurídico contratado. Esas revisiones continúan como `Pendiente de Andrés` en los issues #110 y #111.
+
 
