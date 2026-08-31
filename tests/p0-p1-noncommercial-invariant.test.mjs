@@ -17,23 +17,23 @@ const FORBIDDEN_COMMERCIAL_PATTERNS = [
 ];
 
 function routeToFile(route) {
-  if (route.endsWith('.html')) return route.slice(1);
-  return `${route.slice(1)}index.html`;
+  const normalized = route.replace(/^\/+/, '');
+  return normalized.endsWith('.html') ? normalized : `${normalized.replace(/\/+$/, '')}/index.html`;
 }
 
 async function readCriticalInventory() {
   const markdown = await readFile(new URL('../SAFETY_ROUTE_INVENTORY.md', import.meta.url), 'utf8');
-  const rows = markdown
-    .split('\n')
-    .filter((line) => /^\| `\//.test(line))
-    .map((line) => line.split('|').slice(1, -1).map((cell) => cell.trim()))
-    .map(([routeCell, reason, invariant]) => ({
-      route: routeCell.replace(/^`|`$/g, ''),
-      reason,
-      invariant,
-    }));
+  const p0p1Section = markdown.split('## P0/P1 — monetización denegada por construcción')[1]?.split('\n## ')[0] ?? '';
+  const rows = [];
+
+  for (const line of p0p1Section.split('\n')) {
+    const match = line.match(/^\|\s*`(\/[^`]+)`\s*\|\s*([^|]+?)\s*\|\s*([^|]+?)\s*\|\s*$/);
+    if (!match) continue;
+    rows.push({ route: match[1], reason: match[2].trim(), invariant: match[3].trim() });
+  }
 
   assert.ok(rows.length > 0, 'SAFETY_ROUTE_INVENTORY.md must contain at least one P0/P1 route');
+  assert.equal(new Set(rows.map(({ route }) => route)).size, rows.length, 'P0/P1 inventory routes must be unique');
   return rows;
 }
 
