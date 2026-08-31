@@ -23,8 +23,9 @@ test('el hub mantiene límites no diagnósticos y puente de seguridad', () => {
   assert.match(html, /no es un servicio de emergencias/i);
 });
 
-test('las fuentes primarias y el runtime público permanecen visibles', () => {
-  assert.match(html, /who\.int\/spain\/publications/);
+test('las fuentes primarias vigentes y el runtime público permanecen visibles', () => {
+  assert.match(html, /who\.int\/es\/publications\/b\/53604/);
+  assert.match(html, /who\.int\/es\/news-room\/questions-and-answers\/item\/stress/);
   assert.match(html, /sanidad\.gob\.es\/areas\/calidadAsistencial\/estrategias\/saludMental/);
   assert.match(html, /sanidad\.gob\.es\/linea024/);
   assert.match(html, /<script src="\/public-page-runtime\.js" async><\/script>/);
