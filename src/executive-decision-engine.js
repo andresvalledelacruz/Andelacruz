@@ -76,6 +76,15 @@ function evaluateProductChange(input = {}) {
   const score = weightedProductScore(scores);
   const requirements = productRequirements(scores);
 
+  if (strategicGovernance.decision === 'SAFETY_GATEWAY') {
+    hardBlocks.push({
+      id: 'meta_brain_safety_gateway',
+      reason: 'El Meta-Brain detectó riesgo crítico P0/P1 o inmediato; Safety bloquea la propuesta.'
+    });
+  } else if (strategicGovernance.decision === 'HUMAN_REVIEW_REQUIRED') {
+    requirements.push('Completar revisión humana/profesional y fuentes oficiales actuales antes de continuar.');
+  }
+
   let decision = 'EXPERIMENT';
   if (hardBlocks.length || strategicGovernance.decision === 'SAFETY_GATEWAY') decision = 'BLOCKED';
   else if (strategicGovernance.decision === 'HUMAN_REVIEW_REQUIRED') decision = 'HOLD';
