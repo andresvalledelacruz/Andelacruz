@@ -13,6 +13,7 @@ const submission = {
   story_id: 7,
   phase: 'mes_3',
   text: 'La situación ha cambiado desde que compartí mi historia.',
+  story: 'La situación ha cambiado desde que compartí mi historia.',
   synthetic: true
 };
 
@@ -23,9 +24,21 @@ test('approved story update creates only its dedicated publication task', () => 
     decision: 'approve'
   });
   assert.equal(task.task, 'publish_story_update_candidate');
-  assert.deepEqual(task.story_update_submission, submission);
+  assert.equal(task.story_update_submission.text, submission.text);
+  assert.equal(Object.hasOwn(task.story_update_submission, 'story'), false);
   assert.equal(Object.hasOwn(task, 'story_submission'), false);
   assert.notEqual(task.task, 'publish_story_candidate');
+});
+
+test('escalated story update also strips moderation-only safety mirror', () => {
+  const task = buildStoryUpdateDecisionTask({
+    auditEvent: { decision: 'escalate', moderation_message_id: '100' },
+    submission,
+    decision: 'escalate'
+  });
+  assert.equal(task.task, 'human_safety_review');
+  assert.equal(task.story_update_submission.text, submission.text);
+  assert.equal(Object.hasOwn(task.story_update_submission, 'story'), false);
 });
 
 test('candidate decisions map to terminal moderation states', () => {
