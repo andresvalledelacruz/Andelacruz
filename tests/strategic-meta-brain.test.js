@@ -31,7 +31,6 @@ test('ordinary operational work proceeds with guardrails', () => {
   assert.equal(result.evidence_count, 1);
 });
 
-
 test('normalizes common sensitive flag variants before governance', () => {
   const result = selectStrategicFrameworks({ front: 'ethical_business', flags: [' Mental-Health '] });
   assert.equal(result.decision, 'HUMAN_REVIEW_REQUIRED');
@@ -52,4 +51,22 @@ test('known operational flags do not create a false sensitive hold', () => {
   const result = selectStrategicFrameworks({ front: 'backup_dr', flags: ['operational', 'backup-dr'] });
   assert.equal(result.decision, 'PROCEED_WITH_GUARDRAILS');
   assert.deepEqual(result.unknown_flags, []);
+});
+
+test('normalizes known strategic front variants before selecting frameworks', () => {
+  const result = selectStrategicFrameworks({ front: ' Backup-DR ', flags: ['operational'] });
+  assert.equal(result.front, 'backup_dr');
+  assert.equal(result.unknown_front, null);
+  assert.equal(result.decision, 'PROCEED_WITH_GUARDRAILS');
+  assert.ok(result.frameworks.includes('/worstcase'));
+});
+
+test('unknown strategic fronts fail closed and remain auditable', () => {
+  const result = selectStrategicFrameworks({ front: 'safty', flags: ['operational'] });
+  assert.equal(result.front, 'safty');
+  assert.equal(result.unknown_front, 'safty');
+  assert.equal(result.decision, 'HUMAN_REVIEW_REQUIRED');
+  assert.equal(result.monetization_allowed, false);
+  assert.equal(result.requires_human_professional_review, true);
+  assert.ok(result.frameworks.includes('/redteam'));
 });
