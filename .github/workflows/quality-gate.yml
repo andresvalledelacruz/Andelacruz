@@ -97,6 +97,9 @@ jobs:
       - name: Audit critical-route Safety inventory
         run: node scripts/audit-critical-route-inventory.mjs
 
+      - name: Audit Backup/DR readiness
+        run: node scripts/audit-backup-readiness.mjs
+
       - name: Accessibility audit
         run: npm run audit:accessibility
 
