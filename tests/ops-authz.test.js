@@ -131,17 +131,8 @@ test('legacy staging bridge cannot read moderation case data', () => {
   }
 });
 
-test('legacy staging bridge remains compatible for non-safety decisions', () => {
-  const result = buildOpsAuthorizationContext({
-    authorization: 'Bearer secret', configuredToken: 'secret', environment: 'staging', method: 'POST', route: '/ops/moderation/:messageId/decision'
-  });
-  assert.equal(result.allowed, true);
-  assert.equal(result.principal.subject, 'legacy:staging-ops-token');
-  assert.equal(result.capability, OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD);
-});
-
-test('legacy staging bridge cannot decide P0 or P1 cases', () => {
-  for (const safetyLevel of ['P0', 'P1', 'p0', 'p1']) {
+test('legacy staging bridge cannot make any moderation decision', () => {
+  for (const safetyLevel of ['NONE', 'P2', 'P1', 'P0', 'p1']) {
     const result = buildOpsAuthorizationContext({
       authorization: 'Bearer secret',
       configuredToken: 'secret',
@@ -151,9 +142,24 @@ test('legacy staging bridge cannot decide P0 or P1 cases', () => {
       safetyLevel
     });
     assert.equal(result.allowed, false);
-    assert.equal(result.reason, 'individual_identity_required_for_safety');
+    assert.equal(result.reason, 'individual_identity_required_for_moderation_decision');
     assert.equal(result.principal.transitional, true);
+    assert.equal(result.capability, OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD);
   }
+});
+
+test('named moderator with AAL2 can make standard decisions but not P0/P1', () => {
+  assert.deepEqual(authorizeOpsPrincipal({
+    principal: { subject: 'user:moderator', role: 'moderator', aal: 'aal2', transitional: false },
+    capability: OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD,
+    safetyLevel: 'NONE'
+  }), { allowed: true, reason: 'authorized' });
+
+  assert.deepEqual(authorizeOpsPrincipal({
+    principal: { subject: 'user:moderator', role: 'moderator', aal: 'aal2', transitional: false },
+    capability: OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD,
+    safetyLevel: 'P1'
+  }), { allowed: false, reason: 'safety_role_required' });
 });
 
 test('named safety reviewer with AAL2 can read moderation data and decide P0/P1', () => {
