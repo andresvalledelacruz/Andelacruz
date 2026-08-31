@@ -102,6 +102,35 @@ test('identity principals still obey RBAC and AAL2 independently of legacy auth'
   }), { allowed: false, reason: 'safety_role_required' });
 });
 
+test('legacy staging bridge remains compatible for non-sensitive ops', () => {
+  const summary = buildOpsAuthorizationContext({
+    authorization: 'Bearer secret', configuredToken: 'secret', environment: 'staging', method: 'GET', route: '/ops/summary'
+  });
+  assert.equal(summary.allowed, true);
+  assert.equal(summary.principal.subject, 'legacy:staging-ops-token');
+
+  const product = buildOpsAuthorizationContext({
+    authorization: 'Bearer secret', configuredToken: 'secret', environment: 'staging', method: 'POST', route: '/ops/product/evaluate'
+  });
+  assert.equal(product.allowed, true);
+  assert.equal(product.capability, OPS_CAPABILITIES.PRODUCT_EVALUATE);
+});
+
+test('legacy staging bridge cannot read moderation case data', () => {
+  for (const route of ['/ops/moderation/pending', '/ops/moderation/:messageId/brief']) {
+    const result = buildOpsAuthorizationContext({
+      authorization: 'Bearer secret',
+      configuredToken: 'secret',
+      environment: 'staging',
+      method: 'GET',
+      route
+    });
+    assert.equal(result.allowed, false);
+    assert.equal(result.reason, 'individual_identity_required_for_moderation_data');
+    assert.equal(result.principal.transitional, true);
+  }
+});
+
 test('legacy staging bridge remains compatible for non-safety decisions', () => {
   const result = buildOpsAuthorizationContext({
     authorization: 'Bearer secret', configuredToken: 'secret', environment: 'staging', method: 'POST', route: '/ops/moderation/:messageId/decision'
@@ -127,7 +156,14 @@ test('legacy staging bridge cannot decide P0 or P1 cases', () => {
   }
 });
 
-test('named safety reviewer with AAL2 can still decide P0/P1', () => {
+test('named safety reviewer with AAL2 can read moderation data and decide P0/P1', () => {
+  for (const capability of [OPS_CAPABILITIES.MODERATION_QUEUE_READ, OPS_CAPABILITIES.MODERATION_BRIEF_READ]) {
+    assert.deepEqual(authorizeOpsPrincipal({
+      principal: { subject: 'user:reviewer', role: 'safety_reviewer', aal: 'aal2', transitional: false },
+      capability
+    }), { allowed: true, reason: 'authorized' });
+  }
+
   assert.deepEqual(authorizeOpsPrincipal({
     principal: { subject: 'user:reviewer', role: 'safety_reviewer', aal: 'aal2', transitional: false },
     capability: OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD,
