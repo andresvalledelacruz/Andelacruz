@@ -3,14 +3,13 @@ import { OPS_CAPABILITIES, authorizeOpsAction } from './ops-rbac.js';
 
 const LEGACY_STAGING_ROLE = 'admin';
 const LEGACY_STAGING_AAL = 'aal2';
-const SAFETY_LEVELS = new Set(['P0', 'P1']);
-const SAFETY_DECISION_CAPABILITIES = new Set([
-  OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD,
-  OPS_CAPABILITIES.MODERATION_DECIDE_SAFETY
-]);
 const INDIVIDUAL_IDENTITY_REQUIRED_CAPABILITIES = new Set([
   OPS_CAPABILITIES.MODERATION_QUEUE_READ,
   OPS_CAPABILITIES.MODERATION_BRIEF_READ
+]);
+const INDIVIDUAL_IDENTITY_REQUIRED_DECISION_CAPABILITIES = new Set([
+  OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD,
+  OPS_CAPABILITIES.MODERATION_DECIDE_SAFETY
 ]);
 
 function secureEqual(a, b) {
@@ -54,10 +53,9 @@ export function authorizeOpsPrincipal({ principal, capability, safetyLevel = 'NO
 
   if (
     principal.transitional === true &&
-    SAFETY_LEVELS.has(String(safetyLevel).toUpperCase()) &&
-    SAFETY_DECISION_CAPABILITIES.has(capability)
+    INDIVIDUAL_IDENTITY_REQUIRED_DECISION_CAPABILITIES.has(capability)
   ) {
-    return { allowed: false, reason: 'individual_identity_required_for_safety' };
+    return { allowed: false, reason: 'individual_identity_required_for_moderation_decision' };
   }
 
   return authorizeOpsAction({
