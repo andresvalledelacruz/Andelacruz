@@ -100,6 +100,9 @@ jobs:
       - name: Audit Backup/DR readiness
         run: node scripts/audit-backup-readiness.mjs
 
+      - name: Audit Safety-governed Strategic Meta-Brain
+        run: npm run audit:strategic-meta-brain
+
       - name: Accessibility audit
         run: npm run audit:accessibility
 
@@ -115,3 +118,4 @@ jobs:
           set -euo pipefail
           node scripts/analytics-coverage-inventory.mjs > /tmp/analytics-coverage.json
           cat /tmp/analytics-coverage.json
+
