@@ -1,5 +1,21 @@
 import crypto from 'node:crypto';
 
+const FORBIDDEN_METADATA_KEYS = new Set([
+  'story',
+  'text',
+  'body',
+  'alias',
+  'email',
+  'phone',
+  'token',
+  'secret',
+  'authorization'
+]);
+const MAX_METADATA_ENTRIES = 20;
+const MAX_METADATA_ARRAY_ITEMS = 20;
+const MAX_METADATA_STRING_LENGTH = 240;
+const MAX_METADATA_DEPTH = 5;
+
 function canonical(value) {
   if (Array.isArray(value)) return value.map(canonical);
   if (value && typeof value === 'object') {
@@ -10,6 +26,32 @@ function canonical(value) {
 
 function sha256(value) {
   return crypto.createHash('sha256').update(value).digest('hex');
+}
+
+function sanitizeMetadataValue(value, depth = 0) {
+  if (depth >= MAX_METADATA_DEPTH) return null;
+  if (typeof value === 'string') return value.slice(0, MAX_METADATA_STRING_LENGTH);
+  if (value == null || typeof value === 'boolean' || typeof value === 'number') return value;
+
+  if (Array.isArray(value)) {
+    return value
+      .slice(0, MAX_METADATA_ARRAY_ITEMS)
+      .map((item) => sanitizeMetadataValue(item, depth + 1));
+  }
+
+  if (typeof value === 'object') {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([key]) => !FORBIDDEN_METADATA_KEYS.has(String(key).toLowerCase()))
+        .slice(0, MAX_METADATA_ENTRIES)
+        .map(([key, nestedValue]) => [
+          String(key).slice(0, 80),
+          sanitizeMetadataValue(nestedValue, depth + 1)
+        ])
+    );
+  }
+
+  return null;
 }
 
 export function buildDecisionFingerprint(event = {}) {
@@ -57,14 +99,9 @@ export function sanitizeDecisionEvent(input = {}) {
     metadata: input.metadata && typeof input.metadata === 'object' ? input.metadata : {}
   };
 
-  // Deliberadamente no admite texto libre de historias, alias, email, teléfono ni tokens.
-  const forbiddenKeys = new Set(['story', 'text', 'body', 'alias', 'email', 'phone', 'token', 'secret', 'authorization']);
-  event.metadata = Object.fromEntries(
-    Object.entries(event.metadata)
-      .filter(([key]) => !forbiddenKeys.has(String(key).toLowerCase()))
-      .slice(0, 20)
-      .map(([key, value]) => [String(key).slice(0, 80), typeof value === 'string' ? value.slice(0, 240) : value])
-  );
+  // El ledger nunca conserva texto libre de historias ni identificadores/credenciales sensibles,
+  // tampoco cuando llegan anidados dentro de objetos o arrays de metadata.
+  event.metadata = sanitizeMetadataValue(event.metadata) || {};
 
   return { ...event, fingerprint: buildDecisionFingerprint(event) };
 }
