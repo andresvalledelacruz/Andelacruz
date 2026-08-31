@@ -1,3 +1,5 @@
+import { sensitiveSourceById } from './sensitive-source-registry.js';
+
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MAX_SOURCE_AGE_DAYS = 120;
 
@@ -27,21 +29,29 @@ function validDate(value) {
   return Number.isFinite(timestamp) ? timestamp : null;
 }
 
-function sourceAudit(sources, asOf) {
+function sourceAudit(sources, asOf, front, mode) {
   const asOfTimestamp = validDate(asOf);
   if (asOfTimestamp === null) return { valid: [], invalid: ['as_of_date_required'] };
 
   const valid = [];
   const invalid = [];
-  for (const [index, source] of (Array.isArray(sources) ? sources : []).entries()) {
-    const url = String(source?.url || '');
-    const verifiedAt = validDate(source?.verified_at);
-    const official = source?.official === true || source?.consensus_clinical === true;
+  for (const [index, evidence] of (Array.isArray(sources) ? sources : []).entries()) {
+    const sourceId = typeof evidence === 'string' ? evidence : evidence?.id;
+    const source = sensitiveSourceById(sourceId);
+    if (!source) {
+      invalid.push(`source_${index + 1}_unregistered`);
+      continue;
+    }
+    const url = source.url;
+    const verifiedAt = validDate(source.verified_at);
+    const official = source.authority === 'official_government' || source.authority === 'clinical_consensus';
+    const frontAllowed = source.fronts.includes(front);
+    const modeAllowed = source.modes === '*' || source.modes.includes(mode);
     const ageDays = verifiedAt === null ? Infinity : Math.floor((asOfTimestamp - verifiedAt) / DAY_MS);
-    if (!url.startsWith('https://') || !official || ageDays < 0 || ageDays > MAX_SOURCE_AGE_DAYS) {
+    if (!url.startsWith('https://') || !official || !frontAllowed || !modeAllowed || ageDays < 0 || ageDays > MAX_SOURCE_AGE_DAYS) {
       invalid.push(`source_${index + 1}`);
     } else {
-      valid.push({ url, verified_at: source.verified_at, age_days: ageDays });
+      valid.push({ id: sourceId, url, verified_at: source.verified_at, age_days: ageDays });
     }
   }
   if (valid.length === 0) invalid.push('current_official_source_required');
@@ -62,7 +72,7 @@ export function evaluateSensitiveContentRelease(input = {}) {
   const knownFront = Object.hasOwn(FRONT_MODES, front);
   const knownMode = knownFront && FRONT_MODES[front].has(mode);
   const immediateRisk = input.immediate_risk === true || mode === 'emergency';
-  const sources = sourceAudit(input.sources, input.as_of);
+  const sources = sourceAudit(input.sources, input.as_of, front, mode);
 
   const requiredReviews = !knownFront || !knownMode
     ? ['safety', 'editorial']
@@ -95,4 +105,5 @@ export function evaluateSensitiveContentRelease(input = {}) {
 export function sensitiveContentFronts() {
   return Object.keys(FRONT_MODES);
 }
+
 
