@@ -127,9 +127,28 @@ function evaluateProductChange(input = {}) {
   };
 }
 
+function normalizeUserCaseInput(input = {}) {
+  const title = input.title ?? input.subject ?? input.headline ?? '';
+  const storyParts = [
+    input.story,
+    input.text,
+    input.body,
+    input.content,
+    input.message,
+    input.description,
+    input.detail,
+    input.moderation_safety_text
+  ];
+  const story = storyParts
+    .filter((value) => typeof value === 'string' && value.trim())
+    .join(' ');
+  return { ...input, title, story };
+}
+
 function evaluateUserCase(input = {}) {
-  const safety = evaluateCriticalSafety(input);
-  const multidisciplinary = buildMultidisciplinaryCaseMap(input);
+  const normalizedInput = normalizeUserCaseInput(input);
+  const safety = evaluateCriticalSafety(normalizedInput);
+  const multidisciplinary = buildMultidisciplinaryCaseMap(normalizedInput);
 
   const decision = safety.safety_gateway
     ? 'SAFETY_GATEWAY'
