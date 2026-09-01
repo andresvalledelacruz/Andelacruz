@@ -3,8 +3,7 @@ name: Production Origin Integrity
 on:
   push:
     branches: [production-v9]
-  schedule:
-    - cron: '17 */6 * * *'
+  workflow_call:
   workflow_dispatch:
 
 concurrency:
@@ -21,8 +20,10 @@ jobs:
     timeout-minutes: 5
 
     steps:
-      - name: Checkout
+      - name: Checkout production-v9
         uses: actions/checkout@v7
+        with:
+          ref: production-v9
 
       - name: Use Node.js 24
         uses: actions/setup-node@v7
@@ -40,7 +41,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: production-origin-integrity-${{ github.sha }}
+          name: production-origin-integrity-${{ github.run_id }}-${{ github.run_attempt }}
           path: production-origin-report.json
           if-no-files-found: warn
           retention-days: 30
