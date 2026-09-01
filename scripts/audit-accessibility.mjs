@@ -43,6 +43,20 @@ function hasId(html, id) {
   return new RegExp(`\\bid=["']${escaped}["']`, 'i').test(html);
 }
 
+function hasLabelFor(html, id) {
+  const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`<label\\b[^>]*\\bfor\\s*=\\s*["']${escaped}["'][^>]*>`, 'i').test(html);
+}
+
+function isWrappedByLabel(html, tagIndex) {
+  const before = html.slice(0, tagIndex);
+  const lastOpen = before.toLowerCase().lastIndexOf('<label');
+  const lastClose = before.toLowerCase().lastIndexOf('</label>');
+  if (lastOpen <= lastClose) return false;
+  const closing = html.toLowerCase().indexOf('</label>', tagIndex);
+  return closing !== -1;
+}
+
 export function auditHtml(html, source = '<memory>') {
   const errors = [];
   const fail = (message) => errors.push(`${source}: ${message}`);
@@ -94,6 +108,20 @@ export function auditHtml(html, source = '<memory>') {
     }
   }
 
+  for (const match of html.matchAll(/<(input|select|textarea)\b[^>]*>/gi)) {
+    const tagName = match[1].toLowerCase();
+    const attrs = attrsFrom(match[0]);
+    if (tagName === 'input' && (attrs.get('type') || '').toLowerCase() === 'hidden') continue;
+    const id = (attrs.get('id') || '').trim();
+    const ariaLabel = (attrs.get('aria-label') || '').trim();
+    const labelledBy = (attrs.get('aria-labelledby') || '').trim();
+    const hasExplicitLabel = id && hasLabelFor(html, id);
+    const wrapped = isWrappedByLabel(html, match.index ?? 0);
+    if (!ariaLabel && !labelledBy && !hasExplicitLabel && !wrapped) {
+      fail(`${tagName} sin etiqueta accesible${id ? `: ${id}` : ''}`);
+    }
+  }
+
   for (const match of html.matchAll(/<[^>]+\btabindex\s*=\s*["']?([+-]?\d+)["']?[^>]*>/gi)) {
     if (Number(match[1]) > 0) fail(`tabindex positivo no permitido: ${match[1]}`);
   }
@@ -135,6 +163,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     process.exitCode = 1;
   } else {
     console.log(`Accessibility audit passed for ${urls.length} sitemap URLs.`);
-    console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button names, safe _blank links, tabindex, autofocus and ARIA id-reference integrity.');
+    console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button/form-control names, safe _blank links, tabindex, autofocus and ARIA id-reference integrity.');
   }
 }
