@@ -3,6 +3,8 @@ name: Production Origin Integrity
 on:
   push:
     branches: [production-v9]
+  schedule:
+    - cron: '17 */6 * * *'
   workflow_dispatch:
 
 concurrency:
