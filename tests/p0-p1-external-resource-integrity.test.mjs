@@ -20,8 +20,9 @@ const PUBLIC_AUTHORITY_BASE_DOMAINS = [
 ];
 
 const REVIEWED_NON_GOVERNMENT_HOSTS = new Set([
-  // Add a host only after source-level review of the organisation and the
-  // exact reason it is useful on a P0/P1 route. Do not add broad wildcards.
+  // Associació Tramuntana – Després del Suïcidi (TDS), reviewed 2026-09-01.
+  // Canal Salut (Generalitat de Catalunya) lists TDS among survivor-support entities.
+  'tdssuicidio.com',
 ]);
 
 const TRACKING_QUERY_KEYS = /^(?:utm_.+|gclid|dclid|fbclid|msclkid|mc_cid|mc_eid|affiliate|aff|affid)$/i;
