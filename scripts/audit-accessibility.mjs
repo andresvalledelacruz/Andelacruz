@@ -55,6 +55,14 @@ export function auditHtml(html, source = '<memory>') {
   const h1Count = (html.match(/<h1\b/gi) || []).length;
   if (h1Count !== 1) fail(`debe existir exactamente un <h1> (encontrados ${h1Count})`);
 
+  const seenIds = new Set();
+  for (const match of html.matchAll(/<[^>]+\bid\s*=\s*["']([^"']+)["'][^>]*>/gi)) {
+    const id = match[1].trim();
+    if (!id) continue;
+    if (seenIds.has(id)) fail(`id duplicado no permitido: ${id}`);
+    seenIds.add(id);
+  }
+
   for (const match of html.matchAll(/<img\b[^>]*>/gi)) {
     const attrs = attrsFrom(match[0]);
     if (!attrs.has('alt')) fail(`imagen sin atributo alt: ${match[0].slice(0, 100)}`);
@@ -121,6 +129,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     process.exitCode = 1;
   } else {
     console.log(`Accessibility audit passed for ${urls.length} sitemap URLs.`);
-    console.log('Checked: lang, viewport, main/H1 landmarks, image alt presence, accessible link/button names, safe _blank links, tabindex, autofocus and aria-controls targets.');
+    console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button names, safe _blank links, tabindex, autofocus and aria-controls targets.');
   }
 }

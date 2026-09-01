@@ -22,6 +22,11 @@ test('rechaza tabindex positivo, autofocus y aria-controls roto', () => {
   assert.ok(errors.some((e) => e.includes('aria-controls referencia id inexistente')));
 });
 
+test('rechaza ids duplicados porque rompen referencias ARIA y fragmentos', () => {
+  const errors = auditHtml(base('<section id="ayuda">Uno</section><aside id="ayuda">Dos</aside>'));
+  assert.ok(errors.some((e) => e.includes('id duplicado no permitido: ayuda')));
+});
+
 test('exige noopener y noreferrer en target blank', () => {
   const errors = auditHtml(base('<a href="https://example.org" target="_blank" rel="noopener">Fuente</a>'));
   assert.ok(errors.some((e) => e.includes('target="_blank"')));
