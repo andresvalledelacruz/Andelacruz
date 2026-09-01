@@ -173,3 +173,16 @@ Cuando uno de estos puntos bloquee una acción, marcarlo `Pendiente de Andrés` 
 - GO para arquitectura y prevención no publicada; HOLD para maniobras y contenido posterior hasta revisión profesional;
 - fuente de detalle: `ACCIDENTS_INTELLIGENCE.md`.
 
+## 14. Outreach, Partnerships & Authority Intelligence — 2026-09-01
+
+Discovery Intelligence incorpora un carril específico para preparar la futura campaña de conocimiento y autoridad de Desgracias.es sin convertirla en spam ni link building artificial.
+
+- fuente de detalle: `OUTREACH_PARTNERSHIPS_AUTHORITY_INTELLIGENCE.md`;
+- investigación y construcción del radar: GO desde ahora;
+- outreach externo amplio: HOLD hasta Product/Safety Readiness y el Activation Gate definido en ese documento;
+- las relaciones se clasifican con precisión como difusión, autoridad, conocimiento, colaboración, derivación o impacto social;
+- una entidad incluida en el radar no es colaboradora, partner ni avalista salvo aceptación expresa;
+- en P0/P1 no se usa la vulnerabilidad como palanca comercial y se mantiene monetización fuera;
+- cualquier acuerdo contractual, uso de marca, intercambio de datos o compromiso institucional pasa a `Pendiente de Andrés`.
+
+Este carril también alimenta AI/GEO y Entity Reputation mediante menciones y enlaces legítimos ganados por utilidad real, nunca mediante manipulación.
