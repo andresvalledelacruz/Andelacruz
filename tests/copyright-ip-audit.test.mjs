@@ -54,6 +54,27 @@ test('el uso genérico de editorial no se confunde con una referencia bibliográ
   assert.equal(status, 0);
   assert.equal(report.summary.hard_fail, 0);
   assert.equal(report.summary.manual_review, 0);
+  assert.deepEqual(report.inventory, [{
+    file: 'metodologia.html',
+    exposure: 'deployable_indexed',
+    status: 'PASS_SCREEN',
+    finding_kinds: []
+  }]);
+});
+
+test('el inventario clasifica cada página sin confundir cribado con clearance legal', () => {
+  const { report } = runAudit({
+    'limpia.html': '<meta name="robots" content="index,follow"><p>Síntesis propia.</p>',
+    'revisar.html': '<meta name="robots" content="index,follow"><p>Este libro se cita como referencia.</p>',
+    'bloquear.html': '<meta name="robots" content="index,follow"><img src="https://example.org/foto.jpg" alt="">'
+  });
+
+  assert.deepEqual(report.inventory.map(({ file, status }) => ({ file, status })), [
+    { file: 'bloquear.html', status: 'HARD_FAIL' },
+    { file: 'limpia.html', status: 'PASS_SCREEN' },
+    { file: 'revisar.html', status: 'MANUAL_REVIEW' }
+  ]);
+  assert.match(report.inventory_interpretation, /not a legal clearance/i);
 });
 
 test('una imagen remota de terceros bloquea el gate, pero una imagen absoluta propia registrada no', () => {
@@ -102,3 +123,4 @@ test('PENDING_PROVENANCE exige revisión y HOLD_LEGAL bloquea despliegue', () =>
   assert.equal(hold.report.summary.hard_fail, 1);
   assert.equal(hold.report.findings[0].kind, 'local_image_hold_legal');
 });
+
