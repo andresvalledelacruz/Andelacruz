@@ -186,3 +186,30 @@ Discovery Intelligence incorpora un carril específico para preparar la futura c
 - cualquier acuerdo contractual, uso de marca, intercambio de datos o compromiso institucional pasa a `Pendiente de Andrés`.
 
 Este carril también alimenta AI/GEO y Entity Reputation mediante menciones y enlaces legítimos ganados por utilidad real, nunca mediante manipulación.
+
+## 15. Nuevos frentes priorizados — 2026-09-01
+
+### Desapariciones de personas y animales
+
+- GO estratégico inmediato para investigación, Human Demand Intelligence, fuentes, taxonomía y arquitectura;
+- separar persona desaparecida de animal desaparecido;
+- separar actuación inmediata/búsqueda de la capa de incertidumbre y pérdida ambigua;
+- personas desaparecidas: P0/P1 cuando exista riesgo inmediato, menores, vulnerabilidad, violencia o posible interferencia con investigación;
+- no asumir fallecimiento, voluntariedad, delito ni motivo de desaparición;
+- HOLD para nuevas URLs operativas de personas hasta Safety Gate específico, privacidad y fuentes oficiales actuales;
+- animales: desarrollar por especie/contexto solo cuando exista utilidad diferencial y fuentes suficientemente fiables;
+- fuente de detalle: `DISAPPEARANCE_INTELLIGENCE.md`.
+
+### Final de vida, eutanasia y prestación de ayuda para morir
+
+- GO estratégico para investigación legal, sanitaria, psicosocial e internacional;
+- vertical YMYL sanitario-jurídico de alta sensibilidad;
+- separar inequívocamente procedimiento legal de ayuda para morir de suicidio/autolesión;
+- si aparece lenguaje de deseo de morir sin contexto legal/sanitario inequívoco, activar el carril Safety correspondiente;
+- no determinar elegibilidad, no recomendar la prestación y no ofrecer instrucciones para causar la muerte;
+- HOLD de nuevas URLs públicas hasta revisión jurídica/sanitaria y Safety Gate específico;
+- fuente de detalle: `END_OF_LIFE_EUTHANASIA_INTELLIGENCE.md`.
+
+### Regla internacional transversal
+
+Desde esta fecha, toda investigación sustantiva para España debe producir en paralelo una captura internacional estructurada y reutilizable —fuentes, organismos, legal/Safety, lenguaje, demanda y estado por país— sin bloquear el release español por cobertura internacional incompleta. La publicación fuera de España sigue siendo Native-First y requiere validación local independiente.

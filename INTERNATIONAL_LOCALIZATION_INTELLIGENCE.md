@@ -152,3 +152,50 @@ necesidad humana local → evidencia de demanda local → lenguaje/intención �
 - decisiones de marca/dominio/estructura internacional cuando se pase a despliegue.
 
 Cuando uno de estos puntos bloquee una acción, marcarlo `Pendiente de Andrés` y continuar con investigación y preparación independientes.
+
+## 13. Regla transversal de captura internacional concurrente — 2026-09-01
+
+A partir de este punto, **toda investigación temática realizada para España debe producir en paralelo una captura internacional estructurada**, aunque la única pieza que avance a producción sea la española.
+
+Esta regla se aplica a todos los frentes: duelo, desapariciones, suicidio/posvención, trauma, psicología, neuropsicología, pareja, familia, soledad, trabajo, dinero, vivienda, adicciones, violencia, enfermedad, accidentes, final de vida y cualquier nueva necesidad humana validada.
+
+La captura internacional concurrente debe ser ligera y no bloquear España. Para cada tema se registrará, cuando sea material:
+
+- países/mercados prioritarios donde exista la necesidad;
+- terminología y lenguaje local;
+- organismo o fuente oficial primaria;
+- marco legal/regulatorio relevante y fecha de verificación;
+- recursos públicos, sanitarios, sociales o de crisis aplicables;
+- diferencias culturales y de recorrido;
+- intención de búsqueda y ecosistema local;
+- riesgos de Safety/YMYL;
+- volatilidad y coste de mantenimiento;
+- estado `READY`, `WATCH`, `HOLD` o `NO-GO` por país.
+
+La captura no equivale a traducción ni autoriza publicación. Su objetivo es evitar rehacer desde cero en el futuro investigación que ya puede aprovecharse mientras el equipo está estudiando el mismo problema humano para España.
+
+### Regla de dos velocidades
+
+1. **España / producción:** continúa con máxima velocidad segura y con los gates habituales.
+2. **International Intelligence / research-only:** recoge el conocimiento reutilizable en segundo plano de la misma investigación, sin retrasar el release español por cobertura internacional incompleta.
+
+Solo se bloqueará una pieza española por información internacional cuando exista una dependencia real de Safety o legalidad transfronteriza en la propia pieza española.
+
+### Prohibición de herencia automática
+
+Nunca se heredan automáticamente desde España:
+
+- legislación o derechos;
+- teléfonos y líneas de ayuda;
+- organismos competentes;
+- procedimientos operativos;
+- criterios clínicos/jurídicos;
+- terminología legal;
+- Safety copy específica;
+- monetización o CTA.
+
+Cada país debe verificar estas capas de forma independiente antes de publicar.
+
+### Salida mínima de cada investigación
+
+Toda investigación sustantiva debería dejar, además del resultado español, un registro internacional suficientemente estructurado para alimentar el Human Needs Knowledge Graph y permitir que un futuro trabajo Native-First empiece desde una base verificada, no desde una traducción ni desde cero.
