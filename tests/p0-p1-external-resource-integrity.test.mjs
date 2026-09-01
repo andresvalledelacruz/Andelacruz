@@ -10,6 +10,7 @@ const PUBLIC_AUTHORITY_BASE_DOMAINS = [
   'who.int',
   'juntadeandalucia.es',
   'gobiernodecanarias.org',
+  'comunidad.madrid',
   'igualdad.gob.es',
   'mjusticia.gob.es',
   'policia.es',
