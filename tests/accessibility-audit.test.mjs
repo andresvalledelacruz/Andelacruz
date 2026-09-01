@@ -27,6 +27,17 @@ test('rechaza ids duplicados porque rompen referencias ARIA y fragmentos', () =>
   assert.ok(errors.some((e) => e.includes('id duplicado no permitido: ayuda')));
 });
 
+test('rechaza aria-labelledby y aria-describedby que apuntan a ids inexistentes', () => {
+  const errors = auditHtml(base('<section aria-labelledby="titulo-a titulo-b" aria-describedby="detalle"><h2 id="titulo-a">Ayuda</h2></section>'));
+  assert.ok(errors.some((e) => e.includes('aria-labelledby referencia id inexistente: titulo-b')));
+  assert.ok(errors.some((e) => e.includes('aria-describedby referencia id inexistente: detalle')));
+});
+
+test('acepta múltiples referencias ARIA cuando todos los ids existen', () => {
+  const html = base('<h2 id="titulo-a">Ayuda</h2><p id="detalle">Descripción</p><section aria-labelledby="titulo-a" aria-describedby="detalle"></section>');
+  assert.deepEqual(auditHtml(html), []);
+});
+
 test('exige noopener y noreferrer en target blank', () => {
   const errors = auditHtml(base('<a href="https://example.org" target="_blank" rel="noopener">Fuente</a>'));
   assert.ok(errors.some((e) => e.includes('target="_blank"')));
