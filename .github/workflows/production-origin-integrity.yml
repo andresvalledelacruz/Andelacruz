@@ -1,0 +1,44 @@
+name: Production Origin Integrity
+
+on:
+  push:
+    branches: [production-v9]
+  workflow_dispatch:
+
+concurrency:
+  group: production-origin-integrity-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  production-origin:
+    name: TLS DNS redirects and V9 origin
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - name: Probe production origin with strict TLS
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/audit-production-origin.mjs | tee production-origin-report.json
+
+      - name: Preserve production origin evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-origin-integrity-${{ github.sha }}
+          path: production-origin-report.json
+          if-no-files-found: warn
+          retention-days: 30
