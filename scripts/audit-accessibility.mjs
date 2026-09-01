@@ -57,6 +57,17 @@ function isWrappedByLabel(html, tagIndex) {
   return closing !== -1;
 }
 
+function isFocusableElement(tagName, attrs) {
+  if (attrs.has('disabled')) return false;
+
+  const tabindexRaw = (attrs.get('tabindex') || '').trim();
+  if (tabindexRaw && Number.isFinite(Number(tabindexRaw)) && Number(tabindexRaw) >= 0) return true;
+
+  if (tagName === 'a') return Boolean((attrs.get('href') || '').trim());
+  if (tagName === 'input') return (attrs.get('type') || '').toLowerCase() !== 'hidden';
+  return ['button', 'select', 'textarea', 'summary'].includes(tagName);
+}
+
 export function auditHtml(html, source = '<memory>') {
   const errors = [];
   const fail = (message) => errors.push(`${source}: ${message}`);
@@ -122,6 +133,14 @@ export function auditHtml(html, source = '<memory>') {
     }
   }
 
+  for (const match of html.matchAll(/<([\w:-]+)\b[^>]*>/gi)) {
+    const tagName = match[1].toLowerCase();
+    const attrs = attrsFrom(match[0]);
+    if ((attrs.get('aria-hidden') || '').trim().toLowerCase() === 'true' && isFocusableElement(tagName, attrs)) {
+      fail(`elemento focalizable oculto con aria-hidden="true": ${tagName}`);
+    }
+  }
+
   for (const match of html.matchAll(/<[^>]+\btabindex\s*=\s*["']?([+-]?\d+)["']?[^>]*>/gi)) {
     if (Number(match[1]) > 0) fail(`tabindex positivo no permitido: ${match[1]}`);
   }
@@ -163,6 +182,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     process.exitCode = 1;
   } else {
     console.log(`Accessibility audit passed for ${urls.length} sitemap URLs.`);
-    console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button/form-control names, safe _blank links, tabindex, autofocus and ARIA id-reference integrity.');
+    console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button/form-control names, focusable aria-hidden conflicts, safe _blank links, tabindex, autofocus and ARIA id-reference integrity.');
   }
 }

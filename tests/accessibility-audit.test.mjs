@@ -27,6 +27,18 @@ test('acepta labels explícitos, envolventes y nombres ARIA en formularios', () 
   assert.deepEqual(auditHtml(html), []);
 });
 
+test('rechaza elementos focalizables ocultos del árbol de accesibilidad', () => {
+  const errors = auditHtml(base('<a href="/ayuda" aria-hidden="true">Ayuda</a><button aria-hidden="true">Continuar</button><div tabindex="0" aria-hidden="true">Panel</div>'));
+  assert.ok(errors.some((e) => e.includes('elemento focalizable oculto con aria-hidden="true": a')));
+  assert.ok(errors.some((e) => e.includes('elemento focalizable oculto con aria-hidden="true": button')));
+  assert.ok(errors.some((e) => e.includes('elemento focalizable oculto con aria-hidden="true": div')));
+});
+
+test('permite aria-hidden en decoración no focalizable y controles deshabilitados', () => {
+  const html = base('<svg aria-hidden="true"></svg><span aria-hidden="true">Decoración</span><button aria-hidden="true" disabled>Deshabilitado</button><input type="hidden" aria-hidden="true">');
+  assert.deepEqual(auditHtml(html), []);
+});
+
 test('rechaza tabindex positivo, autofocus y aria-controls roto', () => {
   const errors = auditHtml(base('<button tabindex="2" autofocus aria-controls="panel">Abrir</button>'));
   assert.ok(errors.some((e) => e.includes('tabindex positivo')));
