@@ -25,7 +25,7 @@ test('la guía protege a menores y evita convertirles en cuidadores emocionales'
 
 test('la página conserva límites profesionales, canonical y carril de emergencia', () => {
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/duelo\/ha-muerto-mi-mascota-y-estoy-destrozado\/"/);
-  assert.match(html, /no interpreta síntomas ni sustituye atención veterinaria/i);
+  assert.match(html, /No sustituye atención veterinaria, sanitaria, psicológica ni de emergencia/i);
   assert.match(html, /tel:112/);
   assert.match(html, /tel:024/);
   assert.match(html, /no es un servicio de emergencias ni supervisa historias de forma continua/i);
