@@ -44,6 +44,9 @@ jobs:
       - name: Block internal drafts from deployable production tree
         run: node scripts/audit-no-internal-drafts.mjs
 
+      - name: Audit copyright and IP risk
+        run: npm run audit:copyright-ip
+
       - name: Audit ops route authorization
         run: node scripts/audit-ops-route-auth.mjs
 
