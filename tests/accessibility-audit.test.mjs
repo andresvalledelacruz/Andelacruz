@@ -15,6 +15,18 @@ test('detecta imagen sin alt y controles sin nombre accesible', () => {
   assert.ok(errors.some((e) => e.includes('botón sin nombre accesible')));
 });
 
+test('rechaza controles de formulario sin etiqueta accesible', () => {
+  const errors = auditHtml(base('<input id="nombre" type="text"><select id="tema"><option>Duelo</option></select><textarea id="mensaje"></textarea>'));
+  assert.ok(errors.some((e) => e.includes('input sin etiqueta accesible: nombre')));
+  assert.ok(errors.some((e) => e.includes('select sin etiqueta accesible: tema')));
+  assert.ok(errors.some((e) => e.includes('textarea sin etiqueta accesible: mensaje')));
+});
+
+test('acepta labels explícitos, envolventes y nombres ARIA en formularios', () => {
+  const html = base('<label for="nombre">Nombre</label><input id="nombre" type="text"><label>Tema<select id="tema"><option>Duelo</option></select></label><span id="mensaje-label">Mensaje</span><textarea id="mensaje" aria-labelledby="mensaje-label"></textarea><input type="hidden" name="csrf" value="x">');
+  assert.deepEqual(auditHtml(html), []);
+});
+
 test('rechaza tabindex positivo, autofocus y aria-controls roto', () => {
   const errors = auditHtml(base('<button tabindex="2" autofocus aria-controls="panel">Abrir</button>'));
   assert.ok(errors.some((e) => e.includes('tabindex positivo')));
