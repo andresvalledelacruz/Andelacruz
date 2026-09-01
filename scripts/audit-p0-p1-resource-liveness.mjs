@@ -11,6 +11,7 @@ if (process.env.NODE_TLS_REJECT_UNAUTHORIZED === '0') {
   throw new Error('TLS verification must never be disabled for the P0/P1 resource monitor.');
 }
 
+const STRICT = process.argv.includes('--strict');
 const TIMEOUT_MS = 8000;
 const MAX_REDIRECTS = 6;
 const MAX_ATTEMPTS = 2;
@@ -247,7 +248,8 @@ const skipped = results.filter((item) => item.severity === 'info');
 
 const report = {
   generated_at: new Date().toISOString(),
-  policy: 'P0/P1 external resources; scheduled operational monitor, not a deployment gate',
+  mode: STRICT ? 'strict-scheduled-alert' : 'soft-evidence',
+  policy: 'P0/P1 external resources; scheduled operational monitor, never a required deployment gate',
   summary: {
     total: results.length,
     healthy: healthy.length,
@@ -261,5 +263,9 @@ const report = {
 console.log(JSON.stringify(report, null, 2));
 
 if (hardFailures.length > 0) {
-  process.exitCode = 1;
+  console.error(`P0/P1 resource monitor found ${hardFailures.length} hard failure(s).`);
+  for (const item of hardFailures) {
+    console.error(`- ${item.href} state=${item.state} final=${item.final_url} routes=${item.routes.join(',')}`);
+  }
+  if (STRICT) process.exitCode = 1;
 }
