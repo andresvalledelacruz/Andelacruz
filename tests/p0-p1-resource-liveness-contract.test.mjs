@@ -43,6 +43,17 @@ test('monitor separates integrity failures from transient third-party availabili
   assert.match(script, /if \(STRICT\) process\.exitCode = 1/);
 });
 
+test('retry changes only request profile and does not add host-specific exceptions', () => {
+  assert.match(script, /PROBE_PROFILES/);
+  assert.match(script, /name:\s*'monitor'/);
+  assert.match(script, /name:\s*'browser-compatible'/);
+  assert.match(script, /fetchOne\(current, profile\.userAgent\)/);
+  assert.match(script, /probe_profile:\s*profile\.name/);
+  assert.doesNotMatch(script, /comunidad\.madrid/i);
+  assert.doesNotMatch(script, /euskadi\.eus/i);
+  assert.doesNotMatch(script, /samaritans\.org/i);
+});
+
 test('redirect integrity remains HTTPS and governed', () => {
   assert.match(policy, /target\.protocol !== 'https:'/);
   assert.match(policy, /withoutWww\(source\.hostname\) === withoutWww\(target\.hostname\)/);
