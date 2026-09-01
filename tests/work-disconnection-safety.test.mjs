@@ -12,7 +12,7 @@ test('la guía distingue exposición laboral de activación mental sin diagnosti
 });
 
 test('la guía evita trasladar toda la responsabilidad a la persona trabajadora', () => {
-  assert.match(html, /no es un examen de fuerza de voluntad/i);
+  assert.match(html, /no significa simplemente[^<]*fuerza de voluntad/i);
   assert.match(html, /carga, los plazos, la cultura de disponibilidad o la organización/i);
   assert.match(html, /política interna de desconexión/i);
 });
