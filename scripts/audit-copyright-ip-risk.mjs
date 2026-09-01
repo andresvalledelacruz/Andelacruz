@@ -20,7 +20,7 @@ walk(root);
 const textualPatterns = [
   ['blockquote', /<blockquote\b/gi],
   ['isbn', /\bISBN(?:-1[03])?\b/gi],
-  ['book_reference', /\b(?:libro|cap[ií]tulo|editorial)\b/gi],
+  ['book_reference', /\b(?:libro|cap[ií]tulo)\b/gi],
   ['explicit_quote', /\b(?:cita textual|textualmente|literalmente)\b/gi]
 ];
 
