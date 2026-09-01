@@ -17,12 +17,22 @@ const PUBLIC_AUTHORITY_BASE_DOMAINS = [
   'boe.es',
   'ine.es',
   'nhs.uk',
+  'euskadi.eus',
+  'gencat.cat',
 ];
 
 const REVIEWED_NON_GOVERNMENT_HOSTS = new Set([
   // Associació Tramuntana – Després del Suïcidi (TDS), reviewed 2026-09-01.
   // Canal Salut (Generalitat de Catalunya) lists TDS among survivor-support entities.
   'tdssuicidio.com',
+  // Source-level review completed 2026-09-01: dedicated suicide-bereavement
+  // resources from established prevention, postvention and crisis-support bodies.
+  'standbysupport.com.au',
+  'afsp.org',
+  'www.samaritans.org',
+  'www.redaipis.org',
+  'papageno.es',
+  'telefonodelaesperanza.org',
 ]);
 
 const TRACKING_QUERY_KEYS = /^(?:utm_.+|gclid|dclid|fbclid|msclkid|mc_cid|mc_eid|affiliate|aff|affid)$/i;
