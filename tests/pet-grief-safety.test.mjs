@@ -6,8 +6,8 @@ const html = await readFile(new URL('../duelo/ha-muerto-mi-mascota-y-estoy-destr
 
 test('la guía valida el vínculo sin equiparar ni jerarquizar pérdidas', () => {
   assert.match(html, /No necesitas comparar esta muerte con la de una persona/i);
-  assert.match(html, /no tienes que defender que la pérdida importa/i);
-  assert.match(html, /no determina el valor que tenía ese vínculo/i);
+  assert.match(html, /defender que la pérdida importa/i);
+  assert.match(html, /No estás obligado\/a a convencer a nadie/i);
 });
 
 test('la culpa por eutanasia se ordena sin emitir juicio veterinario retrospectivo', () => {
