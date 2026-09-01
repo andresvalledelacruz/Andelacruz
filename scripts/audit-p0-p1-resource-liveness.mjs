@@ -16,7 +16,19 @@ const TIMEOUT_MS = 8000;
 const MAX_REDIRECTS = 6;
 const MAX_ATTEMPTS = 2;
 const CONCURRENCY = 4;
-const USER_AGENT = 'Desgracias-P0P1-Resource-Monitor/1.0 (+https://desgracias.es/)';
+const PROBE_PROFILES = [
+  {
+    name: 'monitor',
+    userAgent: 'Desgracias-P0P1-Resource-Monitor/1.0 (+https://desgracias.es/)',
+  },
+  {
+    // Some public sites return bot-specific 404s to monitoring UAs while the
+    // same public page remains available to ordinary browsers. The retry keeps
+    // strict TLS and redirect governance; only the request profile changes.
+    name: 'browser-compatible',
+    userAgent: 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36',
+  },
+];
 const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 const REACHABLE_RESTRICTED = new Set([401, 403, 405, 429]);
 const GONE_STATUSES = new Set([404, 410]);
@@ -56,14 +68,14 @@ async function inventoryResources() {
   }));
 }
 
-async function fetchOne(url) {
+async function fetchOne(url, userAgent) {
   const startedAt = Date.now();
   const response = await fetch(url, {
     method: 'GET',
     redirect: 'manual',
     signal: AbortSignal.timeout(TIMEOUT_MS),
     headers: {
-      'user-agent': USER_AGENT,
+      'user-agent': userAgent,
       accept: 'text/html,application/xhtml+xml;q=0.9,*/*;q=0.2',
       'accept-language': 'es-ES,es;q=0.8,en;q=0.3',
     },
@@ -73,7 +85,7 @@ async function fetchOne(url) {
   return { response, elapsedMs };
 }
 
-async function probeAttempt(resource) {
+async function probeAttempt(resource, profile) {
   if (['escape', '016_whatsapp'].includes(resource.classification)) {
     return {
       state: 'skipped_special_transport',
@@ -82,6 +94,7 @@ async function probeAttempt(resource) {
       redirect_chain: [],
       status: null,
       elapsed_ms: null,
+      probe_profile: profile.name,
     };
   }
 
@@ -94,7 +107,7 @@ async function probeAttempt(resource) {
     let elapsedMs;
 
     try {
-      ({ response, elapsedMs } = await fetchOne(current));
+      ({ response, elapsedMs } = await fetchOne(current, profile.userAgent));
     } catch (error) {
       const details = errorDetails(error);
       return {
@@ -106,6 +119,7 @@ async function probeAttempt(resource) {
         elapsed_ms: totalElapsedMs || null,
         error_code: details.code,
         error: details.message,
+        probe_profile: profile.name,
       };
     }
 
@@ -124,6 +138,7 @@ async function probeAttempt(resource) {
           redirect_chain: redirectChain,
           status,
           elapsed_ms: totalElapsedMs,
+          probe_profile: profile.name,
         };
       }
 
@@ -138,6 +153,7 @@ async function probeAttempt(resource) {
           redirect_chain: redirectChain,
           status,
           elapsed_ms: totalElapsedMs,
+          probe_profile: profile.name,
         };
       }
 
@@ -155,6 +171,7 @@ async function probeAttempt(resource) {
         redirect_chain: redirectChain,
         status,
         elapsed_ms: totalElapsedMs,
+        probe_profile: profile.name,
       };
     }
 
@@ -166,6 +183,7 @@ async function probeAttempt(resource) {
         redirect_chain: redirectChain,
         status,
         elapsed_ms: totalElapsedMs,
+        probe_profile: profile.name,
       };
     }
 
@@ -177,6 +195,7 @@ async function probeAttempt(resource) {
         redirect_chain: redirectChain,
         status,
         elapsed_ms: totalElapsedMs,
+        probe_profile: profile.name,
       };
     }
 
@@ -187,6 +206,7 @@ async function probeAttempt(resource) {
       redirect_chain: redirectChain,
       status,
       elapsed_ms: totalElapsedMs,
+      probe_profile: profile.name,
     };
   }
 
@@ -197,6 +217,7 @@ async function probeAttempt(resource) {
     redirect_chain: redirectChain,
     status: null,
     elapsed_ms: totalElapsedMs,
+    probe_profile: profile.name,
   };
 }
 
@@ -204,7 +225,8 @@ async function probeResource(resource) {
   const attempts = [];
 
   for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
-    const result = await probeAttempt(resource);
+    const profile = PROBE_PROFILES[Math.min(attempt - 1, PROBE_PROFILES.length - 1)];
+    const result = await probeAttempt(resource, profile);
     attempts.push({ attempt, ...result });
 
     if (['ok', 'info'].includes(result.severity)) break;
