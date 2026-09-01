@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "assets": {
+    "assets/manos-apoyo.png": {
+      "status": "PENDING_PROVENANCE",
+      "source": null,
+      "rights_basis": null,
+      "notes": "Existing production/V9 asset. Confirm original source, authorship or licence before classifying as verified."
+    },
+    "assets/manos-apoyo.webp": {
+      "status": "PENDING_PROVENANCE",
+      "source": "assets/manos-apoyo.png",
+      "rights_basis": null,
+      "notes": "Optimized derivative; inherits the source asset provenance state."
+    }
+  }
+}
