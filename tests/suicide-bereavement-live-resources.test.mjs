@@ -10,20 +10,16 @@ const CURRENT_SAMARITANS = 'https://www.samaritans.org/how-we-can-help/schools/u
 const OLD_EUSKADI = 'https://www.euskadi.eus/gobierno-vasco/-/salud-mental-suicidio/';
 const CURRENT_NHS_TIMING = 'https://www.newcastle-hospitals.nhs.uk/resources/information-for-the-bereaved-what-to-do-after-a-death-in-the-hospital/';
 
-function escapeRegex(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
 test('postvention page no longer exposes dead or TLS-untrusted resource URLs', () => {
-  assert.doesNotMatch(html, new RegExp(escapeRegex(OLD_SAMARITANS)));
-  assert.doesNotMatch(html, new RegExp(escapeRegex(OLD_EUSKADI)));
-  assert.match(html, new RegExp(escapeRegex(CURRENT_SAMARITANS)));
-  assert.match(html, new RegExp(escapeRegex(CURRENT_NHS_TIMING)));
+  assert.equal(html.includes(OLD_SAMARITANS), false);
+  assert.equal(html.includes(OLD_EUSKADI), false);
+  assert.equal(html.includes(CURRENT_SAMARITANS), true);
+  assert.equal(html.includes(CURRENT_NHS_TIMING), true);
 });
 
 test('live Community of Madrid postvention resources remain available in the guide', () => {
-  assert.match(html, /https:\/\/www\.comunidad\.madrid\/salud\/ayuda-frente-suicidio-no-solo/);
-  assert.match(html, /https:\/\/www\.comunidad\.madrid\/publicacion\/ref\/20325/);
+  assert.equal(html.includes('https://www.comunidad.madrid/salud/ayuda-frente-suicidio-no-solo'), true);
+  assert.equal(html.includes('https://www.comunidad.madrid/publicacion/ref/20325'), true);
 });
 
 test('resource repair has an explicit editorial date synchronized with sitemap', () => {
