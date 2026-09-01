@@ -1,7 +1,8 @@
 name: P0/P1 Resource Liveness
 
 on:
-  workflow_call:
+  schedule:
+    - cron: '41 */6 * * *'
   workflow_dispatch:
 
 permissions:
@@ -11,7 +12,7 @@ jobs:
   resource-liveness:
     name: Governed external resource availability
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
 
     steps:
       - name: Checkout production-v9
@@ -29,13 +30,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          node scripts/audit-p0-p1-resource-liveness.mjs | tee p0-p1-resource-liveness-report.json
+          node scripts/audit-p0-p1-resource-liveness.mjs --strict | tee p0-p1-resource-liveness-report.json
 
       - name: Preserve P0/P1 resource evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: p0-p1-resource-liveness-${{ github.run_id }}-${{ github.run_attempt }}
+          name: p0-p1-resource-liveness
           path: p0-p1-resource-liveness-report.json
           if-no-files-found: warn
           retention-days: 30
