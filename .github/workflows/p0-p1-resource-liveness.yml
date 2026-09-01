@@ -1,23 +1,17 @@
-name: Production Origin Integrity
+name: P0/P1 Resource Liveness
 
 on:
-  push:
-    branches: [production-v9]
   workflow_call:
   workflow_dispatch:
-
-concurrency:
-  group: production-origin-integrity-${{ github.ref }}
-  cancel-in-progress: false
 
 permissions:
   contents: read
 
 jobs:
-  production-origin:
-    name: TLS DNS redirects and V9 origin
+  resource-liveness:
+    name: Governed external resource availability
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 12
 
     steps:
       - name: Checkout production-v9
@@ -31,17 +25,17 @@ jobs:
           node-version: '24'
           package-manager-cache: false
 
-      - name: Probe production origin with strict TLS
+      - name: Probe governed P0/P1 resources
         shell: bash
         run: |
           set -euo pipefail
-          node scripts/audit-production-origin.mjs | tee production-origin-report.json
+          node scripts/audit-p0-p1-resource-liveness.mjs --strict | tee p0-p1-resource-liveness-report.json
 
-      - name: Preserve production origin evidence
+      - name: Preserve P0/P1 resource evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: production-origin-integrity-${{ github.run_id }}-${{ github.run_attempt }}
-          path: production-origin-report.json
+          name: p0-p1-resource-liveness
+          path: p0-p1-resource-liveness-report.json
           if-no-files-found: warn
           retention-days: 30
