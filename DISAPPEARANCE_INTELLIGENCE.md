@@ -60,6 +60,8 @@ Base institucional inicial:
 
 La información operativa final debe validarse directamente contra fuentes oficiales en la fecha de publicación. No introducir reglas temporales de denuncia, teléfonos, formularios o procedimientos basados en memoria o fuentes secundarias.
 
+El `RESEARCH_SOURCE_LEDGER.md` mantiene desde 2026-09-01 las fuentes primarias y la captura internacional verificable asociada a este frente.
+
 ## 5. Pérdida ambigua e incertidumbre
 
 Knowledge → Narrative Engine debe distinguir entre:
@@ -110,9 +112,25 @@ Especial atención a:
 
 Las guías deben priorizar canales oficiales y explicar qué datos conviene reservar cuando publicar más información aumenta el riesgo.
 
-## 8. Internacional — regla concurrente
+## 8. Internacional — captura concurrente activa
 
-Cada investigación española debe capturar en paralelo, por país:
+La regla transversal definida en `INTERNATIONAL_LOCALIZATION_INTELLIGENCE.md` ya se aplica materialmente a desapariciones.
+
+Primera matriz verificada el 2026-09-01 en `RESEARCH_SOURCE_LEDGER.md`:
+
+- España: base institucional activa; publicación operativa aún sujeta a Safety Gate y validación final.
+- México: `WATCH`; CNB, RNPDNO y Alerta Nacional identificados como fuentes federales primarias.
+- Argentina: `HOLD`; infraestructura oficial de difusión identificada, pero ruta inicial de denuncia/búsqueda todavía incompleta para publicación.
+- Colombia: `WATCH`; RND/SIRDEC y Fiscalía identificados, con necesidad de separar desaparición general, desaparición forzada y contexto de conflicto.
+- Reino Unido: `READY-RESEARCH`; GOV.UK y UK Missing Persons Unit documentan flujo de reporte, no-espera de 24 horas y capa consular para desapariciones en el extranjero.
+- Francia: `READY-RESEARCH`; guía oficial 2026 sobre `disparition inquiétante`, con categorías locales que no deben traducirse mecánicamente.
+- Japón: `WATCH`; National Police Agency y estructura prefectural identificadas.
+- China: `HOLD`; existen fuentes gubernamentales territoriales sobre 110 y búsqueda, pero falta base suficiente para asumir un procedimiento nacional uniforme.
+- Corea del Sur: `HOLD`; autoridad policial identificada, sin guía operativa primaria suficientemente validada en esta tanda.
+
+Estos estados son de investigación, no de publicación. Ningún país puede avanzar por mera disponibilidad de una URL oficial: necesita intención local, privacidad, Safety, mantenimiento y Native-First Gate.
+
+Para cada país se seguirá capturando:
 
 - autoridad competente;
 - canal de denuncia y emergencia;
@@ -146,3 +164,16 @@ Debe verificar, como mínimo:
 - no monetización/CTA comercial en P0/P1;
 - canonical y límites del servicio;
 - recursos internacionales no reutilizados desde España sin validación.
+
+## 11. Próximo umbral de publicación
+
+Antes de convertir «Ha desaparecido un familiar y no sé qué hacer» en URL española debe existir, sobre una rama aislada:
+
+1. análisis de demanda/SERP/intención y canibalización;
+2. fuentes operativas españolas revalidadas el mismo día de redacción;
+3. separación explícita entre emergencia, denuncia, difusión y apoyo emocional;
+4. política de privacidad/cartelería y datos de menores/vulnerables;
+5. Safety Gate específico con prueba regresiva contra la falsa regla de «esperar 24/48 horas»;
+6. revisión editorial de pérdida ambigua sin presentar la desaparición como muerte;
+7. Engineering Quality Gate + Production SEO Integrity verdes;
+8. post-merge Engineering + SEO + Pages sobre el mismo SHA.
