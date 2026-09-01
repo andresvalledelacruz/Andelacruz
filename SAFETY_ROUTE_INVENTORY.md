@@ -1,6 +1,6 @@
 # Inventario Safety de superficies públicas
 
-Fecha de auditoría: 2026-08-30.
+Fecha de auditoría: 2026-09-01.
 
 Este inventario sirve como control conservador para separar contenido crítico de cualquier monetización futura. La inclusión aquí no diagnostica ni clasifica clínicamente a una persona; clasifica la superficie de producto por el nivel de precaución requerido.
 
@@ -14,6 +14,7 @@ Este inventario sirve como control conservador para separar contenido crítico d
 | `/mi-pareja-me-maltrata-y-no-se-que-hacer/` | violencia de pareja | sin monetización |
 | `/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/` | violencia sexual | sin monetización |
 | `/duelo/ha-muerto-por-suicidio-alguien-que-quiero/` | posvención con bloque explícito de ideación suicida del lector | 112 + 024 + fuente oficial Sanidad |
+| `/dinero/tengo-deudas-y-no-se-por-donde-empezar/` | presión financiera intensa con bloque explícito de riesgo personal y decisiones patrimoniales de alto impacto | 112 + 024 + fuente oficial Sanidad |
 
 ## Regla de alta
 
