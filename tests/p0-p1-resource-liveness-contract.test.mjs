@@ -50,15 +50,15 @@ test('redirect integrity remains HTTPS and governed', () => {
   assert.match(policy, /isAuthorityHost\(target\.hostname\)/);
 });
 
-test('liveness workflow is scheduled/manual, production-pinned and isolated from deployment gates', () => {
+test('liveness workflow is reusable/manual, production-pinned and not a deployment trigger', () => {
   assert.match(workflow, /name:\s*P0\/P1 Resource Liveness/);
-  assert.match(workflow, /schedule:/);
-  assert.match(workflow, /cron:\s*'41 \*\/6 \* \* \*'/);
+  assert.match(workflow, /workflow_call:/);
   assert.match(workflow, /workflow_dispatch:/);
   assert.match(workflow, /ref:\s*production-v9/);
   assert.match(workflow, /node scripts\/audit-p0-p1-resource-liveness\.mjs --strict/);
   assert.match(workflow, /actions\/upload-artifact@v4/);
   assert.match(workflow, /if:\s*always\(\)/);
+  assert.doesNotMatch(workflow, /\bschedule:/);
   assert.doesNotMatch(workflow, /\bpull_request:/);
   assert.doesNotMatch(workflow, /^\s*push:/m);
   assert.doesNotMatch(workflow, /continue-on-error:\s*true/i);
