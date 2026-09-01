@@ -1,0 +1,16 @@
+name: Production Safety Scheduler
+
+on:
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-origin:
+    uses: andresvalledelacruz/Andelacruz/.github/workflows/production-origin-integrity.yml@production-v9
+
+  p0-p1-resource-liveness:
+    uses: andresvalledelacruz/Andelacruz/.github/workflows/p0-p1-resource-liveness.yml@production-v9
