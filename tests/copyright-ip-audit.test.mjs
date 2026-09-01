@@ -46,6 +46,16 @@ test('una referencia bibliográfica en contenido indexable exige revisión sourc
   assert.equal(report.findings[0].priority, 'manual_review');
 });
 
+test('el uso genérico de editorial no se confunde con una referencia bibliográfica', () => {
+  const { status, report } = runAudit({
+    'metodologia.html': '<meta name="robots" content="index,follow"><p>La revisión y el criterio editorial son independientes.</p>'
+  });
+
+  assert.equal(status, 0);
+  assert.equal(report.summary.hard_fail, 0);
+  assert.equal(report.summary.manual_review, 0);
+});
+
 test('una imagen remota de terceros bloquea el gate, pero una imagen absoluta propia registrada no', () => {
   const own = runAudit({
     'copyright-asset-provenance.json': JSON.stringify({ version: 1, assets: { 'assets/manos-apoyo.png': { status: 'VERIFIED_OWNED' } } }),
