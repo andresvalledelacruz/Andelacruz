@@ -1,102 +1,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
-
-const OWN_HOSTS = new Set(['desgracias.es', 'www.desgracias.es']);
-
-const PUBLIC_AUTHORITY_BASE_DOMAINS = [
-  'sanidad.gob.es',
-  'guiasalud.es',
-  'who.int',
-  'juntadeandalucia.es',
-  'gobiernodecanarias.org',
-  'comunidad.madrid',
-  'igualdad.gob.es',
-  'mjusticia.gob.es',
-  'policia.es',
-  'boe.es',
-  'ine.es',
-  'nhs.uk',
-  'euskadi.eus',
-  'gencat.cat',
-];
-
-const REVIEWED_NON_GOVERNMENT_HOSTS = new Set([
-  // Associació Tramuntana – Després del Suïcidi (TDS), reviewed 2026-09-01.
-  // Canal Salut (Generalitat de Catalunya) lists TDS among survivor-support entities.
-  'tdssuicidio.com',
-  // Source-level review completed 2026-09-01: dedicated suicide-bereavement
-  // resources from established prevention, postvention and crisis-support bodies.
-  'standbysupport.com.au',
-  'afsp.org',
-  'www.samaritans.org',
-  'www.redaipis.org',
-  'papageno.es',
-  'telefonodelaesperanza.org',
-]);
-
-const TRACKING_QUERY_KEYS = /^(?:utm_.+|gclid|dclid|fbclid|msclkid|mc_cid|mc_eid|affiliate|aff|affid)$/i;
-
-function routeToFile(route) {
-  const normalized = route.replace(/^\/+/, '');
-  return normalized.endsWith('.html') ? normalized : `${normalized.replace(/\/+$/, '')}/index.html`;
-}
-
-async function readCriticalRoutes() {
-  const markdown = await readFile(new URL('../SAFETY_ROUTE_INVENTORY.md', import.meta.url), 'utf8');
-  const section = markdown.split('## P0/P1 — monetización denegada por construcción')[1]?.split('\n## ')[0] ?? '';
-  const routes = [...section.matchAll(/^\|\s*`(\/[^`]+)`\s*\|/gm)].map((match) => match[1]);
-  assert.ok(routes.length > 0, 'SAFETY_ROUTE_INVENTORY.md must contain P0/P1 routes');
-  assert.equal(new Set(routes).size, routes.length, 'P0/P1 inventory routes must be unique');
-  return routes;
-}
-
-function externalAnchorLinks(html) {
-  const links = [];
-  for (const match of html.matchAll(/<a\b[^>]*\bhref\s*=\s*(['"])(https?:\/\/[^'"<>]+)\1[^>]*>/gi)) {
-    links.push({ href: match[2], tag: match[0] });
-  }
-  return links;
-}
-
-function isAuthorityHost(hostname) {
-  return PUBLIC_AUTHORITY_BASE_DOMAINS.some((base) => hostname === base || hostname.endsWith(`.${base}`));
-}
-
-function classifyExternalLink(href, tag) {
-  const url = new URL(href);
-  const hostname = url.hostname.toLowerCase();
-
-  if (OWN_HOSTS.has(hostname)) return { kind: 'own' };
-
-  if (href === 'https://www.google.com/') {
-    assert.match(tag, /rel\s*=\s*(['"])[^'"<>]*noopener[^'"<>]*\1/i, 'Quick-exit destination must isolate opener access');
-    assert.match(tag, /rel\s*=\s*(['"])[^'"<>]*noreferrer[^'"<>]*\1/i, 'Quick-exit destination must suppress referrer via rel');
-    assert.match(tag, /referrerpolicy\s*=\s*(['"])no-referrer\1/i, 'Quick-exit destination must suppress the referrer');
-    return { kind: 'escape' };
-  }
-
-  if (hostname === 'wa.me') {
-    assert.equal(url.protocol, 'https:', '016 WhatsApp must use HTTPS');
-    assert.equal(url.pathname.replace(/\/$/, ''), '/3460000016', 'Only the official 016 WhatsApp number is allowed on P0/P1 routes');
-    assert.equal(url.search, '', '016 WhatsApp link must not contain query parameters');
-    assert.equal(url.hash, '', '016 WhatsApp link must not contain a fragment');
-    return { kind: '016_whatsapp' };
-  }
-
-  if (isAuthorityHost(hostname)) return { kind: 'public_authority' };
-  if (REVIEWED_NON_GOVERNMENT_HOSTS.has(hostname)) return { kind: 'reviewed_non_government' };
-
-  throw new Error(`Unreviewed external host on P0/P1 route: ${hostname} (${href})`);
-}
+import {
+  OWN_HOSTS,
+  PUBLIC_AUTHORITY_BASE_DOMAINS,
+  REVIEWED_NON_GOVERNMENT_HOSTS,
+  TRACKING_QUERY_KEYS,
+  classifyExternalLink,
+  externalAnchorLinks,
+  readCriticalRouteHtml,
+  readCriticalRoutes,
+} from '../scripts/lib/p0-p1-resource-policy.mjs';
 
 test('P0/P1 external resources stay HTTPS, non-tracked and source-governed', async () => {
   const routes = await readCriticalRoutes();
   let externalCount = 0;
 
   for (const route of routes) {
-    const file = routeToFile(route);
-    const html = await readFile(new URL(`../${file}`, import.meta.url), 'utf8');
+    const html = await readCriticalRouteHtml(route);
     const links = externalAnchorLinks(html);
 
     for (const { href, tag } of links) {
@@ -110,8 +30,14 @@ test('P0/P1 external resources stay HTTPS, non-tracked and source-governed', asy
         assert.equal(TRACKING_QUERY_KEYS.test(key), false, `${route} contains tracking parameter ${key} in ${href}`);
       }
 
-      const classification = classifyExternalLink(href, tag);
+      const classification = classifyExternalLink(href);
       assert.notEqual(classification.kind, 'own');
+
+      if (classification.kind === 'escape') {
+        assert.match(tag, /rel\s*=\s*(['"])[^'"<>]*noopener[^'"<>]*\1/i, 'Quick-exit destination must isolate opener access');
+        assert.match(tag, /rel\s*=\s*(['"])[^'"<>]*noreferrer[^'"<>]*\1/i, 'Quick-exit destination must suppress referrer via rel');
+        assert.match(tag, /referrerpolicy\s*=\s*(['"])no-referrer\1/i, 'Quick-exit destination must suppress the referrer');
+      }
 
       if (!['escape', '016_whatsapp'].includes(classification.kind)) {
         assert.match(tag, /rel\s*=\s*(['"])[^'"<>]*noopener[^'"<>]*\1/i, `${route} external resource must declare noopener: ${href}`);
