@@ -13,6 +13,7 @@ export const PUBLIC_AUTHORITY_BASE_DOMAINS = [
   'mjusticia.gob.es',
   'policia.es',
   'boe.es',
+  'bde.es',
   'ine.es',
   'nhs.uk',
   'euskadi.eus',
@@ -20,6 +21,10 @@ export const PUBLIC_AUTHORITY_BASE_DOMAINS = [
 ];
 
 export const REVIEWED_NON_GOVERNMENT_HOSTS = new Set([
+  // Finanzas para Todos — web de referencia del Plan de Educación Financiera,
+  // iniciativa de CNMV, Banco de España y Ministerio de Economía. Revisado 2026-09-01.
+  'finanzasparatodos.es',
+  'www.finanzasparatodos.es',
   // Associació Tramuntana – Després del Suïcidi (TDS), reviewed 2026-09-01.
   // Canal Salut (Generalitat de Catalunya) lists TDS among survivor-support entities.
   'tdssuicidio.com',
