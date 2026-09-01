@@ -22,6 +22,15 @@ test('live Community of Madrid postvention resources remain available in the gui
   assert.equal(html.includes('https://www.comunidad.madrid/publicacion/ref/20325'), true);
 });
 
+test('international NHS timing source remains subordinate to the Spanish source nucleus', () => {
+  const spanishSources = html.split('<h3>Núcleo español</h3>')[1]?.split('<h3>Contraste internacional experto</h3>')[0] ?? '';
+  const internationalSources = html.split('<h3>Contraste internacional experto</h3>')[1]?.split('<h3>Cómo usamos estas fuentes</h3>')[0] ?? '';
+  assert.ok(spanishSources.length > 0);
+  assert.ok(internationalSources.length > 0);
+  assert.equal(spanishSources.includes(CURRENT_NHS_TIMING), false);
+  assert.equal(internationalSources.includes(CURRENT_NHS_TIMING), true);
+});
+
 test('resource repair has an explicit editorial date synchronized with sitemap', () => {
   assert.match(html, /"dateModified":"2026-09-01"/);
   assert.match(html, /Actualizado y auditado el 1 de septiembre de 2026/i);
