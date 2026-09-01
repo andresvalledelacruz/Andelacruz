@@ -29,16 +29,35 @@ function isNoindex(text) {
     || /<meta\b[^>]*content=["'][^"']*noindex[^"']*["'][^>]*name=["']robots["']/i.test(text);
 }
 
+function allImageSources(text) {
+  return [...text.matchAll(/<img\b[^>]*\bsrc=["']([^"']+)["']/gi)].map((match) => match[1].trim());
+}
+
+function isOwnAbsoluteUrl(url) {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return host === 'desgracias.es' || host === 'www.desgracias.es';
+  } catch {
+    return false;
+  }
+}
+
 function remoteImages(text) {
-  const urls = [...text.matchAll(/<img\b[^>]*\bsrc=["'](https?:\/\/[^"']+)["']/gi)].map((match) => match[1]);
-  return urls.filter((url) => {
+  return allImageSources(text).filter((url) => /^https?:\/\//i.test(url) && !isOwnAbsoluteUrl(url));
+}
+
+function normalizeLocalAsset(url) {
+  if (!url || /^data:|^blob:/i.test(url)) return null;
+  if (/^https?:\/\//i.test(url)) {
+    if (!isOwnAbsoluteUrl(url)) return null;
     try {
-      const host = new URL(url).hostname.toLowerCase();
-      return host !== 'desgracias.es' && host !== 'www.desgracias.es';
+      return new URL(url).pathname.replace(/^\/+/, '');
     } catch {
-      return true;
+      return null;
     }
-  });
+  }
+  const clean = url.split(/[?#]/, 1)[0];
+  return clean.replace(/^\/+/, '');
 }
 
 function thirdPartyCopyrightMarkers(text) {
@@ -46,7 +65,23 @@ function thirdPartyCopyrightMarkers(text) {
   return markers.filter((marker) => !/©\s*2026\s+Desgracias\.es/i.test(marker) && !/&copy;\s*2026\s+Desgracias\.es/i.test(marker));
 }
 
+function loadAssetProvenance() {
+  const registryPath = path.join(root, 'copyright-asset-provenance.json');
+  if (!fs.existsSync(registryPath)) return { version: 1, assets: {} };
+  try {
+    const parsed = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+    return parsed && typeof parsed === 'object' && parsed.assets && typeof parsed.assets === 'object'
+      ? parsed
+      : { version: 1, assets: {} };
+  } catch {
+    return { version: 1, assets: {} };
+  }
+}
+
+const provenance = loadAssetProvenance();
+const localAssetUsage = new Map();
 const findings = [];
+
 for (const file of htmlFiles) {
   const text = fs.readFileSync(file, 'utf8');
   const relativeFile = path.relative(root, file);
@@ -81,6 +116,46 @@ for (const file of htmlFiles) {
       priority: 'hard_fail'
     });
   }
+
+  for (const src of allImageSources(text)) {
+    const asset = normalizeLocalAsset(src);
+    if (!asset || !/\.(?:png|jpe?g|webp|gif|svg|avif)$/i.test(asset)) continue;
+    const usage = localAssetUsage.get(asset) || new Set();
+    usage.add(relativeFile);
+    localAssetUsage.set(asset, usage);
+  }
+}
+
+for (const [asset, files] of localAssetUsage.entries()) {
+  const record = provenance.assets?.[asset];
+  if (!record) {
+    findings.push({
+      asset,
+      files: [...files].sort(),
+      kind: 'local_image_unregistered',
+      count: files.size,
+      priority: 'manual_review'
+    });
+    continue;
+  }
+
+  if (record.status === 'HOLD_LEGAL') {
+    findings.push({
+      asset,
+      files: [...files].sort(),
+      kind: 'local_image_hold_legal',
+      count: files.size,
+      priority: 'hard_fail'
+    });
+  } else if (record.status === 'PENDING_PROVENANCE') {
+    findings.push({
+      asset,
+      files: [...files].sort(),
+      kind: 'local_image_pending_provenance',
+      count: files.size,
+      priority: 'manual_review'
+    });
+  }
 }
 
 const manualReview = findings.filter(({ priority }) => priority === 'manual_review');
@@ -90,6 +165,8 @@ const informational = findings.filter(({ priority }) => priority === 'informatio
 const report = {
   audited_html_files: htmlFiles.length,
   automated_screen_only: true,
+  asset_provenance_registry_present: fs.existsSync(path.join(root, 'copyright-asset-provenance.json')),
+  local_image_assets_referenced: localAssetUsage.size,
   findings,
   summary: {
     hard_fail: hardFailures.length,
@@ -97,17 +174,17 @@ const report = {
     informational: informational.length
   },
   interpretation: hardFailures.length
-    ? 'Deployment blocked: at least one remote third-party image requires explicit provenance/licence review.'
+    ? 'Deployment blocked: at least one image asset has an unresolved hard provenance/legal condition.'
     : manualReview.length
-      ? 'Source-level review required for higher-signal findings; a finding is not proof of infringement.'
+      ? 'Source-level/provenance review required for higher-signal findings; a finding is not proof of infringement.'
       : 'No higher-signal heuristic markers found. This does not prove copyright/IP compliance or absence of problematic similarity.'
 };
 
 console.log(JSON.stringify(report, null, 2));
 
-// Automatic hard failures are deliberately limited to clear deployable provenance risks.
-// Textual similarity and legal basis for quotations still require source-level review.
+// Automatic hard failures are deliberately limited to clear deployable provenance/legal risks.
+// Textual similarity, pending local provenance and legal basis for quotations remain explicit review states.
 if (hardFailures.length) {
-  console.error('Copyright/IP gate: remote third-party images require explicit provenance/licence review before deployment.');
+  console.error('Copyright/IP gate: unresolved hard provenance/legal condition detected.');
   process.exit(1);
 }
