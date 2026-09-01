@@ -35,6 +35,7 @@ test('la guía conserva Safety de crisis, límites y recursos oficiales', () => 
 
 test('la página mantiene canonical, fuentes y prudencia causal', () => {
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/soledad\/no-tengo-amigos\/"/);
+  assert.match(html, /property="og:description" content="Distingue qué vínculo te falta/i);
   assert.match(html, /who\.int\/publications\/i\/item\/978240112360/);
   assert.match(html, /soledades\.es\/estudios\/barometro-soledad-no-deseada-espana-2024/);
   assert.match(html, /Son asociaciones poblacionales/i);
