@@ -58,7 +58,8 @@ function classifyExternalLink(href, tag) {
   if (OWN_HOSTS.has(hostname)) return { kind: 'own' };
 
   if (href === 'https://www.google.com/') {
-    assert.match(tag, /aria-label\s*=\s*(['"])[^'"<>]*salir[^'"<>]*\1/i, 'Google may only be used as an explicitly labelled quick-exit destination');
+    assert.match(tag, /rel\s*=\s*(['"])[^'"<>]*noopener[^'"<>]*\1/i, 'Quick-exit destination must isolate opener access');
+    assert.match(tag, /rel\s*=\s*(['"])[^'"<>]*noreferrer[^'"<>]*\1/i, 'Quick-exit destination must suppress referrer via rel');
     assert.match(tag, /referrerpolicy\s*=\s*(['"])no-referrer\1/i, 'Quick-exit destination must suppress the referrer');
     return { kind: 'escape' };
   }
