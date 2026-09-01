@@ -39,7 +39,8 @@ test('monitor separates integrity failures from transient third-party availabili
   assert.match(script, /reachable_restricted/);
   assert.match(script, /transient_server_failure/);
   assert.match(script, /MAX_ATTEMPTS\s*=\s*2/);
-  assert.match(script, /if \(hardFailures\.length > 0\)/);
+  assert.match(script, /STRICT\s*=\s*process\.argv\.includes\('--strict'\)/);
+  assert.match(script, /if \(STRICT\) process\.exitCode = 1/);
 });
 
 test('redirect integrity remains HTTPS and governed', () => {
@@ -49,15 +50,15 @@ test('redirect integrity remains HTTPS and governed', () => {
   assert.match(policy, /isAuthorityHost\(target\.hostname\)/);
 });
 
-test('liveness workflow is reusable/manual, production-pinned and not a deployment trigger', () => {
+test('liveness workflow is scheduled/manual, production-pinned and isolated from deployment gates', () => {
   assert.match(workflow, /name:\s*P0\/P1 Resource Liveness/);
-  assert.match(workflow, /workflow_call:/);
+  assert.match(workflow, /schedule:/);
+  assert.match(workflow, /cron:\s*'41 \*\/6 \* \* \*'/);
   assert.match(workflow, /workflow_dispatch:/);
   assert.match(workflow, /ref:\s*production-v9/);
-  assert.match(workflow, /node scripts\/audit-p0-p1-resource-liveness\.mjs/);
+  assert.match(workflow, /node scripts\/audit-p0-p1-resource-liveness\.mjs --strict/);
   assert.match(workflow, /actions\/upload-artifact@v4/);
   assert.match(workflow, /if:\s*always\(\)/);
-  assert.doesNotMatch(workflow, /\bschedule:/);
   assert.doesNotMatch(workflow, /\bpull_request:/);
   assert.doesNotMatch(workflow, /^\s*push:/m);
   assert.doesNotMatch(workflow, /continue-on-error:\s*true/i);
