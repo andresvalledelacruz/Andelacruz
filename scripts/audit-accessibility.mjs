@@ -38,6 +38,11 @@ function urlToFile(url) {
   return path.join(ROOT, relative.endsWith('/') ? relative + 'index.html' : relative);
 }
 
+function hasId(html, id) {
+  const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`\\bid=["']${escaped}["']`, 'i').test(html);
+}
+
 export function auditHtml(html, source = '<memory>') {
   const errors = [];
   const fail = (message) => errors.push(`${source}: ${message}`);
@@ -95,10 +100,11 @@ export function auditHtml(html, source = '<memory>') {
 
   if (/<(?:input|button|select|textarea)\b[^>]*\bautofocus(?:\s|=|>)/i.test(html)) fail('autofocus no permitido en controles interactivos');
 
-  for (const match of html.matchAll(/<[^>]+\baria-controls\s*=\s*["']([^"']+)["'][^>]*>/gi)) {
-    for (const id of match[1].trim().split(/\s+/)) {
-      if (id && !new RegExp(`\\bid=["']${id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']`, 'i').test(html)) {
-        fail(`aria-controls referencia id inexistente: ${id}`);
+  for (const attribute of ['aria-controls', 'aria-labelledby', 'aria-describedby']) {
+    const re = new RegExp(`<[^>]+\\b${attribute}\\s*=\\s*["']([^"']+)["'][^>]*>`, 'gi');
+    for (const match of html.matchAll(re)) {
+      for (const id of match[1].trim().split(/\s+/)) {
+        if (id && !hasId(html, id)) fail(`${attribute} referencia id inexistente: ${id}`);
       }
     }
   }
@@ -129,6 +135,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     process.exitCode = 1;
   } else {
     console.log(`Accessibility audit passed for ${urls.length} sitemap URLs.`);
-    console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button names, safe _blank links, tabindex, autofocus and aria-controls targets.');
+    console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button names, safe _blank links, tabindex, autofocus and ARIA id-reference integrity.');
   }
 }
