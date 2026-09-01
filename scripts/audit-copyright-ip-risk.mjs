@@ -81,12 +81,14 @@ function loadAssetProvenance() {
 const provenance = loadAssetProvenance();
 const localAssetUsage = new Map();
 const findings = [];
+const pages = [];
 
 for (const file of htmlFiles) {
   const text = fs.readFileSync(file, 'utf8');
   const relativeFile = path.relative(root, file);
   const noindex = isNoindex(text);
   const exposure = noindex ? 'non_indexed_staging' : 'deployable_indexed';
+  pages.push({ file: relativeFile, exposure });
 
   for (const [kind, regex] of textualPatterns) {
     const matches = [...text.matchAll(regex)];
@@ -161,12 +163,28 @@ for (const [asset, files] of localAssetUsage.entries()) {
 const manualReview = findings.filter(({ priority }) => priority === 'manual_review');
 const hardFailures = findings.filter(({ priority }) => priority === 'hard_fail');
 const informational = findings.filter(({ priority }) => priority === 'informational');
+const inventory = pages
+  .map((page) => {
+    const pageFindings = findings.filter((finding) => finding.file === page.file || finding.files?.includes(page.file));
+    const status = pageFindings.some(({ priority }) => priority === 'hard_fail')
+      ? 'HARD_FAIL'
+      : pageFindings.some(({ priority }) => priority === 'manual_review')
+        ? 'MANUAL_REVIEW'
+        : 'PASS_SCREEN';
+    return {
+      ...page,
+      status,
+      finding_kinds: pageFindings.map(({ kind }) => kind)
+    };
+  })
+  .sort((a, b) => a.file.localeCompare(b.file));
 
 const report = {
   audited_html_files: htmlFiles.length,
   automated_screen_only: true,
   asset_provenance_registry_present: fs.existsSync(path.join(root, 'copyright-asset-provenance.json')),
   local_image_assets_referenced: localAssetUsage.size,
+  inventory,
   findings,
   summary: {
     hard_fail: hardFailures.length,
@@ -177,7 +195,8 @@ const report = {
     ? 'Deployment blocked: at least one image asset has an unresolved hard provenance/legal condition.'
     : manualReview.length
       ? 'Source-level/provenance review required for higher-signal findings; a finding is not proof of infringement.'
-      : 'No higher-signal heuristic markers found. This does not prove copyright/IP compliance or absence of problematic similarity.'
+      : 'No higher-signal heuristic markers found. This does not prove copyright/IP compliance or absence of problematic similarity.',
+  inventory_interpretation: 'PASS_SCREEN means no configured high-signal marker was found; it is not a legal clearance or a substantive-similarity finding.'
 };
 
 console.log(JSON.stringify(report, null, 2));
@@ -188,3 +207,4 @@ if (hardFailures.length) {
   console.error('Copyright/IP gate: unresolved hard provenance/legal condition detected.');
   process.exit(1);
 }
+
