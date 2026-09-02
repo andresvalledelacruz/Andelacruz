@@ -139,11 +139,16 @@ function evaluateCase(payload = {}) {
     category: typeof payload.category === 'string' ? payload.category : '',
     title: typeof payload.title === 'string' ? payload.title : '',
     story: typeof payload.story === 'string' ? payload.story : '',
-    needs: Array.isArray(payload.needs) ? payload.needs : []
+    needs: Array.isArray(payload.needs) ? payload.needs : [],
+    compass_answers:
+      payload.compass_answers && typeof payload.compass_answers === 'object' && !Array.isArray(payload.compass_answers)
+        ? payload.compass_answers
+        : {}
   });
 }
 
 function executiveAuditSummary(result = {}) {
+  const compass = result.next_step_compass;
   return {
     decision: result.decision || 'HUMAN_REVIEW',
     safety_level: result.safety?.level || 'NONE',
@@ -156,6 +161,14 @@ function executiveAuditSummary(result = {}) {
     disciplines: Array.isArray(result.multidisciplinary?.disciplines)
       ? result.multidisciplinary.disciplines.slice(0, 12)
       : [],
+    compass: compass
+      ? {
+          complete: compass.complete === true,
+          outcome: compass.outcome || null,
+          human_review_recommended: compass.human_review_recommended === true,
+          suppress_commercial_ui: compass.suppress_commercial_ui === true
+        }
+      : null,
     analytics_mode: result.analytics_mode || 'privacy_minimized',
     commercial_ui_allowed: result.commercial_ui_allowed !== false,
     diagnostic: false,
@@ -644,6 +657,18 @@ app.post('/ops/moderation/:messageId/decision', { preHandler: requireOpsCapabili
     const isStoryUpdate = isStoryUpdateSubmission(original);
     const updateSafetyBlocked = isStoryUpdate &&
       safetyLevelBlocksAutomaticUpdatePublication(executiveSummary.safety_level);
+    const compassHumanReviewBlocked =
+      executiveResult.next_step_compass?.human_review_recommended === true;
+
+    if (compassHumanReviewBlocked && decision !== 'escalate') {
+      await client.query('rollback');
+      return reply.code(409).send({
+        error: 'compass_human_review_requires_escalation',
+        required_decision: 'escalate',
+        executive_brief: executiveSummary
+      });
+    }
+
     if ((executiveResult.decision === 'SAFETY_GATEWAY' || updateSafetyBlocked) && decision !== 'escalate') {
       await client.query('rollback');
       return reply.code(409).send({
