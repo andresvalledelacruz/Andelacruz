@@ -1,5 +1,6 @@
 import { evaluateCriticalSafety } from './critical-safety-taxonomy.js';
 import { buildMultidisciplinaryCaseMap } from './multidisciplinary-case-map.js';
+import { assessNextStepCompass } from './next-step-compass.js';
 import { selectStrategicFrameworks } from './strategic-meta-brain.js';
 
 const productWeights = {
@@ -149,8 +150,13 @@ function evaluateUserCase(input = {}) {
   const normalizedInput = normalizeUserCaseInput(input);
   const safety = evaluateCriticalSafety(normalizedInput);
   const multidisciplinary = buildMultidisciplinaryCaseMap(normalizedInput);
+  const nextStepCompass = assessNextStepCompass({
+    ...normalizedInput,
+    answers: normalizedInput.compass_answers ?? {}
+  });
+  const compassImmediate = nextStepCompass.complete && nextStepCompass.outcome === 'IMMEDIATE';
 
-  const decision = safety.safety_gateway
+  const decision = safety.safety_gateway || compassImmediate
     ? 'SAFETY_GATEWAY'
     : multidisciplinary.urgent_human_review
       ? 'HUMAN_REVIEW'
@@ -162,8 +168,9 @@ function evaluateUserCase(input = {}) {
     decision,
     safety,
     multidisciplinary,
-    commercial_ui_allowed: !safety.suppress_commercial_ui,
-    analytics_mode: safety.safety_gateway ? 'minimal_aggregate_only' : 'privacy_minimized',
+    next_step_compass: nextStepCompass,
+    commercial_ui_allowed: !(safety.suppress_commercial_ui || compassImmediate),
+    analytics_mode: safety.safety_gateway || compassImmediate ? 'minimal_aggregate_only' : 'privacy_minimized',
     diagnostic: false,
     forensic_opinion: false,
     human_override_supported: true
