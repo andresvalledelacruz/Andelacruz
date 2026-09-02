@@ -52,7 +52,7 @@ test('declara fuentes, canonical, privacidad y revisión editorial', () => {
   assert.match(page, /anar\.org\/que-hacemos\/telefono-chat-anar/i);
   assert.match(page, /violenciagenero\.igualdad\.gob\.es/i);
   assert.match(page, /sanidad\.gob\.es\/linea024/i);
-  assert.match(page, /sin nombres, direcciones, teléfonos, capturas, centros de estudio/i);
+  assert.match(page, /evitando nombres, direcciones, teléfonos, capturas, centros de estudio/i);
   assert.match(page, /<link rel="canonical" href="https:\/\/desgracias\.es\/familia\/siento-que-mi-familia-no-me-quiere\/"\s*\/?>/i);
   assert.match(page, /Actualizado el 2 de septiembre de 2026/i);
   assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/siento-que-mi-familia-no-me-quiere\/<\/loc><lastmod>2026-09-02<\/lastmod>/);
