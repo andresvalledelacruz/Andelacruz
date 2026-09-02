@@ -33,6 +33,27 @@ test('explicit compass safety answer closes commercial UI even without keyword t
   assert.equal(result.analytics_mode, 'minimal_aggregate_only');
 });
 
+test('uncertain safety answer stops the battery and requests human review without diagnosing', () => {
+  const result = evaluateExecutiveDecision({
+    kind: 'user_case',
+    category: 'Familia',
+    title: 'Necesito orientación',
+    story: 'No sé cómo valorar mi situación.',
+    compass_answers: {
+      safety_now: 'unsure'
+    }
+  });
+
+  assert.equal(result.next_step_compass.complete, true);
+  assert.equal(result.next_step_compass.outcome, 'PRIORITY');
+  assert.equal(result.next_step_compass.next_question, null);
+  assert.equal(result.next_step_compass.human_review_recommended, true);
+  assert.equal(result.decision, 'HUMAN_REVIEW');
+  assert.equal(result.commercial_ui_allowed, false);
+  assert.equal(result.analytics_mode, 'minimal_aggregate_only');
+  assert.equal(result.diagnostic, false);
+});
+
 test('manageable work case remains multidisciplinary and non-clinical', () => {
   const result = evaluateExecutiveDecision({
     kind: 'user_case',
@@ -54,7 +75,7 @@ test('manageable work case remains multidisciplinary and non-clinical', () => {
   assert.equal(result.diagnostic, false);
 });
 
-test('priority financial case does not become an automatic clinical decision', () => {
+test('priority financial case does not become an automatic clinical or human-review decision', () => {
   const result = evaluateExecutiveDecision({
     kind: 'user_case',
     category: 'Dinero',
@@ -69,6 +90,7 @@ test('priority financial case does not become an automatic clinical decision', (
 
   assert.equal(result.next_step_compass.outcome, 'PRIORITY');
   assert.equal(result.next_step_compass.automated_clinical_decision, false);
+  assert.equal(result.next_step_compass.human_review_recommended, false);
   assert.equal(result.multidisciplinary.primary_need.id, 'financial_practical');
-  assert.notEqual(result.decision, 'SAFETY_GATEWAY');
+  assert.equal(result.decision, 'ROUTE_WITH_GUARDRAILS');
 });

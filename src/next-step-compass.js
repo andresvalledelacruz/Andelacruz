@@ -38,6 +38,8 @@ function collectFactors(answers) {
   const protective = [];
   const concerns = [];
 
+  if (answers.safety_now === 'unsure') concerns.push('La seguridad inmediata no está confirmada.');
+
   if (answers.basic_needs === 'secure') protective.push('Necesidades básicas cubiertas.');
   if (answers.basic_needs === 'strained') concerns.push('Necesidades básicas bajo presión.');
   if (answers.basic_needs === 'not_secure') concerns.push('Necesidades básicas o cuidados imprescindibles sin cubrir.');
@@ -79,7 +81,6 @@ function nextQuestion(answers, safety) {
 
 function outcome(answers, safety) {
   if (safety.safety_gateway || answers.safety_now === 'yes') return 'IMMEDIATE';
-  if (answers.safety_now === 'unsure') return 'PRIORITY';
   if (answers.basic_needs === 'not_secure' || answers.impact === 'severe') return 'PRIORITY';
   if (answers.impact === 'high' && answers.trend === 'worsening') return 'PRIORITY';
   if (answers.impact === 'high' && answers.support === 'none') return 'PRIORITY';
@@ -106,6 +107,25 @@ export function assessNextStepCompass({ category = '', title = '', story = '', n
       outcome: 'IMMEDIATE',
       explanation: OUTCOME_TEXT.IMMEDIATE,
       next_question: null,
+      human_review_recommended: true,
+      suppress_commercial_ui: true,
+      safety,
+      routing,
+      resilience
+    };
+  }
+
+  if (answers.safety_now === 'unsure') {
+    return {
+      version: 1,
+      diagnostic: false,
+      automated_clinical_decision: false,
+      complete: true,
+      outcome: 'PRIORITY',
+      explanation: 'No hay suficiente certeza sobre la seguridad inmediata; no se sigue preguntando sobre factores menos prioritarios.',
+      next_question: null,
+      human_review_recommended: true,
+      suppress_commercial_ui: true,
       safety,
       routing,
       resilience
@@ -122,6 +142,8 @@ export function assessNextStepCompass({ category = '', title = '', story = '', n
       outcome: null,
       explanation: 'Se pregunta solo lo necesario para orientar sin dramatizar ni minimizar.',
       next_question: pending,
+      human_review_recommended: false,
+      suppress_commercial_ui: false,
       safety,
       routing,
       resilience
@@ -137,6 +159,8 @@ export function assessNextStepCompass({ category = '', title = '', story = '', n
     outcome: level,
     explanation: OUTCOME_TEXT[level],
     next_question: null,
+    human_review_recommended: false,
+    suppress_commercial_ui: false,
     safety,
     routing,
     resilience
