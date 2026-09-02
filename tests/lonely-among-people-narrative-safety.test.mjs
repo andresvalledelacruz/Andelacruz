@@ -23,7 +23,7 @@ test('ofrece un experimento gradual, concreto y respetuoso con la autonomía', (
   assert.match(page, /Elige a una persona, no al grupo entero/i);
   assert.match(page, /una petición concreta/i);
   assert.match(page, /Observa la respuesta/i);
-  assert.match(page, /No pidas a una sola relación que lo cubra todo/i);
+  assert.match(page, /No todas las relaciones tienen que cubrirlo todo/i);
 });
 
 test('protege frente a relaciones inseguras y exposición digital', () => {
