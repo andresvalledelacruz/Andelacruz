@@ -155,10 +155,12 @@ function evaluateUserCase(input = {}) {
     answers: normalizedInput.compass_answers ?? {}
   });
   const compassImmediate = nextStepCompass.complete && nextStepCompass.outcome === 'IMMEDIATE';
+  const compassHumanReview = nextStepCompass.human_review_recommended === true;
+  const compassSafetySensitive = compassImmediate || compassHumanReview;
 
   const decision = safety.safety_gateway || compassImmediate
     ? 'SAFETY_GATEWAY'
-    : multidisciplinary.urgent_human_review
+    : multidisciplinary.urgent_human_review || compassHumanReview
       ? 'HUMAN_REVIEW'
       : 'ROUTE_WITH_GUARDRAILS';
 
@@ -169,8 +171,8 @@ function evaluateUserCase(input = {}) {
     safety,
     multidisciplinary,
     next_step_compass: nextStepCompass,
-    commercial_ui_allowed: !(safety.suppress_commercial_ui || compassImmediate),
-    analytics_mode: safety.safety_gateway || compassImmediate ? 'minimal_aggregate_only' : 'privacy_minimized',
+    commercial_ui_allowed: !(safety.suppress_commercial_ui || compassSafetySensitive),
+    analytics_mode: safety.safety_gateway || compassSafetySensitive ? 'minimal_aggregate_only' : 'privacy_minimized',
     diagnostic: false,
     forensic_opinion: false,
     human_override_supported: true
