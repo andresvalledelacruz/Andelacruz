@@ -23,6 +23,43 @@ test('critical Safety Gateway short-circuits the microbattery', () => {
   assert.equal(result.outcome, 'IMMEDIATE');
   assert.equal(result.safety.safety_gateway, true);
   assert.equal(result.next_question, null);
+  assert.equal(result.human_review_recommended, true);
+});
+
+test('protective factors can never suppress an explicit Critical Safety signal', () => {
+  const result = assessNextStepCompass({
+    category: 'Otras historias',
+    title: 'Necesito ayuda',
+    story: 'Tengo dolor en el pecho y no puedo respirar.',
+    answers: {
+      safety_now: 'no',
+      basic_needs: 'secure',
+      impact: 'low',
+      trend: 'improving',
+      support: 'some',
+      reversibility: 'can_wait'
+    }
+  });
+  assert.equal(result.outcome, 'IMMEDIATE');
+  assert.equal(result.safety.safety_gateway, true);
+  assert.equal(result.suppress_commercial_ui, true);
+});
+
+test('uncertain immediate safety stops after the first answer and requests human review', () => {
+  const result = assessNextStepCompass({
+    category: 'Familia',
+    title: 'No sé cómo valorar lo que pasa',
+    story: 'Quiero saber cuál es el siguiente paso.',
+    answers: {
+      safety_now: 'unsure'
+    }
+  });
+  assert.equal(result.complete, true);
+  assert.equal(result.outcome, 'PRIORITY');
+  assert.equal(result.next_question, null);
+  assert.equal(result.human_review_recommended, true);
+  assert.equal(result.suppress_commercial_ui, true);
+  assert.match(result.explanation, /seguridad inmediata/i);
 });
 
 test('low impact plus covered basics and support can finish as manageable without six questions', () => {
@@ -41,6 +78,7 @@ test('low impact plus covered basics and support can finish as manageable withou
   assert.equal(result.outcome, 'MANAGEABLE');
   assert.match(result.explanation, /no significa que no importe/i);
   assert.ok(result.resilience.protective.length >= 3);
+  assert.equal(result.human_review_recommended, false);
 });
 
 test('high and worsening impact is priority without forcing remaining questions', () => {
@@ -58,6 +96,7 @@ test('high and worsening impact is priority without forcing remaining questions'
   assert.equal(result.complete, true);
   assert.equal(result.outcome, 'PRIORITY');
   assert.equal(result.next_question, null);
+  assert.equal(result.human_review_recommended, false);
 });
 
 test('uncovered basic needs are prioritized independently of psychological framing', () => {
