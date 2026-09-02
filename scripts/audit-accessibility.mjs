@@ -68,6 +68,40 @@ function isFocusableElement(tagName, attrs) {
   return ['button', 'select', 'textarea', 'summary'].includes(tagName);
 }
 
+function auditFocusableDescendantsOfAriaHidden(html, fail) {
+  const stack = [];
+  const voidElements = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr']);
+  const tagRe = /<\/?([\w:-]+)\b[^>]*>/gi;
+
+  for (const match of html.matchAll(tagRe)) {
+    const token = match[0];
+    const tagName = match[1].toLowerCase();
+    const isClosing = /^<\//.test(token);
+
+    if (isClosing) {
+      for (let index = stack.length - 1; index >= 0; index -= 1) {
+        if (stack[index].tagName === tagName) {
+          stack.length = index;
+          break;
+        }
+      }
+      continue;
+    }
+
+    const attrs = attrsFrom(token);
+    const ancestorHidden = Boolean(stack.at(-1)?.hidden);
+    const selfHidden = (attrs.get('aria-hidden') || '').trim().toLowerCase() === 'true';
+
+    if (ancestorHidden && isFocusableElement(tagName, attrs)) {
+      fail(`elemento focalizable dentro de ancestro aria-hidden="true": ${tagName}`);
+    }
+
+    const hidden = ancestorHidden || selfHidden;
+    const selfClosing = /\/\s*>$/.test(token) || voidElements.has(tagName);
+    if (!selfClosing) stack.push({ tagName, hidden });
+  }
+}
+
 export function auditHtml(html, source = '<memory>') {
   const errors = [];
   const fail = (message) => errors.push(`${source}: ${message}`);
@@ -141,6 +175,8 @@ export function auditHtml(html, source = '<memory>') {
     }
   }
 
+  auditFocusableDescendantsOfAriaHidden(html, fail);
+
   for (const match of html.matchAll(/<[^>]+\btabindex\s*=\s*["']?([+-]?\d+)["']?[^>]*>/gi)) {
     if (Number(match[1]) > 0) fail(`tabindex positivo no permitido: ${match[1]}`);
   }
@@ -182,6 +218,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     process.exitCode = 1;
   } else {
     console.log(`Accessibility audit passed for ${urls.length} sitemap URLs.`);
-    console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button/form-control names, focusable aria-hidden conflicts, safe _blank links, tabindex, autofocus and ARIA id-reference integrity.');
+    console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button/form-control names, focusable aria-hidden conflicts including hidden ancestors, safe _blank links, tabindex, autofocus and ARIA id-reference integrity.');
   }
 }

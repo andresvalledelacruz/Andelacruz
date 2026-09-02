@@ -34,6 +34,18 @@ test('rechaza elementos focalizables ocultos del árbol de accesibilidad', () =>
   assert.ok(errors.some((e) => e.includes('elemento focalizable oculto con aria-hidden="true": div')));
 });
 
+test('rechaza descendientes focalizables dentro de un ancestro aria-hidden', () => {
+  const errors = auditHtml(base('<section aria-hidden="true"><div><a href="/ayuda">Ayuda</a><button>Continuar</button><input aria-label="Buscar" type="text"></div></section>'));
+  assert.ok(errors.some((e) => e.includes('elemento focalizable dentro de ancestro aria-hidden="true": a')));
+  assert.ok(errors.some((e) => e.includes('elemento focalizable dentro de ancestro aria-hidden="true": button')));
+  assert.ok(errors.some((e) => e.includes('elemento focalizable dentro de ancestro aria-hidden="true": input')));
+});
+
+test('permite aria-hidden en subárboles sin descendientes focalizables', () => {
+  const html = base('<section aria-hidden="true"><div><svg></svg><span>Decoración</span></div></section>');
+  assert.deepEqual(auditHtml(html), []);
+});
+
 test('permite aria-hidden en decoración no focalizable y controles deshabilitados', () => {
   const html = base('<svg aria-hidden="true"></svg><span aria-hidden="true">Decoración</span><button aria-hidden="true" disabled>Deshabilitado</button><input type="hidden" aria-hidden="true">');
   assert.deepEqual(auditHtml(html), []);
