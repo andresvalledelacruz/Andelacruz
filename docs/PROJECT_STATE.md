@@ -1,8 +1,10 @@
 # Desgracias.es · Estado Maestro del Proyecto
 
-Última revisión: 2026-08-27
+Última revisión: 2026-09-02
 
 Este documento es la **fuente única de verdad operativa** para retomar Desgracias.es desde otro chat, otra sesión o por otro miembro del equipo. Antes de continuar trabajo importante, revisar este archivo y contrastar cualquier afirmación de “ya está en producción” con el estado real de staging/servicios.
+
+Hito técnico de referencia al cierre de esta revisión: `production-v9@56ac3b44e3b103f7375111c1431eba3905c0bd22` (PR #196). Ese SHA quedó certificado por los checks aplicables de ingeniería, SEO, origen/TLS y despliegue de Pages. **Esto certifica el árbol y su cadena de integración; no convierte por sí solo todos los flujos o servicios de plataforma en PRODUCCIÓN VERIFICADA.**
 
 ## 1. Visión del producto
 
@@ -19,6 +21,7 @@ Diferenciación principal:
 - **Nadie Solo**: prioridad temporal a historias sin una primera señal comunitaria, sin rankings;
 - **Personas que ya estuvieron aquí**: acompañamiento por experiencia vivida, separado de atención clínica/profesional;
 - lectura **multidisciplinar** de necesidades, no “todo es psicología”;
+- **Brújula de siguiente paso**: microbatería adaptativa de proporcionalidad, impacto y resiliencia, no diagnóstica;
 - Safety Gateway para situaciones críticas;
 - Growth/Google y monetización subordinados a confianza, privacidad y seguridad.
 
@@ -34,6 +37,8 @@ Diferenciación principal:
 8. Una insignia profesional verificada no se puede comprar.
 9. Staging usa contenido sintético; producción y staging deben permanecer separados.
 10. `robots/noindex` nunca sustituye autenticación real de backoffice.
+11. `No urgente` nunca significa `sin importancia`: la proporcionalidad debe reducir dramatización sin invalidar el problema.
+12. Los factores de resiliencia/protección jamás rebajan una señal crítica P0/P1.
 
 ## 3. Equipo multidisciplinar de dirección
 
@@ -135,6 +140,43 @@ Rutas principales actuales:
 
 El motor es explicable y **no diagnóstico**. Se usa para orientar producto, moderación y recursos; no para emitir conclusiones clínicas o periciales.
 
+### 7.1 Brújula de siguiente paso / resiliencia
+
+Implementada el 2026-09-02 y ya integrada en `production-v9`:
+
+- `src/next-step-compass.js`
+- `docs/NEXT_STEP_COMPASS.md`
+- `tests/next-step-compass.test.js`
+- `tests/executive-compass-integration.test.js`
+
+La Brújula es una microbatería adaptativa, no un test psicológico. Tiene un máximo de seis dimensiones y termina antes cuando ya existe información suficiente:
+
+1. seguridad inmediata;
+2. necesidades básicas/cuidado imprescindible;
+3. impacto funcional;
+4. tendencia (mejora/estable/empeora);
+5. apoyo seguro disponible;
+6. reversibilidad de decisiones importantes.
+
+Salidas operativas V1:
+
+- `IMMEDIATE`
+- `PRIORITY`
+- `PROGRESSIVE`
+- `MANAGEABLE`
+
+Reglas permanentes:
+
+- Safety Gateway tiene precedencia absoluta;
+- una respuesta explícita de seguridad puede activar `IMMEDIATE` aunque el texto libre no contenga una palabra clave;
+- muchos factores protectores nunca neutralizan P0/P1;
+- `MANAGEABLE` significa abordable con recursos y pasos pequeños, no irrelevante;
+- `PRIORITY` no equivale automáticamente a necesidad clínica: dinero, trabajo, derecho, vivienda o relaciones siguen su ruta multidisciplinar real;
+- no diagnóstico, no predicción individual y no decisión clínica automática;
+- minimización de datos y prohibición de targeting/remarketing sensible.
+
+Estado: **integrado y certificado en la rama protegida `production-v9`; interfaz pública específica de la Brújula aún no se considera STAGING VERIFICADO ni PRODUCCIÓN VERIFICADA hasta completar UX accesible, fixtures de frontera y prueba viva del flujo.**
+
 ## 8. Critical Safety Gateway
 
 Implementado en código:
@@ -165,12 +207,15 @@ Implementado:
 
 - `src/executive-decision-engine.js`
 - `tests/executive-decision-engine.test.js`
+- `tests/executive-compass-integration.test.js`
 
 Modo `user_case`:
 
 - `SAFETY_GATEWAY`
 - `HUMAN_REVIEW`
 - `ROUTE_WITH_GUARDRAILS`
+
+El resultado `user_case` incorpora además `next_step_compass`. Una Brújula completa con resultado `IMMEDIATE` fuerza `SAFETY_GATEWAY`, cierra interfaz comercial y cambia la analítica a modo mínimo/agregado. Los resultados `PRIORITY`, `PROGRESSIVE` y `MANAGEABLE` conservan el routing multidisciplinar y no se convierten automáticamente en una conclusión clínica.
 
 Modo `product_change`:
 
@@ -205,6 +250,8 @@ si `Executive Decision Engine` devuelve `SAFETY_GATEWAY`, la API rechaza cualqui
 
 El endpoint `/ops/product/evaluate` también calcula la decisión de producto en servidor.
 
+Pendiente de verificación viva tras la integración de la Brújula: confirmar que el brief servido por el Centro de Mando expone `next_step_compass` y que un `IMMEDIATE` sintético mantiene el fail-closed completo.
+
 ## 11. Moderación y trazabilidad
 
 La cola de moderación se ordena por prioridad Safety y luego antigüedad.
@@ -222,18 +269,22 @@ Pendiente antes de producción:
 - apelaciones/revisión de decisiones sensibles;
 - no depender de token compartido.
 
+Issue humano asociado: #117, identidad individual + AAL2 para moderación sensible. No se debe resolver rebajando RBAC ni restaurando acceso sensible a token compartido.
+
 ## 12. Ingeniería y Quality Gate
 
 GitHub Actions:
 
 `.github/workflows/quality-gate.yml`
 
-En cada push/PR a `main`:
+En cada push/PR gobernado:
 
 - Node 20;
 - instalación de dependencias;
 - `node --check` sobre `src`, `ops`, `tests`;
-- `npm test`.
+- `npm test`;
+- invariantes SEO cuando corresponda;
+- despliegue/preview y comprobaciones de origen aplicables.
 
 Suite actual incluye, entre otras:
 
@@ -241,12 +292,17 @@ Suite actual incluye, entre otras:
 - critical safety taxonomy;
 - decision ledger;
 - executive decision engine;
+- next-step compass;
+- executive/compass integration;
 - human needs router;
 - moderation triage;
 - multidisciplinary case map;
-- story update policy.
+- story update policy;
+- auditorías transversales de accesibilidad, rendimiento y Safety editorial.
 
-Nota: la rama `main` no está actualmente protegida con required status checks; endurecer antes de producción/equipo ampliado.
+`production-v9` está protegida y exige actualmente `Node tests and syntax` + `SEO invariants`; las integraciones se realizan por PR serializado y se certifican después del merge sobre el SHA resultante. La portada V9 queda fuera de alcance salvo petición explícita del usuario.
+
+La rama `main` mantiene un papel distinto y no debe confundirse con `production-v9` al certificar el sitio público.
 
 ## 13. Google Engineering & Growth OS
 
@@ -288,6 +344,8 @@ Principios permanentes:
 - no traducción masiva sin revisión cultural en contenido emocional sensible;
 - Search Console como fuente de demanda/resultado, no como vanity dashboard.
 
+Durante 2026-09-01/02 se ha reforzado contenido de duelo, dinero, soledad, familia, rupturas y trabajo mediante piezas más profundas y gates Narrative/Safety específicos, junto con investigación internacional Native-First y endurecimiento transversal de accesibilidad. No se debe medir ese avance solo por número de URLs: el objetivo es profundidad, seguridad y utilidad diferenciada.
+
 ## 15. Personas que ya estuvieron aquí
 
 Concepto definido como red de acompañamiento por experiencia vivida.
@@ -325,6 +383,8 @@ Reglas:
 - medir lead aceptado, ingreso, CAC/LTV/churn/payback, no solo clics;
 - pagos con proveedor PCI; nunca guardar PAN/CVV.
 
+Existe además un firewall regresivo para impedir monetización/CTA comercial en rutas P0/P1 y de alto riesgo. Safety puede bloquear negocio aunque las métricas comerciales sean favorables.
+
 ## 17. Estado de staging / hito técnico
 
 Core histórico:
@@ -333,29 +393,58 @@ Core histórico:
 
 Staging ya existe y se ha usado manualmente para formularios, moderación, publicación, Historias y Nadie Solo.
 
-No confundir esto con “producción lista”. Todavía faltan endurecimiento, identidad staff real, observabilidad, pruebas integrales de nuevos motores, Google/analytics reales, pagos, profesionales reales y revisión legal final.
+Hitos técnicos del 2026-09-02:
+
+- Brújula V1 integrada en código y tests mediante PR #195;
+- Brújula conectada al Executive Decision Engine mediante PR #196;
+- `production-v9@56ac3b44e3b103f7375111c1431eba3905c0bd22` certificado con Node, SEO, Cloudflare Pages, build/deploy y TLS/DNS/V9 origin verdes;
+- ninguna de estas integraciones modifica la portada V9 ni añade todavía una nueva superficie pública de la Brújula.
+
+No confundir esto con “producción completamente lista”. Todavía faltan, entre otros, identidad staff real, observabilidad/resiliencia completa, restore drill independiente, prueba viva de nuevos motores, Google/analytics reales, pagos, profesionales reales y revisión legal final.
 
 ## 18. Prioridades inmediatas recomendadas
 
-### P0 — Verificación live del Centro de Mando
+### P0 — Verificación viva del Centro de Mando + Brújula
 1. Confirmar que Render ha desplegado la versión actual de `ops-api` y `ops/`.
-2. Probar una historia sintética normal y comprobar `ROUTE_WITH_GUARDRAILS`.
-3. Probar un fixture sintético crítico controlado y comprobar `SAFETY_GATEWAY` + imposibilidad de aprobar.
-4. Comprobar cola safety y auditoría resultante.
+2. Probar una historia sintética normal y comprobar `ROUTE_WITH_GUARDRAILS` + `next_step_compass` incompleta/normal.
+3. Probar `compass_answers.safety_now=yes` en fixture sintético controlado y comprobar `SAFETY_GATEWAY`, interfaz comercial cerrada y analítica mínima.
+4. Probar un fixture crítico por texto y comprobar que Safety Gateway sigue teniendo precedencia.
+5. Comprobar cola Safety y auditoría resultante.
 
-### P1 — Cerrar Qué pasó después de punta a punta
+### P1 — Validar Brújula V1 en staging antes de UX pública
+- ampliar fixtures de frontera y combinaciones de factores protectores/riesgo;
+- comprobar que Safety nunca puede ser rebajada por resiliencia;
+- validar lenguaje humano de `MANAGEABLE/PROGRESSIVE/PRIORITY` sin invalidación ni alarmismo;
+- diseñar formulario accesible y navegación por teclado/lector de pantalla;
+- medir solo longitud/abandono de forma privacy-minimized, sin datos sensibles para publicidad;
+- no publicar una puntuación clínica ni un “diagnóstico disfrazado”.
+
+### P2 — Cerrar Qué pasó después de punta a punta
 Nueva historia con autorización de autor → moderación → publicación → actualización → moderación → nuevo tramo temporal → seguidor detecta novedad.
 
-### P2 — Endurecer backoffice
-RBAC + MFA AAL2 + separación de funciones + historial de decisión + apelaciones.
+### P3 — Endurecer backoffice
+RBAC + identidad nominal + MFA AAL2 + separación de funciones + historial de decisión + apelaciones.
 
-### P3 — Observabilidad / resiliencia
-Logs estructurados, alertas, distributed rate limiting, backups/PITR, restore drill, health/readiness y fallos de cola.
+### P4 — Observabilidad / resiliencia
+Logs estructurados, alertas, distributed rate limiting, backups/PITR, destino independiente, restore drill, health/readiness, fallos de cola y runbooks.
 
-### P4 — Google Launch real
+### P5 — Google Launch real
 Search Console dominio, sitemap/robots/canonical finales, GA4/GTM/Consent Mode, conversiones mínimas sin datos sensibles, CWV de campo.
 
-## 19. Cómo retomar desde un chat nuevo
+## 19. HOLD humanos que no deben detener el trabajo autónomo
+
+Mantener aislados y continuar alrededor de ellos:
+
+- #147: acreditar procedencia/licencia del asset V9 `manos-apoyo`;
+- #117: identidad individual + AAL2 para moderación sensible;
+- #111: revisión profesional de ahogamiento/sumersión/sofocación;
+- #110: revisión clínica/legal y credenciales para Cáncer;
+- #83: destino independiente de backup + restore drill real;
+- #1: seguro y gestión de riesgo antes de escalar tráfico.
+
+Estos HOLD bloquean únicamente los frentes a los que pertenecen. No justifican parar investigación, testing, contenido seguro, accesibilidad, SEO, infraestructura independiente ni documentación.
+
+## 20. Cómo retomar desde un chat nuevo
 
 Pegar o indicar al nuevo chat:
 
@@ -363,8 +452,10 @@ Pegar o indicar al nuevo chat:
 
 Después, si hace falta detalle de un subsistema, consultar:
 
+- `docs/NEXT_STEP_COMPASS.md`
 - `docs/AUTHOR_UPDATE_FLOW.md`
 - `docs/GOOGLE_ENGINEERING_GROWTH_OS_2026.md`
+- `src/next-step-compass.js`
 - `src/executive-decision-engine.js`
 - `src/critical-safety-taxonomy.js`
 - `src/human-needs-router.js`
@@ -372,7 +463,7 @@ Después, si hace falta detalle de un subsistema, consultar:
 - `src/ops-api.js`
 - `ops/index.html`
 
-## 20. Regla de estado
+## 21. Regla de estado
 
 Usar siempre estas etiquetas:
 
@@ -381,4 +472,4 @@ Usar siempre estas etiquetas:
 - **STAGING VERIFICADO**: probado contra servicios de staging.
 - **PRODUCCIÓN VERIFICADA**: desplegado, observado y validado en producción.
 
-No saltar de PREPARADO a PRODUCCIÓN VERIFICADA sin evidencia real.
+No saltar de PREPARADO a PRODUCCIÓN VERIFICADA sin evidencia real. Un check verde de CI/Pages certifica ese artefacto o despliegue concreto, no sustituye la prueba funcional del flujo completo.
