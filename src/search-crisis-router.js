@@ -231,3 +231,13 @@ export function searchRoutingCapabilities() {
     public_ui_integrated: false
   });
 }
+
+export function searchRouteCatalog() {
+  return Object.freeze(Object.values(ROUTES).map((route) => Object.freeze({
+    intent: route.intent,
+    url: route.url,
+    label: route.label,
+    safety_level: route.safety_level,
+    urgent: route.urgent
+  })));
+}
