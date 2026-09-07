@@ -17,6 +17,11 @@ const cases = [
   ['Leí una noticia sobre un suicidio', 'informational', false],
   ['Mi hermano no quiere suicidarse', 'negated_current', false],
   ['No quería hacerlo, pero ahora estoy pensando en suicidarme', 'active_self', true],
+  ['No quiero seguir viviendo', 'active_self', true],
+  ['Temo que mi amigo podría suicidarse', 'active_third_party', true],
+  ['Hace años quería morir, pero ahora estoy bien', 'resolved_past', false],
+  ['¿Qué hago si quiero morir?', 'hypothetical', false],
+  ['Un artículo cita la frase quiero morir', 'informational', false],
   ['Suicidio', 'ambiguous', false],
   ['Necesito ayuda con una deuda', 'none', false]
 ];
