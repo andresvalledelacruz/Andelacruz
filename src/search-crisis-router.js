@@ -215,6 +215,29 @@ function matchIntent(text) {
   return null;
 }
 
+function contextualSuicideResult(context) {
+  const uncertain = context === 'ambiguous' || context === 'hypothetical';
+  return Object.freeze({
+    version: 2,
+    matched: false,
+    needs_clarification: true,
+    context,
+    route: null,
+    safety_level: 'NONE',
+    urgent_support: uncertain ? Object.freeze({
+      available: true,
+      url: ROUTES.active_self_harm.url,
+      label: ROUTES.active_self_harm.label,
+      official_resources_spain: ROUTES.active_self_harm.official_resources_spain
+    }) : null,
+    show_relevant_results: true,
+    suppress_commercial_ui: true,
+    raw_query_retained: false,
+    diagnostic: false,
+    automated_clinical_decision: false
+  });
+}
+
 export function routeSearchQuery(query = '') {
   const text = normalize(query);
   if (!text) {
@@ -229,8 +252,14 @@ export function routeSearchQuery(query = '') {
     });
   }
 
+  const suicideContext = classifySuicideContext(text).context;
+  if (['negated_current', 'past_attempt', 'resolved_past', 'hypothetical', 'informational'].includes(suicideContext)) {
+    return contextualSuicideResult(suicideContext);
+  }
+
   const match = matchIntent(text);
   if (!match) {
+    if (suicideContext === 'ambiguous') return contextualSuicideResult('ambiguous');
     return Object.freeze({
       version: 1,
       matched: false,

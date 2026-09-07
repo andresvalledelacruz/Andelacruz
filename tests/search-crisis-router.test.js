@@ -14,6 +14,32 @@ test('active suicidal crisis routes to urgent help and suppresses commerce', () 
   assert.equal(result.raw_query_retained, false);
 });
 
+test('eight suicide contexts stay distinct and uncertainty offers help without a crisis label', () => {
+  const cases = [
+    ['No quiero seguir viviendo', 'active_self_harm'],
+    ['Temo que mi amigo podría suicidarse', 'concern_for_someone'],
+    ['Se suicidó mi hermano', 'suicide_bereavement'],
+    ['No quiero suicidarme', 'negated_current'],
+    ['Hace años quería morir, pero ahora estoy bien', 'resolved_past'],
+    ['¿Qué hago si quiero morir?', 'hypothetical'],
+    ['Un artículo cita la frase quiero morir', 'informational'],
+    ['Suicidio', 'ambiguous']
+  ];
+
+  for (const [query, expected] of cases) {
+    const result = routeSearchQuery(query);
+    assert.equal(result.intent ?? result.context, expected, query);
+  }
+
+  for (const query of ['¿Qué hago si quiero morir?', 'Suicidio']) {
+    const result = routeSearchQuery(query);
+    assert.equal(result.matched, false);
+    assert.equal(result.safety_level, 'NONE');
+    assert.equal(result.urgent_support.url, '/ayuda-urgente.html');
+    assert.equal(result.show_relevant_results, true);
+  }
+});
+
 test('concern for another person is not confused with bereavement', () => {
   const result = routeSearchQuery('Mi hijo dice que no quiere vivir y estoy muy preocupado');
   assert.equal(result.intent, 'concern_for_someone');
