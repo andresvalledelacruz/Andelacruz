@@ -100,9 +100,9 @@ test('an explicit Critical Safety text signal dominates the full protective matr
   assert.equal(result.suppress_commercial_ui, true);
 });
 
-test('MANAGEABLE is impossible with severe impact or uncovered basic needs', () => {
+test('MANAGEABLE is impossible with severe impact or basic needs uncovered or unknown', () => {
   for (const answers of matrix.filter((item) => item.safety_now === 'no')) {
-    if (answers.impact !== 'severe' && answers.basic_needs !== 'not_secure') continue;
+    if (answers.impact !== 'severe' && !['not_secure', 'unsure'].includes(answers.basic_needs)) continue;
     const result = assessNextStepCompass({
       category: 'Familia',
       title: 'Necesito ordenar una situación',
@@ -110,6 +110,9 @@ test('MANAGEABLE is impossible with severe impact or uncovered basic needs', () 
       answers
     });
     assert.notEqual(result.outcome, 'MANAGEABLE');
+    if (answers.basic_needs === 'unsure') {
+      assert.ok(result.resilience.concerns.some((item) => /no está confirmado/i.test(item)));
+    }
   }
 });
 

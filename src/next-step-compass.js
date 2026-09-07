@@ -43,6 +43,7 @@ function collectFactors(answers) {
   if (answers.basic_needs === 'secure') protective.push('Necesidades básicas cubiertas.');
   if (answers.basic_needs === 'strained') concerns.push('Necesidades básicas bajo presión.');
   if (answers.basic_needs === 'not_secure') concerns.push('Necesidades básicas o cuidados imprescindibles sin cubrir.');
+  if (answers.basic_needs === 'unsure') concerns.push('No está confirmado que las necesidades básicas o los cuidados imprescindibles estén cubiertos.');
 
   if (answers.impact === 'low') protective.push('Funcionamiento cotidiano conservado en gran medida.');
   if (answers.impact === 'moderate') concerns.push('Afectación moderada del funcionamiento cotidiano.');
@@ -86,7 +87,7 @@ function outcome(answers, safety) {
   if (answers.impact === 'high' && answers.support === 'none') return 'PRIORITY';
   if (answers.reversibility === 'cannot_wait' && ['moderate', 'high'].includes(answers.impact)) return 'PRIORITY';
 
-  if (answers.basic_needs === 'strained') return 'PROGRESSIVE';
+  if (['strained', 'unsure'].includes(answers.basic_needs)) return 'PROGRESSIVE';
   if (['moderate', 'high'].includes(answers.impact)) return 'PROGRESSIVE';
   if (answers.trend === 'worsening' || answers.support === 'none' || answers.reversibility === 'cannot_wait') return 'PROGRESSIVE';
   return 'MANAGEABLE';
