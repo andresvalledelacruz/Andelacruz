@@ -56,3 +56,33 @@ test('requests for professional orientation do not become diagnoses', () => {
   assert.equal(result.diagnostic, false);
   assert.ok(result.secondary_routes.some((item) => item.id === 'clinical_review') || result.primary_route.id === 'clinical_review');
 });
+
+
+test('routes an active suicidal crisis to urgent safety', () => {
+  const result = routeHumanNeeds({
+    category: 'Otras historias',
+    story: 'Estoy pensando en suicidarme ahora mismo.'
+  });
+  assert.equal(result.suicide_context, 'active_self');
+  assert.equal(result.urgent_human_review, true);
+  assert.equal(result.primary_route.id, 'urgent_safety');
+});
+
+test('keeps suicide bereavement distinct from an active personal crisis', () => {
+  const result = routeHumanNeeds({
+    category: 'Duelo y Pérdidas',
+    story: 'Mi padre se suicidó el año pasado y no sé cómo seguir.'
+  });
+  assert.equal(result.suicide_context, 'bereavement');
+  assert.equal(result.urgent_human_review, false);
+  assert.equal(result.primary_route.id, 'grief_transition');
+});
+
+test('does not infer an active crisis from a negated statement', () => {
+  const result = routeHumanNeeds({
+    category: 'Otras historias',
+    story: 'No quiero suicidarme, necesito dejar de sentirme así.'
+  });
+  assert.equal(result.suicide_context, 'negated_current');
+  assert.equal(result.urgent_human_review, false);
+});

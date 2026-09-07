@@ -1,3 +1,5 @@
+import { classifySuicideContext } from './suicide-context-classifier.js';
+
 const routeCatalog = {
   emotional_support: {
     label: 'Apoyo emocional y experiencias similares',
@@ -106,7 +108,6 @@ const signalRules = [
 ];
 
 const urgentTerms = [
-  'suicid',
   'matarme',
   'quitarme la vida',
   'hacerme daño',
@@ -160,8 +161,9 @@ export function routeHumanNeeds({ category = '', title = '', story = '', needs =
     if (needs.includes('que_me_lean')) add('emotional_support', 1, 'La persona pide escucha y comprensión.');
   }
 
+  const suicideContext = classifySuicideContext(text);
   const urgentMatches = urgentTerms.filter((term) => matchesTerm(text, term));
-  const urgent = urgentMatches.length > 0;
+  const urgent = suicideContext.urgent || urgentMatches.length > 0;
   if (urgent) add('urgent_safety', 100, 'Existe lenguaje explícito compatible con una necesidad de seguridad inmediata; requiere revisión humana.');
 
   const ranked = [...score.entries()]
@@ -181,6 +183,7 @@ export function routeHumanNeeds({ category = '', title = '', story = '', needs =
     diagnostic: false,
     automated_clinical_decision: false,
     urgent_human_review: urgent,
+    suicide_context: suicideContext.context,
     primary_route: primary || null,
     secondary_routes: secondary,
     explanation: 'La orientación se basa en el evento, las necesidades declaradas y señales explícitas del texto. No infiere diagnósticos ni sustituye profesionales acreditados.'
