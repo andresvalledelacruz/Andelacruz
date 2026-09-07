@@ -161,23 +161,31 @@ function matchSuicideIntent(text) {
   if (context.context === 'active_self') {
     return { route: ROUTES.active_self_harm, confidence: 'high' };
   }
+
+  // Everyday active-crisis language such as "quiero morir" is intentionally
+  // broader than the classifier vocabulary. Evaluate it before bereavement so
+  // a current crisis cannot be hidden by another suicide-related context.
+  if (activeSelfHarmFallback(text)) {
+    return { route: ROUTES.active_self_harm, confidence: 'high' };
+  }
+
   if (context.context === 'active_third_party') {
     return { route: ROUTES.concern_for_someone, confidence: 'high' };
   }
+  if (concernForSomeoneFallback(text)) {
+    return { route: ROUTES.concern_for_someone, confidence: 'high' };
+  }
+
   if (context.context === 'bereavement') {
     return { route: ROUTES.suicide_bereavement, confidence: 'high' };
   }
+  if (suicideBereavementFallback(text)) {
+    return { route: ROUTES.suicide_bereavement, confidence: 'high' };
+  }
 
-  // Once the certified classifier recognises suicide language as negated,
-  // historical, informational or ambiguous, do not reinterpret that same
-  // wording with looser search heuristics.
+  // Negated, historical, informational or ambiguous suicide language remains
+  // non-urgent unless a separate explicit active fallback above was present.
   if (context.context !== 'none') return null;
-
-  // Conservative fallbacks cover important everyday wording and limited typo
-  // tolerance that sit outside the classifier's explicit suicide vocabulary.
-  if (activeSelfHarmFallback(text)) return { route: ROUTES.active_self_harm, confidence: 'high' };
-  if (concernForSomeoneFallback(text)) return { route: ROUTES.concern_for_someone, confidence: 'high' };
-  if (suicideBereavementFallback(text)) return { route: ROUTES.suicide_bereavement, confidence: 'high' };
 
   return null;
 }
