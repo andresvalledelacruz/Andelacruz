@@ -108,8 +108,6 @@ const signalRules = [
 ];
 
 const urgentTerms = [
-  'matarme',
-  'quitarme la vida',
   'hacerme daño',
   'hacerme dano',
   'autoles',
@@ -162,6 +160,10 @@ export function routeHumanNeeds({ category = '', title = '', story = '', needs =
   }
 
   const suicideContext = classifySuicideContext(text);
+  if (suicideContext.context === 'bereavement') {
+    add('grief_transition', 8, 'El texto describe explícitamente un duelo por suicidio; se prioriza acompañamiento de duelo y posvención.');
+  }
+
   const urgentMatches = urgentTerms.filter((term) => matchesTerm(text, term));
   const urgent = suicideContext.urgent || urgentMatches.length > 0;
   if (urgent) add('urgent_safety', 100, 'Existe lenguaje explícito compatible con una necesidad de seguridad inmediata; requiere revisión humana.');
