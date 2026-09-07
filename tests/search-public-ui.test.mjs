@@ -18,13 +18,22 @@ test('public search page remains isolated from V9 and is not indexed before laun
   assert.match(source, /\.\.\/src\/search-crisis-router\.js/);
 });
 
-test('public search page states local processing and discourages personal data', async () => {
+test('public search page states browser-local processing and discourages personal data', async () => {
   const source = await html();
-  assert.match(source, /se procesa en tu dispositivo/i);
-  assert.match(source, /no guarda el texto/i);
+  assert.match(source, /procesa la búsqueda en tu navegador/i);
+  assert.match(source, /Desgracias\.es no envía ni almacena el texto/i);
   assert.match(source, /No incluyas nombres, direcciones, teléfonos ni otros datos personales/i);
+  assert.match(source, /spellcheck="false"/i);
+  assert.match(source, /autocorrect="off"/i);
   assert.doesNotMatch(source, /fetch\s*\(/);
   assert.doesNotMatch(source, /XMLHttpRequest|sendBeacon|localStorage|sessionStorage/i);
+});
+
+test('dynamic results avoid HTML string injection surfaces', async () => {
+  const source = await html();
+  assert.doesNotMatch(source, /\.innerHTML\s*=/);
+  assert.match(source, /\.textContent\s*=/);
+  assert.match(source, /replaceChildren\(\)/);
 });
 
 test('P0 UI preserves immediate Spain resources and safe fallback', async () => {
