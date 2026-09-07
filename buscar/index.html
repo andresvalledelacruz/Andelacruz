@@ -29,11 +29,11 @@
   <main>
     <p><a href="/">← Volver a Desgracias.es</a></p>
     <h1>¿Qué te está pasando?</h1>
-    <p>Escríbelo con tus propias palabras. La búsqueda se procesa en tu dispositivo y no guarda el texto que escribas.</p>
+    <p>Escríbelo con tus propias palabras. Esta página procesa la búsqueda en tu navegador; Desgracias.es no envía ni almacena el texto que escribas.</p>
 
     <form id="search-form" novalidate>
       <label for="search-query">Describe tu situación</label>
-      <textarea id="search-query" name="q" autocomplete="off" spellcheck="true" aria-describedby="privacy-note"></textarea>
+      <textarea id="search-query" autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false" aria-describedby="privacy-note"></textarea>
       <p id="privacy-note" class="muted">No incluyas nombres, direcciones, teléfonos ni otros datos personales.</p>
       <button type="submit">Encontrar por dónde empezar</button>
     </form>
@@ -49,22 +49,43 @@
     const query = document.querySelector('#search-query');
     const result = document.querySelector('#result');
 
+    function element(tag, text, attributes = {}) {
+      const node = document.createElement(tag);
+      node.textContent = text;
+      for (const [name, value] of Object.entries(attributes)) node.setAttribute(name, value);
+      return node;
+    }
+
+    function paragraphWithLink(label, href) {
+      const paragraph = document.createElement('p');
+      paragraph.append(element('a', label, { href }));
+      return paragraph;
+    }
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const routed = routeSearchQuery(query.value);
       result.hidden = false;
       result.className = routed.safety_level === 'P0' ? 'result urgent' : 'result';
+      result.replaceChildren();
 
       if (!routed.matched) {
-        result.innerHTML = '<h2>No quiero adivinar</h2><p>No he podido identificar con suficiente seguridad lo que necesitas. Prueba a describir la situación de otra forma o vuelve a las categorías de la web.</p><p><a href="/">Ver opciones de ayuda</a></p>';
+        result.append(
+          element('h2', 'No quiero adivinar'),
+          element('p', 'No he podido identificar con suficiente seguridad lo que necesitas. Prueba a describir la situación de otra forma o vuelve a las categorías de la web.'),
+          paragraphWithLink('Ver opciones de ayuda', '/')
+        );
         return;
       }
 
-      const urgent = routed.urgent
-        ? '<p><strong>Si existe peligro inmediato, llama al 112. Si se trata de una crisis suicida en España, también puedes llamar al 024.</strong></p>'
-        : '';
-
-      result.innerHTML = `<h2>Empieza aquí</h2>${urgent}<p><a href="${routed.route.url}">${routed.route.label}</a></p>`;
+      result.append(element('h2', 'Empieza aquí'));
+      if (routed.urgent) {
+        const urgent = element('strong', 'Si existe peligro inmediato, llama al 112. Si se trata de una crisis suicida en España, también puedes llamar al 024.');
+        const paragraph = document.createElement('p');
+        paragraph.append(urgent);
+        result.append(paragraph);
+      }
+      result.append(paragraphWithLink(routed.route.label, routed.route.url));
     });
   </script>
 </body>
