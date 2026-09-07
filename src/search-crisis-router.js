@@ -1,3 +1,5 @@
+import { classifySuicideContext } from './suicide-context-classifier.js';
+
 const ROUTES = Object.freeze({
   active_self_harm: Object.freeze({
     intent: 'active_self_harm',
@@ -118,41 +120,79 @@ function hasSuicideLanguage(text) {
     containsAny(text, ['quitarme la vida', 'quitarse la vida', 'acabar con mi vida', 'no quiero vivir']);
 }
 
-function activeSelfHarm(text) {
-  return containsAny(text, [
-    'quiero morir', 'me quiero morir', 'quiero suicidarme', 'voy a suicidarme',
-    'me voy a suicidar', 'me voy a matar', 'quiero matarme', 'pienso matarme',
-    'estoy pensando en matarme', 'quitarme la vida', 'acabar con mi vida',
-    'hacerme daño', 'hacerme dano', 'no quiero vivir', 'no puedo seguir viviendo'
+function withoutNegatedDeathWish(text) {
+  return text
+    .replace(/\b(?:ya\s+)?no\s+(?:me\s+)?quiero\s+morir\b/g, ' ')
+    .replace(/\b(?:ya\s+)?no\s+quiero\s+hacerme\s+dano\b/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function activeSelfHarmFallback(text) {
+  const activeText = withoutNegatedDeathWish(text);
+  return containsAny(activeText, [
+    'quiero morir', 'me quiero morir', 'me voy a matar', 'hacerme daño', 'hacerme dano',
+    'no quiero vivir', 'no puedo seguir viviendo'
   ]);
 }
 
-function concernForSomeone(text) {
+function concernForSomeoneFallback(text) {
   const otherPerson = containsAny(text, [
     'mi hijo', 'mi hija', 'mi hermano', 'mi hermana', 'mi padre', 'mi madre',
     'mi marido', 'mi mujer', 'mi pareja', 'mi amigo', 'mi amiga', 'alguien', 'una persona'
   ]);
   const concern = containsAny(text, [
-    'quiere morir', 'no quiere vivir', 'quiere suicidarse', 'se quiere suicidar',
-    'piensa suicidarse', 'pueda suicidarse', 'puede suicidarse', 'se va a matar',
+    'quiere morir', 'no quiere vivir', 'se quiere suicidar', 'se va a matar',
     'dice que se va a matar', 'dice que quiere morir'
   ]);
   return otherPerson && concern;
 }
 
-function suicideBereavement(text) {
+function suicideBereavementFallback(text) {
   const deathContext = containsAny(text, [
     'murio', 'ha muerto', 'fallecio', 'perdi a', 'he perdido a', 'se quito la vida', 'se suicido'
   ]);
   return deathContext && hasSuicideLanguage(text);
 }
 
+function matchSuicideIntent(text) {
+  const context = classifySuicideContext(text);
+
+  if (context.context === 'active_self') {
+    return { route: ROUTES.active_self_harm, confidence: 'high' };
+  }
+
+  // Everyday active-crisis language such as "quiero morir" is intentionally
+  // broader than the classifier vocabulary. Evaluate it before bereavement so
+  // a current crisis cannot be hidden by another suicide-related context.
+  if (activeSelfHarmFallback(text)) {
+    return { route: ROUTES.active_self_harm, confidence: 'high' };
+  }
+
+  if (context.context === 'active_third_party') {
+    return { route: ROUTES.concern_for_someone, confidence: 'high' };
+  }
+  if (concernForSomeoneFallback(text)) {
+    return { route: ROUTES.concern_for_someone, confidence: 'high' };
+  }
+
+  if (context.context === 'bereavement') {
+    return { route: ROUTES.suicide_bereavement, confidence: 'high' };
+  }
+  if (suicideBereavementFallback(text)) {
+    return { route: ROUTES.suicide_bereavement, confidence: 'high' };
+  }
+
+  // Negated, historical, informational or ambiguous suicide language remains
+  // non-urgent unless a separate explicit active fallback above was present.
+  if (context.context !== 'none') return null;
+
+  return null;
+}
+
 function matchIntent(text) {
-  // Safety precedence matters: a current first-person crisis must override any
-  // bereavement context present in the same query.
-  if (activeSelfHarm(text)) return { route: ROUTES.active_self_harm, confidence: 'high' };
-  if (concernForSomeone(text)) return { route: ROUTES.concern_for_someone, confidence: 'high' };
-  if (suicideBereavement(text)) return { route: ROUTES.suicide_bereavement, confidence: 'high' };
+  const suicideMatch = matchSuicideIntent(text);
+  if (suicideMatch) return suicideMatch;
 
   if (containsAny(text, ['agresion sexual', 'violacion', 'abuso sexual', 'me han violado', 'me violo'])) {
     return { route: ROUTES.sexual_violence, confidence: 'high' };
