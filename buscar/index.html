@@ -21,8 +21,11 @@
     .result{margin-top:24px;padding:18px;border-radius:12px;background:#fff;border:1px solid #d5d5d5}
     .urgent{border:2px solid #8f1d1d}
     .muted{color:#555}
+    .choices{display:grid;gap:10px;margin-top:16px}
+    .choice{justify-self:stretch;text-align:left;border-radius:10px;background:#eee;color:#181818;border:1px solid #bbb}
+    .choice[data-safety="P0"]{border:2px solid #8f1d1d}
     a{color:inherit;font-weight:700}
-    @media (prefers-color-scheme:dark){body{background:#111;color:#f6f6f3}.result{background:#1c1c1c;border-color:#444}.muted{color:#bbb}textarea{background:#171717;color:#fff;border-color:#777}button{background:#f3f3ef;color:#111}}
+    @media (prefers-color-scheme:dark){body{background:#111;color:#f6f6f3}.result{background:#1c1c1c;border-color:#444}.muted{color:#bbb}textarea{background:#171717;color:#fff;border-color:#777}button{background:#f3f3ef;color:#111}.choice{background:#292929;color:#fff;border-color:#666}}
   </style>
 </head>
 <body>
@@ -44,6 +47,7 @@
 
   <script type="module">
     import { routeSearchQuery } from '../src/search-crisis-router.js';
+    import { buildSearchClarification } from '../src/search-clarification.js';
 
     const form = document.querySelector('#search-form');
     const query = document.querySelector('#search-query');
@@ -62,6 +66,60 @@
       return paragraph;
     }
 
+    function showClarificationFollowUp(option) {
+      result.className = option.safety_level === 'P0' ? 'result urgent' : 'result';
+      result.replaceChildren();
+
+      if (option.id === 'safety_self') {
+        result.append(
+          element('h2', 'Lo primero es tu seguridad'),
+          element('p', 'Si existe peligro inmediato, llama al 112. Si estás pensando en suicidarte en España, también puedes llamar al 024.'),
+          paragraphWithLink('Ver ayuda urgente', '/ayuda-urgente.html')
+        );
+        return;
+      }
+
+      if (option.id === 'safety_other') {
+        result.append(
+          element('h2', 'Lo primero es la seguridad de esa persona'),
+          element('p', 'Si existe peligro inmediato para esa persona, llama al 112. Si te preocupa un posible riesgo suicida en España, también puedes llamar al 024.'),
+          element('p', 'Si puedes, describe un poco más qué está ocurriendo para orientarte sin adivinar.')
+        );
+        query.focus();
+        return;
+      }
+
+      result.append(
+        element('h2', 'Cuéntame un poco más'),
+        element('p', `Has indicado: ${option.label}. Añade solo el detalle necesario para distinguir el siguiente paso, sin nombres ni otros datos personales.`)
+      );
+      query.focus();
+    }
+
+    function renderClarification(routed) {
+      const clarification = buildSearchClarification(routed);
+      if (!clarification.needed) return false;
+
+      result.className = 'result';
+      result.replaceChildren(
+        element('h2', clarification.title),
+        element('p', clarification.guidance)
+      );
+
+      const choices = element('div', '', { class: 'choices', role: 'group', 'aria-label': 'Opciones para aclarar la situación' });
+      for (const option of clarification.options) {
+        const button = element('button', option.label, {
+          type: 'button',
+          class: 'choice',
+          'data-safety': option.safety_level
+        });
+        button.addEventListener('click', () => showClarificationFollowUp(option));
+        choices.append(button);
+      }
+      result.append(choices);
+      return true;
+    }
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const routed = routeSearchQuery(query.value);
@@ -70,6 +128,7 @@
       result.replaceChildren();
 
       if (!routed.matched) {
+        if (renderClarification(routed)) return;
         result.append(
           element('h2', 'No quiero adivinar'),
           element('p', 'No he podido identificar con suficiente seguridad lo que necesitas. Prueba a describir la situación de otra forma o vuelve a las categorías de la web.'),

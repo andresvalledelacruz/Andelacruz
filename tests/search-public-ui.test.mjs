@@ -16,6 +16,7 @@ test('public search page remains isolated from V9 and is not indexed before laun
   assert.match(source, /<meta name="robots" content="noindex,follow">/i);
   assert.match(source, /https:\/\/desgracias\.es\/buscar\//i);
   assert.match(source, /\.\.\/src\/search-crisis-router\.js/);
+  assert.match(source, /\.\.\/src\/search-clarification\.js/);
 });
 
 test('public search page states browser-local processing and discourages personal data', async () => {
@@ -40,8 +41,26 @@ test('P0 UI preserves immediate Spain resources and safe fallback', async () => 
   const source = await html();
   assert.match(source, /peligro inmediato, llama al 112/i);
   assert.match(source, /crisis suicida en España, también puedes llamar al 024/i);
-  assert.match(source, /No quiero adivinar/i);
-  assert.match(source, /no he podido identificar con suficiente seguridad/i);
+  assert.match(source, /Lo primero es tu seguridad/i);
+  assert.match(source, /Lo primero es la seguridad de esa persona/i);
+  assert.match(source, /Ver ayuda urgente/i);
+});
+
+test('ambiguous searches render explicit clarification choices instead of guessing', async () => {
+  const source = await html();
+  assert.match(source, /buildSearchClarification\(routed\)/);
+  assert.match(source, /Opciones para aclarar la situación/i);
+  assert.match(source, /type: 'button'/);
+  assert.match(source, /showClarificationFollowUp\(option\)/);
+  assert.match(source, /Cuéntame un poco más/i);
+  assert.match(source, /query\.focus\(\)/);
+});
+
+test('clarification UI does not silently route non-P0 choices', async () => {
+  const source = await html();
+  assert.match(source, /if \(option\.id === 'safety_self'\)/);
+  assert.match(source, /if \(option\.id === 'safety_other'\)/);
+  assert.doesNotMatch(source, /option\.url/);
 });
 
 test('search form has explicit labeling and live result region', async () => {
@@ -50,4 +69,5 @@ test('search form has explicit labeling and live result region', async () => {
   assert.match(source, /id="search-query"/i);
   assert.match(source, /aria-describedby="privacy-note"/i);
   assert.match(source, /aria-live="polite"/i);
+  assert.match(source, /role: 'group'/);
 });
