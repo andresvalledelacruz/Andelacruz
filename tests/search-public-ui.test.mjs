@@ -56,6 +56,16 @@ test('ambiguous searches render explicit clarification choices instead of guessi
   assert.match(source, /query\.focus\(\)/);
 });
 
+test('ambiguous suicide wording shows optional urgent help without hiding clarification', async () => {
+  const source = await html();
+  assert.match(source, /routed\.urgent_support\?\.available/);
+  assert.match(source, /No asumimos que estés en una crisis/i);
+  assert.match(source, /peligro inmediato, llama al 112/i);
+  assert.match(source, /también está disponible el 024/i);
+  assert.match(source, /paragraphWithLink\(routed\.urgent_support\.label, routed\.urgent_support\.url\)/);
+  assert.match(source, /result\.append\(\s*element\('h2', clarification\.title\)/);
+});
+
 test('clarification UI does not silently route non-P0 choices', async () => {
   const source = await html();
   assert.match(source, /if \(option\.id === 'safety_self'\)/);
