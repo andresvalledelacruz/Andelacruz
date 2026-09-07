@@ -100,8 +100,18 @@
       const clarification = buildSearchClarification(routed);
       if (!clarification.needed) return false;
 
-      result.className = 'result';
-      result.replaceChildren(
+      result.className = routed.urgent_support?.available ? 'result urgent' : 'result';
+      result.replaceChildren();
+
+      if (routed.urgent_support?.available) {
+        result.append(
+          element('h2', 'Si existe riesgo ahora'),
+          element('p', 'No asumimos que estés en una crisis. Si hay peligro inmediato, llama al 112; ante una posible crisis suicida en España, también está disponible el 024.'),
+          paragraphWithLink(routed.urgent_support.label, routed.urgent_support.url)
+        );
+      }
+
+      result.append(
         element('h2', clarification.title),
         element('p', clarification.guidance)
       );
