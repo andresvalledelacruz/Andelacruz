@@ -4,16 +4,15 @@ import { isCriticalRoutePath } from './critical-route-signals.mjs';
 
 const ROOT = process.cwd();
 
-const INVENTORY = new Set([
-  'ayuda-urgente.html',
-  'me-preocupa-que-alguien-pueda-suicidarse/index.html',
-  'alguien-cercano-ha-intentado-suicidarse/index.html',
-  'mi-pareja-me-maltrata-y-no-se-que-hacer/index.html',
-  'he-sufrido-una-agresion-sexual-y-no-se-que-hacer/index.html',
-  'duelo/ha-muerto-por-suicidio-alguien-que-quiero/index.html',
-]);
-
 const SKIP_DIRS = new Set(['.git', 'node_modules']);
+
+function routeToFile(route) {
+  return route.endsWith('/') ? `${route.slice(1)}index.html` : route.slice(1);
+}
+
+function readInventoryRoutes(markdown) {
+  return [...markdown.matchAll(/^\|\s*`(\/[^`]+)`\s*\|/gm)].map((match) => match[1]);
+}
 
 async function walk(dir, out = []) {
   for (const entry of await readdir(dir)) {
@@ -26,6 +25,11 @@ async function walk(dir, out = []) {
   }
   return out;
 }
+
+const inventoryDocument = await readFile(path.join(ROOT, 'SAFETY_ROUTE_INVENTORY.md'), 'utf8');
+const publicInventory = readInventoryRoutes(inventoryDocument);
+if (publicInventory.length === 0) throw new Error('Safety route inventory is empty or cannot be parsed');
+const INVENTORY = new Set(publicInventory.map(routeToFile));
 
 const routes = await walk(ROOT);
 const suspicious = routes.filter(isCriticalRoutePath);
