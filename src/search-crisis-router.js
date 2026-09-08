@@ -25,6 +25,14 @@ const ROUTES = Object.freeze({
     official_resources_spain: Object.freeze([]),
     urgent: false
   }),
+  post_attempt_support: Object.freeze({
+    intent: 'post_attempt_support',
+    url: '/alguien-cercano-ha-intentado-suicidarse/',
+    label: 'Alguien cercano ha intentado suicidarse',
+    safety_level: 'P0',
+    official_resources_spain: Object.freeze(['112', '024']),
+    urgent: true
+  }),
   intimate_partner_violence: Object.freeze({
     intent: 'intimate_partner_violence',
     url: '/mi-pareja-me-maltrata-y-no-se-que-hacer/',
@@ -45,7 +53,7 @@ const ROUTES = Object.freeze({
     intent: 'debt_overwhelm',
     url: '/dinero/tengo-deudas-y-no-se-por-donde-empezar/',
     label: 'Tengo deudas y no sé por dónde empezar',
-    safety_level: 'P2',
+    safety_level: 'P1',
     official_resources_spain: Object.freeze([]),
     urgent: false
   }),
@@ -155,11 +163,91 @@ function suicideBereavementFallback(text) {
   return deathContext && hasSuicideLanguage(text);
 }
 
+function postAttemptSupportFallback(text) {
+  const otherPerson = containsAny(text, [
+    'mi hijo', 'mi hija', 'mi hermano', 'mi hermana', 'mi padre', 'mi madre',
+    'mi marido', 'mi mujer', 'mi pareja', 'mi amigo', 'mi amiga',
+    'alguien cercano', 'una persona cercana'
+  ]);
+  const attempt = containsAny(text, [
+    'ha intentado suicidarse', 'intento suicidarse', 'trato de suicidarse',
+    'ha tratado de suicidarse', 'intento quitarse la vida',
+    'ha intentado quitarse la vida', 'sobrevivio a un intento de suicidio'
+  ]);
+  if (!otherPerson || !attempt) return null;
+  if ([
+    /\bno ha intentado suicidarse\b/, /\bno intento suicidarse\b/,
+    /\bno ha tratado de suicidarse\b/, /\bno trato de suicidarse\b/,
+    /\bno ha intentado quitarse la vida\b/, /\bno intento quitarse la vida\b/
+  ].some((pattern) => pattern.test(text))) return null;
+
+  const historical = /\bhace (?:[a-z0-9]+ ){0,2}(?:anos?|meses?|semanas?)\b/.test(text) ||
+    containsAny(text, ['hace tiempo', 'en el pasado']);
+  const resolved = containsAny(text, ['ahora esta bien', 'ya esta bien', 'lo supero', 'quedo atras']);
+  return Object.freeze({ historical: historical && resolved });
+}
+
+function genericImmediateDanger(text) {
+  const negated = containsAny(text, [
+    'no estoy en peligro', 'no hay peligro inmediato', 'no necesito ayuda urgente'
+  ]);
+  if (negated) return false;
+  const directRequest = /^(?:necesito|quiero) ayuda (?:muy )?(?:urgente|inmediata)(?: ahora)?$/.test(text);
+  return directRequest || containsAny(text, [
+    'estoy en peligro inmediato', 'hay peligro inmediato',
+    'necesito ayuda urgente porque estoy en peligro',
+    'necesito ayuda inmediata porque estoy en peligro', 'corro peligro ahora'
+  ]);
+}
+
+function withoutNonCurrentSafetyMentions(text) {
+  const signals = '(?:mi (?:pareja|marido|mujer) me (?:pega(?: ahora)?|esta pegando|va a matar)|me esta pegando mi (?:pareja|marido|mujer)|me estan violando|me esta violando|me han violado|me violo|me estan agrediendo sexualmente|me esta agrediendo sexualmente|agresion sexual ahora|estoy en peligro(?: inmediato)?(?: con mi pareja)?|hay peligro inmediato|necesito ayuda (?:urgente|inmediata)(?: ahora)?|corro peligro ahora)';
+  const patterns = [
+    new RegExp(`\\b(?:no|ya no)\\s+${signals}\\b`, 'g'),
+    new RegExp(`\\bno (?:es cierto|es verdad) que\\s+${signals}\\b`, 'g'),
+    new RegExp(`\\b(?:en una pelicula|en una serie|un articulo|una noticia|un ejemplo|hipoteticamente|supongamos que|una actriz dice|un actor dice|alguien dice)\\b.{0,100}\\b${signals}\\b`, 'g'),
+    new RegExp(`\\b${signals}\\b.{0,50}\\b(?:en un videojuego|en una pelicula|en una serie|como ejemplo|es una cita)\\b`, 'g')
+  ];
+  // Process each contrast clause independently so a fictional first clause
+  // cannot consume a later real disclosure introduced by "pero/en realidad".
+  return text
+    .split(/\b(?=pero|sin embargo|en realidad|aunque)\b/)
+    .map((clause) => patterns.reduce((remaining, pattern) => remaining.replace(pattern, ' '), clause))
+    .join(' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function activePartnerViolence(text) {
+  return containsAny(text, [
+    'mi pareja me pega ahora', 'mi marido me pega ahora', 'mi mujer me pega ahora',
+    'mi pareja me esta pegando', 'mi marido me esta pegando', 'mi mujer me esta pegando',
+    'me esta pegando mi pareja', 'me esta pegando mi marido', 'me esta pegando mi mujer',
+    'mi pareja me va a matar', 'mi marido me va a matar', 'mi mujer me va a matar',
+    'estoy en peligro con mi pareja', 'estoy en peligro inmediato con mi pareja',
+    'en realidad me esta pegando'
+  ]);
+}
+
+function activeSexualViolence(text) {
+  return containsAny(text, [
+    'me estan agrediendo sexualmente', 'me esta agrediendo sexualmente',
+    'me estan violando', 'me esta violando', 'agresion sexual ahora'
+  ]);
+}
+
 function matchSuicideIntent(text) {
   const context = classifySuicideContext(text);
 
   if (context.context === 'active_self') {
     return { route: ROUTES.active_self_harm, confidence: 'high' };
+  }
+
+  // The contextual classifier has already removed quoted/hypothetical clauses
+  // before looking for a separate active clause. Do not let broad fallbacks
+  // reinterpret a purely negated, historical or informational query as active.
+  if (['negated_current', 'past_attempt', 'resolved_past', 'hypothetical', 'informational'].includes(context.context)) {
+    return null;
   }
 
   // Everyday active-crisis language such as "quiero morir" is intentionally
@@ -174,6 +262,19 @@ function matchSuicideIntent(text) {
   }
   if (concernForSomeoneFallback(text)) {
     return { route: ROUTES.concern_for_someone, confidence: 'high' };
+  }
+
+  const postAttempt = postAttemptSupportFallback(text);
+  if (postAttempt) {
+    return postAttempt.historical
+      ? {
+          route: ROUTES.post_attempt_support,
+          confidence: 'medium',
+          safetyLevel: 'P1',
+          urgent: false,
+          resources: Object.freeze([])
+        }
+      : { route: ROUTES.post_attempt_support, confidence: 'high' };
   }
 
   if (context.context === 'bereavement') {
@@ -194,10 +295,44 @@ function matchIntent(text) {
   const suicideMatch = matchSuicideIntent(text);
   if (suicideMatch) return suicideMatch;
 
-  if (containsAny(text, ['agresion sexual', 'violacion', 'abuso sexual', 'me han violado', 'me violo'])) {
+  const currentSafetyText = withoutNonCurrentSafetyMentions(text);
+
+  if (activeSexualViolence(currentSafetyText)) {
+    return {
+      route: ROUTES.sexual_violence,
+      confidence: 'high',
+      safetyLevel: 'P0',
+      urgent: true,
+      resources: Object.freeze(['112', '016'])
+    };
+  }
+
+  if (activePartnerViolence(currentSafetyText)) {
+    return {
+      route: ROUTES.intimate_partner_violence,
+      confidence: 'high',
+      safetyLevel: 'P0',
+      urgent: true,
+      resources: Object.freeze(['112', '016'])
+    };
+  }
+
+
+  if (genericImmediateDanger(currentSafetyText)) {
+    return {
+      route: ROUTES.active_self_harm,
+      intent: 'immediate_danger',
+      confidence: 'high',
+      safetyLevel: 'P0',
+      urgent: true,
+      resources: Object.freeze(['112'])
+    };
+  }
+
+  if (containsAny(currentSafetyText, ['agresion sexual', 'violacion', 'abuso sexual', 'me han violado', 'me violo'])) {
     return { route: ROUTES.sexual_violence, confidence: 'high' };
   }
-  if (containsAny(text, ['mi pareja me pega', 'mi pareja me maltrata', 'mi marido me pega', 'mi mujer me pega', 'me controla mi pareja', 'tengo miedo de mi pareja'])) {
+  if (containsAny(currentSafetyText, ['mi pareja me pega', 'mi pareja me maltrata', 'mi marido me pega', 'mi mujer me pega', 'me controla mi pareja', 'tengo miedo de mi pareja'])) {
     return { route: ROUTES.intimate_partner_violence, confidence: 'high' };
   }
   if (containsAny(text, ['tengo deudas', 'muchas deudas', 'no se por donde empezar con mis deudas', 'no puedo pagar mis deudas'])) {
@@ -253,12 +388,11 @@ export function routeSearchQuery(query = '') {
   }
 
   const suicideContext = classifySuicideContext(text).context;
-  if (['negated_current', 'past_attempt', 'resolved_past', 'hypothetical', 'informational'].includes(suicideContext)) {
-    return contextualSuicideResult(suicideContext);
-  }
-
   const match = matchIntent(text);
   if (!match) {
+    if (['negated_current', 'past_attempt', 'resolved_past', 'hypothetical', 'informational'].includes(suicideContext)) {
+      return contextualSuicideResult(suicideContext);
+    }
     if (suicideContext === 'ambiguous') return contextualSuicideResult('ambiguous');
     return Object.freeze({
       version: 1,
@@ -271,17 +405,18 @@ export function routeSearchQuery(query = '') {
     });
   }
 
-  const safetyCritical = match.route.safety_level === 'P0' || match.route.safety_level === 'P1';
+  const safetyLevel = match.safetyLevel ?? match.route.safety_level;
+  const safetyCritical = safetyLevel === 'P0' || safetyLevel === 'P1';
   return Object.freeze({
     version: 1,
     matched: true,
     needs_clarification: false,
-    intent: match.route.intent,
+    intent: match.intent ?? match.route.intent,
     confidence: match.confidence,
     route: Object.freeze({ url: match.route.url, label: match.route.label }),
-    safety_level: match.route.safety_level,
-    urgent: match.route.urgent,
-    official_resources_spain: match.route.official_resources_spain,
+    safety_level: safetyLevel,
+    urgent: match.urgent ?? match.route.urgent,
+    official_resources_spain: match.resources ?? match.route.official_resources_spain,
     suppress_commercial_ui: safetyCritical,
     raw_query_retained: false,
     diagnostic: false,

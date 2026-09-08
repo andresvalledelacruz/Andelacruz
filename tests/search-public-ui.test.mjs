@@ -39,8 +39,13 @@ test('dynamic results avoid HTML string injection surfaces', async () => {
 
 test('P0 UI preserves immediate Spain resources and safe fallback', async () => {
   const source = await html();
-  assert.match(source, /peligro inmediato, llama al 112/i);
-  assert.match(source, /crisis suicida en España, también puedes llamar al 024/i);
+  assert.match(source, /Llamar al 112/i);
+  assert.match(source, /Llamar al 024/i);
+  assert.match(source, /Llamar al 016/i);
+  assert.match(source, /href: 'tel:112'/i);
+  assert.match(source, /href: 'tel:024'/i);
+  assert.match(source, /href: 'tel:016'/i);
+  assert.match(source, /officialResources\(routed\.official_resources_spain\)/);
   assert.match(source, /Lo primero es tu seguridad/i);
   assert.match(source, /Lo primero es la seguridad de esa persona/i);
   assert.match(source, /Ver ayuda urgente/i);
@@ -60,7 +65,7 @@ test('ambiguous suicide wording shows optional urgent help without hiding clarif
   const source = await html();
   assert.match(source, /routed\.urgent_support\?\.available/);
   assert.match(source, /No asumimos que estés en una crisis/i);
-  assert.match(source, /peligro inmediato, llama al 112/i);
+  assert.match(source, /peligro inmediato, contacta con el 112/i);
   assert.match(source, /también está disponible el 024/i);
   assert.match(source, /paragraphWithLink\(routed\.urgent_support\.label, routed\.urgent_support\.url\)/);
   assert.match(source, /result\.append\(\s*element\('h2', clarification\.title\)/);

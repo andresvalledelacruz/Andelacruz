@@ -66,6 +66,27 @@
       return paragraph;
     }
 
+    const OFFICIAL_RESOURCES = Object.freeze({
+      '112': Object.freeze({ label: 'Llamar al 112', href: 'tel:112' }),
+      '024': Object.freeze({ label: 'Llamar al 024', href: 'tel:024' }),
+      '016': Object.freeze({ label: 'Llamar al 016', href: 'tel:016' })
+    });
+
+    function officialResources(resources = []) {
+      const available = resources.map((code) => OFFICIAL_RESOURCES[code]).filter(Boolean);
+      if (!available.length) return null;
+      const block = document.createElement('div');
+      block.append(element('p', 'Recursos oficiales en España:'));
+      const list = document.createElement('ul');
+      for (const resource of available) {
+        const item = document.createElement('li');
+        item.append(element('a', resource.label, { href: resource.href }));
+        list.append(item);
+      }
+      block.append(list);
+      return block;
+    }
+
     function showClarificationFollowUp(option) {
       result.className = option.safety_level === 'P0' ? 'result urgent' : 'result';
       result.replaceChildren();
@@ -73,7 +94,8 @@
       if (option.id === 'safety_self') {
         result.append(
           element('h2', 'Lo primero es tu seguridad'),
-          element('p', 'Si existe peligro inmediato, llama al 112. Si estás pensando en suicidarte en España, también puedes llamar al 024.'),
+          element('p', 'Si existe peligro inmediato, contacta con el 112. Si estás pensando en suicidarte en España, también está disponible el 024.'),
+          officialResources(['112', '024']),
           paragraphWithLink('Ver ayuda urgente', '/ayuda-urgente.html')
         );
         return;
@@ -82,7 +104,8 @@
       if (option.id === 'safety_other') {
         result.append(
           element('h2', 'Lo primero es la seguridad de esa persona'),
-          element('p', 'Si existe peligro inmediato para esa persona, llama al 112. Si te preocupa un posible riesgo suicida en España, también puedes llamar al 024.'),
+          element('p', 'Si existe peligro inmediato para esa persona, contacta con el 112. Si te preocupa un posible riesgo suicida en España, también está disponible el 024.'),
+          officialResources(['112', '024']),
           element('p', 'Si puedes, describe un poco más qué está ocurriendo para orientarte sin adivinar.')
         );
         query.focus();
@@ -106,7 +129,8 @@
       if (routed.urgent_support?.available) {
         result.append(
           element('h2', 'Si existe riesgo ahora'),
-          element('p', 'No asumimos que estés en una crisis. Si hay peligro inmediato, llama al 112; ante una posible crisis suicida en España, también está disponible el 024.'),
+          element('p', 'No asumimos que estés en una crisis. Si hay peligro inmediato, contacta con el 112; ante una posible crisis suicida en España, también está disponible el 024.'),
+          officialResources(routed.urgent_support.official_resources_spain),
           paragraphWithLink(routed.urgent_support.label, routed.urgent_support.url)
         );
       }
@@ -149,11 +173,13 @@
 
       result.append(element('h2', 'Empieza aquí'));
       if (routed.urgent) {
-        const urgent = element('strong', 'Si existe peligro inmediato, llama al 112. Si se trata de una crisis suicida en España, también puedes llamar al 024.');
+        const urgent = element('strong', 'Si existe peligro inmediato, utiliza el recurso oficial adecuado ahora.');
         const paragraph = document.createElement('p');
         paragraph.append(urgent);
         result.append(paragraph);
       }
+      const resources = officialResources(routed.official_resources_spain);
+      if (resources) result.append(resources);
       result.append(paragraphWithLink(routed.route.label, routed.route.url));
     });
   </script>
