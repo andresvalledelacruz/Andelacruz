@@ -63,6 +63,84 @@ test('current first-person crisis overrides bereavement context', () => {
   assert.equal(result.safety_level, 'P0');
 });
 
+test('a separate active crisis wins over informational or resolved context', () => {
+  for (const query of [
+    'Un artículo cita quiero morir, pero yo quiero morir ahora',
+    'Antes quería morir y ahora estoy bien; hoy quiero suicidarme',
+    'Un artículo habla de suicidio. Ahora me voy a matar'
+  ]) {
+    const result = routeSearchQuery(query);
+    assert.equal(result.intent, 'active_self_harm', query);
+    assert.equal(result.safety_level, 'P0', query);
+    assert.equal(result.urgent, true, query);
+  }
+});
+
+test('recent attempt by someone close routes to pertinent aftercare support', () => {
+  const result = routeSearchQuery('Mi hermano ha intentado suicidarse');
+  assert.equal(result.intent, 'post_attempt_support');
+  assert.equal(result.route.url, '/alguien-cercano-ha-intentado-suicidarse/');
+  assert.equal(result.safety_level, 'P0');
+  assert.equal(result.urgent, true);
+  assert.deepEqual(result.official_resources_spain, ['112', '024']);
+});
+
+test('negated or resolved historical attempt by someone close is not labeled active', () => {
+  const negated = routeSearchQuery('Mi hermano no ha intentado suicidarse');
+  assert.equal(negated.matched, false);
+
+  const historical = routeSearchQuery('Mi hermano intentó suicidarse hace diez años y ahora está bien');
+  assert.equal(historical.intent, 'post_attempt_support');
+  assert.equal(historical.safety_level, 'P1');
+  assert.equal(historical.urgent, false);
+  assert.deepEqual(historical.official_resources_spain, []);
+
+  for (const query of [
+    'Mi hermano intentó suicidarse hace veinte años y ahora está bien',
+    'Mi hermano intentó suicidarse hace 8 años y ahora está bien',
+    'Mi hermano intentó suicidarse hace meses y ahora está bien'
+  ]) {
+    const result = routeSearchQuery(query);
+    assert.equal(result.safety_level, 'P1', query);
+    assert.equal(result.urgent, false, query);
+  }
+});
+
+test('generic immediate danger receives urgent help without a suicide label', () => {
+  const result = routeSearchQuery('Estoy en peligro inmediato');
+  assert.equal(result.intent, 'immediate_danger');
+  assert.equal(result.route.url, '/ayuda-urgente.html');
+  assert.equal(result.safety_level, 'P0');
+  assert.equal(result.urgent, true);
+  assert.deepEqual(result.official_resources_spain, ['112']);
+});
+
+test('contextual suicide wording cannot hide a separate immediate danger', () => {
+  const result = routeSearchQuery('No quiero suicidarme, pero estoy en peligro inmediato');
+  assert.equal(result.intent, 'immediate_danger');
+  assert.equal(result.safety_level, 'P0');
+  assert.deepEqual(result.official_resources_spain, ['112']);
+});
+
+test('context-specific active violence wins over generic danger resources', () => {
+  const result = routeSearchQuery('Estoy en peligro inmediato con mi pareja, me está pegando');
+  assert.equal(result.intent, 'intimate_partner_violence');
+  assert.equal(result.safety_level, 'P0');
+  assert.deepEqual(result.official_resources_spain, ['112', '016']);
+});
+
+test('negated immediate danger is not promoted to P0', () => {
+  const result = routeSearchQuery('No estoy en peligro inmediato, busco información');
+  assert.equal(result.matched, false);
+  assert.equal(result.needs_clarification, true);
+});
+
+test('an urgent practical request is not mislabeled as immediate danger', () => {
+  const result = routeSearchQuery('Necesito ayuda urgente con mi currículum');
+  assert.notEqual(result.intent, 'immediate_danger');
+  assert.notEqual(result.safety_level, 'P0');
+});
+
 test('limited typo tolerance recognises suicide bereavement', () => {
   const result = routeSearchQuery('Mi hermano murió por sucidio y estoy destrozado');
   assert.equal(result.intent, 'suicide_bereavement');
@@ -115,11 +193,55 @@ test('high-risk violence routes suppress commercial UI', () => {
   assert.equal(result.suppress_commercial_ui, true);
 });
 
+test('active violence is P0 and preserves 112 and 016', () => {
+  for (const query of ['Mi pareja me está pegando', 'Mi marido me va a matar', 'Me están violando']) {
+    const result = routeSearchQuery(query);
+    assert.equal(result.safety_level, 'P0', query);
+    assert.equal(result.urgent, true, query);
+    assert.deepEqual(result.official_resources_spain, ['112', '016'], query);
+    assert.equal(result.suppress_commercial_ui, true, query);
+  }
+});
+
+test('negated and fictional violence mentions do not trigger emergency routing', () => {
+  for (const query of [
+    'No es cierto que mi pareja me pega ahora',
+    'No me están violando',
+    'No me está agrediendo sexualmente',
+    'Ya no me está pegando mi pareja',
+    'No estoy en peligro con mi pareja',
+    'En una película me están violando',
+    'Supongamos que me están violando',
+    'Una actriz dice: me están violando',
+    'Estoy en peligro inmediato en un videojuego',
+    'No es verdad que estoy en peligro inmediato'
+  ]) {
+    const result = routeSearchQuery(query);
+    assert.equal(result.matched, false, query);
+    assert.equal(result.needs_clarification, true, query);
+  }
+});
+
+test('fictional context cannot hide a later real violence disclosure', () => {
+  for (const query of [
+    'En una película me están violando; pero en realidad mi pareja me pega ahora',
+    'Una actriz dice me están violando; pero mi marido me va a matar',
+    'Supongamos que mi pareja me pega ahora, pero en realidad me está pegando'
+  ]) {
+    const result = routeSearchQuery(query);
+    assert.equal(result.matched, true, query);
+    assert.equal(result.safety_level, 'P0', query);
+    assert.equal(result.urgent, true, query);
+    assert.deepEqual(result.official_resources_spain, ['112', '016'], query);
+  }
+});
+
 test('practical non-crisis needs can route without becoming a diagnosis', () => {
   const result = routeSearchQuery('Tengo muchas deudas y no sé por dónde empezar');
   assert.equal(result.intent, 'debt_overwhelm');
   assert.equal(result.route.url, '/dinero/tengo-deudas-y-no-se-por-donde-empezar/');
-  assert.equal(result.safety_level, 'P2');
+  assert.equal(result.safety_level, 'P1');
+  assert.equal(result.suppress_commercial_ui, true);
   assert.equal(result.diagnostic, false);
   assert.equal(result.automated_clinical_decision, false);
 });
