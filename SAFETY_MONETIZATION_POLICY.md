@@ -26,7 +26,8 @@ El test `tests/p0-p1-noncommercial-invariant.test.mjs` protege actualmente las s
 - `/alguien-cercano-ha-intentado-suicidarse/`;
 - `/mi-pareja-me-maltrata-y-no-se-que-hacer/`;
 - `/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/`;
-- `/duelo/ha-muerto-por-suicidio-alguien-que-quiero/`.
+- `/duelo/ha-muerto-por-suicidio-alguien-que-quiero/`;
+- `/dinero/tengo-deudas-y-no-se-por-donde-empezar/`.
 
 Las rutas de suicidio incluidas en este inventario conservan además una comprobación específica de acceso al 112, 024 y fuente oficial del Ministerio de Sanidad.
 
