@@ -2,34 +2,18 @@
   const SEARCH_URL = '/buscar/';
   const URGENT_URL = '/ayuda-urgente.html';
 
-  function insertAfter(reference, node) {
-    if (!reference?.parentNode) return;
-    if (reference.nextSibling) reference.parentNode.insertBefore(node, reference.nextSibling);
-    else reference.parentNode.append(node);
-  }
-
-  function insertMainNavEntries() {
+  function insertMainNavEntry() {
     const nav = document.querySelector('#main-nav');
-    if (!nav) return;
+    if (!nav || nav.querySelector('[data-search-entry="main-nav"]')) return;
+
+    const link = document.createElement('a');
+    link.href = SEARCH_URL;
+    link.textContent = 'Buscar ayuda';
+    link.dataset.searchEntry = 'main-nav';
 
     const firstLink = nav.querySelector('a');
-    let urgent = nav.querySelector('[data-urgent-entry="main-nav"]');
-    if (!urgent) {
-      urgent = document.createElement('a');
-      urgent.href = URGENT_URL;
-      urgent.textContent = 'Ayuda urgente';
-      urgent.dataset.urgentEntry = 'main-nav';
-      if (firstLink) insertAfter(firstLink, urgent);
-      else nav.prepend(urgent);
-    }
-
-    if (!nav.querySelector('[data-search-entry="main-nav"]')) {
-      const search = document.createElement('a');
-      search.href = SEARCH_URL;
-      search.textContent = 'Buscar ayuda';
-      search.dataset.searchEntry = 'main-nav';
-      insertAfter(urgent, search);
-    }
+    if (firstLink?.nextSibling) nav.insertBefore(link, firstLink.nextSibling);
+    else nav.append(link);
   }
 
   function promoteHeroUrgent() {
@@ -138,22 +122,19 @@
       urgent.href = URGENT_URL;
       urgent.textContent = 'Ayuda urgente';
       urgent.dataset.urgentEntry = 'footer';
-
-      const existingSearch = navigation.querySelector('[data-search-entry="footer"]');
-      if (existingSearch) navigation.insertBefore(urgent, existingSearch);
-      else navigation.append(urgent);
+      navigation.append(urgent);
     }
 
     if (!navigation.querySelector('[data-search-entry="footer"]')) {
-      const search = document.createElement('a');
-      search.href = SEARCH_URL;
-      search.textContent = 'Buscar ayuda';
-      search.dataset.searchEntry = 'footer';
-      insertAfter(urgent, search);
+      const link = document.createElement('a');
+      link.href = SEARCH_URL;
+      link.textContent = 'Buscar ayuda';
+      link.dataset.searchEntry = 'footer';
+      navigation.append(link);
     }
   }
 
-  insertMainNavEntries();
+  insertMainNavEntry();
   promoteHeroUrgent();
   promoteHeroSearch();
   promoteNeedsUrgent();
