@@ -35,6 +35,26 @@
     <h1>¿Qué te está pasando?</h1>
     <p>Escríbelo con tus propias palabras. Esta página procesa la búsqueda en tu navegador; Desgracias.es no envía ni almacena el texto que escribas.</p>
 
+    <noscript>
+      <style>#search-form{display:none}</style>
+      <section class="result urgent" aria-labelledby="nojs-title">
+        <h2 id="nojs-title">La búsqueda necesita JavaScript</h2>
+        <p>No hace falta que escribas aquí para encontrar ayuda. Si existe peligro inmediato, llama al 112. Si estás pensando en suicidarte en España o te preocupa que alguien pueda hacerlo, también está disponible el 024. El 016 ofrece información, asesoramiento jurídico y atención psicosocial inmediata frente a todas las formas de violencia contra las mujeres.</p>
+        <ul>
+          <li><a href="tel:112">Llamar al 112</a></li>
+          <li><a href="tel:024">Llamar al 024</a></li>
+          <li><a href="tel:016">Llamar al 016</a></li>
+        </ul>
+        <p><a href="/ayuda-urgente.html">Ver ayuda urgente</a></p>
+        <ul>
+          <li><a href="/me-preocupa-que-alguien-pueda-suicidarse/">Me preocupa que alguien pueda suicidarse</a></li>
+          <li><a href="/alguien-cercano-ha-intentado-suicidarse/">Alguien cercano ha intentado suicidarse</a></li>
+          <li><a href="/duelo/ha-muerto-por-suicidio-alguien-que-quiero/">Ha muerto por suicidio alguien que quiero</a></li>
+        </ul>
+        <p><a href="/">Ver las categorías de Desgracias.es</a></p>
+      </section>
+    </noscript>
+
     <form id="search-form" autocomplete="off" novalidate>
       <label for="search-query">Describe tu situación</label>
       <textarea id="search-query" maxlength="500" autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false" aria-describedby="privacy-note"></textarea>
@@ -45,7 +65,6 @@
     <p class="muted privacy-links"><a href="/privacidad.html">Privacidad</a> · <a href="mailto:info@desgracias.es">Contacto</a></p>
 
     <section id="result" class="result" aria-live="polite" tabindex="-1" hidden></section>
-    <noscript><p class="result">Necesitas JavaScript para usar esta búsqueda. Puedes volver a la portada y entrar por las categorías disponibles.</p></noscript>
   </main>
 
   <script type="module">
