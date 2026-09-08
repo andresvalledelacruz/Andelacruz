@@ -58,8 +58,11 @@ function normalize(value = '') {
 function containsSafetyLanguage(text) {
   return [
     'suicid', 'quiero morir', 'me voy a matar', 'matarme', 'hacerme dano',
-    'me pega', 'me esta pegando', 'me va a matar', 'violacion', 'me violaron',
-    'me estan violando', 'agresion sexual', 'peligro inmediato', 'sobredosis'
+    'me pega', 'me esta pegando', 'me va a matar', 'mi pareja me maltrata',
+    'tengo miedo de mi pareja', 'me controla mi pareja',
+    'violacion', 'me violaron', 'me estan violando', 'me esta violando',
+    'agresion sexual', 'me estan agrediendo sexualmente', 'me esta agrediendo sexualmente',
+    'peligro inmediato', 'sobredosis'
   ].some((signal) => text.includes(signal));
 }
 
