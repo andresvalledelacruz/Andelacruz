@@ -8,11 +8,11 @@ const MAX_HTML_BYTES = 128 * 1024;
 const MAX_JS_BYTES = 96 * 1024;
 const MAX_OPTIMIZED_HERO_BYTES = 100 * 1024;
 
-function urlToFile(url) {
+function urlToFile(url, root = ROOT) {
   const parsed = new URL(url);
-  if (parsed.pathname === '/') return path.join(ROOT, 'index.html');
+  if (parsed.pathname === '/') return path.join(root, 'index.html');
   const relative = parsed.pathname.replace(/^\//, '');
-  return path.join(ROOT, relative.endsWith('/') ? `${relative}index.html` : relative);
+  return path.join(root, relative.endsWith('/') ? `${relative}index.html` : relative);
 }
 
 function localScriptSources(html) {
@@ -21,9 +21,9 @@ function localScriptSources(html) {
     .filter((src) => src.startsWith('/') && !src.startsWith('//'));
 }
 
-function localRefToFile(ref) {
+function localRefToFile(ref, root = ROOT) {
   const parsed = new URL(ref, 'https://desgracias.es');
-  return path.join(ROOT, parsed.pathname.replace(/^\//, ''));
+  return path.join(root, parsed.pathname.replace(/^\//, ''));
 }
 
 export function auditPerformance(root = ROOT) {
@@ -33,7 +33,7 @@ export function auditPerformance(root = ROOT) {
   const checkedScripts = new Map();
 
   for (const url of urls) {
-    const file = urlToFile(url);
+    const file = urlToFile(url, root);
     if (!fs.existsSync(file)) {
       errors.push(`${url}: no existe archivo desplegable`);
       continue;
@@ -47,7 +47,7 @@ export function auditPerformance(root = ROOT) {
 
     const html = fs.readFileSync(file, 'utf8');
     for (const src of localScriptSources(html)) {
-      const scriptFile = localRefToFile(src);
+      const scriptFile = localRefToFile(src, root);
       if (!fs.existsSync(scriptFile)) {
         errors.push(`${url}: script local inexistente ${src}`);
         continue;
