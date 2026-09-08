@@ -9,7 +9,7 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'
 const searchPage = path.join(repoRoot, 'buscar', 'index.html');
 
 const FORBIDDEN_RUNTIME_PATTERNS = Object.freeze([
-  /\bfetch\s*\(/,
+  /\bfetch\b/,
   /\bXMLHttpRequest\b/,
   /\bnavigator\.sendBeacon\b/,
   /\bWebSocket\b/,
@@ -32,6 +32,9 @@ const FORBIDDEN_RUNTIME_PATTERNS = Object.freeze([
   /\bnew\s+Image\s*\(/,
   /\bimport\s*\(/,
   /(?:window|globalThis|self)\s*\[\s*['"](?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|WebTransport|localStorage|sessionStorage|indexedDB|caches)['"]\s*\]/,
+  /\bnavigator\s*\[\s*['"]sendBeacon['"]\s*\]/,
+  /(?:window|globalThis|self)\.location\s*\[\s*['"](?:search|hash)['"]\s*\]/,
+  /(?:window|globalThis|self)\s*\[\s*['"]location['"]\s*\]\s*\[\s*['"](?:search|hash)['"]\s*\]/,
   /\bvisitor-analytics\b/,
   /\bpublic-page-runtime\b/
 ]);
@@ -102,6 +105,7 @@ test('search page cannot submit query text through a form action', async () => {
   const source = await readFile(searchPage, 'utf8');
   assert.doesNotMatch(source, /<form[^>]+action\s*=/i);
   assert.doesNotMatch(source, /<input[^>]+name\s*=|<textarea[^>]+name\s*=/i);
+  assert.doesNotMatch(source, /<script[^>]+src\s*=/i);
   assert.doesNotMatch(source, /\son[a-z]+\s*=/i);
 });
 
@@ -137,4 +141,21 @@ test('dependency closure gate detects common computed access to network APIs', a
 
   const closure = await collectDependencyClosure(entry, fixture);
   assert.ok(privacyViolations(closure).some((violation) => violation.includes('window')));
+});
+
+test('dependency closure gate detects aliased and computed privacy sinks', async () => {
+  const fixture = await mkdtemp(path.join(tmpdir(), 'search-privacy-alias-'));
+  const entry = path.join(fixture, 'entry.js');
+  await writeFile(entry, [
+    "const send = window.fetch.bind(window);",
+    "const beacon = navigator['sendBeacon'];",
+    "const query = globalThis.location['search'];",
+    'export { send, beacon, query };'
+  ].join('\n'), 'utf8');
+
+  const closure = await collectDependencyClosure(entry, fixture);
+  const violations = privacyViolations(closure);
+  assert.ok(violations.some((violation) => violation.includes('fetch')));
+  assert.ok(violations.some((violation) => violation.includes('sendBeacon')));
+  assert.ok(violations.some((violation) => violation.includes('location')));
 });
