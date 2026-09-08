@@ -21,6 +21,7 @@
     .result{margin-top:24px;padding:18px;border-radius:12px;background:#fff;border:1px solid #d5d5d5}
     .urgent{border:2px solid #8f1d1d}
     .muted{color:#555}
+    .privacy-links{margin-top:28px;font-size:.94rem}
     .choices{display:grid;gap:10px;margin-top:16px}
     .choice{justify-self:stretch;text-align:left;border-radius:10px;background:#eee;color:#181818;border:1px solid #bbb}
     .choice[data-safety="P0"]{border:2px solid #8f1d1d}
@@ -34,14 +35,16 @@
     <h1>¿Qué te está pasando?</h1>
     <p>Escríbelo con tus propias palabras. Esta página procesa la búsqueda en tu navegador; Desgracias.es no envía ni almacena el texto que escribas.</p>
 
-    <form id="search-form" novalidate>
+    <form id="search-form" autocomplete="off" novalidate>
       <label for="search-query">Describe tu situación</label>
-      <textarea id="search-query" autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false" aria-describedby="privacy-note"></textarea>
+      <textarea id="search-query" maxlength="500" autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false" aria-describedby="privacy-note"></textarea>
       <p id="privacy-note" class="muted">No incluyas nombres, direcciones, teléfonos ni otros datos personales.</p>
       <button type="submit">Encontrar por dónde empezar</button>
     </form>
 
-    <section id="result" class="result" aria-live="polite" hidden></section>
+    <p class="muted privacy-links"><a href="/privacidad.html">Privacidad</a> · <a href="mailto:info@desgracias.es">Contacto</a></p>
+
+    <section id="result" class="result" aria-live="polite" tabindex="-1" hidden></section>
     <noscript><p class="result">Necesitas JavaScript para usar esta búsqueda. Puedes volver a la portada y entrar por las categorías disponibles.</p></noscript>
   </main>
 
@@ -98,6 +101,7 @@
           officialResources(['112', '024']),
           paragraphWithLink('Ver ayuda urgente', '/ayuda-urgente.html')
         );
+        result.focus();
         return;
       }
 
@@ -156,7 +160,19 @@
 
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      const routed = routeSearchQuery(query.value);
+      const submittedQuery = query.value.trim();
+      query.value = '';
+      if (!submittedQuery) {
+        result.hidden = false;
+        result.className = 'result';
+        result.replaceChildren(
+          element('h2', 'Escribe qué te está pasando'),
+          element('p', 'Añade solo el detalle necesario para orientarte, sin nombres ni otros datos personales.')
+        );
+        query.focus();
+        return;
+      }
+      const routed = routeSearchQuery(submittedQuery);
       result.hidden = false;
       result.className = routed.safety_level === 'P0' ? 'result urgent' : 'result';
       result.replaceChildren();
@@ -182,6 +198,16 @@
       if (resources) result.append(resources);
       result.append(paragraphWithLink(routed.route.label, routed.route.url));
     });
+
+    function clearSensitiveState() {
+      query.value = '';
+      result.replaceChildren();
+      result.hidden = true;
+      result.className = 'result';
+    }
+
+    window.addEventListener('pagehide', clearSensitiveState);
+    window.addEventListener('pageshow', clearSensitiveState);
   </script>
 </body>
 </html>
