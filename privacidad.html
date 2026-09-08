@@ -34,7 +34,7 @@
   <meta name="twitter:title" content="Política de privacidad — Desgracias.es">
   <meta name="twitter:description" content="Política de privacidad de Desgracias.es.">
   <meta name="twitter:image" content="https://desgracias.es/assets/manos-apoyo.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Política de privacidad","url":"https://desgracias.es/privacidad.html","inLanguage":"es","dateModified":"2026-08-30","isPartOf":{"@type":"WebSite","name":"Desgracias.es","url":"https://desgracias.es/"},"about":"Privacidad y protección de datos en Desgracias.es"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Política de privacidad","url":"https://desgracias.es/privacidad.html","inLanguage":"es","dateModified":"2026-09-08","isPartOf":{"@type":"WebSite","name":"Desgracias.es","url":"https://desgracias.es/"},"about":"Privacidad y protección de datos en Desgracias.es"}</script>
 </head>
 <body>
 <header>
@@ -48,7 +48,7 @@
     <p class="eyebrow">Privacidad y protección de datos</p>
     <h1>Política de privacidad</h1>
     <p class="lead">Queremos que sepas con claridad qué información tratamos cuando utilizas Desgracias.es, para qué la utilizamos y qué control mantienes sobre ella.</p>
-    <span class="meta">Versión 2026-08-30-v6 · Actualizada el 30 de agosto de 2026</span>
+    <span class="meta">Versión 2026-09-08-v7 · Actualizada el 8 de septiembre de 2026</span>
   </div>
 
   <div class="notice"><strong>Resumen:</strong> no necesitas indicar tu nombre para contar una historia. Tu consentimiento cubre la moderación de la historia y, si supera la revisión, la posibilidad de publicarla. La publicación nunca es automática. Tras el envío recibirás un código privado para poder retirar tu historia sin identificarte.</div>
@@ -99,7 +99,8 @@
     <p>Para prestar el servicio utilizamos proveedores tecnológicos. En la arquitectura actual:</p>
     <ul>
       <li><strong>Supabase</strong> presta servicios de autenticación técnica, base de datos y funciones de servidor; es el proveedor al que se transmite el contenido de la historia para procesarlo y donde se almacenan los contadores agregados de analítica interna.</li>
-      <li><strong>GitHub Pages</strong> sirve los archivos estáticos de la web.</li>
+      <li><strong>Cloudflare</strong> sirve el frontend público mediante Pages y presta funciones de CDN, DNS y protección de la entrega.</li>
+      <li><strong>GitHub Pages</strong> forma parte del despliegue de los archivos estáticos y de la verificación de disponibilidad.</li>
       <li><strong>jsDelivr</strong> distribuye la biblioteca JavaScript necesaria para conectar el formulario con Supabase.</li>
       <li><strong>Google Fonts</strong> sirve las tipografías utilizadas por la portada.</li>
     </ul>
@@ -109,6 +110,8 @@
 
   <section>
     <h2>7. Conservación</h2>
+    <p><strong>Buscador de ayuda.</strong> La ruta <a href="/buscar/">/buscar/</a> analiza en el propio navegador el texto que escribes para orientarte hacia contenidos de Desgracias.es. El código de esta página no transmite ese texto a nuestros servidores, no lo guarda en cookies ni en almacenamiento local y no lo incorpora a la analítica de contenidos. La consulta se elimina del campo al ejecutar la búsqueda y la interfaz también se limpia al salir de la página o restaurarla desde el historial. Evita incluir nombres, direcciones, teléfonos u otros datos personales.</p>
+    <p>Esta protección del texto de búsqueda no impide que, al cargar la página, el navegador solicite al alojamiento o CDN la página y sus módulos. Como en cualquier visita, esas solicitudes pueden generar los datos técnicos de conexión descritos en el apartado 6 —por ejemplo, dirección IP, navegador, fecha, hora y ruta solicitada— para prestar y proteger el servicio. El código del buscador no incorpora el texto escrito a la URL ni a esas solicitudes: esos metadatos técnicos no son el contenido de la consulta.</p>
     <ul>
       <li><strong>Identificador antiabuso derivado de la IP:</strong> se elimina automáticamente una vez superadas aproximadamente 48 horas; la tarea de depuración se ejecuta de forma periódica.</li>
       <li><strong>Historias pendientes:</strong> se conservan mientras sea necesario para realizar la revisión y gestionar posibles incidencias.</li>
