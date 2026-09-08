@@ -50,6 +50,7 @@
 
   <script type="module">
     import { routeSearchQuery } from '../src/search-crisis-router.js';
+    import { routeKnownContentQuery } from '../src/search-content-catalog.js';
     import { buildSearchClarification } from '../src/search-clarification.js';
 
     const form = document.querySelector('#search-form');
@@ -172,7 +173,13 @@
         query.focus();
         return;
       }
-      const routed = routeSearchQuery(submittedQuery);
+
+      let routed = routeSearchQuery(submittedQuery);
+      if (!routed.matched && !routed.urgent_support?.available) {
+        const contentRouted = routeKnownContentQuery(submittedQuery);
+        if (contentRouted.matched) routed = contentRouted;
+      }
+
       result.hidden = false;
       result.className = routed.safety_level === 'P0' ? 'result urgent' : 'result';
       result.replaceChildren();
