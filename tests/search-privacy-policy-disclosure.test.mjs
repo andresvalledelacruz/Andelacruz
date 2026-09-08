@@ -17,7 +17,7 @@ test('privacy policy explains local search processing without absolute anonymity
 });
 
 test('privacy policy names both current static delivery providers', () => {
-  assert.match(privacy, /Cloudflare Pages/i);
+  assert.match(privacy, /Cloudflare[\s\S]*?mediante Pages/i);
   assert.match(privacy, /CDN, DNS y protección de la entrega/i);
   assert.match(privacy, /GitHub Pages/i);
 });
