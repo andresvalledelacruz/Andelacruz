@@ -14,10 +14,10 @@ test('homepage loader includes the search entry layer before analytics', () => {
 });
 
 test('search entry layer exposes the orienter in four discoverable homepage locations', () => {
-  assert.match(entry, /data\.searchEntry = 'main-nav'/);
-  assert.match(entry, /data\.searchEntry = 'hero'/);
-  assert.match(entry, /data\.searchEntry = 'needs'/);
-  assert.match(entry, /data\.searchEntry = 'footer'/);
+  assert.match(entry, /dataset\.searchEntry = 'main-nav'/);
+  assert.match(entry, /dataset\.searchEntry = 'hero'/);
+  assert.match(entry, /dataset\.searchEntry = 'needs'/);
+  assert.match(entry, /dataset\.searchEntry = 'footer'/);
   assert.ok((entry.match(/href = SEARCH_URL/g) || []).length >= 4);
   assert.match(entry, /Buscar ayuda/);
   assert.match(entry, /Cuéntame qué te pasa/);
