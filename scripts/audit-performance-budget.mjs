@@ -1,15 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { publicAuditUrls } from './public-audit-targets.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MAX_HTML_BYTES = 128 * 1024;
 const MAX_JS_BYTES = 96 * 1024;
 const MAX_OPTIMIZED_HERO_BYTES = 100 * 1024;
-
-function sitemapUrls(xml) {
-  return [...xml.matchAll(/<loc>(https:\/\/desgracias\.es[^<]*)<\/loc>/g)].map((match) => match[1]);
-}
 
 function urlToFile(url) {
   const parsed = new URL(url);
@@ -31,8 +28,7 @@ function localRefToFile(ref) {
 
 export function auditPerformance(root = ROOT) {
   const errors = [];
-  const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
-  const urls = sitemapUrls(xml);
+  const urls = publicAuditUrls(root);
   let largestHtml = { url: '', bytes: 0 };
   const checkedScripts = new Map();
 
@@ -95,7 +91,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     for (const error of result.errors) console.error(`- ${error}`);
     process.exitCode = 1;
   } else {
-    console.log(`Performance budget audit passed for ${result.urls.length} sitemap URLs.`);
+    console.log(`Performance budget audit passed for ${result.urls.length} public URLs, including critical non-sitemap routes.`);
     console.log(`Largest HTML: ${result.largestHtml.bytes} bytes (${result.largestHtml.url}).`);
     console.log(`Local scripts checked: ${result.checkedScripts.size}. Budgets: HTML <= ${MAX_HTML_BYTES} B, JS <= ${MAX_JS_BYTES} B, optimized hero <= ${MAX_OPTIMIZED_HERO_BYTES} B.`);
   }
