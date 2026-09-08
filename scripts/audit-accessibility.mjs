@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { publicAuditUrls } from './public-audit-targets.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -27,15 +28,11 @@ function attrsFrom(tag) {
   return attrs;
 }
 
-function sitemapUrls(xml) {
-  return [...xml.matchAll(/<loc>(https:\/\/desgracias\.es[^<]*)<\/loc>/g)].map((m) => m[1]);
-}
-
-function urlToFile(url) {
+function urlToFile(url, root = ROOT) {
   const parsed = new URL(url);
-  if (parsed.pathname === '/') return path.join(ROOT, 'index.html');
+  if (parsed.pathname === '/') return path.join(root, 'index.html');
   const relative = parsed.pathname.replace(/^\//, '');
-  return path.join(ROOT, relative.endsWith('/') ? relative + 'index.html' : relative);
+  return path.join(root, relative.endsWith('/') ? relative + 'index.html' : relative);
 }
 
 function hasId(html, id) {
@@ -196,11 +193,10 @@ export function auditHtml(html, source = '<memory>') {
 }
 
 export function auditSitemap(root = ROOT) {
-  const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
-  const urls = sitemapUrls(xml);
+  const urls = publicAuditUrls(root);
   const errors = [];
   for (const url of urls) {
-    const file = urlToFile(url);
+    const file = urlToFile(url, root);
     if (!fs.existsSync(file)) {
       errors.push(`${url}: no existe archivo desplegable ${path.relative(root, file)}`);
       continue;
@@ -217,7 +213,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     for (const error of errors) console.error(`- ${error}`);
     process.exitCode = 1;
   } else {
-    console.log(`Accessibility audit passed for ${urls.length} sitemap URLs.`);
+    console.log(`Accessibility audit passed for ${urls.length} public URLs, including critical non-sitemap routes.`);
     console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button/form-control names, focusable aria-hidden conflicts including hidden ancestors, safe _blank links, tabindex, autofocus and ARIA id-reference integrity.');
   }
 }
