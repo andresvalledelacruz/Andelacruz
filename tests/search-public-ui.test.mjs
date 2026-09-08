@@ -26,8 +26,22 @@ test('public search page states browser-local processing and discourages persona
   assert.match(source, /No incluyas nombres, direcciones, teléfonos ni otros datos personales/i);
   assert.match(source, /spellcheck="false"/i);
   assert.match(source, /autocorrect="off"/i);
+  assert.match(source, /maxlength="500"/i);
+  assert.match(source, /<form[^>]+autocomplete="off"/i);
+  assert.match(source, /href="\/privacidad\.html"/i);
+  assert.match(source, /href="mailto:info@desgracias\.es"/i);
   assert.doesNotMatch(source, /fetch\s*\(/);
   assert.doesNotMatch(source, /XMLHttpRequest|sendBeacon|localStorage|sessionStorage/i);
+});
+
+test('sensitive query state is cleared after submission and across back-forward cache', async () => {
+  const source = await html();
+  assert.match(source, /const submittedQuery = query\.value\.trim\(\);\s*query\.value = '';/);
+  assert.match(source, /if \(!submittedQuery\)[\s\S]*?Escribe qué te está pasando[\s\S]*?query\.focus\(\);\s*return;/);
+  assert.match(source, /function clearSensitiveState\(\)/);
+  assert.match(source, /window\.addEventListener\('pagehide', clearSensitiveState\)/);
+  assert.match(source, /window\.addEventListener\('pageshow', clearSensitiveState\)/);
+  assert.match(source, /result\.replaceChildren\(\);\s*result\.hidden = true;/);
 });
 
 test('dynamic results avoid HTML string injection surfaces', async () => {
@@ -84,5 +98,7 @@ test('search form has explicit labeling and live result region', async () => {
   assert.match(source, /id="search-query"/i);
   assert.match(source, /aria-describedby="privacy-note"/i);
   assert.match(source, /aria-live="polite"/i);
+  assert.match(source, /tabindex="-1"/i);
   assert.match(source, /role: 'group'/);
+  assert.match(source, /if \(option\.id === 'safety_self'\)[\s\S]*?result\.focus\(\);\s*return;/);
 });
