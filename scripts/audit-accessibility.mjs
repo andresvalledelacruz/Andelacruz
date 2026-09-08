@@ -28,11 +28,11 @@ function attrsFrom(tag) {
   return attrs;
 }
 
-function urlToFile(url) {
+function urlToFile(url, root = ROOT) {
   const parsed = new URL(url);
-  if (parsed.pathname === '/') return path.join(ROOT, 'index.html');
+  if (parsed.pathname === '/') return path.join(root, 'index.html');
   const relative = parsed.pathname.replace(/^\//, '');
-  return path.join(ROOT, relative.endsWith('/') ? relative + 'index.html' : relative);
+  return path.join(root, relative.endsWith('/') ? relative + 'index.html' : relative);
 }
 
 function hasId(html, id) {
@@ -196,7 +196,7 @@ export function auditSitemap(root = ROOT) {
   const urls = publicAuditUrls(root);
   const errors = [];
   for (const url of urls) {
-    const file = urlToFile(url);
+    const file = urlToFile(url, root);
     if (!fs.existsSync(file)) {
       errors.push(`${url}: no existe archivo desplegable ${path.relative(root, file)}`);
       continue;
