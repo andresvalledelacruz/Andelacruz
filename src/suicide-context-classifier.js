@@ -13,6 +13,9 @@ const ACTIVE_SELF = [
   /\b(?:suicidarme|matarme|quitarme la vida)\s+(?:ahora|hoy|esta noche|ya)\b/,
   /\b(?:quiero morir|me quiero morir|no quiero (?:seguir )?viviendo?|no puedo seguir viviendo)\b/
 ];
+const ACTIVE_SELF_AFTER_CONTRAST = [
+  /\b(?:pero|sin embargo|aunque|hoy|ahora)\b.{0,60}\b(?:(?:yo\s+)?(?:quiero|voy a|pienso(?: en)?|estoy pensando en|he pensado en|tengo pensado)\s+(?:suicidarme|matarme|quitarme la vida|acabar con mi vida|morir)|me voy a matar|me quiero morir|no quiero (?:seguir )?viviendo?)\b/
+];
 const ACTIVE_THIRD_PARTY = [
   /\b(?:mi\s+)?(?:hijo|hija|hermano|hermana|pareja|amigo|amiga|padre|madre|marido|mujer|alguien)\b.{0,60}\b(?:quiere|va a|piensa(?: en)?|dice que (?:quiere|va a)|puede|podria)\s+(?:suicidarse|matarse|quitarse la vida)\b/,
   /\b(?:me preocupa|temo que)\b.{0,80}\b(?:suicidarse|matarse|quitarse la vida)\b/
@@ -65,11 +68,19 @@ export function classifySuicideContext(value) {
   // still allowing a separate active clause later in the same text to prevail.
   const activeText = hasNegatedCurrent ? withoutMatches(NEGATED_CURRENT, text) : text;
 
+  // Context markers can quote or describe suicidal language without making it
+  // current. Remove those clauses before looking for a separate active clause,
+  // so "un artículo cita... pero yo quiero morir ahora" cannot hide a crisis.
+  const contextualPatterns = [...HYPOTHETICAL, ...INFORMATIONAL, ...RESOLVED_PAST];
+  const currentText = withoutMatches(contextualPatterns, activeText);
+
+  if (any(ACTIVE_SELF_AFTER_CONTRAST, activeText)) return Object.freeze({ context: 'active_self', urgent: true });
+  if (any(ACTIVE_SELF, currentText)) return Object.freeze({ context: 'active_self', urgent: true });
+  if (any(ACTIVE_THIRD_PARTY, currentText)) return Object.freeze({ context: 'active_third_party', urgent: true });
+
   if (any(HYPOTHETICAL, text)) return Object.freeze({ context: 'hypothetical', urgent: false });
   if (any(INFORMATIONAL, text)) return Object.freeze({ context: 'informational', urgent: false });
   if (any(RESOLVED_PAST, text)) return Object.freeze({ context: 'resolved_past', urgent: false });
-  if (any(ACTIVE_SELF, activeText)) return Object.freeze({ context: 'active_self', urgent: true });
-  if (any(ACTIVE_THIRD_PARTY, activeText)) return Object.freeze({ context: 'active_third_party', urgent: true });
   if (any(BEREAVEMENT, text)) return Object.freeze({ context: 'bereavement', urgent: false });
   if (hasNegatedCurrent) return Object.freeze({ context: 'negated_current', urgent: false });
   if (any(PAST_ATTEMPT, text)) return Object.freeze({ context: 'past_attempt', urgent: false });
