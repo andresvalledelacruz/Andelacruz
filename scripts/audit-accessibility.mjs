@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { publicAuditUrls } from './public-audit-targets.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -25,10 +26,6 @@ function attrsFrom(tag) {
     attrs.set(match[1].toLowerCase(), match[2] ?? match[3] ?? match[4] ?? '');
   }
   return attrs;
-}
-
-function sitemapUrls(xml) {
-  return [...xml.matchAll(/<loc>(https:\/\/desgracias\.es[^<]*)<\/loc>/g)].map((m) => m[1]);
 }
 
 function urlToFile(url) {
@@ -196,8 +193,7 @@ export function auditHtml(html, source = '<memory>') {
 }
 
 export function auditSitemap(root = ROOT) {
-  const xml = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
-  const urls = sitemapUrls(xml);
+  const urls = publicAuditUrls(root);
   const errors = [];
   for (const url of urls) {
     const file = urlToFile(url);
@@ -217,7 +213,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
     for (const error of errors) console.error(`- ${error}`);
     process.exitCode = 1;
   } else {
-    console.log(`Accessibility audit passed for ${urls.length} sitemap URLs.`);
+    console.log(`Accessibility audit passed for ${urls.length} public URLs, including critical non-sitemap routes.`);
     console.log('Checked: lang, viewport, main/H1 landmarks, unique ids, image alt presence, accessible link/button/form-control names, focusable aria-hidden conflicts including hidden ancestors, safe _blank links, tabindex, autofocus and ARIA id-reference integrity.');
   }
 }
