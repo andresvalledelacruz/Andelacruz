@@ -221,178 +221,217 @@ export async function buildLocalScriptClosure({ root = DEFAULT_ROOT, htmlFile, i
       queue.push(await resolveInsideRoot(rootReal, file, specifier));
     }
   }
-  return files;
+  return { root: rootReal, entry, html, scripts, inline, files };
 }
 
-function forbiddenSignals(source, label, { allowAnalytics = false } = {}) {
-  const code = executableSource(source);
+function auditProtectedCode(label, source, failures) {
+  let code;
+  try { code = executableSource(source); }
+  catch (error) { failures.push(`${label}: ${error.message}`); return; }
+  for (const [name, pattern] of PRIVACY_SINKS) if (pattern.test(code)) failures.push(`${label}: forbidden ${name}`);
+  if (/(?:window|document|navigator|location|globalThis)\s*\[/.test(code)) failures.push(`${label}: unresolved computed global access`);
+  const globalAliases = new Set();
+  for (const match of code.matchAll(/\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:window|document|navigator|location|globalThis)\b/g)) globalAliases.add(match[1]);
+  for (const alias of globalAliases) {
+    const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    if (new RegExp(`\\b${escaped}\\s*\\[`).test(code)) failures.push(`${label}: unresolved computed access through global alias ${alias}`);
+  }
+}
+
+export async function auditHtmlEntry({ root = DEFAULT_ROOT, htmlFile, protectedSurface = true }) {
   const failures = [];
-  for (const [name, pattern] of PRIVACY_SINKS) {
-    if (allowAnalytics && (name === 'network request' || name === 'referrer collection' || name === 'tracking marker')) continue;
-    if (pattern.test(code)) failures.push(`${label}: forbidden ${name}`);
+  let closure;
+  try { closure = await buildLocalScriptClosure({ root, htmlFile }); }
+  catch (error) { return { htmlFile, failures: [`${htmlFile}: ${error.message}`], files: [] }; }
+  if (protectedSurface) {
+    if (/\son[a-z]+\s*=/i.test(closure.html)) failures.push(`${htmlFile}: inline event handler`);
+    if (/<meta\b[^>]*http-equiv\s*=\s*['"]?refresh/i.test(closure.html)) failures.push(`${htmlFile}: meta refresh`);
+    for (const match of closure.html.matchAll(/<form\b([^>]*)>/gi)) {
+      const attributes = parseAttributes(match[1]);
+      if (attributes.has('action') && attributes.get('action').trim() !== '') failures.push(`${htmlFile}: protected form has a submission action`);
+    }
+    if (/<(?:input|textarea|select)\b[^>]*\bname\s*=/i.test(closure.html)) failures.push(`${htmlFile}: protected form has a serializable named control`);
+    for (const script of closure.scripts) if (script.src && ANALYTICS_MARKERS.test(script.src)) failures.push(`${htmlFile}: analytics script ${script.src}`);
+    for (const item of closure.inline) auditProtectedCode(item.label, item.source, failures);
+    for (const [file, source] of closure.files) auditProtectedCode(path.relative(closure.root, file), source, failures);
   }
-  if (/\b(?:window|globalThis|self|document|navigator|location)\s*\[/.test(code)) failures.push(`${label}: unresolved computed global access`);
-  if (/\b(?:const|let|var)\s+\w+\s*=\s*(?:window|globalThis|self)\s*;[\s\S]*?\b\w+\s*\[/.test(code)) failures.push(`${label}: computed access through global alias`);
-  return failures;
+  const inlineHashes = closure.inline
+    .filter((item) => stripComments(item.source).trim())
+    .map((item) => createHash('sha256').update(item.source).digest('hex'))
+    .sort();
+  return { htmlFile, failures: [...new Set(failures)], files: [...closure.files.keys()].map((file) => path.relative(closure.root, file)).sort(), inline_hashes: inlineHashes };
 }
 
-function hrefFormFailures(html, route) {
+export async function auditAnalyticsRuntime({ root = DEFAULT_ROOT, analyticsFile = ANALYTICS_FILE }) {
   const failures = [];
-  for (const match of html.matchAll(/<form\b([^>]*)>/gi)) {
-    const attributes = parseAttributes(match[1]);
-    if (attributes.has('action') && (attributes.get('action') || '').trim()) failures.push(`${route}: protected form has a submission action`);
+  const rootReal = await realpath(root);
+  const file = await realpath(path.resolve(rootReal, analyticsFile));
+  const raw = await readFile(file, 'utf8');
+  let code;
+  try { code = executableSource(raw); }
+  catch (error) { return { failures: [error.message] }; }
+  const calls = [...code.matchAll(/\bfetch\s*\(/g)];
+  if (calls.length !== 1) failures.push(`analytics runtime must make exactly one fetch, found ${calls.length}`);
+  if ([...code.matchAll(/\bfetch\b/g)].length !== 1) failures.push('analytics runtime must contain exactly one fetch reference and no aliases');
+  if (/\b(?:XMLHttpRequest|sendBeacon|WebSocket|EventSource|WebTransport)\b/.test(code)) failures.push('analytics runtime contains an unapproved network primitive');
+  if (!/record_privacy_safe_pageview/.test(code)) failures.push('analytics runtime must call the approved aggregate RPC');
+  const originPattern = /const\s+SUPABASE_URL\s*=\s*(['"])(https?:\/\/[^'"]+)\1/;
+  const configuredOrigin = code.match(originPattern)?.[2] ?? '';
+  if (configuredOrigin !== APPROVED_ANALYTICS_ORIGIN) failures.push('analytics runtime must use the exact approved Supabase origin');
+  if (!/method\s*:\s*['"]POST['"]/i.test(code)) failures.push('analytics runtime must use POST');
+  if (!/credentials\s*:\s*['"]omit['"]/.test(code)) failures.push("analytics runtime must use credentials: 'omit'");
+  if (/credentials\s*:\s*['"](?:include|same-origin)['"]/.test(code)) failures.push('analytics runtime contains unsafe credentials mode');
+  for (const [name, pattern] of PRIVACY_SINKS.filter(([name]) => !['network request', 'referrer collection', 'tracking marker'].includes(name))) {
+    if (pattern.test(code)) failures.push(`analytics runtime uses forbidden ${name}`);
   }
-  for (const match of html.matchAll(/<(?:input|textarea|select)\b([^>]*)>/gi)) {
-    const attributes = parseAttributes(match[1]);
-    if ((attributes.get('name') || '').trim()) failures.push(`${route}: protected form has serializable named control`);
-  }
-  return failures;
+  if (/(?:location|document)\s*\.\s*(?:search|hash|href|URL)\b|\bURLSearchParams\b/.test(code)) failures.push('analytics runtime reads sensitive URL state');
+  if (/\b(?:authorization|bearer|service[_-]?role|jwt|secret|email|phone|userAgent|screen\s*\.|canvas|hardwareConcurrency)\b/i.test(code)) failures.push('analytics runtime contains a sensitive credential or fingerprint field');
+  const payload = code.match(/const\s+payload\s*=\s*\{([\s\S]*?)\}\s*;/)?.[1] ?? '';
+  const keys = [...payload.matchAll(/\b(p_[a-z_]+)\s*:/g)].map((match) => match[1]).sort();
+  if (JSON.stringify(keys) !== JSON.stringify(SAFE_PAYLOAD_KEYS)) failures.push(`analytics payload keys must be exactly ${SAFE_PAYLOAD_KEYS.join(', ')}`);
+  if (!/window\s*\.\s*location\s*\.\s*pathname/.test(code)) failures.push('analytics path must derive from pathname');
+  if (!/new\s+URL\s*\(\s*document\s*\.\s*referrer\s*\)\s*\.\s*hostname/.test(code)) failures.push('referrer must be reduced directly to hostname');
+  if (/(?:window|document|navigator|location|globalThis)\s*\[/.test(code)) failures.push('analytics runtime has unresolved computed global access');
+  return { failures: [...new Set(failures)], payload_keys: keys };
 }
 
-function sha256(source) {
-  return createHash('sha256').update(source).digest('hex');
-}
-
-async function assertPinnedFiles(rootReal, failures) {
-  for (const [relative, expected] of PINNED_MEASUREMENT_FILES) {
-    const file = path.resolve(rootReal, relative);
-    try {
-      const source = await readFile(file);
-      if (sha256(source) !== expected) failures.push(`pinned measurement file changed: ${relative}`);
-    } catch (error) {
-      failures.push(`pinned measurement file unavailable: ${relative}: ${error.code ?? error.message}`);
-    }
-  }
-}
-
-async function inspectProtectedSurface({ rootReal, route, file, expectedFiles, expectedInline, failures }) {
-  const htmlFile = path.resolve(rootReal, file);
-  let html;
-  try { html = await readFile(htmlFile, 'utf8'); }
-  catch (error) { failures.push(`${route}: unavailable: ${error.code ?? error.message}`); return; }
-  if (/\b(?:analytics|telemetry|tracking|gtag|googletagmanager|dataLayer|plausible|matomo|segment|mixpanel|hotjar|clarity|pixel)\b/i.test(executableSource(html))) failures.push(`${route}: analytics script or marker present`);
-  failures.push(...hrefFormFailures(html, route));
-  try {
-    const scripts = extractExecutableScripts(html, route);
-    const inline = scripts.filter(({ src }) => !src).map(({ inline }) => sha256(inline)).sort();
-    if (JSON.stringify(inline) !== JSON.stringify([...expectedInline].sort())) failures.push(`${route}: protected surface inline executable set changed`);
-    const files = await buildLocalScriptClosure({ root: rootReal, htmlFile: file });
-    const relativeFiles = [...files.keys()].map((entry) => path.relative(rootReal, entry).replaceAll(path.sep, '/')).sort();
-    if (JSON.stringify(relativeFiles) !== JSON.stringify([...expectedFiles].sort())) failures.push(`${route}: protected surface dependency set changed`);
-    for (const [absolute, source] of files) failures.push(...forbiddenSignals(source, `${route}:${path.relative(rootReal, absolute)}`));
-    for (const script of scripts.filter(({ src }) => !src)) failures.push(...forbiddenSignals(script.inline, `${route}:inline`));
-  } catch (error) { failures.push(`${route}: ${error.message}`); }
-}
-
-async function inspectVisitorAnalytics(rootReal, failures) {
-  const analyticsPath = path.resolve(rootReal, ANALYTICS_FILE);
-  let source;
-  try { source = await readFile(analyticsPath, 'utf8'); }
-  catch (error) { failures.push(`${ANALYTICS_FILE}: unavailable: ${error.code ?? error.message}`); return; }
-  const code = executableSource(source);
-  const fetches = [...code.matchAll(/\bfetch\s*\(/g)].length;
-  if (fetches !== 1) failures.push(`${ANALYTICS_FILE}: expected exactly one fetch, found ${fetches}`);
-  if (/\b(?:XMLHttpRequest|sendBeacon|WebSocket|EventSource|WebTransport)\b/.test(code)) failures.push(`${ANALYTICS_FILE}: unapproved network primitive`);
-  if (/\b(?:const|let|var)\s+\w+\s*=\s*fetch\s*[;,]/.test(code)) failures.push(`${ANALYTICS_FILE}: fetch aliases are not allowed`);
-  if (!code.includes(APPROVED_ANALYTICS_ORIGIN)) failures.push(`${ANALYTICS_FILE}: missing exact approved Supabase origin`);
-  if (!/credentials\s*:\s*['"]omit['"]/.test(code)) failures.push(`${ANALYTICS_FILE}: credentials must be omit`);
-  for (const key of SAFE_PAYLOAD_KEYS) if (!code.includes(key)) failures.push(`${ANALYTICS_FILE}: missing payload key ${key}`);
-  const forbiddenKeys = /\b(?:user_?id|session_?id|visitor_?id|email|phone|story|message|query|search|text|content|name|ip|address)\b/i;
-  const payload = code.match(/const\s+payload\s*=\s*\{([\s\S]*?)\};/)?.[1] ?? '';
-  if (forbiddenKeys.test(payload)) failures.push(`${ANALYTICS_FILE}: payload contains identifier or free-text field`);
-  if (/\b(?:localStorage|sessionStorage|indexedDB|cookieStore|document\s*\.\s*cookie)\b/.test(code)) failures.push(`${ANALYTICS_FILE}: persistent identifier storage is forbidden`);
-  if (/\b(?:location|document)\s*\.\s*(?:search|hash)\b|\bURLSearchParams\b/.test(code)) failures.push(`${ANALYTICS_FILE}: query or hash collection is forbidden`);
-  if (/\b(?:window|globalThis|self)\s*\[/.test(code)) failures.push(`${ANALYTICS_FILE}: unresolved computed global access`);
-}
-
-async function inspectHomepage(rootReal, failures) {
-  const htmlFile = path.resolve(rootReal, 'index.html');
-  let html;
-  try { html = await readFile(htmlFile, 'utf8'); }
-  catch (error) { failures.push(`homepage unavailable: ${error.code ?? error.message}`); return []; }
-  let files = new Map();
-  try {
-    const scripts = extractExecutableScripts(html, 'homepage');
-    const unexpectedInline = scripts.filter(({ src }) => !src && executableSource(src.inline).trim());
-    if (unexpectedInline.length) failures.push('homepage has unapproved inline executable code');
-    files = await buildLocalScriptClosure({ root: rootReal, htmlFile: 'index.html', allowExternal: true });
-  } catch (error) { failures.push(`homepage dependency graph: ${error.message}`); return []; }
-  const relativeFiles = [...files.keys()].map((entry) => path.relative(rootReal, entry).replaceAll(path.sep, '/')).sort();
-  if (JSON.stringify(relativeFiles) !== JSON.stringify([...APPROVED_HOME_CLOSURE].sort())) failures.push('homepage dependency set changed');
-  if (!relativeFiles.includes(ANALYTICS_FILE)) failures.push('homepage does not reach visitor-analytics.js through its real dependency graph');
-  for (const [absolute, source] of files) {
-    const relative = path.relative(rootReal, absolute).replaceAll(path.sep, '/');
-    if (relative === ANALYTICS_FILE) continue;
-    const code = executableSource(source);
-    if (/\b(?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|WebTransport)\b/.test(code)) failures.push(`${relative}: unapproved direct network primitive`);
-    for (const specifier of scriptSpecifiers(source)) {
-      if (/^(?:https?:)?\/\//i.test(specifier) && specifier !== APPROVED_HOME_EXTERNAL_MODULE) failures.push(`${relative}: unapproved external module ${specifier}`);
-    }
-  }
-  return relativeFiles;
-}
-
-async function inspectMeasurementBaseline(rootReal, failures) {
-  for (const file of MEASUREMENT_BASELINE) {
-    const absolute = path.resolve(rootReal, file);
-    let html;
-    try { html = await readFile(absolute, 'utf8'); }
-    catch (error) { failures.push(`measurement baseline unavailable: ${file}: ${error.code ?? error.message}`); continue; }
-    if (file !== 'index.html' && !html.includes('/public-page-runtime.js')) failures.push(`measurement baseline lost analytics wiring: ${file}`);
-    let scripts = [];
-    try { scripts = extractExecutableScripts(html, file); }
-    catch (error) { failures.push(`${file}: ${error.message}`); continue; }
-    for (const script of scripts.filter(({ src }) => !src)) failures.push(...forbiddenSignals(script.inline, `${file}:inline`));
-  }
-}
-
-async function inspectAnalyticsStorage(rootReal, failures) {
-  const relative = 'supabase/migrations/20260830002000_add_privacy_safe_pageview_analytics.sql';
+async function auditAnalyticsStorage(rootReal) {
+  const failures = [];
+  const migrationFile = path.join(rootReal, 'supabase/migrations/20260830002000_add_privacy_safe_pageview_analytics.sql');
   let sql;
-  try { sql = await readFile(path.resolve(rootReal, relative), 'utf8'); }
-  catch (error) { failures.push(`${relative}: unavailable: ${error.code ?? error.message}`); return; }
-  if (/\b(?:user_?id|session_?id|visitor_?id|email|phone|story|message|query|search|free_?text|content|full_?url|ip_?address)\b/i.test(sql)) failures.push(`${relative}: forbidden identifier or free-text column`);
-  const required = ['security definer', 'auth.uid() is not null', 'p_country_code', 'p_device_class', 'p_path', 'p_referrer_host'];
-  for (const marker of required) if (!sql.includes(marker)) failures.push(`${relative}: missing invariant: ${marker}`);
+  try { sql = await readFile(migrationFile, 'utf8'); }
+  catch (error) { return { failures: [`analytics migration unavailable: ${error.message}`] }; }
+  const normalized = sql
+    .replace(/--[^\n\r]*/g, ' ')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ')
+    .toLowerCase();
+  for (const required of [
+    'create table if not exists public.pageview_daily_analytics',
+    'primary key (day, path, referrer_host, country_code, device_class)',
+    'alter table public.pageview_daily_analytics enable row level security',
+    'revoke all on public.pageview_daily_analytics from anon, authenticated',
+    'security definer',
+    'set search_path = public',
+    'split_part(coalesce(p_path',
+    'grant execute on function public.record_privacy_safe_pageview(text,text,text,text) to anon, authenticated',
+  ]) if (!normalized.includes(required)) failures.push(`analytics migration missing invariant: ${required}`);
+  const tableBody = normalized.match(/create table if not exists public\.pageview_daily_analytics\s*\(([\s\S]*?)\);/)?.[1] ?? '';
+  if (!tableBody) failures.push('analytics table definition was not parsed');
+  if (/\b(?:ip|ip_address|user_id|session_id|visitor_id|email|phone|query|free_text|payload)\b/.test(tableBody)) failures.push('analytics table contains a forbidden identifier or free-text column');
+  return { failures: [...new Set(failures)] };
 }
 
-async function inspectSafetyInventory(rootReal, failures) {
-  const inventory = await readFile(path.resolve(rootReal, 'SAFETY_ROUTE_INVENTORY.md'), 'utf8');
-  const routes = [...inventory.matchAll(/^\| `([^`]+)` \|/gm)].map((match) => match[1]);
-  const unique = new Set(routes);
-  if (routes.length !== unique.size) failures.push('Safety inventory has duplicate routes');
-  for (const route of routes) {
-    if (!route.startsWith('/') || route.includes('..') || route.includes('?') || route.includes('#')) failures.push(`invalid Safety route: ${route}`);
-  }
-  const expected = new Set(['/ayuda-urgente.html','/alguien-cercano-ha-intentado-suicidarse/','/duelo/ha-muerto-por-suicidio-alguien-que-quiero/','/familia/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer/','/familia/un-familiar-tiene-una-adiccion-y-no-se-como-ayudarle/','/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/','/me-preocupa-que-alguien-pueda-suicidarse/','/mi-pareja-me-maltrata-y-no-se-que-hacer/']);
-  if (unique.size !== expected.size || [...expected].some((route) => !unique.has(route))) failures.push('Safety inventory route sets differ');
+function routesFromInventory(markdown) {
+  const section = markdown.split('## P0/P1 — monetización denegada por construcción')[1]?.split('\n## ')[0] ?? '';
+  return [...section.matchAll(/^\|\s*`(\/[^`]+)`\s*\|/gm)].map((match) => match[1]);
+}
+
+function routesFromPolicy(markdown) {
+  const section = markdown.match(/## Inventario automatizado actual([\s\S]*?)(?=\n## )/)?.[1] ?? '';
+  return [...section.matchAll(/`(\/[^`]+)`/g)].map((match) => match[1]);
+}
+
+function routeToFile(route) {
+  const normalized = route.replace(/^\/+/, '');
+  return normalized.endsWith('.html') ? normalized : `${normalized.replace(/\/+$/, '')}/index.html`;
 }
 
 export async function auditLaunchMeasurementSafety({ root = DEFAULT_ROOT } = {}) {
   const rootReal = await realpath(root);
   const failures = [];
-  await assertPinnedFiles(rootReal, failures);
-  await inspectVisitorAnalytics(rootReal, failures);
-  const homepageDependencyFiles = await inspectHomepage(rootReal, failures);
-  await inspectProtectedSurface({ rootReal, route: '/buscar/', file: 'buscar/index.html', expectedFiles: APPROVED_SEARCH_CLOSURE, expectedInline: [], failures });
-  await inspectProtectedSurface({ rootReal, route: '/ayuda-urgente.html', file: 'ayuda-urgente.html', expectedFiles: [], expectedInline: APPROVED_PROTECTED_INLINE.get('/ayuda-urgente.html') ?? [], failures });
-  await inspectMeasurementBaseline(rootReal, failures);
-  await inspectAnalyticsStorage(rootReal, failures);
-  await inspectSafetyInventory(rootReal, failures);
+  const pinnedFiles = [];
+  for (const [file, expected] of PINNED_MEASUREMENT_FILES) {
+    try {
+      const source = await readFile(path.join(rootReal, file));
+      const actual = createHash('sha256').update(source).digest('hex');
+      pinnedFiles.push({ file, expected_sha256: expected, actual_sha256: actual });
+      if (actual !== expected) failures.push(`pinned measurement file changed: ${file}`);
+    } catch (error) { failures.push(`pinned measurement file unavailable: ${file}: ${error.message}`); }
+  }
+  const inventory = routesFromInventory(await readFile(path.join(rootReal, 'SAFETY_ROUTE_INVENTORY.md'), 'utf8'));
+  const policy = routesFromPolicy(await readFile(path.join(rootReal, 'SAFETY_MONETIZATION_POLICY.md'), 'utf8'));
+  if (!inventory.length) failures.push('Safety inventory has no P0/P1 routes');
+  if (new Set(inventory).size !== inventory.length) failures.push('Safety inventory contains duplicate routes');
+  if (JSON.stringify([...inventory].sort()) !== JSON.stringify([...policy].sort())) failures.push('Safety inventory and monetization policy route sets differ');
+  const routeFiles = inventory.map(routeToFile);
+  if (new Set(routeFiles).size !== routeFiles.length) failures.push('Safety routes collide on the same file');
+
+  const surfaces = [];
+  for (const [route, htmlFile] of [...inventory.map((route) => [route, routeToFile(route)]), ['/buscar/', 'buscar/index.html']]) {
+    if (route.includes('..') || !route.startsWith('/')) { failures.push(`invalid Safety route: ${route}`); continue; }
+    const result = await auditHtmlEntry({ root: rootReal, htmlFile, protectedSurface: true });
+    surfaces.push({ route, ...result });
+    failures.push(...result.failures);
+    const approved = route === '/buscar/' ? APPROVED_SEARCH_CLOSURE : [];
+    if (JSON.stringify(result.files) !== JSON.stringify(approved)) failures.push(`protected surface dependency set changed: ${route}`);
+    if (route !== '/buscar/') {
+      const approvedInline = APPROVED_PROTECTED_INLINE.get(route) ?? [];
+      if (JSON.stringify(result.inline_hashes ?? []) !== JSON.stringify(approvedInline)) failures.push(`protected surface inline executable set changed: ${route}`);
+    }
+  }
+
+  let homeFiles = [];
+  try {
+    const home = await buildLocalScriptClosure({ root: rootReal, htmlFile: 'index.html', allowExternal: true });
+    homeFiles = [...home.files.keys()].map((file) => path.relative(rootReal, file)).sort();
+    if (!homeFiles.includes(ANALYTICS_FILE)) failures.push('homepage dependency graph does not reach visitor-analytics.js');
+    if (JSON.stringify(homeFiles) !== JSON.stringify(APPROVED_HOME_CLOSURE)) failures.push('homepage dependency set changed');
+    if (home.inline.some((item) => stripComments(item.source).trim())) failures.push('homepage has unapproved inline executable code');
+    for (const [file, source] of home.files) {
+      const relative = path.relative(rootReal, file);
+      if (relative !== ANALYTICS_FILE && /\b(?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|WebTransport)\b/.test(executableSource(source))) {
+        failures.push(`homepage dependency ${relative} contains an unapproved direct network primitive`);
+      }
+      for (const specifier of scriptSpecifiers(source).filter((item) => /^(?:https?:)?\/\//i.test(item))) {
+        if (specifier !== APPROVED_HOME_EXTERNAL_MODULE) failures.push(`homepage dependency ${relative} loads an unapproved external module: ${specifier}`);
+      }
+    }
+  } catch (error) { failures.push(`homepage dependency graph: ${error.message}`); }
+  const analytics = await auditAnalyticsRuntime({ root: rootReal });
+  failures.push(...analytics.failures);
+  const storage = await auditAnalyticsStorage(rootReal);
+  failures.push(...storage.failures);
+
+  const measuredBaseline = [];
+  for (const htmlFile of MEASUREMENT_BASELINE) {
+    try {
+      const closure = await buildLocalScriptClosure({ root: rootReal, htmlFile, allowExternal: true });
+      const files = [...closure.files.keys()].map((file) => path.relative(rootReal, file));
+      if (!files.includes(ANALYTICS_FILE)) failures.push(`measurement baseline lost analytics wiring: ${htmlFile}`);
+      else measuredBaseline.push(htmlFile);
+      if (htmlFile !== 'index.html') {
+        for (const script of closure.scripts) {
+          if (script.src && script.src !== '/public-page-runtime.js') failures.push(`measurement baseline ${htmlFile} has an unapproved script: ${script.src}`);
+          if (!script.src) auditProtectedCode(`${htmlFile}:inline`, script.inline, failures);
+          if (!script.src && stripComments(script.inline).trim()) failures.push(`measurement baseline ${htmlFile} has unapproved inline executable code`);
+        }
+      }
+    } catch (error) { failures.push(`measurement baseline ${htmlFile}: ${error.message}`); }
+  }
+  for (const protectedFile of [...routeFiles, 'buscar/index.html']) {
+    if (MEASUREMENT_BASELINE.includes(protectedFile)) failures.push(`protected surface entered measurement baseline: ${protectedFile}`);
+  }
+
+  for (const file of [ANALYTICS_FILE, 'index.html', ...routeFiles, 'buscar/index.html']) {
+    try { await stat(path.join(rootReal, file)); }
+    catch { failures.push(`required launch file missing: ${file}`); }
+  }
+  const uniqueFailures = [...new Set(failures)].sort();
   return {
-    decision: failures.length ? 'HOLD' : 'MEASUREMENT_GO_WITH_SELECTIVE_EXPANSION',
-    hard_failures: failures,
-    homepage_dependency_files: homepageDependencyFiles,
-    measurement_baseline: [...MEASUREMENT_BASELINE],
-    protected_surfaces: [
-      { route: '/buscar/', analytics_allowed: false, dependency_files: [...APPROVED_SEARCH_CLOSURE] },
-      { route: '/ayuda-urgente.html', analytics_allowed: false, dependency_files: [] },
-    ],
+    decision: uniqueFailures.length ? 'HOLD' : 'MEASUREMENT_GO_WITH_SELECTIVE_EXPANSION',
+    hard_failures: uniqueFailures,
+    protected_routes: inventory,
+    protected_surfaces: surfaces,
+    homepage_dependency_files: homeFiles,
+    analytics,
+    analytics_storage: storage,
+    pinned_measurement_files: pinnedFiles,
+    measurement_baseline: measuredBaseline,
   };
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const report = await auditLaunchMeasurementSafety();
   console.log(JSON.stringify(report, null, 2));
-  if (report.decision === 'HOLD') process.exitCode = 1;
+  if (report.hard_failures.length) process.exitCode = 1;
 }
