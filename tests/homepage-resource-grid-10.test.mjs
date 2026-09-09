@@ -19,8 +19,8 @@ const expected = [
 
 test('la primera vista de Recursos declara exactamente diez rutas autorizadas', () => {
   for (const [label, href] of expected) {
-    assert.match(script, new RegExp(`label: '${label.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}'`));
-    assert.match(script, new RegExp(`href: '${href.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}'`));
+    assert.ok(script.includes(`label: '${label}'`), `Falta la tarjeta ${label}`);
+    assert.ok(script.includes(`href: '${href}'`), `Falta la ruta ${href}`);
   }
 
   const declaredResources = [...script.matchAll(/\{ label: '/g)];
