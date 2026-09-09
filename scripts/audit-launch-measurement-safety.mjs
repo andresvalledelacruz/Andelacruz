@@ -15,7 +15,7 @@ const PINNED_MEASUREMENT_FILES = new Map([
   ['public-page-runtime.js', 'a0654d52caf4b7fbb5c191a609a6336c8d25ff8814aadd7142afc811ca405845'],
   ['visitor-analytics.js', '3ca9ed490f749aea8f9728e0f762a26c42f4d390658954fbb13dd98b1cc99031'],
   ['supabase/migrations/20260830002000_add_privacy_safe_pageview_analytics.sql', '384c3210cd9e38c9922efda675eb9eae1e0104e0dc77103075c0cb08e61f5a9c'],
-  ['buscar/index.html', '0b4b89c45cc807a4aaccec48313ed5155af217611dfc926c291d1335dddbb567'],
+  ['buscar/index.html', '046eee373b9c2ea83fa293f254a212a7df23371aef03157d9f874954a25730f7'],
   ['app-core.js', 'db6908a65b1696a6926aa6271e8b9435cbe58f5f92d26746db6150cafbd95092'],
   ['next-step-adapter.js', '488372c8bde96402afe8bf87fae0a6ff368a06e9cab69c3090f7e03419436641'],
   ['next-step-guidance.js', 'ead14c25e029c01173f01f1cae6047e13644b329e073d6792da8f8e8c8268915'],
@@ -23,7 +23,7 @@ const PINNED_MEASUREMENT_FILES = new Map([
   ['search-home-entry.js', 'd4d9f174706b7b89da6861ce8c10b0b437d20d276c00c68266d80faee14418c5'],
   ['urgent-help-nav.js', '118be1f2b753ae750f9b51eff69dda6ea8834df2734d014dabd314b2e3f221b7'],
   ['src/search-clarification.js', '4044c9d91594583cb3ff78eb696c0eca73257dd558917ebf81ba5493f63ee55c'],
-  ['src/search-content-catalog.js', '6c76e5357d885ff55932581cf5982e6a0fd736f8136371dd0f0774e498032abe'],
+  ['src/search-content-catalog.js', '205f1af6a0698faf58dafb0509d2035df6839d7d1e0cc3d3cd153e2682c89fb2'],
   ['src/search-crisis-router.js', '8f278bfeff60ce090de277b393c2c1848a2cec71b734968ddb5d00b9044796c7'],
   ['src/suicide-context-classifier.js', '2cf96cb615bcce941ab1a8546a6a1ede8cd8d66698d194759696d2a84e880d17'],
 ]);
