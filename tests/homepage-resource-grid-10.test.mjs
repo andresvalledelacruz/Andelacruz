@@ -19,15 +19,15 @@ const expected = [
 
 test('la primera vista de Recursos declara exactamente diez rutas autorizadas', () => {
   for (const [label, href] of expected) {
-    assert.ok(script.includes(`label: '${label}'`), `Falta la tarjeta ${label}`);
-    assert.ok(script.includes(`href: '${href}'`), `Falta la ruta ${href}`);
+    assert.ok(script.includes(`['${label}', '${href}']`), `Falta ${label} -> ${href}`);
   }
 
-  const declaredResources = [...script.matchAll(/\{ label: '/g)];
-  assert.equal(declaredResources.length, 10);
+  const routesBlock = script.match(/const routes = new Map\(\[([\s\S]*?)\]\);/)?.[1] ?? '';
+  assert.equal([...routesBlock.matchAll(/^\s*\['/gm)].length, 10);
 });
 
 test('la tarjeta de suicidio conserva tratamiento P0 y deriva a ayuda urgente', () => {
-  assert.match(script, /label: 'Suicidio',[\s\S]*href: '\/ayuda-urgente\.html'[\s\S]*safety: 'P0'/);
+  assert.ok(script.includes("['Suicidio', '/ayuda-urgente.html']"));
+  assert.match(script, /\['Suicidio', \{[^\n]*safety: 'P0'/);
   assert.match(script, /Ver ayuda ahora/);
 });
