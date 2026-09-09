@@ -55,6 +55,44 @@ function normalize(value = '') {
     .trim();
 }
 
+const STOP_WORDS = new Set(['a', 'al', 'con', 'de', 'del', 'el', 'en', 'es', 'esta', 'ha', 'la', 'las', 'lo', 'los', 'me', 'mi', 'mis', 'no', 'para', 'pero', 'por', 'que', 'se', 'sin', 'su', 'tengo', 'un', 'una', 'y', 'ya']);
+
+const VOCABULARY = Object.freeze({
+  novio: 'pareja', novia: 'pareja', marido: 'pareja', mujer: 'pareja', esposo: 'pareja', esposa: 'pareja',
+  termino: 'romper', terminamos: 'romper', separo: 'romper', separacion: 'romper', ruptura: 'romper', dejado: 'romper',
+  olvidar: 'pensar', obsesionado: 'pensar', obsesionada: 'pensar', cabeza: 'pensar', pienso: 'pensar', pensando: 'pensar',
+  whatsapp: 'bloqueado', bloqueo: 'bloqueado', elimino: 'bloqueado', redes: 'bloqueado',
+  ninos: 'hijos', ninas: 'hijos', hijo: 'hijos', hija: 'hijos', custodia: 'hijos',
+  solo: 'soledad', sola: 'soledad', aislado: 'soledad', aislada: 'soledad',
+  colegas: 'amigos', amistades: 'amigos',
+  quemado: 'desbordado', quemada: 'desbordada', agotado: 'desbordado', agotada: 'desbordada', laboral: 'trabajo',
+  curriculums: 'curriculum', cv: 'curriculum', entrevistas: 'curriculum',
+  nomina: 'sueldo', salario: 'sueldo', alcanza: 'llega', gastos: 'dinero',
+  banco: 'cuenta', saldo: 'cuenta', bancaria: 'cuenta', angustia: 'miedo', revisar: 'mirar',
+  fallecio: 'murio', fallecido: 'murio', fallecida: 'murio', adios: 'despedirme'
+});
+
+function tokens(value) {
+  return normalize(value).split(' ').filter((token) => token.length > 2 && !STOP_WORDS.has(token)).map((token) => VOCABULARY[token] || token);
+}
+
+function vocabularyMatch(text) {
+  const queryTokens = new Set(tokens(text));
+  if (queryTokens.size < 2) return null;
+
+  const ranked = RULES.map((rule) => {
+    const score = Math.max(...rule.phrases.map((phrase) => {
+      const phraseTokens = new Set(tokens(phrase));
+      const overlap = [...phraseTokens].filter((token) => queryTokens.has(token)).length;
+      return overlap / Math.max(phraseTokens.size, 1);
+    }));
+    return { rule, score };
+  }).sort((a, b) => b.score - a.score);
+
+  const [best, second] = ranked;
+  return best.score >= 0.66 && best.score - (second?.score || 0) >= 0.12 ? best.rule : null;
+}
+
 function containsSafetyLanguage(text) {
   return [
     'suicid', 'quiero morir', 'me voy a matar', 'matarme', 'hacerme dano',
@@ -95,6 +133,21 @@ export function routeKnownContentQuery(query = '') {
         diagnostic: false
       });
     }
+  }
+
+  const broaderMatch = vocabularyMatch(text);
+  if (broaderMatch) {
+    return Object.freeze({
+      matched: true,
+      needs_clarification: false,
+      intent: broaderMatch.intent,
+      confidence: 'medium',
+      route: Object.freeze({ url: broaderMatch.url, label: broaderMatch.label }),
+      safety_level: 'NONE',
+      suppress_commercial_ui: false,
+      raw_query_retained: false,
+      diagnostic: false
+    });
   }
 
   return Object.freeze({ matched: false, needs_clarification: true, raw_query_retained: false });
