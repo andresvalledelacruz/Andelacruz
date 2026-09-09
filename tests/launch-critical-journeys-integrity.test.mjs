@@ -23,8 +23,7 @@ function canonicalOf(html) {
   return matches[0][1];
 }
 
-const indexedJourneys = [
-  '/ayuda-urgente.html',
+const sitemapJourneys = [
   '/me-preocupa-que-alguien-pueda-suicidarse/',
   '/mi-pareja-me-maltrata-y-no-se-que-hacer/',
   '/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/',
@@ -36,19 +35,29 @@ const indexedJourneys = [
   '/dinero/me-da-miedo-mirar-mi-cuenta/',
   '/duelo/no-pude-despedirme/'
 ];
+const urgentRoute = '/ayuda-urgente.html';
+const allCriticalJourneys = [urgentRoute, ...sitemapJourneys];
 
-test('launch D5 keeps critical journeys physically present, canonical and discoverable', () => {
+test('launch D5 keeps sitemap-backed critical journeys physical and canonical', () => {
   const sitemap = read('sitemap.xml');
   const sitemapLocs = new Set([...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]));
 
-  for (const route of indexedJourneys) {
+  for (const route of sitemapJourneys) {
     const relative = routeToFile(route);
     assert.equal(fs.existsSync(path.join(root, relative)), true, `${route} must resolve to ${relative}`);
-    const html = read(relative);
     const expectedCanonical = `${origin}${route}`;
-    assert.equal(canonicalOf(html), expectedCanonical, `${route} canonical must match its public URL`);
+    assert.equal(canonicalOf(read(relative)), expectedCanonical, `${route} canonical must match its public URL`);
     assert.equal(sitemapLocs.has(expectedCanonical), true, `${route} must be present in sitemap.xml`);
   }
+});
+
+test('launch D5 keeps urgent help directly resolvable and canonical without widening its SEO contract', () => {
+  const relative = routeToFile(urgentRoute);
+  assert.equal(fs.existsSync(path.join(root, relative)), true, `${urgentRoute} must resolve to ${relative}`);
+  const urgent = read(relative);
+  assert.equal(canonicalOf(urgent), `${origin}${urgentRoute}`);
+  assert.match(urgent, /href=["']tel:112["']/i);
+  assert.match(urgent, /href=["']tel:024["']/i);
 });
 
 test('launch D5 keeps private search out of sitemap and explicitly noindex', () => {
@@ -64,7 +73,7 @@ test('launch D5 keeps robots, sitemap and 404 recovery mutually coherent', () =>
   assert.match(robots, /^User-agent:\s*\*$/m);
   assert.match(robots, /^Allow:\s*\/$/m);
   assert.match(robots, /^Sitemap:\s*https:\/\/desgracias\.es\/sitemap\.xml$/m);
-  for (const route of indexedJourneys) {
+  for (const route of allCriticalJourneys) {
     assert.equal(robots.includes(`Disallow: ${route}`), false, `${route} must not be blocked by robots.txt`);
   }
   assert.match(notFound, /name=["']robots["'][^>]*noindex|noindex[^>]*name=["']robots["']/i);
