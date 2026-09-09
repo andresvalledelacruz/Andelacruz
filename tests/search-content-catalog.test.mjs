@@ -65,6 +65,29 @@ test('Safety-like language is never claimed by the ordinary content catalog', ()
   }
 });
 
+test('understands broader colloquial vocabulary without requiring a literal phrase', () => {
+  const cases = [
+    ['ayer mi novio termino conmigo y estoy perdido', '/rupturas/mi-pareja-me-ha-dejado/'],
+    ['tengo a mi ex metido en la cabeza durante todo el dia', '/rupturas/no-puedo-dejar-de-pensar-en-mi-ex/'],
+    ['estoy quemada y no puedo con tanta carga laboral', '/trabajo/no-puedo-mas-en-el-trabajo/'],
+    ['el sueldo no alcanza para cubrir todos los gastos mensuales', '/dinero/no-llego-a-fin-de-mes/'],
+    ['me angustia revisar el saldo de la cuenta bancaria', '/dinero/me-da-miedo-mirar-mi-cuenta/'],
+    ['fallecio antes de que pudiera decirle adios', '/duelo/no-pude-despedirme/']
+  ];
+
+  for (const [query, expected] of cases) {
+    const result = routeKnownContentQuery(query);
+    assert.equal(result.matched, true, query);
+    assert.equal(result.route.url, expected, query);
+  }
+});
+
+test('does not guess when two ordinary topics are equally plausible', () => {
+  const result = routeKnownContentQuery('tengo problemas con mi familia y con mi pareja');
+  assert.equal(result.matched, false);
+  assert.equal(result.needs_clarification, true);
+});
+
 test('unknown and empty wording ask for clarification without retention', () => {
   for (const query of ['', 'no se muy bien que me pasa']) {
     const result = routeKnownContentQuery(query);
