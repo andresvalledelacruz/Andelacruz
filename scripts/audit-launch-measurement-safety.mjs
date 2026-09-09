@@ -15,7 +15,7 @@ const PINNED_MEASUREMENT_FILES = new Map([
   ['public-page-runtime.js', 'a0654d52caf4b7fbb5c191a609a6336c8d25ff8814aadd7142afc811ca405845'],
   ['visitor-analytics.js', '3ca9ed490f749aea8f9728e0f762a26c42f4d390658954fbb13dd98b1cc99031'],
   ['supabase/migrations/20260830002000_add_privacy_safe_pageview_analytics.sql', '384c3210cd9e38c9922efda675eb9eae1e0104e0dc77103075c0cb08e61f5a9c'],
-  ['buscar/index.html', '046eee373b9c2ea83fa293f254a212a7df23371aef03157d9f874954a25730f7'],
+  ['buscar/index.html', '97fc7f3a439f6a6f9e7ce3339e0b45b6ba8eebdf821e9a6949b2a1356ef6f2f4'],
   ['app-core.js', 'db6908a65b1696a6926aa6271e8b9435cbe58f5f92d26746db6150cafbd95092'],
   ['next-step-adapter.js', '488372c8bde96402afe8bf87fae0a6ff368a06e9cab69c3090f7e03419436641'],
   ['next-step-guidance.js', 'ead14c25e029c01173f01f1cae6047e13644b329e073d6792da8f8e8c8268915'],
