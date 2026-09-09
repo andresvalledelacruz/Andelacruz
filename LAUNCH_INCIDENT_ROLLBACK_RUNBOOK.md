@@ -76,3 +76,5 @@ Este runbook no declara resueltos: #147 procedencia/licencia `manos-apoyo`; #117
 ## Ensayo seguro previo al lanzamiento
 
 El ensayo no debe introducir un defecto real en producción. Se valida el procedimiento mediante una rama efímera desde producción: cambio inocuo y aislado en documentación, commit de reversión en la misma rama y comprobación de que el árbol final coincide con el SHA base para ese archivo. El ensayo se documenta; no se fusiona un cambio destructivo para probar rollback.
+
+<!-- ROLLBACK_REHEARSAL_TRANSIENT_MARKER_2026-09-09: never merge -->
