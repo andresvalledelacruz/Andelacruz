@@ -1,6 +1,6 @@
 # Inventario Safety de superficies públicas
 
-Fecha de auditoría: 2026-09-01.
+Fecha de auditoría: 2026-09-09.
 
 Este inventario sirve como control conservador para separar contenido crítico de cualquier monetización futura. La inclusión aquí no diagnostica ni clasifica clínicamente a una persona; clasifica la superficie de producto por el nivel de precaución requerido.
 
@@ -15,10 +15,11 @@ Este inventario sirve como control conservador para separar contenido crítico d
 | `/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/` | violencia sexual | sin monetización |
 | `/duelo/ha-muerto-por-suicidio-alguien-que-quiero/` | posvención con bloque explícito de ideación suicida del lector | 112 + 024 + fuente oficial Sanidad |
 | `/dinero/tengo-deudas-y-no-se-por-donde-empezar/` | presión financiera intensa con bloque explícito de riesgo personal y decisiones patrimoniales de alto impacto | 112 + 024 + fuente oficial Sanidad |
+| `/violencia/` | puerta de entrada transversal a violencia, abuso y acoso con posibles situaciones de peligro inmediato | sin monetización; 112 visible y 016 con alcance específico |
 
 ## Regla de alta
 
-Toda nueva superficie P0/P1 debe entrar en este inventario y en `tests/p0-p1-noncommercial-invariant.test.mjs` dentro del mismo PR. Si necesita recursos oficiales específicos, el Safety Gate debe comprobarlos explícitamente.
+Toda nueva superficie P0/P1 debe entrar en este inventario y quedar cubierta por `tests/p0-p1-noncommercial-invariant.test.mjs` dentro del mismo PR. Si necesita recursos oficiales específicos, el Safety Gate debe comprobarlos explícitamente.
 
 ## Regla de duda
 

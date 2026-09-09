@@ -19,7 +19,7 @@ const PINNED_MEASUREMENT_FILES = new Map([
   ['app-core.js', 'db6908a65b1696a6926aa6271e8b9435cbe58f5f92d26746db6150cafbd95092'],
   ['next-step-adapter.js', '488372c8bde96402afe8bf87fae0a6ff368a06e9cab69c3090f7e03419436641'],
   ['next-step-guidance.js', 'ead14c25e029c01173f01f1cae6047e13644b329e073d6792da8f8e8c8268915'],
-  ['resource-links.js', '5c27a72111173769c899daf9e7ff1945045e01eb035945d7142643c1a445a6a7'],
+  ['resource-links.js', 'ddbdcd243c7981d73238463f5ad9849fbf99b8bc0f1a3164290c536aaea4c066'],
   ['search-home-entry.js', 'd4d9f174706b7b89da6861ce8c10b0b437d20d276c00c68266d80faee14418c5'],
   ['urgent-help-nav.js', '118be1f2b753ae750f9b51eff69dda6ea8834df2734d014dabd314b2e3f221b7'],
   ['src/search-clarification.js', '4044c9d91594583cb3ff78eb696c0eca73257dd558917ebf81ba5493f63ee55c'],

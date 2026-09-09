@@ -27,9 +27,10 @@ El test `tests/p0-p1-noncommercial-invariant.test.mjs` protege actualmente las s
 - `/mi-pareja-me-maltrata-y-no-se-que-hacer/`;
 - `/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/`;
 - `/duelo/ha-muerto-por-suicidio-alguien-que-quiero/`;
-- `/dinero/tengo-deudas-y-no-se-por-donde-empezar/`.
+- `/dinero/tengo-deudas-y-no-se-por-donde-empezar/`;
+- `/violencia/`.
 
-Las rutas de suicidio incluidas en este inventario conservan además una comprobación específica de acceso al 112, 024 y fuente oficial del Ministerio de Sanidad.
+Las rutas de suicidio incluidas en este inventario conservan además una comprobación específica de acceso al 112, 024 y fuente oficial del Ministerio de Sanidad. La nueva puerta transversal de violencia queda igualmente fuera de monetización y mantiene acceso visible al 112 y el 016 únicamente con su alcance específico frente a la violencia contra las mujeres.
 
 Este inventario es deliberadamente conservador: incluir una ruta impide monetizarla por accidente; excluirla no autoriza monetización. Cada nueva URL P0/P1 deberá añadirse al inventario protegido en el mismo PR que la crea. No se considera completa una nueva ruta crítica sin esta cobertura.
 
