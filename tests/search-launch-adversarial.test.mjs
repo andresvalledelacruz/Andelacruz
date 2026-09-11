@@ -1,11 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
 import { routeSearchQuery } from '../src/search-crisis-router.js';
 import { routeKnownContentQuery } from '../src/search-content-catalog.js';
-
-console.log('ROUTER_SHA256', createHash('sha256').update(readFileSync(new URL('../src/search-crisis-router.js', import.meta.url))).digest('hex'));
 
 function routeLaunchQuery(query) {
   const safety = routeSearchQuery(query);
