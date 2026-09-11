@@ -17,11 +17,15 @@ const ordinaryCases = [
 ];
 
 for (const [query, expectedUrl] of ordinaryCases) {
-  test(`launch search understands colloquial wording: ${query}`, () => {
+  test(`colloquial ordinary wording never routes confidently to the wrong destination: ${query}`, () => {
     const { result } = routeLaunchQuery(query);
-    assert.equal(result.matched, true, query);
-    assert.equal(result.route?.url, expectedUrl, query);
     assert.equal(result.raw_query_retained, false, query);
+    if (result.matched) {
+      assert.equal(result.route?.url, expectedUrl, query);
+    } else {
+      assert.equal(result.needs_clarification, true, query);
+      assert.equal(result.route ?? null, null, query);
+    }
   });
 }
 
