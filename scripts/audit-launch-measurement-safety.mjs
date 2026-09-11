@@ -24,7 +24,7 @@ const PINNED_MEASUREMENT_FILES = new Map([
   ['urgent-help-nav.js', '118be1f2b753ae750f9b51eff69dda6ea8834df2734d014dabd314b2e3f221b7'],
   ['src/search-clarification.js', '4044c9d91594583cb3ff78eb696c0eca73257dd558917ebf81ba5493f63ee55c'],
   ['src/search-content-catalog.js', '205f1af6a0698faf58dafb0509d2035df6839d7d1e0cc3d3cd153e2682c89fb2'],
-  ['src/search-crisis-router.js', '8f278bfeff60ce090de277b393c2c1848a2cec71b734968ddb5d00b9044796c7'],
+  ['src/search-crisis-router.js', '318aed3141fe0b36b92d4e6e726afd38d9af1624cd14d68b8ad0d2159102b992'],
   ['src/suicide-context-classifier.js', '2cf96cb615bcce941ab1a8546a6a1ede8cd8d66698d194759696d2a84e880d17'],
 ]);
 const APPROVED_HOME_CLOSURE = [
