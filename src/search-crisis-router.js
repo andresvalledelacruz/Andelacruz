@@ -147,7 +147,8 @@ function activeSelfHarmFallback(text) {
 function concernForSomeoneFallback(text) {
   const otherPerson = containsAny(text, [
     'mi hijo', 'mi hija', 'mi hermano', 'mi hermana', 'mi padre', 'mi madre',
-    'mi marido', 'mi mujer', 'mi pareja', 'mi amigo', 'mi amiga', 'alguien', 'una persona'
+    'mi marido', 'mi mujer', 'mi pareja', 'mi novio', 'mi novia',
+    'mi amigo', 'mi amiga', 'alguien', 'una persona'
   ]);
   const concern = containsAny(text, [
     'quiere morir', 'no quiere vivir', 'se quiere suicidar', 'se va a matar',
@@ -166,8 +167,8 @@ function suicideBereavementFallback(text) {
 function postAttemptSupportFallback(text) {
   const otherPerson = containsAny(text, [
     'mi hijo', 'mi hija', 'mi hermano', 'mi hermana', 'mi padre', 'mi madre',
-    'mi marido', 'mi mujer', 'mi pareja', 'mi amigo', 'mi amiga',
-    'alguien cercano', 'una persona cercana'
+    'mi marido', 'mi mujer', 'mi pareja', 'mi novio', 'mi novia',
+    'mi amigo', 'mi amiga', 'alguien cercano', 'una persona cercana'
   ]);
   const attempt = containsAny(text, [
     'ha intentado suicidarse', 'intento suicidarse', 'trato de suicidarse',
@@ -201,7 +202,7 @@ function genericImmediateDanger(text) {
 }
 
 function withoutNonCurrentSafetyMentions(text) {
-  const signals = '(?:mi (?:pareja|marido|mujer) me (?:pega(?: ahora)?|esta pegando|va a matar)|me esta pegando mi (?:pareja|marido|mujer)|me estan violando|me esta violando|me han violado|me violo|me estan agrediendo sexualmente|me esta agrediendo sexualmente|agresion sexual ahora|estoy en peligro(?: inmediato)?(?: con mi pareja)?|hay peligro inmediato|necesito ayuda (?:urgente|inmediata)(?: ahora)?|corro peligro ahora)';
+  const signals = '(?:mi (?:pareja|marido|mujer|novio|novia) me (?:pega(?: ahora)?|esta pegando|va a matar)|me esta pegando mi (?:pareja|marido|mujer|novio|novia)|me estan violando|me esta violando|me han violado|me violo|me estan agrediendo sexualmente|me esta agrediendo sexualmente|agresion sexual ahora|estoy en peligro(?: inmediato)?(?: con mi (?:pareja|novio|novia))?|hay peligro inmediato|necesito ayuda (?:urgente|inmediata)(?: ahora)?|corro peligro ahora)';
   const patterns = [
     new RegExp(`\\b(?:no|ya no)\\s+${signals}\\b`, 'g'),
     new RegExp(`\\bno (?:es cierto|es verdad) que\\s+${signals}\\b`, 'g'),
@@ -220,11 +221,13 @@ function withoutNonCurrentSafetyMentions(text) {
 
 function activePartnerViolence(text) {
   return containsAny(text, [
-    'mi pareja me pega ahora', 'mi marido me pega ahora', 'mi mujer me pega ahora',
-    'mi pareja me esta pegando', 'mi marido me esta pegando', 'mi mujer me esta pegando',
-    'me esta pegando mi pareja', 'me esta pegando mi marido', 'me esta pegando mi mujer',
-    'mi pareja me va a matar', 'mi marido me va a matar', 'mi mujer me va a matar',
+    'mi pareja me pega ahora', 'mi marido me pega ahora', 'mi mujer me pega ahora', 'mi novio me pega ahora', 'mi novia me pega ahora',
+    'mi pareja me esta pegando', 'mi marido me esta pegando', 'mi mujer me esta pegando', 'mi novio me esta pegando', 'mi novia me esta pegando',
+    'me esta pegando mi pareja', 'me esta pegando mi marido', 'me esta pegando mi mujer', 'me esta pegando mi novio', 'me esta pegando mi novia',
+    'mi pareja me va a matar', 'mi marido me va a matar', 'mi mujer me va a matar', 'mi novio me va a matar', 'mi novia me va a matar',
     'estoy en peligro con mi pareja', 'estoy en peligro inmediato con mi pareja',
+    'estoy en peligro con mi novio', 'estoy en peligro inmediato con mi novio',
+    'estoy en peligro con mi novia', 'estoy en peligro inmediato con mi novia',
     'en realidad me esta pegando'
   ]);
 }
@@ -317,7 +320,6 @@ function matchIntent(text) {
     };
   }
 
-
   if (genericImmediateDanger(currentSafetyText)) {
     return {
       route: ROUTES.active_self_harm,
@@ -332,7 +334,12 @@ function matchIntent(text) {
   if (containsAny(currentSafetyText, ['agresion sexual', 'violacion', 'abuso sexual', 'me han violado', 'me violo'])) {
     return { route: ROUTES.sexual_violence, confidence: 'high' };
   }
-  if (containsAny(currentSafetyText, ['mi pareja me pega', 'mi pareja me maltrata', 'mi marido me pega', 'mi mujer me pega', 'me controla mi pareja', 'tengo miedo de mi pareja'])) {
+  if (containsAny(currentSafetyText, [
+    'mi pareja me pega', 'mi pareja me maltrata', 'mi marido me pega', 'mi mujer me pega',
+    'mi novio me pega', 'mi novia me pega', 'mi novio me maltrata', 'mi novia me maltrata',
+    'me controla mi pareja', 'me controla mi novio', 'me controla mi novia',
+    'tengo miedo de mi pareja', 'tengo miedo de mi novio', 'tengo miedo de mi novia'
+  ])) {
     return { route: ROUTES.intimate_partner_violence, confidence: 'high' };
   }
   if (containsAny(text, ['tengo deudas', 'muchas deudas', 'no se por donde empezar con mis deudas', 'no puedo pagar mis deudas'])) {
