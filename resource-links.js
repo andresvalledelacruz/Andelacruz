@@ -15,6 +15,19 @@
     ['Suicidio', '/ayuda-urgente.html']
   ]);
 
+  const RESOURCE_ORDER = [
+    'Suicidio',
+    'Violencia, abuso y acoso',
+    'Duelo y pérdidas',
+    'Ansiedad y desbordamiento',
+    'Gestión emocional',
+    'Soledad',
+    'Salud y enfermedad',
+    'Trabajo y dinero',
+    'Rupturas y relaciones',
+    'Familia'
+  ];
+
   const presentation = new Map([
     ['Gestión emocional', { icon: '♡', copy: 'Entender lo que sientes y ponerle nombre.' }],
     ['Rupturas y relaciones', { icon: '◎', copy: 'Ideas para atravesar cambios sentimentales.' }],
@@ -99,5 +112,17 @@
     cue.textContent = link.dataset.safety === 'P0' ? 'Ver ayuda ahora →' : 'Ver recursos →';
     cue.style.cssText = 'display:block;margin-top:12px;font-weight:700;font-size:.9rem';
     article.append(cue);
+  }
+
+  const orderedNodes = new Set();
+  for (const label of RESOURCE_ORDER) {
+    const found = findCard(label);
+    if (!found?.node) continue;
+    resourceGrid.append(found.node);
+    orderedNodes.add(found.node);
+  }
+
+  for (const child of [...resourceGrid.children]) {
+    if (!orderedNodes.has(child)) resourceGrid.append(child);
   }
 })();
