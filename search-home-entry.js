@@ -16,6 +16,12 @@
     else nav.append(link);
   }
 
+  function centerHeroCard(container, card) {
+    const cards = Array.from(container.querySelectorAll(':scope > .final-card'));
+    if (cards.length < 3 || cards[1] === card) return;
+    container.insertBefore(card, cards[2]);
+  }
+
   function promoteHeroUrgent() {
     const actions = document.querySelector('.hero-final-actions');
     if (!actions || actions.querySelector('[data-urgent-entry="hero"]')) return;
@@ -43,6 +49,7 @@
     if (description) description.textContent = 'Si hay peligro inmediato o no sabes qué hacer ahora.';
 
     storyButton.replaceWith(card);
+    centerHeroCard(actions, card);
   }
 
   function promoteHeroSearch() {
@@ -51,7 +58,7 @@
 
     card.href = SEARCH_URL;
     card.dataset.searchEntry = 'hero';
-    card.setAttribute('aria-label', 'Cuéntame qué te pasa y encuentra por dónde empezar');
+    card.setAttribute('aria-label', 'Para ayudarte mejor, cuéntame qué te pasa');
 
     const icon = card.querySelector('.final-icon');
     if (icon) {
@@ -64,14 +71,25 @@
     const description = card.querySelector('.final-card-copy small');
     if (title) {
       title.classList.remove('email-strong');
-      title.textContent = 'Cuéntame qué te pasa';
+      title.textContent = 'PARA AYUDARTE MEJOR';
     }
-    if (description) description.textContent = 'Encuentra por dónde empezar.';
+    if (description) description.textContent = 'cuéntame qué te pasa';
+  }
+
+  function centerNeedsCard(grid, card) {
+    const cards = Array.from(grid.querySelectorAll(':scope > .need-card'));
+    if (cards.length < 3 || cards[1] === card) return;
+    grid.insertBefore(card, cards[2]);
+    Array.from(grid.querySelectorAll(':scope > .need-card')).forEach((item, index) => {
+      const number = item.querySelector('.need-number');
+      if (number) number.textContent = String(index + 1).padStart(2, '0');
+    });
   }
 
   function promoteNeedsUrgent() {
-    const firstCard = document.querySelector('.needs-grid .need-card');
-    if (!firstCard || firstCard.querySelector('[data-urgent-entry="needs"]')) return;
+    const grid = document.querySelector('.needs-grid');
+    const firstCard = grid?.querySelector('.need-card');
+    if (!grid || !firstCard || firstCard.querySelector('[data-urgent-entry="needs"]')) return;
 
     const heading = firstCard.querySelector('h3');
     const copy = firstCard.querySelector('p');
@@ -94,6 +112,8 @@
       link.append(arrow);
       oldLink.replaceWith(link);
     }
+
+    centerNeedsCard(grid, firstCard);
   }
 
   function wireOrientationCard() {
