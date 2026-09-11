@@ -17,6 +17,19 @@ const expected = [
   ['Suicidio', '/ayuda-urgente.html']
 ];
 
+const expectedOrder = [
+  'Suicidio',
+  'Violencia, abuso y acoso',
+  'Duelo y pérdidas',
+  'Ansiedad y desbordamiento',
+  'Gestión emocional',
+  'Soledad',
+  'Salud y enfermedad',
+  'Trabajo y dinero',
+  'Rupturas y relaciones',
+  'Familia'
+];
+
 test('la primera vista de Recursos declara exactamente diez rutas autorizadas', () => {
   for (const [label, href] of expected) {
     assert.ok(script.includes(`['${label}', '${href}']`), `Falta ${label} -> ${href}`);
@@ -24,6 +37,13 @@ test('la primera vista de Recursos declara exactamente diez rutas autorizadas', 
 
   const routesBlock = script.match(/const routes = new Map\(\[([\s\S]*?)\]\);/)?.[1] ?? '';
   assert.equal([...routesBlock.matchAll(/^\s*\['/gm)].length, 10);
+});
+
+test('Recursos respeta el orden de prioridad aprobado para lanzamiento', () => {
+  const orderBlock = script.match(/const RESOURCE_ORDER = \[([\s\S]*?)\];/)?.[1] ?? '';
+  const actualOrder = [...orderBlock.matchAll(/'([^']+)'/g)].map((match) => match[1]);
+  assert.deepEqual(actualOrder, expectedOrder);
+  assert.match(script, /resourceGrid\.append\(found\.node\)/);
 });
 
 test('la tarjeta de suicidio conserva tratamiento P0 y deriva a ayuda urgente', () => {

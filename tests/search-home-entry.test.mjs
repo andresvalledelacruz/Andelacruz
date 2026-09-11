@@ -14,31 +14,37 @@ test('homepage loader includes the search entry layer before analytics', () => {
   assert.ok(analyticsIndex > searchIndex, 'search discovery must not wait for analytics');
 });
 
-test('existing header urgent-help control remains available without duplicate nav injection', () => {
+test('header urgent-help control remains available and receives visible launch emphasis', () => {
   assert.match(urgentNav, /href='\/ayuda-urgente\.html'/);
   assert.match(urgentNav, /Necesito Ayuda Urgente/);
+  assert.match(urgentNav, /background:#8A4939/);
+  assert.match(urgentNav, /focus-visible/);
+  assert.match(urgentNav, /text-transform:uppercase/);
   assert.doesNotMatch(entry, /dataset\.urgentEntry = 'main-nav'/);
 });
 
-test('urgent help is promoted as the first hero action and first needs option', () => {
+test('urgent help is centered in the hero and needs decision grids', () => {
   assert.match(entry, /const URGENT_URL = '\/ayuda-urgente\.html'/);
   assert.match(entry, /dataset\.urgentEntry = 'hero'/);
   assert.match(entry, /title\.textContent = 'Necesito ayuda urgente'/);
   assert.match(entry, /description\.textContent = 'Si hay peligro inmediato o no sabes qué hacer ahora\.'/);
+  assert.match(entry, /centerHeroCard\(actions, card\)/);
   assert.match(entry, /dataset\.urgentEntry = 'needs'/);
   assert.match(entry, /heading\.textContent = 'Necesito ayuda urgente'/);
   assert.match(entry, /Ver ayuda urgente/);
+  assert.match(entry, /centerNeedsCard\(grid, firstCard\)/);
   assert.match(entry, /storyButton\.replaceWith\(card\)/);
 });
 
-test('search orienter remains discoverable in four homepage locations', () => {
+test('search orienter remains discoverable in four homepage locations with distinct copy', () => {
   assert.match(entry, /dataset\.searchEntry = 'main-nav'/);
   assert.match(entry, /dataset\.searchEntry = 'hero'/);
   assert.match(entry, /dataset\.searchEntry = 'needs'/);
   assert.match(entry, /dataset\.searchEntry = 'footer'/);
   assert.ok((entry.match(/href = SEARCH_URL/g) || []).length >= 4);
   assert.match(entry, /Buscar ayuda/);
-  assert.match(entry, /Cuéntame qué te pasa/);
+  assert.match(entry, /PARA AYUDARTE MEJOR/);
+  assert.match(entry, /cuéntame qué te pasa/);
   assert.match(entry, /Encontrar por dónde empezar/);
 });
 
@@ -54,7 +60,7 @@ test('integration reuses V9 components instead of replacing homepage structure',
   assert.match(homepage, /<h3>Busco orientación<\/h3>/);
   assert.match(homepage, /id="main-nav"/);
   assert.match(entry, /\.hero-final-actions/);
-  assert.match(entry, /\.needs-grid \.need-card/);
+  assert.match(entry, /\.needs-grid/);
   assert.doesNotMatch(entry, /innerHTML/);
   assert.doesNotMatch(entry, /document\.write/);
 });
