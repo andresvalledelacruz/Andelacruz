@@ -1,0 +1,415 @@
+{
+  "version": "2026-09-12-v1",
+  "status": "prepared_not_public",
+  "source_type": "editorial_composite",
+  "is_real_user_content": false,
+  "display_label": "Historia de ejemplo",
+  "public_disclosure": "Relato ficticio creado con fines orientativos a partir de situaciones frecuentes. No corresponde a una persona real.",
+  "governance": {
+    "never_label_as_real": true,
+    "no_fake_dates": true,
+    "no_fake_aliases": true,
+    "no_fake_reactions_or_counts": true,
+    "real_user_stories_remain_fail_closed_until_aal2": true,
+    "high_risk_stories_avoid_method_details": true,
+    "high_risk_stories_include_official_help": true
+  },
+  "stories": [
+    {
+      "id": "example-01",
+      "slug": "me-dejo-y-se-llevo-la-vida-que-yo-daba-por-hecha",
+      "category": "Pareja y Rupturas",
+      "voice": "literaria-cercana",
+      "title": "Me dejó y se llevó la vida que yo daba por hecha",
+      "excerpt": "No lloraba solo por la persona. Lloraba por los domingos, los planes de verano y una versión de mi futuro que dejó de existir de un día para otro.",
+      "context": "Ruptura inesperada · convivencia terminada",
+      "body": [
+        "Cuando me dijo que se iba pensé que lo peor sería dormir solo. Me equivoqué. Lo peor fue descubrir que casi todo lo que imaginaba del futuro estaba escrito en plural. El supermercado, las vacaciones, la mesa del domingo, hasta la manera en que colocábamos las tazas. De repente cada cosa pequeña parecía recordarme que aquello ya no existía.",
+        "Las primeras semanas hice lo que ahora sé que me hacía más daño: releer mensajes, buscar una explicación nueva, mirar si estaba conectado. No quería volver con esa persona exactamente; quería volver al minuto anterior a enterarme de que mi vida había cambiado.",
+        "Empecé a mejorar cuando dejé de preguntarme cada mañana cómo olvidarlo y empecé a preguntarme qué necesitaba para pasar ese día. Comer. Dormir un poco mejor. Llamar a alguien. Salir a andar. Recuperar una cosa que fuese solo mía.",
+        "Han pasado cinco meses. Hay canciones que todavía salto y sitios a los que no quiero volver. Pero ya no siento que mi vida terminó aquella tarde. Terminó una vida que yo daba por hecha. Ahora estoy aprendiendo, despacio, a construir otra que también sea mía."
+      ],
+      "timeline": [
+        {"label": "Semana 1", "text": "Insomnio, búsqueda constante de respuestas y sensación de irrealidad."},
+        {"label": "Mes 2", "text": "Límites con redes y mensajes; recuperación de rutinas propias."},
+        {"label": "Mes 5", "text": "La pérdida sigue doliendo, pero ya no organiza cada decisión."}
+      ],
+      "helped": ["Dejar de revisar continuamente redes y mensajes", "Recuperar una rutina propia", "Hablar con alguien sin convertir cada conversación en un análisis de la ruptura"],
+      "nextSteps": ["Resolver primero los cambios prácticos inmediatos", "Dar espacio al duelo sin exigir olvidarlo rápido", "Pedir apoyo profesional si el malestar bloquea de forma sostenida la vida cotidiana"]
+    },
+    {
+      "id": "example-02",
+      "slug": "me-bloqueo-y-me-pase-dias-mirando-el-movil",
+      "category": "Pareja y Rupturas",
+      "voice": "directa-coloquial",
+      "title": "Me bloqueó y me pasé días mirando el móvil",
+      "excerpt": "Sé que suena absurdo, pero yo miraba el teléfono aunque sabía perfectamente que no podía haber ningún mensaje.",
+      "context": "Ruptura · bloqueo en redes · rumiación",
+      "body": [
+        "Me bloqueó de todo. WhatsApp, Instagram, hasta de una cuenta que casi no usaba. Y yo venga mirar el móvil. Sabía que no iba a salir nada, pero lo miraba igual.",
+        "Me daba vergüenza contarlo porque pensaba que la gente me iba a decir que espabilara. Lo que me pasaba era que el bloqueo me hizo sentir como si yo no hubiera significado nada. Me obsesioné con buscar una explicación.",
+        "Un amigo me dijo una cosa muy simple: que no necesitaba entender cada detalle para aceptar que se había terminado. Me costó. Dejé el móvil fuera del dormitorio y borré accesos que utilizaba para mirar de rebote. Los primeros días fueron horribles, luego bajó un poco.",
+        "No estoy estupendo ni quiero fingirlo. Pero ya puedo estar una tarde entera sin comprobar nada. Para mí eso ahora mismo ya es muchísimo."
+      ],
+      "timeline": [
+        {"label": "Día 2", "text": "Comprobación constante del teléfono y sensación de rechazo total."},
+        {"label": "Semana 3", "text": "Primeros límites concretos con redes y accesos indirectos."},
+        {"label": "Mes 3", "text": "Menos comprobaciones y más tiempo mental disponible para otras cosas."}
+      ],
+      "helped": ["Sacar el móvil del dormitorio", "Dejar de buscar información a través de terceros", "Contárselo a una persona que no juzgó"],
+      "nextSteps": ["Reducir los disparadores que alimentan la comprobación", "Recuperar actividades que no estén ligadas a la expareja", "Buscar apoyo si la obsesión o el dolor se vuelven inmanejables"]
+    },
+    {
+      "id": "example-03",
+      "slug": "cuando-murio-mi-padre-la-casa-se-quedo-sonando-distinto",
+      "category": "Duelo y Pérdidas",
+      "voice": "literaria-sobria",
+      "title": "Cuando murió mi padre, la casa se quedó sonando distinto",
+      "excerpt": "Durante semanas seguí esperando escuchar sus llaves. No era que olvidara que había muerto; era que mi cuerpo todavía no había aprendido la ausencia.",
+      "context": "Muerte de un progenitor · duelo familiar",
+      "body": [
+        "Después del funeral todo el mundo me preguntaba cómo estaba. Yo respondía ‘tirando’ porque no sabía explicar que el dolor no era una sola cosa. A veces era llorar. Otras veces era abrir la nevera y ver el yogur que él compraba. O escuchar el ascensor y pensar, durante medio segundo, que iba a entrar por la puerta.",
+        "Me sorprendió también enfadarme. Con el hospital, con mis hermanos, con gente que seguía haciendo planes, incluso con él por haberse ido. Pensaba que sentir rabia significaba quererlo menos. Aprendí que el duelo podía contener sentimientos contradictorios sin convertir ninguno en una traición.",
+        "Lo que más me ayudó fue dejar de actuar como si tuviera que volver a ser el de antes. No voy a ser el de antes. Mi padre existió y su ausencia existe. La tarea no era borrarla, sino hacerle un sitio que no ocupara toda la casa.",
+        "Ahora, algo más de un año después, puedo hablar de él y sonreír antes de llorar. Algunos días es al revés. Ya no intento decidir cuál de las dos cosas es la correcta."
+      ],
+      "timeline": [
+        {"label": "Primer mes", "text": "Trámites, visitas y una sensación de irrealidad casi continua."},
+        {"label": "Mes 6", "text": "Fechas difíciles, rabia y aceptación de emociones contradictorias."},
+        {"label": "Año 1", "text": "La ausencia permanece, pero los recuerdos ya no son solo dolor."}
+      ],
+      "helped": ["Hablar de la persona fallecida sin evitar su nombre", "Aceptar que el duelo no avanza en línea recta", "Preparar fechas y lugares especialmente difíciles"],
+      "nextSteps": ["Cuidar necesidades básicas durante las fases más intensas", "Apoyarse en personas con las que no sea necesario fingir", "Buscar ayuda especializada si el sufrimiento se vuelve persistente e inmanejable"]
+    },
+    {
+      "id": "example-04",
+      "slug": "mi-hermano-murio-por-suicidio-y-me-quede-con-mil-preguntas",
+      "category": "Duelo y Pérdidas",
+      "voice": "testimonial-sobria",
+      "title": "Mi hermano murió por suicidio y me quedé con mil preguntas",
+      "excerpt": "Durante meses convertí cada conversación pasada en una investigación. Buscaba la frase exacta que, según yo, tendría que haber entendido antes.",
+      "context": "Duelo por suicidio · culpa del superviviente",
+      "body": [
+        "Cuando mi hermano murió por suicidio mi cabeza empezó a reconstruir los últimos meses como si existiera una pista que yo hubiera pasado por alto. Recordaba una llamada, una comida, una frase cualquiera y me preguntaba qué habría ocurrido si yo hubiera contestado distinto.",
+        "La culpa me daba una falsa sensación de control: si todo había sido culpa mía, entonces significaba que había existido una forma sencilla de evitarlo. Poco a poco entendí que una muerte por suicidio no puede reducirse a una conversación, un gesto o una sola persona.",
+        "Me ayudó conocer a otras personas en duelo por suicidio. No porque sus historias fueran iguales, sino porque reconocían esa mezcla de amor, rabia, vergüenza, preguntas y cansancio que yo no sabía explicar.",
+        "Sigo echándolo de menos. Sigo teniendo preguntas que probablemente no tendrán respuesta. Pero ya no paso cada día juzgando retrospectivamente a la persona que yo era entonces. Intento recordar que yo también era su hermano, no su adivino."
+      ],
+      "timeline": [
+        {"label": "Primeros meses", "text": "Culpa intensa y revisión obsesiva de conversaciones pasadas."},
+        {"label": "Mes 8", "text": "Contacto con personas que habían vivido un duelo semejante."},
+        {"label": "Año 2", "text": "Persisten preguntas y tristeza, pero disminuye la autoacusación constante."}
+      ],
+      "helped": ["Hablar con personas que conocían el duelo por suicidio", "Separar responsabilidad de deseo de haber podido ayudar", "Permitir sentimientos contradictorios sin juzgarlos"],
+      "nextSteps": ["Buscar apoyo específico para supervivientes de duelo por suicidio", "Evitar aislarse por vergüenza o estigma", "Si la propia seguridad se ve comprometida, llamar al 112 o al 024 en España"]
+    },
+    {
+      "id": "example-05",
+      "slug": "la-noche-que-por-fin-dije-no-estoy-seguro-conmigo-mismo",
+      "category": "Crisis y Suicidio",
+      "voice": "directa-contenida",
+      "title": "La noche que por fin dije: no estoy seguro conmigo mismo",
+      "excerpt": "No hubo una frase perfecta. Solo conseguí decirle a alguien que no quería quedarme solo con lo que estaba pensando.",
+      "context": "Crisis suicida superada · petición de ayuda",
+      "body": [
+        "Llevaba semanas diciendo que estaba cansado. Era verdad, pero no era toda la verdad. Había empezado a pensar que desaparecer era la única forma de dejar de sentirme así y me daba miedo contarlo porque pensaba que iban a tratarme como si estuviera loco.",
+        "Esa noche no expliqué todo bien. Le dije a una persona cercana algo parecido a: ‘No estoy seguro conmigo mismo y necesito que te quedes conmigo’. Fue suficiente para que dejara de estar solo y para buscar ayuda inmediata.",
+        "Después no llegó una solución mágica. Hubo evaluación profesional, días difíciles, cambios de rutina, seguimiento y conversaciones que no siempre apetecían. Lo importante es que el momento más peligroso dejó de ser un secreto que solo conocía yo.",
+        "Hoy no cuento esto como una historia de heroicidad. La cuento porque pedir ayuda me pareció una derrota y terminó siendo una acción de supervivencia. Si alguna vez vuelvo a acercarme a aquel lugar mental, quiero decirlo antes, no después."
+      ],
+      "timeline": [
+        {"label": "Crisis", "text": "Pensamientos suicidas y miedo a contarlos; decisión de no quedarse solo."},
+        {"label": "Días siguientes", "text": "Atención profesional y creación de una red inmediata de apoyo."},
+        {"label": "Meses después", "text": "Seguimiento, señales de alerta más reconocibles y plan para pedir ayuda antes."}
+      ],
+      "helped": ["Decírselo de forma directa a una persona de confianza", "No quedarse solo durante la crisis", "Acceder a ayuda profesional inmediata y seguimiento"],
+      "nextSteps": ["Si hay riesgo inmediato, llamar al 112", "Para crisis relacionadas con conducta suicida en España, llamar al 024", "Alejarse de situaciones o medios que aumenten el riesgo y permanecer acompañado mientras llega ayuda"]
+    },
+    {
+      "id": "example-06",
+      "slug": "tarde-mucho-en-llamar-maltrato-a-lo-que-me-pasaba",
+      "category": "Violencia, Abuso y Acoso",
+      "voice": "testimonial-reflexiva",
+      "title": "Tardé mucho en llamar maltrato a lo que me pasaba",
+      "excerpt": "Como no ocurría todos los días y después pedía perdón, yo encontraba una explicación nueva para quedarme.",
+      "context": "Violencia de pareja · control y miedo",
+      "body": [
+        "Durante mucho tiempo pensé que una relación de maltrato tenía que parecerse a lo que yo veía en las noticias. En mi casa había días normales, incluso buenos. Por eso minimizaba los insultos, el control del teléfono, el miedo a decir determinadas cosas y los episodios en los que la situación se volvía físicamente intimidante.",
+        "Yo también repetía la frase ‘no es para tanto’. La repetía tanto que acabé sin saber qué era para tanto y qué no. El cambio empezó cuando se lo conté a alguien sin justificarlo. Al escucharlo en voz alta me di cuenta de la cantidad de energía que gastaba intentando evitar su reacción.",
+        "No tomé todas las decisiones el mismo día. Pedí información, preparé apoyos y pensé en seguridad. Para mí fue importante que nadie me empujara a actuar de una forma que pudiera aumentar el riesgo.",
+        "Ahora estoy fuera de esa relación. Lo que más me cuesta no es echarla de menos, sino confiar otra vez en mi propia percepción. Estoy aprendiendo que vivir sin miedo a la reacción de otra persona no es pedir demasiado."
+      ],
+      "timeline": [
+        {"label": "Durante la relación", "text": "Control, miedo y normalización progresiva de conductas dañinas."},
+        {"label": "Primer paso", "text": "Relato sin justificar ante una persona de confianza y búsqueda de información segura."},
+        {"label": "Después", "text": "Salida planificada y reconstrucción de autonomía y confianza."}
+      ],
+      "helped": ["Nombrar conductas concretas en vez de discutir etiquetas", "Planificar pensando primero en seguridad", "Pedir orientación especializada sin presión para decidir de inmediato"],
+      "nextSteps": ["Si existe peligro inmediato, llamar al 112", "En España, el 016 ofrece información y asesoramiento sobre violencia contra las mujeres", "Evitar confrontaciones que puedan aumentar el riesgo y buscar un plan de seguridad adaptado"]
+    },
+    {
+      "id": "example-07",
+      "slug": "durante-meses-pense-que-como-no-grite-no-tenia-derecho-a-sentirme-asi",
+      "category": "Violencia, Abuso y Acoso",
+      "voice": "intima-sobria",
+      "title": "Durante meses pensé que, como no grité, no tenía derecho a sentirme así",
+      "excerpt": "Mi cuerpo se quedó quieto. Después convertí esa reacción en una acusación contra mí misma.",
+      "context": "Agresión sexual · culpa y recuperación",
+      "body": [
+        "Después de la agresión me repetía una pregunta: por qué no hice más. Había imaginado muchas veces cómo reaccionaría si alguna vez me ocurría algo así y nada se pareció a lo que hice de verdad. Me quedé bloqueada.",
+        "Tardé meses en contar lo sucedido porque creía que los demás también iban a preguntarme por qué no grité, por qué no me fui antes o por qué seguí hablando con esa persona después. Cuando por fin lo conté, la primera frase que me ayudó fue muy simple: quedarte paralizada también puede ser una respuesta del cuerpo ante una amenaza.",
+        "Recuperarme no ha consistido en olvidar. Ha consistido en devolverme decisiones: a quién se lo cuento, qué ayuda quiero, qué límites pongo, qué hago con mi cuerpo y con mi tiempo. Algunas semanas avanzo mucho y otras necesito volver a cosas básicas.",
+        "Lo que ocurrió no fue una prueba que yo suspendí. La responsabilidad no estaba en reaccionar de la manera perfecta. Esa idea me ha costado muchísimo aprenderla, pero hoy ya puedo escribirla."
+      ],
+      "timeline": [
+        {"label": "Después", "text": "Bloqueo, vergüenza y autoacusación por la propia respuesta durante la agresión."},
+        {"label": "Meses después", "text": "Primera revelación a una persona que creyó el relato y no culpó."},
+        {"label": "Proceso", "text": "Recuperación gradual de decisiones, límites y sensación de control."}
+      ],
+      "helped": ["Ser escuchada sin preguntas culpabilizadoras", "Recibir información sobre respuestas de bloqueo ante una amenaza", "Elegir el ritmo y el tipo de apoyo"],
+      "nextSteps": ["Si hay peligro inmediato, llamar al 112", "Buscar atención sanitaria, psicológica o jurídica especializada cuando se necesite", "Priorizar consentimiento, seguridad y control de la propia persona sobre los siguientes pasos"]
+    },
+    {
+      "id": "example-08",
+      "slug": "creia-que-me-daba-un-infarto-y-luego-me-daba-miedo-que-volviera",
+      "category": "Ansiedad y Desbordamiento",
+      "voice": "coloquial-clara",
+      "title": "Creía que me daba algo y después vivía esperando que volviera",
+      "excerpt": "El primer ataque de pánico duró poco. El miedo a tener otro se quedó conmigo muchas semanas.",
+      "context": "Ansiedad · episodios de pánico · evitación",
+      "body": [
+        "La primera vez pensé que me estaba pasando algo gravísimo. Me latía el corazón a toda velocidad, respiraba fatal y sentía que iba a perder el control. Después me dijeron que había sido un ataque de pánico, pero eso no hizo que al día siguiente estuviera tranquilo.",
+        "Empecé a evitar sitios por si me volvía a pasar. Primero el autobús, luego el supermercado, luego quedar lejos de casa. Sin darme cuenta mi mundo se hizo pequeñísimo.",
+        "Me ayudó que un profesional revisara primero que no hubiera otra causa y después entender qué estaba pasando. No fue simplemente ‘respira y ya está’. Aprendí a dejar de organizar toda mi vida alrededor de evitar sensaciones incómodas.",
+        "Todavía noto ansiedad. La diferencia es que ahora una palpitación no significa automáticamente que todo vaya a ir mal. Y si un episodio cambia, es nuevo o me preocupa físicamente, no lo doy por hecho: lo consulto."
+      ],
+      "timeline": [
+        {"label": "Primer episodio", "text": "Síntomas físicos intensos y miedo a una emergencia médica."},
+        {"label": "Semanas", "text": "Evitación creciente de lugares y situaciones."},
+        {"label": "Meses", "text": "Valoración profesional y recuperación progresiva de actividades."}
+      ],
+      "helped": ["Descartar causas médicas cuando correspondía", "Comprender el ciclo miedo-evitación", "Recuperar situaciones gradualmente con acompañamiento"],
+      "nextSteps": ["Consultar síntomas nuevos, intensos o preocupantes con profesionales sanitarios", "Evitar autodiagnosticarse solo por una historia parecida", "Buscar apoyo psicológico si la ansiedad limita de forma sostenida la vida diaria"]
+    },
+    {
+      "id": "example-09",
+      "slug": "yo-decia-que-era-estres-hasta-que-no-podia-ni-abrir-el-correo",
+      "category": "Trabajo",
+      "voice": "directa-adulta",
+      "title": "Yo decía que era estrés hasta que no podía ni abrir el correo",
+      "excerpt": "Seguía cumpliendo y por eso pensaba que estaba bien. En realidad había convertido cada día en una prueba de resistencia.",
+      "context": "Sobrecarga laboral · agotamiento",
+      "body": [
+        "Durante meses decía ‘es una racha’. Trabajaba, contestaba mensajes a cualquier hora y los domingos ya estaba pensando en el lunes. Como seguía entregando cosas, nadie veía hasta qué punto estaba agotado. Yo tampoco quería verlo.",
+        "El día que me quedé diez minutos mirando un correo sin poder abrirlo pensé que me había vuelto inútil. No era pereza. Estaba saturado y ya no podía mantener el ritmo como si no pasara nada.",
+        "Tuve que hablar en el trabajo, revisar horarios y pedir ayuda profesional. Algunas cosas se pudieron cambiar y otras no. También tuve que aceptar que poner límites tenía consecuencias y que aun así seguir igual también las tenía.",
+        "Hoy no tengo una relación perfecta con el trabajo. Pero ya no considero normal vivir con el cuerpo siempre preparado para una urgencia que casi nunca lo es."
+      ],
+      "timeline": [
+        {"label": "Meses", "text": "Disponibilidad permanente y normalización del agotamiento."},
+        {"label": "Punto de quiebre", "text": "Dificultad para tareas sencillas y sensación de incapacidad."},
+        {"label": "Después", "text": "Revisión de carga, límites y apoyo profesional."}
+      ],
+      "helped": ["Medir la carga real en vez de llamarla simplemente estrés", "Hablar de límites concretos", "Separar rendimiento laboral de valor personal"],
+      "nextSteps": ["Revisar descanso, carga y capacidad funcional", "Consultar derechos laborales si hay incumplimientos o riesgos", "Buscar evaluación sanitaria o psicológica si el agotamiento es intenso o persistente"]
+    },
+    {
+      "id": "example-10",
+      "slug": "me-jubile-y-de-repente-nadie-me-esperaba-en-ningun-sitio",
+      "category": "Soledad",
+      "voice": "sencilla-madura",
+      "title": "Me jubilé y de repente nadie me esperaba en ningún sitio",
+      "excerpt": "Tenía tiempo, que era lo que llevaba años deseando. Lo que no tenía era una razón para salir de casa a una hora concreta.",
+      "context": "Jubilación · pérdida de rutina · soledad",
+      "body": [
+        "Los primeros meses de jubilado estaba encantado. Luego empecé a levantarme cada vez más tarde. Mi mujer seguía con sus cosas, mis hijos con las suyas y yo podía pasar dos días sin hablar con nadie fuera de casa.",
+        "No quería decir que me sentía solo porque parecía desagradecido. Tenía familia. ¿Cómo iba a estar solo? Pues lo estaba algunas veces, y mucho.",
+        "Lo que me sirvió fue algo bastante poco espectacular: apuntarme a una actividad dos mañanas a la semana y comprometerme a ir aunque no me apeteciera. Allí empecé saludando. Luego tomando café. Después ya había alguien que preguntaba si faltaba.",
+        "No tengo veinte amigos nuevos. Tengo tres personas con las que hablo y dos sitios donde saben quién soy. Para mí ha cambiado la semana entera."
+      ],
+      "timeline": [
+        {"label": "Mes 2", "text": "Pérdida de horarios y reducción gradual del contacto cotidiano."},
+        {"label": "Mes 6", "text": "Actividad recurrente aunque al principio no apeteciera."},
+        {"label": "Año 1", "text": "Red pequeña pero estable y mayor sensación de pertenencia."}
+      ],
+      "helped": ["Tener un lugar recurrente", "No esperar a tener ganas para salir", "Aceptar que tener familia no elimina automáticamente la soledad"],
+      "nextSteps": ["Buscar actividades comunitarias con continuidad", "Priorizar frecuencia sobre cantidad de contactos", "Pedir ayuda si la soledad se acompaña de desesperanza intensa o aislamiento creciente"]
+    },
+    {
+      "id": "example-11",
+      "slug": "tenia-cientos-de-contactos-y-no-sabia-a-quien-llamar",
+      "category": "Soledad",
+      "voice": "joven-coloquial",
+      "title": "Tenía cientos de contactos y no sabía a quién llamar",
+      "excerpt": "Podía pasarme una hora contestando historias de Instagram y acabar el día sin haberle contado a nadie cómo estaba de verdad.",
+      "context": "Soledad emocional · conexión superficial",
+      "body": [
+        "Yo no estaba solo en el sentido literal. Tenía compañeros, grupos y el móvil lleno. Pero todo era bromas, memes, salir alguna vez. Cuando estaba mal no sabía a quién escribir sin sentir que molestaba.",
+        "Me di cuenta de que llevaba años intentando parecer fácil de llevar. Siempre decía que todo bien. Luego me enfadaba porque nadie se daba cuenta de que no estaba bien. Era imposible que lo supieran si yo no enseñaba nada.",
+        "Probé con una persona. No le conté mi vida entera. Le dije que últimamente me estaba sintiendo bastante solo y que me vendría bien quedar sin montar una fiesta. No salió una conversación de película. Quedamos a tomar café.",
+        "A partir de ahí he intentado hacer menos contactos y más relaciones. Todavía me cuesta pedir compañía, pero ya no espero que la gente adivine lo que necesito."
+      ],
+      "timeline": [
+        {"label": "Antes", "text": "Mucho contacto digital y poca intimidad emocional."},
+        {"label": "Primer paso", "text": "Compartir vulnerabilidad de forma sencilla con una persona concreta."},
+        {"label": "Meses", "text": "Menos cantidad de interacción y más continuidad en algunos vínculos."}
+      ],
+      "helped": ["Elegir una persona en vez de intentar abrirse con todo el mundo", "Pedir algo concreto como quedar o hablar", "Dejar de esperar que otros adivinaran el malestar"],
+      "nextSteps": ["Cuidar relaciones repetidas y recíprocas", "Buscar espacios presenciales si todo el contacto es digital", "Pedir apoyo si el aislamiento o la desesperanza aumentan"]
+    },
+    {
+      "id": "example-12",
+      "slug": "me-daba-miedo-abrir-la-app-del-banco",
+      "category": "Dinero",
+      "voice": "directa-practica",
+      "title": "Me daba miedo abrir la app del banco",
+      "excerpt": "No mirar no hacía desaparecer las facturas, pero durante unos minutos me permitía fingir que el problema era más pequeño.",
+      "context": "Deudas · evitación financiera",
+      "body": [
+        "Llegó un momento en que no sabía exactamente cuánto debía. Sabía que era bastante y por eso evitaba mirarlo. Si llegaba un correo del banco lo dejaba sin abrir. Si sonaba el teléfono pensaba que sería otra reclamación.",
+        "Lo peor es que la vergüenza me hizo ocultarlo en casa. Decía que todo estaba controlado. No lo estaba.",
+        "El primer día que puse todos los números en una hoja fue desagradable, pero también fue el primer día que el problema tuvo límites. Había importes, fechas, tipos de deuda y prioridades. Ya no era una nube negra infinita.",
+        "No salí de la deuda en dos semanas. Todavía estoy arreglándolo. Pero ahora antes de aceptar cualquier solución pregunto costes, consecuencias y alternativas. Dejé de buscar milagros y empecé a buscar información."
+      ],
+      "timeline": [
+        {"label": "Antes", "text": "Evitación de saldos, cartas y llamadas por miedo y vergüenza."},
+        {"label": "Primer día útil", "text": "Inventario completo de deudas, fechas e importes."},
+        {"label": "Meses", "text": "Priorización y búsqueda de asesoramiento antes de nuevas decisiones."}
+      ],
+      "helped": ["Conocer la cifra real", "Separar deudas por urgencia y consecuencias", "Evitar contratar soluciones bajo presión"],
+      "nextSteps": ["Reunir contratos, importes y vencimientos", "Consultar fuentes oficiales y asesoramiento cualificado", "Desconfiar de promesas de solución rápida sin explicar costes y riesgos"]
+    },
+    {
+      "id": "example-13",
+      "slug": "el-alquiler-subio-y-empece-a-contar-los-dias-hasta-fin-de-mes",
+      "category": "Dinero",
+      "voice": "cotidiana-simple",
+      "title": "El alquiler subió y empecé a contar los días hasta fin de mes",
+      "excerpt": "No estaba pensando en ahorrar para el futuro. Estaba calculando si podía comprar fruta y echar gasolina la misma semana.",
+      "context": "Vivienda · presión económica · necesidades básicas",
+      "body": [
+        "Cuando subió el alquiler hice cuentas y en el papel salían. Lo que no salía era vivir. Cualquier recibo distinto me descuadraba el mes entero.",
+        "Me daba mucha vergüenza pedir ayuda porque tengo trabajo. Pensaba que las ayudas eran para gente que estaba peor. Mientras tanto yo iba retrasando cosas, comiendo peor y usando la tarjeta para tapar agujeros.",
+        "Lo primero fue parar y mirar qué gastos eran básicos, qué deudas podía estar creando y qué recursos de vivienda o servicios sociales podía consultar. También hablé con mi familia antes de que la situación fuera una emergencia.",
+        "Sigo teniendo un presupuesto muy justo. No voy a contar una historia falsa de superación. Lo que ha cambiado es que ya no estoy tomando decisiones solo y a última hora."
+      ],
+      "timeline": [
+        {"label": "Mes 1", "text": "Presupuesto aparentemente viable pero sin margen para imprevistos."},
+        {"label": "Mes 3", "text": "Uso de crédito para necesidades ordinarias y mayor tensión."},
+        {"label": "Después", "text": "Priorización de básicos y consulta de recursos de vivienda y apoyo social."}
+      ],
+      "helped": ["Priorizar vivienda, alimentación y suministros", "Pedir información antes de llegar a una emergencia", "Dejar de ocultar la situación a personas de confianza"],
+      "nextSteps": ["Revisar recursos públicos de vivienda y servicios sociales", "Evitar financiar gastos básicos sin comprender el coste", "Pedir asesoramiento si existen deudas, impagos o riesgo de pérdida de vivienda"]
+    },
+    {
+      "id": "example-14",
+      "slug": "me-despidieron-con-53-y-pense-que-ya-no-me-queria-nadie",
+      "category": "Trabajo",
+      "voice": "testimonial-madura",
+      "title": "Me despidieron con 53 y pensé que ya no me quería nadie",
+      "excerpt": "El despido entró por la cuenta bancaria, pero también por el orgullo. Durante semanas confundí no tener puesto con no tener valor.",
+      "context": "Despido · empleo +50 · identidad profesional",
+      "body": [
+        "Llevaba más de veinte años trabajando. El día que me despidieron no sabía ni cómo hacer un currículum moderno. Miraba ofertas y en todas creía leer entre líneas que buscaban a alguien más joven.",
+        "Mandé decenas de currículums iguales. Como no contestaban, cada silencio me parecía una confirmación de que estaba acabado. Después alguien me ayudó a traducir mi experiencia a cosas concretas: problemas que sabía resolver, equipos que había coordinado, clientes, herramientas y resultados.",
+        "También tuve que aceptar que quizá no volvería exactamente al mismo puesto ni al mismo sector. Eso primero lo viví como una derrota y luego como una ampliación de posibilidades.",
+        "Tardé siete meses en volver a trabajar. No fueron siete meses de progreso continuo. Hubo días malos. Pero dejé de presentarme como alguien que pedía que le dieran una oportunidad y empecé a explicar qué podía aportar."
+      ],
+      "timeline": [
+        {"label": "Semana 1", "text": "Golpe económico y fuerte pérdida de identidad profesional."},
+        {"label": "Mes 2", "text": "Revisión de capacidades transferibles y estrategia de búsqueda."},
+        {"label": "Mes 7", "text": "Incorporación a un rol distinto con parte de la experiencia anterior."}
+      ],
+      "helped": ["Traducir años de experiencia a capacidades concretas", "Adaptar candidaturas en vez de enviar el mismo CV", "Abrir opciones de sector y rol sin borrar la experiencia previa"],
+      "nextSteps": ["Ordenar primero la situación económica y administrativa", "Actualizar CV y estrategia con criterios concretos", "Usar orientación laboral o formación solo cuando responda a una brecha real"]
+    },
+    {
+      "id": "example-15",
+      "slug": "mi-madre-dejo-de-hablarme-y-no-sabia-si-insistir-o-rendirme",
+      "category": "Familia",
+      "voice": "intima-coloquial",
+      "title": "Mi madre dejó de hablarme y no sabía si insistir o rendirme",
+      "excerpt": "Cada mensaje sin respuesta me hacía sentir hija otra vez, pero una hija esperando en una puerta que nadie abría.",
+      "context": "Ruptura familiar · contacto cortado",
+      "body": [
+        "Tuvimos una discusión grande y mi madre dejó de contestarme. Al principio le escribía todos los días. Luego cada semana. Cada vez que no respondía me enfadaba más y al mismo tiempo me sentía culpable.",
+        "Yo quería arreglarlo ya. No soportaba que una relación de toda la vida pudiera quedarse así. Con el tiempo entendí que intentar forzar una conversación también podía empeorar las cosas.",
+        "Le mandé un último mensaje corto: que sentía mi parte, que estaba disponible para hablar cuando pudiera y que mientras tanto iba a respetar el espacio. Luego tuve que ocuparme de mí, que era justo lo que no quería hacer porque implicaba aceptar que no controlaba su respuesta.",
+        "Todavía no estamos como antes. Hemos retomado algo de contacto. Lo importante para mí ha sido aprender que querer reparar una relación no significa aceptar cualquier trato ni perseguir indefinidamente a la otra persona."
+      ],
+      "timeline": [
+        {"label": "Ruptura", "text": "Discusión intensa y corte total de comunicación."},
+        {"label": "Semanas", "text": "Mensajes repetidos, culpa y frustración por no poder reparar de inmediato."},
+        {"label": "Meses", "text": "Límite respetuoso, menor persecución y contacto parcial posterior."}
+      ],
+      "helped": ["Asumir la propia parte sin cargar con toda la responsabilidad", "Dejar un canal abierto sin insistencia continua", "Definir límites sobre el trato aceptable"],
+      "nextSteps": ["Distinguir reparación de persecución", "Buscar apoyo si el conflicto familiar domina la vida cotidiana", "Priorizar seguridad si existe violencia, amenaza o coerción"]
+    },
+    {
+      "id": "example-16",
+      "slug": "cuidaba-a-todos-y-un-dia-me-di-cuenta-de-que-yo-no-estaba-en-la-lista",
+      "category": "Salud y Cuidados",
+      "voice": "reflexiva",
+      "title": "Cuidaba a todos y un día me di cuenta de que yo no estaba en la lista",
+      "excerpt": "Sabía las citas, medicinas y horarios de todos. Si me preguntaban cuándo había descansado yo, no sabía qué responder.",
+      "context": "Cuidados prolongados · agotamiento del cuidador",
+      "body": [
+        "Durante años cuidar fue lo normal. No lo vivía como una elección heroica; simplemente había cosas que hacer y alguien tenía que hacerlas. Poco a poco dejé de ver amigos, de hacer deporte y de pedir ayuda porque explicar todo parecía más cansado que hacerlo yo.",
+        "Me enfadaba con la persona a la que cuidaba y después me sentía una persona horrible por enfadarme. Tardé mucho en entender que querer a alguien y estar agotado podían ser verdad al mismo tiempo.",
+        "La primera mejora no fue unas vacaciones. Fue repartir una tarea. Después otra. Informarme sobre apoyos. Volver a una cita médica mía. Dormir alguna noche sin estar pendiente de cada ruido.",
+        "Sigo cuidando. La diferencia es que intento no desaparecer mientras lo hago. No siempre lo consigo, pero ya no creo que cuidarme sea abandonar a nadie."
+      ],
+      "timeline": [
+        {"label": "Años", "text": "Aumento progresivo de responsabilidades y reducción de vida propia."},
+        {"label": "Alerta", "text": "Irritabilidad, agotamiento y culpa por sentir límites."},
+        {"label": "Después", "text": "Reparto de tareas y recuperación gradual de necesidades propias."}
+      ],
+      "helped": ["Nombrar el agotamiento sin convertirlo en falta de amor", "Delegar tareas concretas", "Consultar recursos de apoyo a cuidadores"],
+      "nextSteps": ["Revisar descanso, salud y red de apoyo del cuidador", "Pedir ayuda concreta en vez de esperar a colapsar", "Consultar servicios sociales o sanitarios disponibles para la situación de cuidados"]
+    },
+    {
+      "id": "example-17",
+      "slug": "perdi-el-embarazo-y-la-gente-no-sabia-que-decirme",
+      "category": "Duelo y Pérdidas",
+      "voice": "intima-sencilla",
+      "title": "Perdí el embarazo y la gente no sabía qué decirme",
+      "excerpt": "Para los demás habían sido pocas semanas. Para mí ya había una fecha, planes y una vida que yo había empezado a imaginar.",
+      "context": "Pérdida gestacional · duelo poco reconocido",
+      "body": [
+        "Cuando perdí el embarazo algunas personas intentaban animarme diciendo que era pronto y que podría intentarlo otra vez. Sé que lo decían con cariño, pero yo sentía que estaban hablando de sustituir algo que para mí ya había existido.",
+        "Me costaba explicar por qué estaba tan triste porque no había fotos, recuerdos de años ni una historia compartida que la gente pudiera ver. Había una historia dentro de mi cabeza y de mi cuerpo.",
+        "Me ayudó encontrar a dos personas que no intentaron arreglarme. Una me preguntó si quería hablar del embarazo y la otra simplemente me dijo que lo sentía. Parecía poco, pero fue muchísimo.",
+        "Con el tiempo pude volver a hacer planes sin sentir que traicionaba lo que había perdido. No necesitaba olvidar. Necesitaba que aquella pérdida tuviera permiso para haber sido importante."
+      ],
+      "timeline": [
+        {"label": "Primeras semanas", "text": "Dolor intenso y sensación de que el entorno minimizaba la pérdida."},
+        {"label": "Meses", "text": "Espacios seguros para hablar sin frases de reemplazo o prisa."},
+        {"label": "Después", "text": "Integración de la pérdida sin exigir olvido para continuar."}
+      ],
+      "helped": ["Que otras personas reconocieran la pérdida", "Poder hablar sin recibir soluciones inmediatas", "Respetar ritmos físicos y emocionales"],
+      "nextSteps": ["Buscar atención sanitaria ante cualquier preocupación física", "Pedir apoyo emocional especializado si se necesita", "Evitar comparar el propio duelo con el tiempo de gestación o con otras pérdidas"]
+    },
+    {
+      "id": "example-18",
+      "slug": "mi-jefe-me-hacia-dudar-de-todo-hasta-de-lo-que-yo-habia-visto",
+      "category": "Violencia, Abuso y Acoso",
+      "voice": "directa-profesional",
+      "title": "Mi jefe me hacía dudar de todo, hasta de lo que yo había visto",
+      "excerpt": "Las críticas no eran lo peor. Lo peor era salir de cada conversación pensando que quizá todo estaba en mi cabeza.",
+      "context": "Acoso laboral · deterioro de confianza",
+      "body": [
+        "Al principio pensé que era un jefe exigente. Después empezaron los comentarios delante de otros, los cambios de instrucciones que luego negaba y las reuniones en las que yo entraba sabiendo lo que había ocurrido y salía dudándolo.",
+        "Me daba miedo contar algo porque cada episodio por separado parecía pequeño. Empecé a guardar fechas, instrucciones y correos, no para vivir pendiente del conflicto sino para recuperar una referencia de lo que realmente estaba pasando.",
+        "También pedí asesoramiento antes de hacer movimientos impulsivos. Necesitaba saber qué opciones laborales y formales existían y qué podía documentar de forma legítima. Tener información bajó mucho la sensación de estar atrapado.",
+        "Al final cambié de equipo. No todo el mundo puede hacerlo rápido y no quiero venderlo como una solución simple. Lo que más recuperé fue la confianza en mi propia percepción. Ningún trabajo merece que termines creyendo que no puedes fiarte ni de ti mismo."
+      ],
+      "timeline": [
+        {"label": "Inicio", "text": "Críticas y cambios de criterio interpretados como exigencia laboral."},
+        {"label": "Meses", "text": "Patrón de humillación, contradicciones y deterioro de confianza."},
+        {"label": "Después", "text": "Documentación prudente, asesoramiento y cambio de entorno laboral."}
+      ],
+      "helped": ["Registrar hechos concretos y fechas", "Hablar con una persona externa al conflicto", "Pedir orientación laboral o jurídica antes de actuar"],
+      "nextSteps": ["Distinguir conflicto puntual de patrones repetidos", "Conservar documentación de forma legítima y segura", "Consultar representación laboral, prevención o asesoramiento jurídico según el caso"]
+    }
+  ]
+}
