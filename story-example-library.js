@@ -7,7 +7,11 @@
 
   function replaceExactText(root, from, to) {
     root.querySelectorAll('strong, a, button, small, p').forEach((node) => {
-      if (node.children.length === 0 && node.textContent.trim() === from) node.textContent = to;
+      const fullText = node.textContent.trim();
+      if (fullText !== from && !fullText.startsWith(`${from} `)) return;
+      const textNode = [...node.childNodes].find((child) => child.nodeType === Node.TEXT_NODE && child.textContent.includes(from));
+      if (textNode) textNode.textContent = textNode.textContent.replace(from, to);
+      else if (node.children.length === 0) node.textContent = fullText.replace(from, to);
     });
   }
 
@@ -66,7 +70,7 @@
 
   function loadLibrary() {
     if (!libraryPromise) {
-      libraryPromise = fetch(DATA_URL, { cache: 'no-store', credentials: 'same-origin' })
+      libraryPromise = fetch('/content/historias-ejemplo-v1.json', { cache: 'no-store', credentials: 'omit' })
         .then((response) => {
           if (!response.ok) throw new Error('story_examples_unavailable');
           return response.json();
