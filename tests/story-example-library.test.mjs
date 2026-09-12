@@ -71,6 +71,7 @@ test('high-risk examples include appropriate Spain safety routes', () => {
 test('frontend only replaces a confirmed empty state and keeps examples transparently labeled', () => {
   assert.match(loader, /story-example-library\.js/);
   assert.match(runtime, /Aún no hay historias publicadas\./);
+  assert.match(runtime, /if \(rendered \|\| !isConfirmedEmpty\(grid\)\) return;/);
   assert.match(runtime, /is_real_user_content !== false/);
   assert.match(runtime, /never_label_as_real !== true/);
   assert.match(runtime, /Historia de ejemplo|display_label/);
