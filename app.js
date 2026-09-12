@@ -11,6 +11,7 @@
   load('/visitor-analytics.js');
   load('/resource-links.js');
   load('/app-core.js',()=>{
+    load('/story-example-library.js');
     load('/urgent-help-nav.js');
     load('/next-step-guidance.js',()=>load('/next-step-adapter.js'));
   });

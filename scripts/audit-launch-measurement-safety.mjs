@@ -7,11 +7,12 @@ import { fileURLToPath } from 'node:url';
 
 const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ANALYTICS_FILE = 'visitor-analytics.js';
+const STORY_EXAMPLE_FILE = 'story-example-library.js';
 const SAFE_PAYLOAD_KEYS = ['p_country_code', 'p_device_class', 'p_path', 'p_referrer_host'];
 const APPROVED_ANALYTICS_ORIGIN = 'https://enspficpubtttybpzhph.supabase.co';
 const APPROVED_HOME_EXTERNAL_MODULE = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const PINNED_MEASUREMENT_FILES = new Map([
-  ['app.js', 'bd6ac96b527792e487aad882f4d8659bb5e869c41baeb2e7fb4c965fa42ef920'],
+  ['app.js', 'afac2737553d45aa9275b551c9ebb734ee5ead06b7cfbe8dec59b0a225420238'],
   ['public-page-runtime.js', 'a0654d52caf4b7fbb5c191a609a6336c8d25ff8814aadd7142afc811ca405845'],
   ['visitor-analytics.js', '3ca9ed490f749aea8f9728e0f762a26c42f4d390658954fbb13dd98b1cc99031'],
   ['supabase/migrations/20260830002000_add_privacy_safe_pageview_analytics.sql', '384c3210cd9e38c9922efda675eb9eae1e0104e0dc77103075c0cb08e61f5a9c'],
@@ -29,7 +30,7 @@ const PINNED_MEASUREMENT_FILES = new Map([
 ]);
 const APPROVED_HOME_CLOSURE = [
   'app-core.js', 'app.js', 'next-step-adapter.js', 'next-step-guidance.js',
-  'resource-links.js', 'search-home-entry.js', 'urgent-help-nav.js', 'visitor-analytics.js',
+  'resource-links.js', 'search-home-entry.js', 'story-example-library.js', 'urgent-help-nav.js', 'visitor-analytics.js',
 ];
 const APPROVED_SEARCH_CLOSURE = [
   'src/search-clarification.js', 'src/search-content-catalog.js',
@@ -238,6 +239,26 @@ function auditProtectedCode(label, source, failures) {
   }
 }
 
+function auditStoryExampleRuntime(source) {
+  const failures = [];
+  let code;
+  try { code = executableSource(source); }
+  catch (error) { return [`invalid JavaScript: ${error.message}`]; }
+  const fetchCalls = [...code.matchAll(/\bfetch\s*\(/g)];
+  if (fetchCalls.length !== 1) failures.push(`story library must make exactly one static-data fetch, found ${fetchCalls.length}`);
+  if ([...code.matchAll(/\bfetch\b/g)].length !== 1) failures.push('story library must contain exactly one fetch reference and no aliases');
+  if (!/fetch\s*\(\s*['"]\/content\/historias-ejemplo-v1\.json['"]\s*,/.test(code)) failures.push('story library fetch must target the exact approved local JSON');
+  if (!/credentials\s*:\s*['"]omit['"]/.test(code)) failures.push("story library static fetch must use credentials: 'omit'");
+  if (/credentials\s*:\s*['"](?:include|same-origin)['"]/.test(code)) failures.push('story library static fetch contains unsafe credentials mode');
+  if (/\b(?:XMLHttpRequest|sendBeacon|WebSocket|EventSource|WebTransport)\b/.test(code)) failures.push('story library contains an unapproved network primitive');
+  for (const [name, pattern] of PRIVACY_SINKS.filter(([name]) => !['network request'].includes(name))) {
+    if (pattern.test(code)) failures.push(`story library uses forbidden ${name}`);
+  }
+  if (/(?:window|document|navigator|location|globalThis)\s*\[/.test(code)) failures.push('story library has unresolved computed global access');
+  if (!/is_real_user_content\s*!==\s*false/.test(code) || !/never_label_as_real\s*!==\s*true/.test(code)) failures.push('story library must fail closed on editorial transparency metadata');
+  return [...new Set(failures)];
+}
+
 export async function auditHtmlEntry({ root = DEFAULT_ROOT, htmlFile, protectedSurface = true }) {
   const failures = [];
   let closure;
@@ -379,7 +400,9 @@ export async function auditLaunchMeasurementSafety({ root = DEFAULT_ROOT } = {})
     if (home.inline.some((item) => stripComments(item.source).trim())) failures.push('homepage has unapproved inline executable code');
     for (const [file, source] of home.files) {
       const relative = path.relative(rootReal, file);
-      if (relative !== ANALYTICS_FILE && /\b(?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|WebTransport)\b/.test(executableSource(source))) {
+      if (relative === STORY_EXAMPLE_FILE) {
+        for (const failure of auditStoryExampleRuntime(source)) failures.push(`${relative}: ${failure}`);
+      } else if (relative !== ANALYTICS_FILE && /\b(?:fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|WebTransport)\b/.test(executableSource(source))) {
         failures.push(`homepage dependency ${relative} contains an unapproved direct network primitive`);
       }
       for (const specifier of scriptSpecifiers(source).filter((item) => /^(?:https?:)?\/\//i.test(item))) {
