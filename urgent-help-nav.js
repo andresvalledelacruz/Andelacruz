@@ -14,7 +14,7 @@
         flex-direction:column;
         align-items:center;
         justify-content:center;
-        min-height:42px;
+        min-height:44px;
         padding:7px 13px;
         border:2px solid #8A4939;
         border-radius:999px;
@@ -31,8 +31,10 @@
       }
       .urgent-help-link:hover{background:#71392D;border-color:#71392D;}
       .urgent-help-link:focus-visible{outline:3px solid #D7B25B;outline-offset:3px;}
+      .nav-toggle{min-width:44px;min-height:44px;}
+      .nav-toggle:focus-visible{outline:3px solid #D7B25B;outline-offset:3px;}
       @media (max-width:900px){
-        .urgent-help-link{min-height:38px;padding:6px 10px;font-size:.66rem;}
+        .urgent-help-link{min-height:44px;padding:6px 10px;font-size:.66rem;}
       }
     `;
     document.head.append(style);
