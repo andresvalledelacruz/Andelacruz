@@ -235,3 +235,78 @@
     object-position:center;
   }
 }
+
+/* Launch 14/09 · jerarquía móvil aprobada tras QA real en iPhone/Safari.
+   Ayuda Urgente gana prioridad visual, permanece dentro del viewport y
+   Cuéntanos tu historia pasa a tratamiento secundario. */
+@media (max-width:760px){
+  .header-inner{
+    grid-template-columns:minmax(0,1fr) 44px !important;
+    grid-auto-rows:auto;
+    gap:10px 12px;
+    padding-top:10px;
+    padding-bottom:12px;
+  }
+
+  .header-inner .brand{
+    grid-column:1;
+    grid-row:1;
+    min-width:0;
+  }
+
+  .header-inner .nav-toggle{
+    grid-column:2;
+    grid-row:1;
+    justify-self:end;
+  }
+
+  .header-inner .urgent-help-link{
+    grid-column:1 / -1;
+    grid-row:2;
+    width:100% !important;
+    max-width:none !important;
+    min-width:0 !important;
+    height:auto !important;
+    min-height:56px !important;
+    padding:10px 16px !important;
+    border:2px solid #8A4939 !important;
+    border-radius:14px !important;
+    background:#8A4939 !important;
+    color:#fff !important;
+    box-shadow:0 8px 18px rgba(91,47,37,.22) !important;
+    font-size:.82rem !important;
+    font-weight:800 !important;
+    line-height:1.08 !important;
+    letter-spacing:.045em !important;
+    box-sizing:border-box;
+    overflow-wrap:anywhere;
+  }
+
+  .header-inner .urgent-help-link:hover{
+    background:#71392D !important;
+    border-color:#71392D !important;
+  }
+
+  .header-inner .header-cta{
+    grid-column:1 / -1;
+    grid-row:3;
+    width:100%;
+    min-width:0;
+    height:auto;
+    min-height:44px;
+    padding:10px 14px;
+    border:1px solid rgba(123,63,30,.24);
+    border-radius:12px;
+    background:rgba(123,63,30,.07);
+    color:#7B3F1E;
+    box-shadow:none;
+    font-size:.86rem;
+    font-weight:700;
+  }
+
+  .header-inner .header-cta:hover{
+    background:rgba(123,63,30,.12);
+    color:#7B3F1E;
+    box-shadow:none;
+  }
+}
