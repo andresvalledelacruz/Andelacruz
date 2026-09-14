@@ -12,7 +12,7 @@ const PUBLIC_VARIANTS = [
 ];
 
 const V9_MARKERS = [
-  '<title>Desgracias.es | Historias reales y recursos para momentos difíciles</title>',
+  '<title>Desgracias.es | Historias y recursos para momentos difíciles</title>',
   'UN ESPACIO ANÓNIMO, HUMANO Y RESPETUOSO',
   'Hay momentos',
   'dice basta.'

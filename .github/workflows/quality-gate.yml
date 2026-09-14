@@ -73,7 +73,7 @@ jobs:
         run: |
           set -euo pipefail
           if [ -f app-core.js ]; then
-            test "$(git hash-object app-core.js)" = "aba744d73a3afdf5b38cd3eb0575e2b82b81ae93"
+            test "$(git hash-object app-core.js)" = "a202dfae3cbcd2c4a9f7a2d342832fbd2140e9ce"
           fi
 
       - name: Verify locked V9 visual shell
@@ -106,6 +106,22 @@ jobs:
 
       - name: Run test suite
         run: npm test
+
+      - name: Install isolated browser QA tools
+        run: |
+          npm install --no-save --package-lock=false --ignore-scripts --no-audit --no-fund playwright@1.62.1
+          npx playwright install --with-deps chromium
+
+      - name: Verify essential homepage with no JavaScript and failed core
+        run: node scripts/qa-static-homepage.mjs
+
+      - name: Preserve static homepage visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: static-homepage-qa
+          path: qa-static-homepage/
+          if-no-files-found: ignore
 
       - name: Audit critical-route Safety inventory
         run: node scripts/audit-critical-route-inventory.mjs

@@ -94,7 +94,7 @@ function installStorySafetyLayer() {
 
 function installPrivacyTransparency() {
   const primarySmall = document.querySelector('.final-card-primary .final-card-copy small');
-  if (primarySmall) primarySmall.textContent = 'No necesitas dar tu nombre. Revisamos cada historia.';
+  if (primarySmall && !primarySmall.closest('[data-urgent-entry]')) primarySmall.textContent = 'No necesitas dar tu nombre. Revisamos cada historia.';
 
   document.querySelectorAll('.feature-card').forEach(card => {
     const title = card.querySelector('h3');
