@@ -88,6 +88,7 @@
 
   function promoteNeedsUrgent() {
     const grid = document.querySelector('.needs-grid');
+    if (grid?.querySelector('[data-urgent-entry="needs"]')) return;
     const firstCard = grid?.querySelector('.need-card');
     if (!grid || !firstCard || firstCard.querySelector('[data-urgent-entry="needs"]')) return;
 

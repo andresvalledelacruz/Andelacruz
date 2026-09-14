@@ -16,30 +16,6 @@
   }
 
   function normalizePublicStoryCopy() {
-    document.title = document.title.replace('Historias reales', 'Historias');
-    for (const selector of [
-      'meta[name="description"]',
-      'meta[property="og:title"]',
-      'meta[property="og:description"]',
-      'meta[name="twitter:title"]',
-      'meta[name="twitter:description"]'
-    ]) {
-      const node = document.querySelector(selector);
-      if (!node) continue;
-      node.content = node.content.replace(/historias reales/gi, 'historias');
-    }
-
-    const schema = document.querySelector('script[type="application/ld+json"]');
-    if (schema) {
-      try {
-        const data = JSON.parse(schema.textContent);
-        if (typeof data.description === 'string') data.description = data.description.replace(/historias reales/gi, 'historias');
-        schema.textContent = JSON.stringify(data);
-      } catch {
-        // Mantener el schema original si no se puede interpretar.
-      }
-    }
-
     replaceExactText(document, 'Leer historias reales', 'Leer historias');
     const eyebrow = document.querySelector(`${STORY_SECTION} .section-heading .eyebrow`);
     if (eyebrow?.textContent.trim() === 'Experiencias reales') eyebrow.textContent = 'Relatos y experiencias';
