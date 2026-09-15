@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { auditLaunchMeasurementSafety } from '../scripts/audit-launch-measurement-safety.mjs';
+import { auditLaunchMeasurementSafety } from '../scripts/audit-launch-measurement-safety-v2.mjs';
 
 const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
 
@@ -40,6 +40,7 @@ test('current launch measurement topology is selectively safe', async () => {
   assert.equal(report.hard_failures.length, 0);
   assert.ok(report.homepage_dependency_files.includes('visitor-analytics.js'));
   assert.equal(report.measurement_baseline.length, 17);
+  assert.equal(report.measurement_gate_version, 2);
   assert.ok(report.protected_surfaces.some(({ route }) => route === '/buscar/'));
 });
 
