@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,nosnippet,noarchive">
+  <meta name="referrer" content="no-referrer">
+  <title>Panel de analítica · Desgracias.es</title>
+  <style>
+    :root{--ink:#352d27;--muted:#71665c;--paper:#fffaf4;--card:#fff;--line:#e7d9cc;--accent:#8a4939;--soft:#f7ecdf;--good:#e8efe3;--radius:18px}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}.wrap{width:min(1180px,calc(100% - 28px));margin:auto;padding:28px 0 60px}.top{display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:24px}.brand{font-family:Georgia,serif;font-size:1.45rem;font-weight:700;color:#7b3f1e;text-decoration:none}h1,h2{font-family:Georgia,serif;line-height:1.16}h1{font-size:clamp(2rem,5vw,3.5rem);margin:.1em 0}.lead{max-width:850px;color:var(--muted);font-size:1.05rem}.access{display:grid;grid-template-columns:1fr auto auto;gap:10px;margin:24px 0;padding:18px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius)}label{font-weight:750}input,select,button{font:inherit;min-height:48px;border-radius:12px}input,select{width:100%;border:1px solid #cdbbae;background:#fff;padding:10px 12px;color:var(--ink)}button{border:0;background:var(--accent);color:#fff;padding:10px 18px;font-weight:800;cursor:pointer}button:hover{filter:brightness(.94)}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #c18d52;outline-offset:3px}.status{min-height:1.5em;font-weight:700;margin:8px 0 20px}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px}.kpi small{display:block;color:var(--muted);font-weight:700}.kpi strong{display:block;font-family:Georgia,serif;font-size:2.15rem;margin-top:6px}.section{margin-top:26px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}.section h2{margin-top:0}.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}.bars{display:grid;gap:12px}.bar-row{display:grid;grid-template-columns:minmax(140px,1fr) minmax(140px,3fr) auto;gap:12px;align-items:center}.bar-label{overflow-wrap:anywhere}.track{height:18px;border-radius:999px;background:#eee5dc;overflow:hidden}.fill{height:100%;min-width:2px;background:var(--accent);border-radius:999px}.value{font-weight:800;font-variant-numeric:tabular-nums}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:.82rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}.note{background:var(--good);border-radius:14px;padding:14px 16px;margin-top:18px}.empty{color:var(--muted);font-style:italic}.sr{position:absolute;left:-9999px}.hidden{display:none!important}@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}.two{grid-template-columns:1fr}.access{grid-template-columns:1fr}.bar-row{grid-template-columns:1fr}.track{height:15px}}@media(max-width:520px){.grid{grid-template-columns:1fr}.section{padding:17px}.wrap{width:min(100% - 20px,1180px)}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top"><a class="brand" href="/">Desgracias.es</a><a href="/">← Volver a la web</a></div>
+  <p class="sr" id="privacy-desc">Panel privado de métricas agregadas. No muestra personas, búsquedas, historias, IP, cookies ni grabaciones.</p>
+  <h1>Panel de analítica</h1>
+  <p class="lead">Visión directiva de visitas de página, procedencia, dispositivo e interacción agregada. La sección “Atención” es una aproximación basada en secciones visibles y clics; <strong>no es seguimiento ocular, no graba sesiones y no recoge lo que una persona escribe.</strong></p>
+
+  <form class="access" id="access-form" aria-describedby="privacy-desc">
+    <div><label for="owner-token">Clave privada del propietario</label><input id="owner-token" type="password" autocomplete="off" spellcheck="false" required></div>
+    <div><label for="period">Periodo</label><select id="period"><option value="7">7 días</option><option value="14">14 días</option><option value="30" selected>30 días</option><option value="90">90 días</option></select></div>
+    <div><label>&nbsp;</label><button type="submit">Cargar panel</button></div>
+  </form>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+
+  <div id="dashboard" class="hidden">
+    <section class="grid" aria-label="Indicadores principales">
+      <article class="kpi"><small>Visitas de página · periodo</small><strong id="kpi-total">0</strong></article>
+      <article class="kpi"><small>Visitas de página · hoy</small><strong id="kpi-today">0</strong></article>
+      <article class="kpi"><small>Página más vista</small><strong id="kpi-top-path">—</strong></article>
+      <article class="kpi"><small>Dispositivo principal</small><strong id="kpi-device">—</strong></article>
+    </section>
+
+    <section class="section"><h2>Evolución de visitas</h2><div class="bars" id="days-bars"></div></section>
+
+    <div class="two">
+      <section class="section"><h2>Páginas más vistas</h2><div class="bars" id="paths-bars"></div></section>
+      <section class="section"><h2>Dispositivos</h2><div class="bars" id="devices-bars"></div></section>
+    </div>
+
+    <div class="two">
+      <section class="section"><h2>De dónde llegan</h2><div class="bars" id="referrers-bars"></div></section>
+      <section class="section"><h2>Configuración regional aproximada</h2><div class="bars" id="countries-bars"></div><p class="note">El país procede del idioma/región configurado en el navegador. No es geolocalización física.</p></section>
+    </div>
+
+    <div class="two">
+      <section class="section"><h2>Atención por secciones</h2><p>Cuántas veces una sección alcanzó suficiente visibilidad en pantalla. Sirve para detectar qué bloques llegan a ver más personas.</p><div class="bars" id="attention-bars"></div></section>
+      <section class="section"><h2>Profundidad de lectura</h2><p>Eventos agregados al alcanzar aproximadamente el 25 %, 50 %, 75 % y 100 % de la página.</p><div class="bars" id="scroll-bars"></div></section>
+    </div>
+
+    <section class="section"><h2>Interacciones principales</h2><p>Clics y eventos agregados por elemento. No se almacenan coordenadas, texto escrito ni identificadores personales.</p><div style="overflow:auto"><table><thead><tr><th>Página</th><th>Tipo</th><th>Elemento</th><th>Eventos</th></tr></thead><tbody id="interactions-body"></tbody></table></div></section>
+    <p class="note"><strong>Interpretación correcta:</strong> contamos visitas de página, no usuarios únicos. No usamos cookies de analítica ni identificadores persistentes. Las rutas de crisis y búsqueda sensible quedan excluidas de la telemetría de interacción.</p>
+  </div>
+</main>
+<script>
+(() => {
+  'use strict';
+  const SUPABASE_URL='https://enspficpubtttybpzhph.supabase.co';
+  const SUPABASE_KEY='sb_publishable_TraLgSrXG8Jpgq_pE6uZgw_SQ7S5UL7';
+  const form=document.getElementById('access-form');
+  const tokenInput=document.getElementById('owner-token');
+  const period=document.getElementById('period');
+  const status=document.getElementById('status');
+  const dashboard=document.getElementById('dashboard');
+  const fmt=new Intl.NumberFormat('es-ES');
+
+  function label(value){
+    return String(value||'—').replace(/^section:/,'').replace(/^depth:/,'').replace(/^link:/,'').replace(/^urgent:/,'Ayuda urgente · ').replace(/^search:/,'Buscar ayuda · ').replace(/_/g,' ');
+  }
+  function renderBars(id,rows,labelKey,valueKey){
+    const root=document.getElementById(id); root.replaceChildren();
+    if(!rows?.length){const p=document.createElement('p');p.className='empty';p.textContent='Aún no hay datos suficientes.';root.append(p);return;}
+    const max=Math.max(...rows.map(r=>Number(r[valueKey]||0)),1);
+    rows.forEach(row=>{
+      const wrap=document.createElement('div');wrap.className='bar-row';
+      const l=document.createElement('div');l.className='bar-label';l.textContent=label(row[labelKey]);
+      const track=document.createElement('div');track.className='track';track.setAttribute('aria-hidden','true');
+      const fill=document.createElement('div');fill.className='fill';fill.style.width=`${Math.max(2,Math.round((Number(row[valueKey]||0)/max)*100))}%`;track.append(fill);
+      const v=document.createElement('div');v.className='value';v.textContent=fmt.format(Number(row[valueKey]||0));
+      wrap.append(l,track,v);root.append(wrap);
+    });
+  }
+  function render(data){
+    document.getElementById('kpi-total').textContent=fmt.format(Number(data.pageviews_total||0));
+    document.getElementById('kpi-today').textContent=fmt.format(Number(data.pageviews_today||0));
+    document.getElementById('kpi-top-path').textContent=label(data.top_paths?.[0]?.path||'—');
+    document.getElementById('kpi-device').textContent=label(data.devices?.[0]?.device||'—');
+    renderBars('days-bars',data.pageviews_by_day,'day','pageviews');
+    renderBars('paths-bars',data.top_paths,'path','pageviews');
+    renderBars('devices-bars',data.devices,'device','pageviews');
+    renderBars('referrers-bars',data.referrers,'referrer','pageviews');
+    renderBars('countries-bars',data.countries,'country','pageviews');
+    renderBars('attention-bars',data.attention_sections,'target','views');
+    renderBars('scroll-bars',data.scroll_depth,'depth','events');
+    const body=document.getElementById('interactions-body');body.replaceChildren();
+    (data.top_interactions||[]).forEach(row=>{
+      const tr=document.createElement('tr');
+      [row.path,row.event,label(row.target),fmt.format(Number(row.events||0))].forEach(value=>{const td=document.createElement('td');td.textContent=value;tr.append(td)});
+      body.append(tr);
+    });
+    if(!(data.top_interactions||[]).length){const tr=document.createElement('tr');const td=document.createElement('td');td.colSpan=4;td.className='empty';td.textContent='Aún no hay interacciones agregadas.';tr.append(td);body.append(tr)}
+    dashboard.classList.remove('hidden');
+  }
+  async function load(token,days){
+    const response=await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_owner_privacy_safe_analytics`,{
+      method:'POST',credentials:'omit',headers:{'Content-Type':'application/json',apikey:SUPABASE_KEY},body:JSON.stringify({p_owner_token:token,p_days:Number(days)})
+    });
+    if(!response.ok) throw new Error(response.status===400||response.status===401?'Clave no válida.':'No se pudo cargar el panel.');
+    return response.json();
+  }
+  form.addEventListener('submit',async event=>{
+    event.preventDefault(); dashboard.classList.add('hidden'); status.textContent='Cargando métricas…';
+    try{const data=await load(tokenInput.value.trim(),period.value);render(data);status.textContent=`Actualizado: ${new Date(data.generated_at).toLocaleString('es-ES')}.`;}
+    catch(error){status.textContent=error.message||'No se pudo cargar el panel.';}
+  });
+})();
+</script>
+</body>
+</html>
