@@ -12,9 +12,9 @@ test('mobile header keeps urgent help fully inside the viewport and visually fir
   assert.match(css, /\.header-inner \.urgent-help-link\{[\s\S]*?background:#8A4939 !important;[\s\S]*?color:#fff !important;/);
 });
 
-test('story CTA is a visible intermediate priority below urgent help', () => {
-  assert.match(css, /\.header-cta\{[\s\S]*?border:1px solid #C88463;[\s\S]*?background:#D9A487;[\s\S]*?color:#5B2F25;[\s\S]*?box-shadow:0 5px 14px rgba\(91,47,37,\.12\);/);
-  assert.match(css, /@media \(max-width:760px\)[\s\S]*?\.header-inner \.header-cta\{[\s\S]*?background:#D9A487;[\s\S]*?color:#5B2F25;/);
+test('story CTA is a pastel intermediate priority below urgent help', () => {
+  assert.match(css, /\.header-cta\{[\s\S]*?border:1px solid #D2A689;[\s\S]*?background:#EEDFD1;[\s\S]*?color:#6E3A26;[\s\S]*?box-shadow:0 4px 12px rgba\(91,47,37,\.08\);/);
+  assert.match(css, /@media \(max-width:760px\)[\s\S]*?\.header-inner \.header-cta\{[\s\S]*?background:#EEDFD1;[\s\S]*?color:#6E3A26;/);
 });
 
 test('trust banner stays visually softer than the actionable story CTA', () => {
