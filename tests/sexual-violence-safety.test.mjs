@@ -19,27 +19,9 @@ test('URL58 remains a high-risk restricted sexual-violence support route', () =>
   assert.equal(ctx.commercialPolicy, 'restricted');
   assert.deepEqual(ctx.opportunities, [], 'Sexual-violence route must not expose commercial opportunities');
   for (const flag of [
-    'sexual_violence_support',
-    'trauma_informed',
-    'healthcare_independent_of_report',
-    'preserve_options',
-    'no_pressure_to_report',
-    'crisis_centres_24h',
-    '016_scope_accurate',
-    'victim_offices_any_victim',
-    'minors_safeguarding',
-    'suspected_drug_facilitated_assault_medical',
-    'no_forensic_guarantees',
-    'privacy_first',
-    'quick_exit',
-    'no_automatic_diagnosis',
-    'official_resources_first',
-    'emergency_escalation',
-    'suicide_risk_bridge',
-    'no_commercial_crisis_cta',
-    'safety_override'
+    'sexual_violence_support','trauma_informed','healthcare_independent_of_report','preserve_options','no_pressure_to_report','crisis_centres_24h','016_scope_accurate','victim_offices_any_victim','minors_safeguarding','suspected_drug_facilitated_assault_medical','no_forensic_guarantees','privacy_first','quick_exit','no_automatic_diagnosis','official_resources_first','emergency_escalation','suicide_risk_bridge','no_commercial_crisis_cta','safety_override'
   ]) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
-  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 60);
+  assert.equal(Object.keys(URL_OPPORTUNITY_MAP).length, EXPECTED_PRODUCTION_URL_COUNT);
 });
 
 test('emergency and healthcare-first guidance remains explicit', () => {
@@ -113,7 +95,5 @@ test('page remains substantial, non-commercial, official-first and discoverable 
   assert.match(urgentHtml, /href=['\"]\/he-sufrido-una-agresion-sexual-y-no-se-que-hacer\/['\"]/i);
   const externalAnchors = [...html.matchAll(/<a\s+[^>]*href=['\"]https?:\/\/[^'\"]+['\"][^>]*>/gi)].map(match => match[0]);
   assert.ok(externalAnchors.length >= 12, 'Expected a broad official evidence/resource set');
-  for (const anchor of externalAnchors) {
-    assert.match(anchor, /rel=['\"]noopener noreferrer['\"]/i, `Unsafe external link: ${anchor}`);
-  }
+  for (const anchor of externalAnchors) assert.match(anchor, /rel=['\"]noopener noreferrer['\"]/i, `Unsafe external link: ${anchor}`);
 });

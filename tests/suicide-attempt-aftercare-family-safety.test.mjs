@@ -17,21 +17,8 @@ test('URL55 remains a high-risk restricted post-attempt family route', () => {
   assert.equal(ctx.risk, 'high');
   assert.equal(ctx.commercialPolicy, 'restricted');
   assert.deepEqual(ctx.opportunities, [], 'Post-attempt family support must not expose commercial opportunities');
-  for (const flag of [
-    'post_attempt_aftercare',
-    'no_automatic_diagnosis',
-    'no_method_details',
-    'official_resources_first',
-    'no_commercial_crisis_cta',
-    'continuity_of_care',
-    'discharge_plan_first',
-    'safety_plan_clinician_led',
-    'supporter_self_care',
-    'emergency_escalation',
-    'no_universal_surveillance',
-    'safety_override'
-  ]) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
-  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 60);
+  for (const flag of ['post_attempt_aftercare','no_automatic_diagnosis','no_method_details','official_resources_first','no_commercial_crisis_cta','continuity_of_care','discharge_plan_first','safety_plan_clinician_led','supporter_self_care','emergency_escalation','no_universal_surveillance','safety_override']) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
+  assert.equal(Object.keys(URL_OPPORTUNITY_MAP).length, EXPECTED_PRODUCTION_URL_COUNT);
 });
 
 test('024 and 112 remain visible across emergency and family-support contexts', () => {
@@ -101,7 +88,5 @@ test('official post-attempt evidence set remains present and external links are 
   assert.match(html, /https:\/\/www\.who\.int\/docs\/default-source\/mental-health\/suicide-prevention-first-responders\.pdf/);
   const externalAnchors = [...html.matchAll(/<a\s+[^>]*href=['\"]https?:\/\/[^'\"]+['\"][^>]*>/gi)].map(match => match[0]);
   assert.ok(externalAnchors.length >= 5, 'Expected a broad public evidence set');
-  for (const anchor of externalAnchors) {
-    assert.match(anchor, /rel=['\"]noopener noreferrer['\"]/i, `Unsafe external link: ${anchor}`);
-  }
+  for (const anchor of externalAnchors) assert.match(anchor, /rel=['\"]noopener noreferrer['\"]/i, `Unsafe external link: ${anchor}`);
 });

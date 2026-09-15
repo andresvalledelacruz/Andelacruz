@@ -1,0 +1,65 @@
+name: Production smoke monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: production-smoke-monitor
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    name: Public critical-path smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check public HTTPS surfaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          origin='https://desgracias.es'
+          work="$(mktemp -d)"
+          trap 'rm -rf "$work"' EXIT
+
+          fetch() {
+            local path="$1"
+            local out="$2"
+            curl --fail --silent --show-error --location \
+              --proto '=https' --tlsv1.2 \
+              --connect-timeout 8 --max-time 20 \
+              --retry 2 --retry-all-errors \
+              -H 'Cache-Control: no-cache' \
+              "$origin$path" -o "$out"
+            test -s "$out"
+          }
+
+          fetch '/' "$work/home.html"
+          grep -Fq 'Necesito Ayuda Urgente' "$work/home.html"
+          grep -Fq 'data-search-entry="hero"' "$work/home.html"
+          grep -Fq 'id="recursos"' "$work/home.html"
+
+          fetch '/ayuda-urgente.html' "$work/urgent.html"
+          grep -Fq 'tel:112' "$work/urgent.html"
+          grep -Fq 'tel:024' "$work/urgent.html"
+
+          fetch '/buscar/' "$work/search.html"
+          grep -Fq 'Buscar ayuda' "$work/search.html"
+
+          fetch '/aviso-legal.html' "$work/legal.html"
+          grep -Fq 'Aviso legal' "$work/legal.html"
+
+          fetch '/contacto.html' "$work/contact.html"
+          grep -Fq 'No está atendido como un servicio de emergencia' "$work/contact.html"
+
+          fetch '/robots.txt' "$work/robots.txt"
+          grep -Fq 'Sitemap:' "$work/robots.txt"
+
+          fetch '/sitemap.xml' "$work/sitemap.xml"
+          grep -Fq 'https://desgracias.es/aviso-legal.html' "$work/sitemap.xml"
+
+          echo 'Production smoke PASS: critical public surfaces respond over HTTPS and retain safety markers.'
