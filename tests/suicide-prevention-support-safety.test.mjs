@@ -18,19 +18,8 @@ test('URL54 remains a high-risk restricted suicide-prevention support route', ()
   assert.equal(ctx.risk, 'high');
   assert.equal(ctx.commercialPolicy, 'restricted');
   assert.deepEqual(ctx.opportunities, [], 'Crisis-support route must not expose commercial opportunities');
-  for (const flag of [
-    'suicide_prevention',
-    'ask_directly',
-    'no_automatic_diagnosis',
-    'no_method_details',
-    'official_resources_first',
-    'no_commercial_crisis_cta',
-    'emergency_escalation',
-    'no_secrecy_when_safety_at_risk',
-    'supporter_self_care',
-    'safety_override'
-  ]) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
-  assert.equal(EXPECTED_PRODUCTION_URL_COUNT, 60);
+  for (const flag of ['suicide_prevention','ask_directly','no_automatic_diagnosis','no_method_details','official_resources_first','no_commercial_crisis_cta','emergency_escalation','no_secrecy_when_safety_at_risk','supporter_self_care','safety_override']) assert.ok(ctx.defaultFlags.includes(flag), `Missing safety flag: ${flag}`);
+  assert.equal(Object.keys(URL_OPPORTUNITY_MAP).length, EXPECTED_PRODUCTION_URL_COUNT);
 });
 
 test('024 and 112 remain highly visible and Spain-first', () => {
@@ -94,7 +83,5 @@ test('public-benefit page has no conversion CTA and bridges safely to postventio
 test('all external evidence links use safe rel attributes', () => {
   const externalAnchors = [...html.matchAll(/<a\s+[^>]*href=['\"]https?:\/\/[^'\"]+['\"][^>]*>/gi)].map(match => match[0]);
   assert.ok(externalAnchors.length >= 5, 'Expected primary Spanish and WHO evidence links');
-  for (const anchor of externalAnchors) {
-    assert.match(anchor, /rel=['\"]noopener noreferrer['\"]/i, `Unsafe external link: ${anchor}`);
-  }
+  for (const anchor of externalAnchors) assert.match(anchor, /rel=['\"]noopener noreferrer['\"]/i, `Unsafe external link: ${anchor}`);
 });
