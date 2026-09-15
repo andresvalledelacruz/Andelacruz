@@ -13,3 +13,4 @@ Disallow: /package.json
 Disallow: /render.yaml
 
 Sitemap: https://desgracias.es/sitemap.xml
+Sitemap: https://desgracias.es/sitemap-growth.xml
