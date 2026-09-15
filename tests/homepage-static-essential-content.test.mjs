@@ -15,10 +15,11 @@ test('urgent help, search and privacy are native links even when every script fa
     assert.match(section(name), /href="\/ayuda-urgente\.html"/);
     assert.match(section(name), /href="\/buscar\/"/);
   }
-  assert.ok((sourceWithoutScripts.match(/href="privacidad\.html"/g) ?? []).length >= 2);
+  assert.ok((sourceWithoutScripts.match(/href="\/?privacidad\.html"/g) ?? []).length >= 2);
   assert.match(sourceWithoutScripts, /<noscript>[\s\S]*?\.main-nav\{display:flex!important/);
-  assert.match(sourceWithoutScripts, /data-urgent-help-emphasis/);
-  assert.match(sourceWithoutScripts, /\.urgent-help-link:focus-visible/);
+  const css = readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
+  assert.match(css, /\.urgent-help-link:focus-visible/);
+  assert.match(css, /\.urgent-help-link\{[^}]*background:#8A4939/);
 });
 
 test('all ten static resources remain available in the approved Safety-first order', () => {
@@ -32,7 +33,7 @@ test('all ten static resources remain available in the approved Safety-first ord
 
 test('static copy discloses editorial examples and paused real-story publication before writing', () => {
   assert.doesNotMatch(page, /Leer historias reales|Nunca compartimos tu información|siempre protegida|seguro y confidencial/);
-  assert.match(page, /<title>Desgracias.es \| Historias y recursos/);
+  assert.match(page, /<title>Desgracias\.es \| Ayuda, historias y recursos para momentos difíciles<\/title>/);
   assert.match(section('historias'), /historias de ejemplo ficticias y orientativas/);
   assert.match(page, /id="story-availability"[\s\S]*?publicación de historias reales está en pausa/);
   assert.ok(page.indexOf('id="story-availability"') < page.indexOf('<textarea'));
