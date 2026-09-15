@@ -12,11 +12,11 @@
     if(status && !status.textContent.trim()) status.textContent=runtimeMessage;
   }
 
-  function enhanceCriticalCards(){
-    if(document.getElementById('urgent-whole-card-style')) return;
+  function enhanceDecisionCards(){
+    if(document.getElementById('whole-decision-card-style')) return;
     const style=document.createElement('style');
-    style.id='urgent-whole-card-style';
-    style.textContent='.need-card.need-primary{position:relative}.need-card.need-primary .need-link{position:static}.need-card.need-primary .need-link::after{content:"";position:absolute;inset:0;border-radius:22px}.need-card.need-primary:focus-within{outline:3px solid #8A4939;outline-offset:3px}';
+    style.id='whole-decision-card-style';
+    style.textContent='.needs-grid .need-card{position:relative;cursor:pointer}.needs-grid .need-card .need-link{position:static}.needs-grid .need-card .need-link::after{content:"";position:absolute;inset:0;border-radius:22px}.needs-grid .need-card:focus-within{outline:3px solid #8A4939;outline-offset:3px}.needs-grid .need-card:focus-within .need-link{text-decoration:underline;text-underline-offset:3px}';
     document.head.append(style);
   }
 
@@ -36,7 +36,7 @@
   }
 
   function enhanceDiscovery(){
-    enhanceCriticalCards();
+    enhanceDecisionCards();
     appendDiscoveryLink('#recursos','.resource-grid','all-resources-link','/recursos/','Explorar todos los recursos');
     appendDiscoveryLink('#historias','.story-grid','stories-by-topic-link','/historias/','Ver historias por temas');
   }
