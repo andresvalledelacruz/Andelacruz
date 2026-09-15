@@ -310,3 +310,65 @@
     box-shadow:none;
   }
 }
+
+/* Post-launch 15/09 · jerarquía visual de tres niveles aprobada por el propietario.
+   1) Ayuda urgente = máxima prioridad.
+   2) Cuéntanos tu historia = CTA secundaria claramente accionable.
+   3) Banner de confianza = apoyo informativo, visualmente más suave. */
+.urgent-help-link{
+  border-color:#8A4939;
+  background:#8A4939;
+  color:#fff;
+  box-shadow:0 8px 18px rgba(91,47,37,.20);
+}
+
+.urgent-help-link:hover{
+  border-color:#71392D;
+  background:#71392D;
+  color:#fff;
+}
+
+.header-cta{
+  border:1px solid #C88463;
+  background:#D9A487;
+  color:#5B2F25;
+  box-shadow:0 5px 14px rgba(91,47,37,.12);
+}
+
+.header-cta:hover{
+  border-color:#B97252;
+  background:#CF9677;
+  color:#4E281F;
+  box-shadow:0 6px 16px rgba(91,47,37,.15);
+}
+
+.hero-final-banner{
+  border:1px solid rgba(183,141,102,.30);
+  background:rgba(255,249,242,.62);
+  box-shadow:none;
+}
+
+.hero-final-banner .banner-shield{
+  background:rgba(234,204,151,.58);
+}
+
+@media (max-width:760px){
+  .header-inner .header-cta{
+    border:1px solid #C88463;
+    background:#D9A487;
+    color:#5B2F25;
+    box-shadow:0 5px 14px rgba(91,47,37,.12);
+  }
+
+  .header-inner .header-cta:hover{
+    border-color:#B97252;
+    background:#CF9677;
+    color:#4E281F;
+    box-shadow:0 6px 16px rgba(91,47,37,.15);
+  }
+
+  .hero-final-banner{
+    border-color:rgba(183,141,102,.28);
+    background:rgba(255,249,242,.58);
+  }
+}
