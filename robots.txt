@@ -7,6 +7,7 @@ Disallow: /ops/
 Disallow: /sql/
 Disallow: /src/
 Disallow: /tests/
+Disallow: /panel-analitica.html
 Disallow: /OPS_STAGING.md
 Disallow: /README_V9.txt
 Disallow: /package.json
