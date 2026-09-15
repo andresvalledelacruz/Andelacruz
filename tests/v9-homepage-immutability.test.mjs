@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-// Owner authorized static essentials and transparency on 2026-09-14; visual layout reviewed.
-const APPROVED_V9_INDEX_BLOB = '2ff0158f41edee6994f066595b412135d721692a';
+// Andrés autorizó el 2026-09-15 la simplificación de cabecera, SEO/trust y consolidación CSS de esta tanda.
+const APPROVED_V9_INDEX_BLOB = '3114c567b18f277d92e86220500ea134935cf49a';
 
 test('la portada V9 permanece byte-a-byte intacta', () => {
   const actual = execFileSync('git', ['hash-object', 'index.html'], { encoding: 'utf8' }).trim();
