@@ -5,6 +5,7 @@ import fs from 'node:fs';
 const loader = fs.readFileSync(new URL('../app.js', import.meta.url), 'utf8');
 const entry = fs.readFileSync(new URL('../search-home-entry.js', import.meta.url), 'utf8');
 const homepage = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+const styles = fs.readFileSync(new URL('../styles.css', import.meta.url), 'utf8');
 
 test('homepage serves search discovery natively and does not load the legacy injector', () => {
   assert.doesNotMatch(loader, /load\('\/search-home-entry\.js'\)/);
@@ -17,9 +18,8 @@ test('homepage serves search discovery natively and does not load the legacy inj
 test('header urgent-help control remains available and receives visible launch emphasis', () => {
   assert.match(homepage, /class="urgent-help-link"[^>]+href="\/ayuda-urgente\.html"/);
   assert.match(homepage, /aria-label="Necesito Ayuda Urgente"/);
-  assert.match(homepage, /data-urgent-help-emphasis/);
-  assert.match(homepage, /background:#8A4939/);
-  assert.match(homepage, /focus-visible/);
+  assert.match(styles, /\.urgent-help-link\{[^}]*background:#8A4939/);
+  assert.match(styles, /\.urgent-help-link:focus-visible/);
 });
 
 test('urgent help is centered in the hero and needs decision grids', () => {
