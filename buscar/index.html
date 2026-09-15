@@ -13,37 +13,34 @@
   <main>
     <p><a href="/">← Inicio</a></p>
     <h1>¿Qué te está pasando?</h1>
-    <p>Escríbelo con tus propias palabras. Esta página procesa la búsqueda en tu navegador; Desgracias.es no envía ni almacena el texto que escribas.</p>
+    <p>Escríbelo como te salga. Intentamos entender faltas habituales, abreviaturas y formas coloquiales, pero no adivinamos lo que no has escrito ni hacemos diagnósticos. El texto se procesa en tu navegador y no se envía ni se almacena.</p>
 
     <noscript>
       <style>#search-form{display:none}</style>
       <section class="result urgent" aria-labelledby="nojs-title">
         <h2 id="nojs-title">La búsqueda necesita JavaScript</h2>
         <p>No hace falta que escribas aquí para encontrar ayuda. Si existe peligro inmediato, llama al 112. Si estás pensando en suicidarte en España o te preocupa que alguien pueda hacerlo, también está disponible el 024. El 016 ofrece información, asesoramiento jurídico y atención psicosocial inmediata frente a todas las formas de violencia contra las mujeres.</p>
-        <ul>
-          <li><a href="tel:112">Llamar al 112</a></li>
-          <li><a href="tel:024">Llamar al 024</a></li>
-          <li><a href="tel:016">Llamar al 016</a></li>
-        </ul>
+        <ul><li><a href="tel:112">Llamar al 112</a></li><li><a href="tel:024">Llamar al 024</a></li><li><a href="tel:016">Llamar al 016</a></li></ul>
         <p><a href="/ayuda-urgente.html">Ver ayuda urgente</a></p>
         <ul>
+          <li><a href="/suicidio/">Información sobre suicidio y crisis</a></li>
           <li><a href="/me-preocupa-que-alguien-pueda-suicidarse/">Me preocupa que alguien pueda suicidarse</a></li>
           <li><a href="/alguien-cercano-ha-intentado-suicidarse/">Alguien cercano ha intentado suicidarse</a></li>
           <li><a href="/duelo/ha-muerto-por-suicidio-alguien-que-quiero/">Ha muerto por suicidio alguien que quiero</a></li>
         </ul>
-        <p><a href="/">Ver las categorías de Desgracias.es</a></p>
+        <p><a href="/temas/">Ver todos los temas</a></p>
       </section>
     </noscript>
 
     <form id="search-form" autocomplete="off" novalidate>
       <label for="search-query">Describe tu situación</label>
-      <textarea id="search-query" maxlength="500" autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false" aria-describedby="privacy-note"></textarea>
+      <textarea id="search-query" maxlength="500" autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false" aria-describedby="privacy-note language-note"></textarea>
       <p id="privacy-note" class="muted">No incluyas nombres, direcciones, teléfonos ni otros datos personales.</p>
+      <p id="language-note" class="muted">Puedes escribir con faltas o de forma coloquial. Si no hay suficiente información, te pediremos aclarar en vez de inventar.</p>
       <button type="submit">Encontrar por dónde empezar</button>
     </form>
 
-    <p class="muted privacy-links"><a href="/privacidad.html">Privacidad</a> · <a href="mailto:info@desgracias.es">Contacto</a></p>
-
+    <p class="muted privacy-links"><a href="/privacidad.html">Privacidad</a> · <a href="/contacto.html">Contacto</a> · <a href="/recursos/">Todos los recursos</a></p>
     <section id="result" class="result" aria-live="polite" tabindex="-1" hidden></section>
   </main>
 
@@ -51,6 +48,7 @@
     import { routeSearchQuery } from '../src/search-crisis-router.js';
     import { routeKnownContentQuery } from '../src/search-content-catalog.js';
     import { buildSearchClarification } from '../src/search-clarification.js';
+    import { normalizeHelpLanguage } from '../src/search-language-bridge.js';
 
     const form = document.querySelector('#search-form');
     const query = document.querySelector('#search-query');
@@ -93,64 +91,30 @@
     function showClarificationFollowUp(option) {
       result.className = option.safety_level === 'P0' ? 'result urgent' : 'result';
       result.replaceChildren();
-
       if (option.id === 'safety_self') {
-        result.append(
-          element('h2', 'Lo primero es tu seguridad'),
-          element('p', 'Si existe peligro inmediato, contacta con el 112. Si estás pensando en suicidarte en España, también está disponible el 024.'),
-          officialResources(['112', '024']),
-          paragraphWithLink('Ver ayuda urgente', '/ayuda-urgente.html')
-        );
-        result.focus();
-        return;
+        result.append(element('h2', 'Lo primero es tu seguridad'), element('p', 'Si existe peligro inmediato, contacta con el 112. Si estás pensando en suicidarte en España, también está disponible el 024.'), officialResources(['112', '024']), paragraphWithLink('Ver ayuda urgente', '/ayuda-urgente.html'));
+        result.focus(); return;
       }
-
       if (option.id === 'safety_other') {
-        result.append(
-          element('h2', 'Lo primero es la seguridad de esa persona'),
-          element('p', 'Si existe peligro inmediato para esa persona, contacta con el 112. Si te preocupa un posible riesgo suicida en España, también está disponible el 024.'),
-          officialResources(['112', '024']),
-          element('p', 'Si puedes, describe un poco más qué está ocurriendo para orientarte sin adivinar.')
-        );
-        query.focus();
-        return;
+        result.append(element('h2', 'Lo primero es la seguridad de esa persona'), element('p', 'Si existe peligro inmediato para esa persona, contacta con el 112. Si te preocupa un posible riesgo suicida en España, también está disponible el 024.'), officialResources(['112', '024']), element('p', 'Si puedes, describe un poco más qué está ocurriendo para orientarte sin adivinar.'));
+        query.focus(); return;
       }
-
-      result.append(
-        element('h2', 'Cuéntame un poco más'),
-        element('p', `Has indicado: ${option.label}. Añade solo el detalle necesario para distinguir el siguiente paso, sin nombres ni otros datos personales.`)
-      );
+      result.append(element('h2', 'Cuéntame un poco más'), element('p', `Has indicado: ${option.label}. Añade solo el detalle necesario para distinguir el siguiente paso, sin nombres ni otros datos personales.`));
       query.focus();
     }
 
     function renderClarification(routed) {
       const clarification = buildSearchClarification(routed);
       if (!clarification.needed) return false;
-
       result.className = routed.urgent_support?.available ? 'result urgent' : 'result';
       result.replaceChildren();
-
       if (routed.urgent_support?.available) {
-        result.append(
-          element('h2', 'Si existe riesgo ahora'),
-          element('p', 'No asumimos que estés en una crisis. Si hay peligro inmediato, contacta con el 112; ante una posible crisis suicida en España, también está disponible el 024.'),
-          officialResources(routed.urgent_support.official_resources_spain),
-          paragraphWithLink(routed.urgent_support.label, routed.urgent_support.url)
-        );
+        result.append(element('h2', 'Si existe riesgo ahora'), element('p', 'No asumimos que estés en una crisis. Si hay peligro inmediato, contacta con el 112; ante una posible crisis suicida en España, también está disponible el 024.'), officialResources(routed.urgent_support.official_resources_spain), paragraphWithLink(routed.urgent_support.label, routed.urgent_support.url));
       }
-
-      result.append(
-        element('h2', clarification.title),
-        element('p', clarification.guidance)
-      );
-
+      result.append(element('h2', clarification.title), element('p', clarification.guidance));
       const choices = element('div', '', { class: 'choices', role: 'group', 'aria-label': 'Opciones para aclarar la situación' });
       for (const option of clarification.options) {
-        const button = element('button', option.label, {
-          type: 'button',
-          class: 'choice',
-          'data-safety': option.safety_level
-        });
+        const button = element('button', option.label, { type: 'button', class: 'choice', 'data-safety': option.safety_level });
         button.addEventListener('click', () => showClarificationFollowUp(option));
         choices.append(button);
       }
@@ -158,46 +122,48 @@
       return true;
     }
 
+    function chooseRoute(submittedQuery) {
+      const language = normalizeHelpLanguage(submittedQuery);
+      let routed = routeSearchQuery(submittedQuery);
+
+      // Safety always runs first. A small, explicit typo bridge gets a second safety pass.
+      if (!routed.matched && !routed.urgent_support?.available && language.changed) {
+        const correctedSafety = routeSearchQuery(language.normalized);
+        if (correctedSafety.matched || correctedSafety.urgent_support?.available) routed = correctedSafety;
+      }
+
+      if (!routed.matched && !routed.urgent_support?.available) {
+        const contentRouted = routeKnownContentQuery(language.semanticText);
+        if (contentRouted.matched) routed = contentRouted;
+      }
+      return routed;
+    }
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
       const submittedQuery = query.value.trim();
       query.value = '';
       if (!submittedQuery) {
-        result.hidden = false;
-        result.className = 'result';
-        result.replaceChildren(
-          element('h2', 'Escribe qué te está pasando'),
-          element('p', 'Añade solo el detalle necesario para orientarte, sin nombres ni otros datos personales.')
-        );
-        query.focus();
-        return;
+        result.hidden = false; result.className = 'result';
+        result.replaceChildren(element('h2', 'Escribe qué te está pasando'), element('p', 'Añade solo el detalle necesario para orientarte, sin nombres ni otros datos personales.'));
+        query.focus(); return;
       }
 
-      let routed = routeSearchQuery(submittedQuery);
-      if (!routed.matched && !routed.urgent_support?.available) {
-        const contentRouted = routeKnownContentQuery(submittedQuery);
-        if (contentRouted.matched) routed = contentRouted;
-      }
-
+      const routed = chooseRoute(submittedQuery);
       result.hidden = false;
       result.className = routed.safety_level === 'P0' ? 'result urgent' : 'result';
       result.replaceChildren();
 
       if (!routed.matched) {
         if (renderClarification(routed)) return;
-        result.append(
-          element('h2', 'No quiero adivinar'),
-          element('p', 'No he podido identificar con suficiente seguridad lo que necesitas. Prueba a describir la situación de otra forma o vuelve a las categorías de la web.'),
-          paragraphWithLink('Ver opciones de ayuda', '/')
-        );
+        result.append(element('h2', 'No quiero adivinar'), element('p', 'No he podido identificar con suficiente seguridad lo que necesitas. Prueba a describir la situación de otra forma o explora los temas y recursos de la web.'), paragraphWithLink('Explorar temas', '/temas/'), paragraphWithLink('Ver todos los recursos', '/recursos/'));
         return;
       }
 
       result.append(element('h2', 'Empieza aquí'));
       if (routed.urgent) {
-        const urgent = element('strong', 'Si existe peligro inmediato, utiliza el recurso oficial adecuado ahora.');
         const paragraph = document.createElement('p');
-        paragraph.append(urgent);
+        paragraph.append(element('strong', 'Si existe peligro inmediato, utiliza el recurso oficial adecuado ahora.'));
         result.append(paragraph);
       }
       const resources = officialResources(routed.official_resources_spain);
@@ -211,7 +177,6 @@
       result.hidden = true;
       result.className = 'result';
     }
-
     window.addEventListener('pagehide', clearSensitiveState);
     window.addEventListener('pageshow', clearSensitiveState);
   </script>

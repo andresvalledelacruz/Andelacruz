@@ -12,6 +12,35 @@
     if(status && !status.textContent.trim()) status.textContent=runtimeMessage;
   }
 
+  function enhanceDecisionCards(){
+    if(document.getElementById('whole-decision-card-style')) return;
+    const style=document.createElement('style');
+    style.id='whole-decision-card-style';
+    style.textContent='.needs-grid .need-card{position:relative;cursor:pointer}.needs-grid .need-card .need-link{position:static}.needs-grid .need-card .need-link::after{content:"";position:absolute;inset:0;border-radius:22px}.needs-grid .need-card:focus-within{outline:3px solid #8A4939;outline-offset:3px}.needs-grid .need-card:focus-within .need-link{text-decoration:underline;text-underline-offset:3px}';
+    document.head.append(style);
+  }
+
+  function appendDiscoveryLink(sectionSelector, afterSelector, id, href, label){
+    const section=document.querySelector(sectionSelector);
+    const after=section?.querySelector(afterSelector);
+    if(!section || !after || document.getElementById(id)) return;
+    const wrap=document.createElement('p');
+    wrap.id=id;
+    wrap.className='center';
+    const link=document.createElement('a');
+    link.className='btn btn-ghost';
+    link.href=href;
+    link.textContent=label;
+    wrap.append(link);
+    after.insertAdjacentElement('afterend',wrap);
+  }
+
+  function enhanceDiscovery(){
+    enhanceDecisionCards();
+    appendDiscoveryLink('#recursos','.resource-grid','all-resources-link','/recursos/','Explorar todos los recursos');
+    appendDiscoveryLink('#historias','.story-grid','stories-by-topic-link','/historias/','Ver historias por temas');
+  }
+
   function installCoreFallback(){
     if(fallbackInstalled) return;
     fallbackInstalled=true;
@@ -66,7 +95,8 @@
   };
 
   // Critical navigation, Search and Resources are deliberately static in index.html.
-  // Keep JavaScript only for progressive enhancement and non-critical interactive flows.
+  // JavaScript only improves ergonomics; core safety links remain present without it.
+  enhanceDiscovery();
   load('/visitor-analytics.js');
   load('/app-core.js',()=>{
     coreReady=true;
@@ -78,6 +108,7 @@
   });
 
   window.addEventListener('load',()=>{
+    enhanceDiscovery();
     if(!coreReady && typeof getSupabaseClient!=='function') installCoreFallback();
   });
 })();
