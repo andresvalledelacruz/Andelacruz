@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 
 // Regresión visual expresamente autorizada por el propietario tras QA real en iPhone/Safari.
+// Este commit no cambia comportamiento: refresca el evento PR después de aplicar v9-owner-approved.
 const css = await readFile(new URL('../styles-7.css', import.meta.url), 'utf8');
 
 test('mobile header keeps urgent help fully inside the viewport and visually first', () => {
