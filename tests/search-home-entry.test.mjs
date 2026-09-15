@@ -5,67 +5,54 @@ import fs from 'node:fs';
 const loader = fs.readFileSync(new URL('../app.js', import.meta.url), 'utf8');
 const entry = fs.readFileSync(new URL('../search-home-entry.js', import.meta.url), 'utf8');
 const homepage = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
-const urgentNav = fs.readFileSync(new URL('../urgent-help-nav.js', import.meta.url), 'utf8');
 
-test('homepage loader includes the search entry layer before analytics', () => {
-  const searchIndex = loader.indexOf("load('/search-home-entry.js')");
-  const analyticsIndex = loader.indexOf("load('/visitor-analytics.js')");
-  assert.ok(searchIndex >= 0, 'search entry layer must be loaded');
-  assert.ok(analyticsIndex > searchIndex, 'search discovery must not wait for analytics');
+test('homepage serves search discovery natively and does not load the legacy injector', () => {
+  assert.doesNotMatch(loader, /load\('\/search-home-entry\.js'\)/);
+  assert.match(loader, /load\('\/visitor-analytics\.js'\)/);
+  for (const location of ['main-nav', 'hero', 'needs', 'footer']) {
+    assert.match(homepage, new RegExp(`data-search-entry="${location}"`));
+  }
 });
 
 test('header urgent-help control remains available and receives visible launch emphasis', () => {
-  assert.match(urgentNav, /href='\/ayuda-urgente\.html'/);
-  assert.match(urgentNav, /Necesito Ayuda Urgente/);
-  assert.match(urgentNav, /background:#8A4939/);
-  assert.match(urgentNav, /focus-visible/);
-  assert.match(urgentNav, /text-transform:uppercase/);
-  assert.doesNotMatch(entry, /dataset\.urgentEntry = 'main-nav'/);
+  assert.match(homepage, /class="urgent-help-link"[^>]+href="\/ayuda-urgente\.html"/);
+  assert.match(homepage, /aria-label="Necesito Ayuda Urgente"/);
+  assert.match(homepage, /data-urgent-help-emphasis/);
+  assert.match(homepage, /background:#8A4939/);
+  assert.match(homepage, /focus-visible/);
 });
 
 test('urgent help is centered in the hero and needs decision grids', () => {
-  assert.match(entry, /const URGENT_URL = '\/ayuda-urgente\.html'/);
-  assert.match(entry, /dataset\.urgentEntry = 'hero'/);
-  assert.match(entry, /title\.textContent = 'Necesito ayuda urgente'/);
-  assert.match(entry, /description\.textContent = 'Si hay peligro inmediato o no sabes qué hacer ahora\.'/);
-  assert.match(entry, /centerHeroCard\(actions, card\)/);
-  assert.match(entry, /dataset\.urgentEntry = 'needs'/);
-  assert.match(entry, /heading\.textContent = 'Necesito ayuda urgente'/);
-  assert.match(entry, /Ver ayuda urgente/);
-  assert.match(entry, /centerNeedsCard\(grid, firstCard\)/);
-  assert.match(entry, /storyButton\.replaceWith\(card\)/);
+  assert.match(homepage, /class="final-card final-card-primary"[^>]+href="\/ayuda-urgente\.html"[^>]+data-urgent-entry="hero"/);
+  assert.match(homepage, /<strong>Necesito ayuda urgente<\/strong>/);
+  assert.match(homepage, /Si hay peligro inmediato o no sabes qué hacer ahora\./);
+  assert.match(homepage, /href="\/ayuda-urgente\.html" data-urgent-entry="needs"/);
+  assert.match(homepage, /Ver ayuda urgente/);
 });
 
 test('search orienter remains discoverable in four homepage locations with distinct copy', () => {
-  assert.match(entry, /dataset\.searchEntry = 'main-nav'/);
-  assert.match(entry, /dataset\.searchEntry = 'hero'/);
-  assert.match(entry, /dataset\.searchEntry = 'needs'/);
-  assert.match(entry, /dataset\.searchEntry = 'footer'/);
-  assert.ok((entry.match(/href = SEARCH_URL/g) || []).length >= 4);
-  assert.match(entry, /Buscar ayuda/);
-  assert.match(entry, /PARA AYUDARTE MEJOR/);
-  assert.match(entry, /cuéntame qué te pasa/);
-  assert.match(entry, /Encontrar por dónde empezar/);
+  assert.match(homepage, /data-search-entry="main-nav"[^>]*>Buscar ayuda<\/a>/);
+  assert.match(homepage, /data-search-entry="hero"/);
+  assert.match(homepage, /<strong>PARA AYUDARTE MEJOR<\/strong>/);
+  assert.match(homepage, /<small>cuéntame qué te pasa<\/small>/);
+  assert.match(homepage, /data-search-entry="needs"[^>]*>Encontrar por dónde empezar/);
+  assert.match(homepage, /data-search-entry="footer"[^>]*>Buscar ayuda<\/a>/);
 });
 
-test('urgent help is also available before search is appended in footer navigation', () => {
-  const urgentCreation = entry.indexOf("urgent.dataset.urgentEntry = 'footer'");
-  const searchCreation = entry.indexOf("link.dataset.searchEntry = 'footer'");
-  assert.ok(urgentCreation >= 0, 'urgent footer entry must exist');
-  assert.ok(searchCreation > urgentCreation, 'urgent footer entry must be created before search');
+test('urgent help remains available in footer navigation alongside search', () => {
+  const urgentIndex = homepage.indexOf('data-urgent-entry="footer"');
+  const searchIndex = homepage.indexOf('data-search-entry="footer"');
+  assert.ok(urgentIndex >= 0, 'urgent footer entry must exist');
+  assert.ok(searchIndex > urgentIndex, 'urgent footer entry remains before search');
 });
 
 test('integration reuses V9 components instead of replacing homepage structure', () => {
   assert.match(homepage, /class="hero-final-actions"/);
   assert.match(homepage, /<h3>Busco orientación<\/h3>/);
   assert.match(homepage, /id="main-nav"/);
-  assert.match(entry, /\.hero-final-actions/);
-  assert.match(entry, /\.needs-grid/);
-  assert.doesNotMatch(entry, /innerHTML/);
-  assert.doesNotMatch(entry, /document\.write/);
 });
 
-test('homepage discovery layer does not introduce network, storage or query propagation', () => {
+test('legacy discovery adapter remains local and inert for rollback', () => {
   for (const forbidden of [
     /fetch\s*\(/,
     /XMLHttpRequest/,
@@ -79,4 +66,6 @@ test('homepage discovery layer does not introduce network, storage or query prop
   ]) {
     assert.doesNotMatch(entry, forbidden);
   }
+  assert.doesNotMatch(loader, /load\('\/urgent-help-nav\.js'\)/);
+  assert.doesNotMatch(loader, /load\('\/resource-links\.js'\)/);
 });
