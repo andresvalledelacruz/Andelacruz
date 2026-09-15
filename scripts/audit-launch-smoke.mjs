@@ -29,16 +29,21 @@ check('launch-readiness-gate', readiness.status === 0, readiness.status === 0 ? 
 
 const home = read('index.html');
 const loader = read('app.js');
-const searchEntry = read('search-home-entry.js');
 const searchUi = read('buscar/index.html');
 const appCore = read('app-core.js');
 const urgent = read('ayuda-urgente.html');
 const notFound = read('404.html');
 
-check('homepage-search-loader', loader.includes("load('/search-home-entry.js')"), 'homepage loads the discoverability layer');
+check(
+  'homepage-critical-static',
+  !loader.includes("load('/search-home-entry.js')") && !loader.includes("load('/resource-links.js')") && !loader.includes("load('/urgent-help-nav.js')"),
+  'critical homepage discovery is native HTML and legacy DOM injectors are not loaded'
+);
 for (const location of ['main-nav', 'hero', 'needs', 'footer']) {
-  check(`homepage-search-${location}`, searchEntry.includes(`searchEntry = '${location}'`), `search entry exists in ${location}`);
+  check(`homepage-search-${location}`, home.includes(`data-search-entry="${location}"`), `static search entry exists in ${location}`);
 }
+check('homepage-urgent-static', home.includes('class="urgent-help-link"') && home.includes('data-urgent-entry="hero"') && home.includes('data-urgent-entry="needs"') && home.includes('data-urgent-entry="footer"'), 'urgent help exists natively across critical homepage locations');
+check('homepage-resources-static', (home.match(/data-resource-link-cue=""/g) || []).length >= 10, 'ten resource doors remain present in static homepage markup');
 check('homepage-v9-structure', home.includes('class="hero-final-actions"') && home.includes('<h3>Busco orientación</h3>'), 'V9 structural anchors remain present');
 
 const ordinaryCases = [
@@ -91,7 +96,7 @@ check('urgent-help-no-story-capture', !urgent.includes('data-open-story'), 'urge
 check('404-recovery', /name=["']robots["'][^>]*noindex|noindex[^>]*name=["']robots["']/i.test(notFound) && /href=["']\/["']/.test(notFound), '404 is noindex and links back to home');
 
 const report = {
-  version: 1,
+  version: 2,
   hard_failures: errors.length,
   decision: errors.length ? 'HOLD' : 'SMOKE_GO',
   checks,
