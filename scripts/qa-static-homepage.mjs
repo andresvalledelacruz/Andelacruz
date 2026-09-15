@@ -40,7 +40,7 @@ try {
       assert.equal(await page.locator('#recursos .resource-grid > a').count(), 10);
       assert.equal(await page.locator('[data-search-entry="hero"]').getAttribute('href'), '/buscar/');
       assert.ok(await page.locator('.hero-final-privacy a[href="privacidad.html"]').isVisible());
-      assert.equal(await page.title(), 'Desgracias.es | Historias y recursos para momentos difíciles');
+      assert.equal(await page.title(), 'Desgracias.es | Ayuda, historias y recursos para momentos difíciles');
       assert.ok(await page.locator('[data-story-disclosure="static"]').isVisible());
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${mode}/${width}: horizontal overflow`);
       await page.keyboard.press('Tab');
