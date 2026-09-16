@@ -40,15 +40,18 @@ test('el panel privado no se indexa ni expone secretos del propietario', async (
 
 test('la migracion de analitica no guarda perfiles ni texto libre y protege el panel', async () => {
   const sql = await read('supabase/migrations/20260915150500_add_privacy_safe_interaction_analytics.sql');
-  const rotation = await read('supabase/migrations/20260916080500_rotate_owner_analytics_token.sql');
+  const rotation1 = await read('supabase/migrations/20260916080500_rotate_owner_analytics_token.sql');
+  const rotation2 = await read('supabase/migrations/20260916081500_rotate_owner_analytics_token_v2.sql');
   assert.match(sql, /interaction_daily_analytics/);
   assert.match(sql, /get_owner_privacy_safe_analytics/);
   assert.match(sql, /v_path = '\/buscar\/'/);
   assert.match(sql, /v_path = '\/ayuda-urgente\.html'/);
   assert.match(sql, /No coordinates, free text, query strings, cookies, IDs, session replay or user profiles/);
-  assert.match(rotation, /v_old_hash constant text := '[a-f0-9]{64}'/);
-  assert.match(rotation, /v_new_hash constant text := '[a-f0-9]{64}'/);
-  assert.doesNotMatch(rotation, /p_owner_token\s*:=|owner_token\s*=\s*'/i);
+  for (const rotation of [rotation1, rotation2]) {
+    assert.match(rotation, /v_old_hash constant text := '[a-f0-9]{64}'/);
+    assert.match(rotation, /v_new_hash constant text := '[a-f0-9]{64}'/);
+    assert.doesNotMatch(rotation, /p_owner_token\s*:=|owner_token\s*=\s*'/i);
+  }
 });
 
 test('buscar ayuda tolera lenguaje imperfecto sin prometer adivinar pensamientos', async () => {
