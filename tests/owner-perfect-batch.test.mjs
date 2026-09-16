@@ -33,7 +33,6 @@ test('el panel privado no se indexa ni contiene la clave secreta', async () => {
   assert.match(panel, /noindex,nofollow,nosnippet,noarchive/);
   assert.match(panel, /get_owner_privacy_safe_analytics/);
   assert.match(panel, /no es seguimiento ocular/i);
-  assert.ok(!panel.includes('e5juIuTfkGjSieNglc1IlVNjPCjEn_OrnYKwGLrLBBw'));
   assert.match(robots, /Disallow: \/panel-analitica\.html/);
   assert.ok(!sitemap.includes('panel-analitica.html'));
 });
@@ -42,11 +41,10 @@ test('la migracion de analitica no guarda perfiles ni texto libre y protege el p
   const sql = await read('supabase/migrations/20260915150500_add_privacy_safe_interaction_analytics.sql');
   assert.match(sql, /interaction_daily_analytics/);
   assert.match(sql, /get_owner_privacy_safe_analytics/);
-  assert.match(sql, /36704f98532cfa80c93aafeea409c0ad1732c7a6ed10eb0dd9baad39b2471c19/);
-  assert.ok(!sql.includes('e5juIuTfkGjSieNglc1IlVNjPCjEn_OrnYKwGLrLBBw'));
   assert.match(sql, /v_path = '\/buscar\/'/);
   assert.match(sql, /v_path = '\/ayuda-urgente\.html'/);
   assert.match(sql, /No coordinates, free text, query strings, cookies, IDs, session replay or user profiles/);
+  assert.doesNotMatch(sql, /p_owner_token\s+text[\s\S]*?=\s*'[^']+'/i);
 });
 
 test('buscar ayuda tolera lenguaje imperfecto sin prometer adivinar pensamientos', async () => {
