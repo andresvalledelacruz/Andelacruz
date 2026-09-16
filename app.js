@@ -12,6 +12,27 @@
     if(status && !status.textContent.trim()) status.textContent=runtimeMessage;
   }
 
+  function enhanceUrgentCard(){
+    const card=document.querySelector('.need-card.need-primary');
+    const link=card?.querySelector('a[data-urgent-entry="needs"]');
+    if(!card || !link || card.dataset.fullCardReady==='true') return;
+
+    card.dataset.fullCardReady='true';
+    card.setAttribute('role','link');
+    card.setAttribute('tabindex','0');
+    card.setAttribute('aria-label','Necesito ayuda urgente. Ver ayuda urgente.');
+
+    const activate=(event)=>{
+      if(event.type==='click' && event.target.closest('a,button,input,select,textarea')) return;
+      if(event.type==='keydown' && event.key!=='Enter' && event.key!==' ') return;
+      if(event.type==='keydown') event.preventDefault();
+      link.click();
+    };
+
+    card.addEventListener('click',activate);
+    card.addEventListener('keydown',activate);
+  }
+
   function installCoreFallback(){
     if(fallbackInstalled) return;
     fallbackInstalled=true;
@@ -67,6 +88,7 @@
 
   // Critical navigation, Search and Resources are deliberately static in index.html.
   // Keep JavaScript only for progressive enhancement and non-critical interactive flows.
+  enhanceUrgentCard();
   load('/visitor-analytics.js');
   load('/app-core.js',()=>{
     coreReady=true;
@@ -78,6 +100,7 @@
   });
 
   window.addEventListener('load',()=>{
+    enhanceUrgentCard();
     if(!coreReady && typeof getSupabaseClient!=='function') installCoreFallback();
   });
 })();
