@@ -46,9 +46,9 @@ test('la migracion de analitica no guarda perfiles ni texto libre y protege el p
   assert.match(sql, /v_path = '\/buscar\/'/);
   assert.match(sql, /v_path = '\/ayuda-urgente\.html'/);
   assert.match(sql, /No coordinates, free text, query strings, cookies, IDs, session replay or user profiles/);
-  assert.match(rotation, /v_old_hash/);
-  assert.match(rotation, /v_new_hash/);
-  assert.doesNotMatch(rotation, /G5VAMRwjdnoQD8SumEND24PZfIKeSlvB2v44g2vMV3k/);
+  assert.match(rotation, /v_old_hash constant text := '[a-f0-9]{64}'/);
+  assert.match(rotation, /v_new_hash constant text := '[a-f0-9]{64}'/);
+  assert.doesNotMatch(rotation, /p_owner_token\s*:=|owner_token\s*=\s*'/i);
 });
 
 test('buscar ayuda tolera lenguaje imperfecto sin prometer adivinar pensamientos', async () => {
