@@ -16,12 +16,8 @@ test('la medicion de atencion es agregada y excluye rutas sensibles', async () =
   const analytics = await read('visitor-analytics.js');
   assert.match(analytics, /record_privacy_safe_interaction/);
   assert.match(analytics, /SENSITIVE_PREFIXES/);
-  for (const sensitive of ['/buscar/', '/ayuda-urgente.html', '/suicidio/', '/mi-pareja-me-maltrata-y-no-se-que-hacer/', '/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/']) {
-    assert.ok(analytics.includes(sensitive), `falta exclusion sensible ${sensitive}`);
-  }
-  for (const forbidden of ['localStorage', 'sessionStorage', 'mousemove', 'pointermove', 'screenX', 'screenY', 'innerText']) {
-    assert.ok(!analytics.includes(forbidden), `telemetria prohibida: ${forbidden}`);
-  }
+  for (const sensitive of ['/buscar/', '/ayuda-urgente.html', '/suicidio/', '/mi-pareja-me-maltrata-y-no-se-que-hacer/', '/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/']) assert.ok(analytics.includes(sensitive), `falta exclusion sensible ${sensitive}`);
+  for (const forbidden of ['localStorage', 'sessionStorage', 'mousemove', 'pointermove', 'screenX', 'screenY', 'innerText']) assert.ok(!analytics.includes(forbidden), `telemetria prohibida: ${forbidden}`);
   assert.match(analytics, /section_view/);
   assert.match(analytics, /scroll_depth/);
 });
@@ -91,16 +87,13 @@ test('existen hubs especializados y el hub de suicidio permanece sin telemetria 
 
 test('webs amigas ofrece exactamente 50 referencias externas con transparencia', async () => {
   const page = await read('webs-amigas.html');
-  const matches = [...page.matchAll(/class="friend" href="https:\/\//g)];
-  assert.equal(matches.length, 50);
+  assert.equal([...page.matchAll(/class="friend" href="https:\/\//g)].length, 50);
   assert.match(page, /no significa[\s\S]*colaboración, patrocinio, afiliación ni respaldo recíproco/i);
   assert.match(page, /No cobramos por ocupar una posición/i);
 });
 
 test('sitemap publica las nuevas superficies utiles y excluye el panel privado', async () => {
   const sitemap = await read('sitemap-growth.xml');
-  for (const path of ['/historias/', '/temas/', '/recursos/', '/suicidio/', '/fuentes-y-revision.html', '/webs-amigas.html', '/prensa.html']) {
-    assert.ok(sitemap.includes(`https://desgracias.es${path}`), `falta ${path}`);
-  }
+  for (const path of ['/historias/', '/temas/', '/recursos/', '/suicidio/', '/fuentes-y-revision.html', '/webs-amigas.html', '/prensa.html']) assert.ok(sitemap.includes(`https://desgracias.es${path}`), `falta ${path}`);
   assert.ok(!sitemap.includes('/panel-analitica.html'));
 });
