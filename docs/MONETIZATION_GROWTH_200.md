@@ -63,7 +63,7 @@ Suicidio/crisis conserva prioridad de recursos oficiales y no incorpora analíti
 
 No es eye-tracking: no guarda coordenadas, movimientos del puntero, grabaciones, reproducción de sesiones, texto escrito, consultas, historias, cookies analíticas, identificadores persistentes ni perfiles individuales. Las rutas sensibles están excluidas de la telemetría de interacción.
 
-El acceso al panel se protege mediante un secreto del propietario cuyo valor nunca se almacena en el repositorio; únicamente se compara su huella SHA-256 en servidor. El secreto fue rotado antes de integración final tras detectar que una versión anterior había quedado referenciada en una prueba histórica.
+El acceso al panel se protege mediante un secreto del propietario cuyo valor nunca se almacena en el repositorio; únicamente se compara su huella SHA-256 en servidor. El secreto se ha rotado antes de integración final y el valor vigente no está presente en los archivos del repositorio.
 
 ## Monetización responsable
 
