@@ -1,3 +1,4 @@
+import { normalizeSearchText as normalize } from './search-normalization.js';
 import { classifySuicideContext } from './suicide-context-classifier.js';
 
 const ROUTES = Object.freeze({
@@ -83,15 +84,7 @@ const ROUTES = Object.freeze({
   })
 });
 
-function normalize(value = '') {
-  return String(value)
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9ñ\s]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
+
 
 function editDistance(a, b) {
   const left = String(a);
@@ -342,10 +335,14 @@ function matchIntent(text) {
   ])) {
     return { route: ROUTES.intimate_partner_violence, confidence: 'high' };
   }
+  // Unresolved safety language must not disappear behind a practical match.
+  const context = classifySuicideContext(text).context;
+  if (context !== 'none') return null;
+
   if (containsAny(text, ['tengo deudas', 'muchas deudas', 'no se por donde empezar con mis deudas', 'no puedo pagar mis deudas'])) {
     return { route: ROUTES.debt_overwhelm, confidence: 'high' };
   }
-  if (containsAny(text, ['me han despedido', 'me despidieron', 'he perdido mi trabajo', 'me quede sin trabajo'])) {
+  if (containsAny(text, ['me han despedido', 'me despidieron', 'he perdido mi trabajo', 'me quede sin trabajo', 'me han echado del trabajo', 'me echaron del trabajo'])) {
     return { route: ROUTES.job_loss, confidence: 'high' };
   }
   if (containsAny(text, ['quiero encontrar trabajo', 'necesito encontrar trabajo', 'busco trabajo urgente', 'necesito empleo'])) {
@@ -452,3 +449,4 @@ export function searchRouteCatalog() {
     urgent: route.urgent
   })));
 }
+
