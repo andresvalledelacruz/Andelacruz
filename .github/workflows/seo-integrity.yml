@@ -154,7 +154,7 @@ jobs:
           assert urls, 'Sitemap is empty'
           assert 'https://desgracias.es/' in urls, 'Homepage missing from sitemap'
           assert 'https://desgracias.es/retirar.html' not in urls, 'Noindex withdrawal utility must not be in sitemap'
-          assert 'https://desgracias.es/webs-amigas.html' not in urls, 'Placeholder page must not be in sitemap'
+          assert 'https://desgracias.es/webs-amigas.html' in urls, 'Verified organization directory must be in sitemap'
           assert len(urls) == len(set(urls)), 'Duplicate URLs found in sitemap'
 
           today = date.today()
@@ -207,7 +207,10 @@ jobs:
                   assert linked_file.exists(), f'Broken root-relative internal link on {url}: {href} -> {linked_file}'
 
           assert 'name="robots" content="noindex,follow"' in withdrawal, 'Withdrawal page must stay noindex,follow'
-          assert 'name="robots" content="noindex,follow"' in friends, 'Placeholder page must stay noindex,follow'
+          assert 'name="robots" content="index,follow' in friends, 'Organization directory must be indexable'
+          assert friends.count('data-organization=') >= 5, 'Directory needs substantive organization entries'
+          assert 'no implica colaboración, patrocinio ni acuerdo' in friends, 'Directory must not imply partnerships'
+          assert 'Fuente oficial consultada:' in friends, 'Directory requires dated source verification'
           assert 'Sitemap: https://desgracias.es/sitemap.xml' in robots, 'robots.txt must advertise canonical sitemap'
           assert 'Disallow: /\n' not in robots, 'robots.txt must not block the whole site'
 
