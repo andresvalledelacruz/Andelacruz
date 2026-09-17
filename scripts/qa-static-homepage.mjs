@@ -37,6 +37,14 @@ try {
       const box = await urgent.boundingBox();
       assert.ok(box.height >= 44 && box.x >= -1 && box.x + box.width <= width + 1, `${mode}/${width}: urgent clipped or too small`);
       assert.equal(await page.locator('[data-urgent-entry="needs"]').count(), 1, 'reading card must not become a second urgent card');
+      if (mode !== 'no-js') {
+        const card = page.locator('a.need-card[data-urgent-entry="needs"]');
+        assert.equal(await card.count(), 1, 'the entire urgent card must be one native link');
+        assert.equal(await card.locator('a, button, [tabindex]').count(), 0, 'no nested interactive controls');
+        await card.click({ position: { x: 12, y: 12 } });
+        await page.waitForURL(`${origin}/ayuda-urgente.html`);
+        await page.goto(origin, { waitUntil: 'networkidle' });
+      }
       assert.equal(await page.locator('#recursos .resource-grid > a').count(), 10);
       assert.equal(await page.locator('[data-search-entry="hero"]').getAttribute('href'), '/buscar/');
       assert.ok(await page.locator('.hero-final-privacy a[href="privacidad.html"]').isVisible());

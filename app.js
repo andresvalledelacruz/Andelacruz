@@ -1,6 +1,29 @@
 (function(){
   'use strict';
 
+  // Enhance the whole urgent-help card before loading any optional runtime.
+  // The static link remains available when JavaScript is disabled.
+  const urgentLink=document.querySelector('.need-card [data-urgent-entry="needs"]');
+  const urgentCard=urgentLink?.closest('article.need-card');
+  if(urgentCard && urgentLink.getAttribute('href')==='/ayuda-urgente.html'){
+    const cardLink=document.createElement('a');
+    cardLink.className=urgentCard.className;
+    cardLink.href='/ayuda-urgente.html';
+    cardLink.dataset.urgentEntry='needs';
+    cardLink.setAttribute('aria-label','Necesito ayuda urgente');
+    cardLink.style.color='inherit';
+    cardLink.style.textDecoration='none';
+    const label=document.createElement('span');
+    label.className=urgentLink.className;
+    while(urgentLink.firstChild) label.append(urgentLink.firstChild);
+    urgentLink.replaceWith(label);
+    while(urgentCard.firstChild) cardLink.append(urgentCard.firstChild);
+    urgentCard.replaceWith(cardLink);
+    const focusStyle=document.createElement('style');
+    focusStyle.textContent='.need-card[data-urgent-entry="needs"]:focus-visible{outline:3px solid #8A4939;outline-offset:4px}';
+    document.head.append(focusStyle);
+  }
+
   const runtimeMessage='Ahora mismo una parte interactiva no está disponible. Puedes seguir usando Buscar ayuda, Recursos y Ayuda urgente con normalidad.';
   let coreReady=false;
   let fallbackInstalled=false;
