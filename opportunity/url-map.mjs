@@ -6,6 +6,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/aviso-legal.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/transparencia.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/contacto.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
+  '/webs-amigas.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/gestion-emocional/':{domain:'emotional_regulation',needs:['emotional_support','stress_management'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:['no_automatic_diagnosis']},
   '/me-preocupa-que-alguien-pueda-suicidarse/':{domain:'suicide_prevention_support',needs:['suicide_risk_support','crisis_support','professional_assessment'],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'restricted',defaultFlags:['suicide_prevention','ask_directly','no_automatic_diagnosis','no_method_details','official_resources_first','no_commercial_crisis_cta','emergency_escalation','no_secrecy_when_safety_at_risk','supporter_self_care','safety_override']},
   '/alguien-cercano-ha-intentado-suicidarse/':{domain:'suicide_attempt_aftercare_family',needs:['suicide_attempt_aftercare','family_support','professional_followup'],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'restricted',defaultFlags:['post_attempt_aftercare','no_automatic_diagnosis','no_method_details','official_resources_first','no_commercial_crisis_cta','continuity_of_care','discharge_plan_first','safety_plan_clinician_led','supporter_self_care','emergency_escalation','no_universal_surveillance','safety_override']},
@@ -70,7 +71,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/':{domain:'grief',needs:['support_grieving_person'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 63;
+export const EXPECTED_PRODUCTION_URL_COUNT = 64;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
