@@ -1,3 +1,4 @@
+import { normalizeSearchText as normalize } from './search-normalization.js';
 const RULES = Object.freeze([
   ['breakup', '/rupturas/mi-pareja-me-ha-dejado/', 'Mi pareja me ha dejado', ['mi pareja me ha dejado', 'me ha dejado mi pareja', 'mi novio me ha dejado', 'mi novia me ha dejado', 'hemos roto', 'acabamos de romper']],
   ['ex_rumination', '/rupturas/no-puedo-dejar-de-pensar-en-mi-ex/', 'No puedo dejar de pensar en mi ex', ['no puedo dejar de pensar en mi ex', 'pienso todo el rato en mi ex', 'no paro de pensar en mi ex', 'sigo pensando en mi ex']],
@@ -45,19 +46,12 @@ const RULES = Object.freeze([
   ['general_bereavement', '/duelo/ha-muerto-alguien-que-quiero-y-no-se-como-seguir/', 'Ha muerto alguien que quiero y no sé cómo seguir', ['ha muerto alguien que quiero', 'se ha muerto un ser querido', 'he perdido a alguien que quiero', 'ha fallecido una persona muy cercana']]
 ].map(([intent, url, label, phrases]) => Object.freeze({ intent, url, label, phrases: Object.freeze(phrases) })));
 
-function normalize(value = '') {
-  return String(value)
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9ñ\s]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
+
 
 const STOP_WORDS = new Set(['a', 'al', 'con', 'de', 'del', 'el', 'en', 'es', 'esta', 'ha', 'la', 'las', 'lo', 'los', 'me', 'mi', 'mis', 'no', 'para', 'pero', 'por', 'que', 'se', 'sin', 'su', 'tengo', 'un', 'una', 'y', 'ya']);
 
 const VOCABULARY = Object.freeze({
+  pasta: 'dinero', pelas: 'dinero', arrendamiento: 'alquiler',
   novio: 'pareja', novia: 'pareja', marido: 'pareja', mujer: 'pareja', esposo: 'pareja', esposa: 'pareja',
   termino: 'romper', terminamos: 'romper', separo: 'romper', separacion: 'romper', ruptura: 'romper', dejado: 'romper',
   olvidar: 'pensar', obsesionado: 'pensar', obsesionada: 'pensar', cabeza: 'pensar', pienso: 'pensar', pensando: 'pensar',
@@ -105,7 +99,10 @@ function containsSafetyLanguage(text) {
 }
 
 export function routeKnownContentQuery(query = '') {
-  const text = normalize(query);
+  const text = normalize(query)
+    .replace(/\b(?:no me da|no me llega) (?:la pasta|el sueldo) para (?:el )?alquiler\b/g, 'no puedo pagar el alquiler')
+    .replace(/\b(?:estoy|voy) (?:pelao|pelado|sin un duro)\b/g, 'no llego a fin de mes')
+    .replace(/\bmi pareja (?:me dejo tirado|me dejo tirada|ha cortado conmigo)\b/g, 'mi pareja me ha dejado');
   if (!text) {
     return Object.freeze({ matched: false, needs_clarification: true, raw_query_retained: false });
   }
@@ -156,3 +153,4 @@ export function routeKnownContentQuery(query = '') {
 export function searchContentCatalog() {
   return Object.freeze(RULES.map(({ intent, url, label }) => Object.freeze({ intent, url, label })));
 }
+
