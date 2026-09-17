@@ -37,6 +37,12 @@
       #historias .story-example-card h3{font-size:1.18rem}#historias .story-example-card .story-meta{padding:14px 20px}
       #historias .story-example-intro .story-visual{padding:16px 20px}#historias .story-example-intro h3{font-size:1.05rem}
       #historias .story-example-more{display:block;margin:18px auto}#historias .story-example-more[hidden]{display:none}
+      #historias .story-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+      #historias .story-example-intro .story-visual{padding:12px 16px}#historias .story-example-intro p{margin:6px 0 0}
+      #historias .section-subtitle{margin:10px 0;line-height:1.5}
+      @media(min-width:1100px){#historias .story-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+      @media(max-width:720px){#historias .story-filters{flex-wrap:nowrap;overflow-x:auto;max-width:100%;padding:5px 4px 10px;margin-top:12px}#historias .story-filters button{flex:0 0 auto;min-height:44px;white-space:nowrap}#historias .story-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+      @media(max-width:479px){#historias .story-grid{grid-template-columns:minmax(0,1fr)}}
       .story-example-dialog{border:0;border-radius:20px;padding:0;width:min(900px,calc(100% - 24px));max-height:min(90vh,900px);box-shadow:0 24px 90px rgba(25,34,31,.28);color:#28332f;background:#fff}
       .story-example-dialog::backdrop{background:rgba(31,39,36,.52)}
       .story-example-shell{padding:clamp(20px,4vw,42px);position:relative}.story-example-close{position:absolute;right:18px;top:14px;border:0;background:transparent;font-size:2rem;line-height:1;cursor:pointer;color:#28332f}
