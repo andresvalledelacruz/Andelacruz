@@ -44,6 +44,13 @@ try {
         await card.click({ position: { x: 12, y: 12 } });
         await page.waitForURL(`${origin}/ayuda-urgente.html`);
         await page.goto(origin, { waitUntil: 'networkidle' });
+        await page.locator('#resource-directory-entry').click();
+        await page.waitForURL(`${origin}/recursos/`);
+        await page.locator('#resource-category').selectOption('duelo');
+        assert.ok(await page.locator('#resource-directory > li:not([hidden])').count() > 0);
+        assert.equal(await page.locator('#resource-directory > li:not([hidden]):not([data-category="duelo"])').count(), 0);
+        assert.ok(await page.locator('a[href="tel:112"]').isVisible());
+        await page.goto(origin, { waitUntil: 'networkidle' });
       }
       assert.equal(await page.locator('#recursos .resource-grid > a').count(), 10);
       assert.equal(await page.locator('[data-search-entry="hero"]').getAttribute('href'), '/buscar/');

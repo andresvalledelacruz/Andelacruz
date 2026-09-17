@@ -91,6 +91,7 @@
   // Critical navigation, Search and Resources are deliberately static in index.html.
   // Keep JavaScript only for progressive enhancement and non-critical interactive flows.
   load('/visitor-analytics.js');
+  load('/resource-directory.js');
   load('/app-core.js',()=>{
     coreReady=true;
     load('/story-example-library.js');

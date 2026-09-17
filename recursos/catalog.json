@@ -1,0 +1,415 @@
+[
+  {
+    "id": "ayuda-urgente.html",
+    "category": "crisis",
+    "title": "Necesito Ayuda Urgente",
+    "description": "Teléfonos de ayuda urgente y emergencia en España.",
+    "url": "/ayuda-urgente.html"
+  },
+  {
+    "id": "me-preocupa-que-alguien-pueda-suicidarse",
+    "category": "crisis",
+    "title": "Creo que alguien puede suicidarse: qué hacer ahora",
+    "description": "Si te preocupa que alguien pueda suicidarse, aprende cómo preguntarle, qué hacer si hay peligro, cuándo llamar al 024 o 112 y cómo acompañarle sin cargar tú solo con la situación.",
+    "url": "/me-preocupa-que-alguien-pueda-suicidarse/"
+  },
+  {
+    "id": "alguien-cercano-ha-intentado-suicidarse",
+    "category": "crisis",
+    "title": "Alguien cercano ha intentado suicidarse: qué hacer ahora",
+    "description": "Qué puede hacer la familia después de un intento de suicidio: antes del alta, seguridad en casa, seguimiento, cómo hablar, qué hacer si reaparece el riesgo y cómo cuidarte tú también.",
+    "url": "/alguien-cercano-ha-intentado-suicidarse/"
+  },
+  {
+    "id": "he-sufrido-una-agresion-sexual-y-no-se-que-hacer",
+    "category": "violencia",
+    "title": "He sufrido una agresión sexual: qué hacer y dónde pedir ayuda",
+    "description": "Si has sufrido una agresión o violencia sexual, encuentra pasos seguros sobre atención médica, denuncia, centros de crisis 24h y recursos públicos en España.",
+    "url": "/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/"
+  },
+  {
+    "id": "mi-pareja-me-maltrata-y-no-se-que-hacer",
+    "category": "violencia",
+    "title": "Creo que mi pareja me maltrata: qué hacer y dónde pedir ayuda",
+    "description": "Si tu pareja te controla, humilla, amenaza, agrede o te da miedo, encuentra orientación segura, 016, 112 y recursos públicos en España sin obligarte a decidirlo todo hoy.",
+    "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/"
+  },
+  {
+    "id": "duelo",
+    "category": "duelo",
+    "title": "Duelo y pérdidas: orientación cuando ha muerto alguien importante",
+    "description": "Si ha muerto alguien importante para ti, encuentra orientación para los primeros días, las emociones del duelo, la soledad y cuándo puede ser útil pedir ayuda.",
+    "url": "/duelo/"
+  },
+  {
+    "id": "duelo-ha-muerto-alguien-que-quiero-y-no-se-como-seguir",
+    "category": "duelo",
+    "title": "Ha muerto alguien que quiero y no sé cómo seguir",
+    "description": "Si acaba de morir alguien importante para ti y no sabes cómo afrontar las próximas horas o días, encuentra una guía sencilla para ordenar lo inmediato, el dolor y la ayuda que puedes necesitar.",
+    "url": "/duelo/ha-muerto-alguien-que-quiero-y-no-se-como-seguir/"
+  },
+  {
+    "id": "duelo-ha-muerto-mi-mascota-y-estoy-destrozado",
+    "category": "duelo",
+    "title": "Ha muerto mi mascota y estoy destrozado: cómo atravesar la pérdida",
+    "description": "Si ha muerto tu perro, gato u otro animal de compañía y sientes que la casa, las rutinas y tu día se han roto, encuentra orientación para las primeras horas, la culpa y el duelo.",
+    "url": "/duelo/ha-muerto-mi-mascota-y-estoy-destrozado/"
+  },
+  {
+    "id": "duelo-ha-muerto-por-suicidio-alguien-que-quiero",
+    "category": "duelo",
+    "title": "Duelo por suicidio: ha muerto alguien que quiero",
+    "description": "Si ha muerto por suicidio alguien que quieres, encuentra orientación sobre culpa, preguntas sin respuesta, primeros días, menores, seguridad, grupos y recursos oficiales en España.",
+    "url": "/duelo/ha-muerto-por-suicidio-alguien-que-quiero/"
+  },
+  {
+    "id": "duelo-han-pasado-meses-y-sigo-muy-mal",
+    "category": "duelo",
+    "title": "Han pasado meses desde la muerte y sigo muy mal: cuándo pedir ayuda",
+    "description": "Si han pasado meses desde una pérdida y sigues sufriendo intensamente, mira evolución, funcionamiento, contexto y seguridad sin convertir el calendario en un diagnóstico.",
+    "url": "/duelo/han-pasado-meses-y-sigo-muy-mal/"
+  },
+  {
+    "id": "duelo-he-perdido-a-mi-bebe-durante-el-embarazo",
+    "category": "duelo",
+    "title": "He perdido a mi bebé durante el embarazo: cómo afrontar la pérdida",
+    "description": "Si has perdido un embarazo y estás intentando entender qué hacer ahora, encuentra orientación para el impacto emocional, la culpa, la despedida, la pareja y cuándo pedir ayuda.",
+    "url": "/duelo/he-perdido-a-mi-bebe-durante-el-embarazo/"
+  },
+  {
+    "id": "duelo-la-muerte-fue-inesperada-o-traumatica",
+    "category": "duelo",
+    "title": "Muerte inesperada o traumática: qué hacer ante el shock",
+    "description": "Si una muerte fue repentina o traumática y tu mente vuelve constantemente a cómo ocurrió, encuentra pasos para atravesar el shock, reducir la sobrecarga y saber cuándo pedir ayuda.",
+    "url": "/duelo/la-muerte-fue-inesperada-o-traumatica/"
+  },
+  {
+    "id": "duelo-me-siento-culpable-desde-que-murio",
+    "category": "duelo",
+    "title": "Me siento culpable desde que murió: cómo ordenar esa culpa",
+    "description": "Si desde que murió alguien importante piensas que deberías haber hecho algo distinto, separa hechos, responsabilidad real, información retrospectiva, vergüenza y cosas fuera de tu control.",
+    "url": "/duelo/me-siento-culpable-desde-que-murio/"
+  },
+  {
+    "id": "duelo-mi-familiar-se-esta-muriendo-y-no-se-que-hacer",
+    "category": "duelo",
+    "title": "Mi familiar se está muriendo y no sé qué hacer",
+    "description": "Si un familiar tiene una enfermedad avanzada y temes que pueda estar cerca del final de su vida, encuentra preguntas útiles para el equipo sanitario, formas de acompañar y apoyo para ti.",
+    "url": "/duelo/mi-familiar-se-esta-muriendo-y-no-se-que-hacer/"
+  },
+  {
+    "id": "duelo-no-pude-despedirme",
+    "category": "duelo",
+    "title": "No pude despedirme de alguien que murió: cómo afrontarlo",
+    "description": "Si alguien importante murió y no pudiste despedirte, ordenar la culpa, lo que quedó por decir y una despedida simbólica puede ayudarte sin obligarte a cerrar nada antes de tiempo.",
+    "url": "/duelo/no-pude-despedirme/"
+  },
+  {
+    "id": "duelo-quiero-ayudar-a-alguien-que-esta-de-duelo",
+    "category": "duelo",
+    "title": "Quiero ayudar a alguien que está de duelo: qué decir y qué hacer",
+    "description": "Si alguien cercano ha perdido a una persona importante, aprende a acompañar sin presionar: qué decir, qué evitar, cómo ofrecer ayuda práctica y cuándo buscar ayuda profesional o urgente.",
+    "url": "/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/"
+  },
+  {
+    "id": "soledad",
+    "category": "soledad",
+    "title": "Soledad: qué hacer cuando te sientes solo",
+    "description": "Si te sientes solo, empieza por identificar qué necesitas ahora: hablar con alguien, recuperar conexión, conocer gente o atravesar unas horas difíciles.",
+    "url": "/soledad/"
+  },
+  {
+    "id": "soledad-me-siento-solo",
+    "category": "soledad",
+    "title": "Me siento solo: entender la soledad y qué hacer ahora",
+    "description": "Si piensas “me siento solo”, entiende qué tipo de conexión puede faltarte, por qué no siempre se resuelve con más gente y qué pasos pequeños y realistas puedes probar hoy.",
+    "url": "/soledad/me-siento-solo/"
+  },
+  {
+    "id": "soledad-me-siento-solo-aunque-tengo-gente",
+    "category": "soledad",
+    "title": "Me siento solo aunque tengo gente: qué puede faltar",
+    "description": "Puedes tener pareja, familia, amistades o compañeros y sentirte solo. Distingue si falta confianza, intimidad, reciprocidad, apoyo o pertenencia.",
+    "url": "/soledad/me-siento-solo-aunque-tengo-gente/"
+  },
+  {
+    "id": "soledad-me-siento-solo-por-la-noche",
+    "category": "soledad",
+    "title": "Me siento solo por la noche: qué hacer esta noche",
+    "description": "Si la soledad pesa más por la noche, no necesitas resolver tu vida ahora. Un plan de 30 minutos para atravesar estas horas con más conexión y seguridad.",
+    "url": "/soledad/me-siento-solo-por-la-noche/"
+  },
+  {
+    "id": "soledad-no-tengo-amigos",
+    "category": "soledad",
+    "title": "No tengo amigos: por dónde empezar sin forzarte",
+    "description": "Si sientes que no tienes amigos, distingue qué vínculo te falta y construye oportunidades reales de amistad sin forzarte ni culpabilizarte.",
+    "url": "/soledad/no-tengo-amigos/"
+  },
+  {
+    "id": "soledad-no-tengo-con-quien-hablar",
+    "category": "soledad",
+    "title": "No tengo con quién hablar: qué hacer ahora",
+    "description": "Si sientes que no tienes con quién hablar, distingue si necesitas desahogarte, sentirte escuchado, reconectar con alguien o pedir ayuda ahora mismo.",
+    "url": "/soledad/no-tengo-con-quien-hablar/"
+  },
+  {
+    "id": "ansiedad",
+    "category": "ansiedad",
+    "title": "Ansiedad y desbordamiento: por dónde empezar",
+    "description": "Si la ansiedad, el estrés o la sensación de no poder con todo te están desbordando, identifica qué necesitas ahora y encuentra un siguiente paso seguro.",
+    "url": "/ansiedad/"
+  },
+  {
+    "id": "gestion-emocional",
+    "category": "gestion-emocional",
+    "title": "Gestión emocional: qué hacer cuando te sientes desbordado",
+    "description": "Si una emoción o muchas cosas a la vez te están desbordando, baja un poco la intensidad, entiende qué está pasando y elige un siguiente paso pequeño y seguro.",
+    "url": "/gestion-emocional/"
+  },
+  {
+    "id": "salud",
+    "category": "salud",
+    "title": "Salud y enfermedad: ordenar el siguiente paso",
+    "description": "Una enfermedad, unas pruebas médicas o cuidar a alguien pueden desbordarte. Ordena qué necesitas ahora sin sustituir la atención sanitaria.",
+    "url": "/salud/"
+  },
+  {
+    "id": "rupturas",
+    "category": "rupturas",
+    "title": "Rupturas de pareja: qué hacer cuando una relación termina",
+    "description": "Una ruptura puede dejarte sin saber qué hacer. Empieza por lo urgente, evita decisiones impulsivas y encuentra el siguiente paso que encaje contigo.",
+    "url": "/rupturas/"
+  },
+  {
+    "id": "rupturas-mi-ex-me-ha-bloqueado",
+    "category": "rupturas",
+    "title": "Mi ex me ha bloqueado: qué significa y qué hacer",
+    "description": "Si tu ex te ha bloqueado, separa hechos de interpretaciones, respeta el límite y protege tu seguridad. Qué hacer si hay hijos o asuntos pendientes.",
+    "url": "/rupturas/mi-ex-me-ha-bloqueado/"
+  },
+  {
+    "id": "rupturas-mi-pareja-me-ha-dejado",
+    "category": "rupturas",
+    "title": "Mi pareja me ha dejado: qué hacer ahora",
+    "description": "Si tu pareja te ha dejado y no sabes qué hacer, ordena las primeras horas y días: qué atender, qué evitar, cómo manejar el impulso de contactar y cómo reorganizar tu vida sin decidirlo todo hoy.",
+    "url": "/rupturas/mi-pareja-me-ha-dejado/"
+  },
+  {
+    "id": "rupturas-no-puedo-dejar-de-pensar-en-mi-ex",
+    "category": "rupturas",
+    "title": "No puedo dejar de pensar en mi ex: qué hacer",
+    "description": "Si no puedes dejar de pensar en tu ex, no necesitas obligarte a olvidarle hoy. Reduce los bucles, los disparadores y recupera espacio para tu vida diaria.",
+    "url": "/rupturas/no-puedo-dejar-de-pensar-en-mi-ex/"
+  },
+  {
+    "id": "rupturas-tenemos-hijos-en-comun",
+    "category": "rupturas",
+    "title": "Nos hemos separado y tenemos hijos en común: qué organizar primero",
+    "description": "Si os habéis separado y tenéis hijos, ordena cómo comunicarlo, las rutinas inmediatas y los acuerdos que requieren orientación jurídica, protegiendo a los menores del conflicto adulto.",
+    "url": "/rupturas/tenemos-hijos-en-comun/"
+  },
+  {
+    "id": "familia",
+    "category": "familia",
+    "title": "Problemas familiares: qué hacer cuando tu familia te duele",
+    "description": "Si tienes problemas con tu familia, empieza por identificar qué está pasando: silencio, rechazo, discusiones, límites o convivencia difícil. Encuentra un siguiente paso concreto.",
+    "url": "/familia/"
+  },
+  {
+    "id": "familia-mi-familia-no-me-habla",
+    "category": "familia",
+    "title": "Mi familia no me habla: cómo ordenar el silencio",
+    "description": "Si tu familia ha dejado de hablarte, distingue pausa, ruptura, castigo o falta de respuesta. Decide si acercarte, esperar, poner límites o protegerte.",
+    "url": "/familia/mi-familia-no-me-habla/"
+  },
+  {
+    "id": "familia-mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer",
+    "category": "familia",
+    "title": "Mi hijo sufre acoso escolar: qué hacer y dónde pedir ayuda",
+    "description": "Si sospechas que tu hijo sufre acoso escolar o ciberacoso, aprende qué hacer hoy, cómo activar el protocolo del centro y dónde pedir ayuda en España.",
+    "url": "/familia/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer/"
+  },
+  {
+    "id": "familia-mi-madre-o-mi-padre-no-me-habla",
+    "category": "familia",
+    "title": "Mi madre o mi padre no me habla: qué hacer",
+    "description": "Si tu madre o tu padre ha dejado de hablarte, distingue pausa, distancia y silencio coercitivo. Cómo hacer un contacto claro sin perseguir ni anularte.",
+    "url": "/familia/mi-madre-o-mi-padre-no-me-habla/"
+  },
+  {
+    "id": "familia-necesito-poner-limites-a-mi-familia",
+    "category": "familia",
+    "title": "Cómo poner límites a tu familia sin sentirte culpable",
+    "description": "Si necesitas poner límites a tu familia, empieza por definir qué conducta quieres frenar, qué necesitas proteger y qué harás tú si vuelve a ocurrir. Con especial cuidado si hay dependencia, cuidados o riesgo.",
+    "url": "/familia/necesito-poner-limites-a-mi-familia/"
+  },
+  {
+    "id": "familia-siento-que-mi-familia-no-me-quiere",
+    "category": "familia",
+    "title": "Siento que mi familia no me quiere: ordenar lo que pasa",
+    "description": "Si sientes que tu familia no te quiere, separa afecto, cuidado, respeto y aprobación. Identifica conductas, necesidades, límites y apoyo seguro.",
+    "url": "/familia/siento-que-mi-familia-no-me-quiere/"
+  },
+  {
+    "id": "familia-un-familiar-tiene-una-adiccion-y-no-se-como-ayudarle",
+    "category": "familia",
+    "title": "Un familiar tiene una adicción y no sé cómo ayudarle",
+    "description": "Si un familiar tiene un problema de adicción, encuentra un primer plan para hablar, poner límites, buscar apoyo público y actuar si existe una urgencia.",
+    "url": "/familia/un-familiar-tiene-una-adiccion-y-no-se-como-ayudarle/"
+  },
+  {
+    "id": "familia-vivo-con-mi-familia-y-no-aguanto-mas",
+    "category": "familia",
+    "title": "Vivo con mi familia y no aguanto más: qué hacer",
+    "description": "Si convivir con tu familia se ha vuelto insoportable y aún no puedes irte, distingue desgaste, dependencia y peligro. Reduce el daño y prepara opciones seguras.",
+    "url": "/familia/vivo-con-mi-familia-y-no-aguanto-mas/"
+  },
+  {
+    "id": "trabajo",
+    "category": "trabajo",
+    "title": "Problemas en el trabajo: orientación laboral y empleo",
+    "description": "Si tienes problemas en el trabajo o buscas empleo, identifica el problema: despido, CV, entrevistas, formación, estrés o cambio laboral.",
+    "url": "/trabajo/"
+  },
+  {
+    "id": "trabajo-hago-entrevistas-pero-no-me-contratan",
+    "category": "trabajo",
+    "title": "Hago entrevistas pero no me contratan: qué revisar",
+    "description": "Si consigues entrevistas pero no ofertas, revisa en qué fase caes, ejemplos, respuestas, salario, encaje y seguimiento antes de asumir que entrevistas mal.",
+    "url": "/trabajo/hago-entrevistas-pero-no-me-contratan/"
+  },
+  {
+    "id": "trabajo-me-han-despedido-y-no-se-que-hacer",
+    "category": "trabajo",
+    "title": "Me han despedido y no sé qué hacer ahora",
+    "description": "Si te han despedido, separa documentación, plazos, prestación, dinero disponible y siguientes pasos sin convertir la pérdida del empleo en un juicio sobre tu valor personal.",
+    "url": "/trabajo/me-han-despedido-y-no-se-que-hacer/"
+  },
+  {
+    "id": "trabajo-mi-curriculum-no-funciona",
+    "category": "trabajo",
+    "title": "Mi currículum no funciona: por qué no me llaman",
+    "description": "Si envías currículums y no te llaman, localiza dónde se rompe el proceso, adapta el CV sin mentir y protege tus datos frente a falsas ofertas.",
+    "url": "/trabajo/mi-curriculum-no-funciona/"
+  },
+  {
+    "id": "trabajo-mi-jefe-me-hace-la-vida-imposible",
+    "category": "trabajo",
+    "title": "Mi jefe me hace la vida imposible: qué hacer",
+    "description": "Si sientes que tu jefe te hace la vida imposible, separa hechos, patrón, impacto y opciones. Cómo documentar lo que ocurre y elegir el canal adecuado sin asumir automáticamente que es acoso laboral.",
+    "url": "/trabajo/mi-jefe-me-hace-la-vida-imposible/"
+  },
+  {
+    "id": "trabajo-necesito-formacion-para-encontrar-trabajo",
+    "category": "trabajo",
+    "title": "¿Necesito formación para encontrar trabajo? Cómo decidirlo",
+    "description": "Antes de pagar un curso para encontrar trabajo, comprueba si la formación resuelve una carencia que aparece de verdad en las ofertas que buscas.",
+    "url": "/trabajo/necesito-formacion-para-encontrar-trabajo/"
+  },
+  {
+    "id": "trabajo-no-consigo-desconectar-del-trabajo",
+    "category": "trabajo",
+    "title": "No consigo desconectar del trabajo: qué revisar y qué hacer",
+    "description": "Si termina tu jornada pero el trabajo sigue en mensajes, tareas o en tu cabeza, distingue disponibilidad real, exceso de carga, hiperconexión y preocupación anticipatoria para decidir el siguiente paso.",
+    "url": "/trabajo/no-consigo-desconectar-del-trabajo/"
+  },
+  {
+    "id": "trabajo-no-puedo-mas-en-el-trabajo",
+    "category": "trabajo",
+    "title": "No puedo más en el trabajo: qué hacer hoy",
+    "description": "Si sientes que no puedes más en el trabajo, separa carga, control, conflicto, descanso y margen económico antes de decidir. Orientación práctica, preventiva y no diagnóstica.",
+    "url": "/trabajo/no-puedo-mas-en-el-trabajo/"
+  },
+  {
+    "id": "trabajo-odio-mi-trabajo-pero-no-puedo-dejarlo",
+    "category": "trabajo",
+    "title": "Odio mi trabajo pero no puedo dejarlo: cómo recuperar opciones",
+    "description": "Si odias tu trabajo pero necesitas el sueldo, no tienes que elegir hoy entre aguantar para siempre o dimitir sin red. Ordena qué te atrapa y construye un plan de salida realista.",
+    "url": "/trabajo/odio-mi-trabajo-pero-no-puedo-dejarlo/"
+  },
+  {
+    "id": "trabajo-quiero-encontrar-trabajo-cuanto-antes",
+    "category": "trabajo",
+    "title": "Encontrar trabajo rápido: un plan realista",
+    "description": "Si necesitas encontrar trabajo cuanto antes, separa la urgencia económica de la búsqueda principal y sigue un plan práctico sin exponerte a fraudes.",
+    "url": "/trabajo/quiero-encontrar-trabajo-cuanto-antes/"
+  },
+  {
+    "id": "trabajo-tengo-miedo-de-equivocarme-en-el-trabajo",
+    "category": "trabajo",
+    "title": "Tengo miedo de equivocarme en el trabajo: qué hacer",
+    "description": "Si trabajas con miedo constante a equivocarte, separa riesgo real, falta de claridad o apoyo, cultura punitiva, perfeccionismo y miedo anticipatorio. Qué revisar y qué hacer después.",
+    "url": "/trabajo/tengo-miedo-de-equivocarme-en-el-trabajo/"
+  },
+  {
+    "id": "dinero",
+    "category": "dinero",
+    "title": "Problemas de dinero: qué hacer cuando las cuentas no salen",
+    "description": "Si el dinero no te alcanza, tienes deudas o no sabes qué pago priorizar, empieza por distinguir urgencia, déficit mensual y deuda. Pasos concretos sin empujarte a pedir más crédito.",
+    "url": "/dinero/"
+  },
+  {
+    "id": "dinero-en-casa-discutimos-por-dinero",
+    "category": "dinero",
+    "title": "En casa discutimos por dinero: cómo ordenar el problema",
+    "description": "Si el dinero está generando discusiones en pareja o familia, separa el problema económico del conflicto relacional. Pasos para hablar, repartir cargas y detectar control económico.",
+    "url": "/dinero/en-casa-discutimos-por-dinero/"
+  },
+  {
+    "id": "dinero-me-da-miedo-mirar-mi-cuenta",
+    "category": "dinero",
+    "title": "Me da miedo mirar mi cuenta: cómo empezar sin bloquearte",
+    "description": "Si evitas mirar el banco, abrir cartas o revisar cargos porque te angustia lo que puedas encontrar, empieza con una revisión corta y concreta. Pasos financieros y emocionales sin juicios.",
+    "url": "/dinero/me-da-miedo-mirar-mi-cuenta/"
+  },
+  {
+    "id": "dinero-necesito-dinero-urgente",
+    "category": "dinero",
+    "title": "Necesito dinero urgente: qué mirar antes de pedir un préstamo rápido",
+    "description": "Si necesitas dinero urgente, identifica primero qué vence, cuánto necesitas y qué alternativas tienes antes de aceptar crédito rápido. La urgencia no debe ocultar el coste.",
+    "url": "/dinero/necesito-dinero-urgente/"
+  },
+  {
+    "id": "dinero-necesito-un-prestamo-pero-no-se-si-puedo-permitirmelo",
+    "category": "dinero",
+    "title": "Necesito un préstamo: cómo saber si puedo permitírmelo",
+    "description": "Antes de pedir un préstamo, calcula si la cuota cabe de verdad, compara TAE, coste total, plazo y consecuencias. Una aprobación no significa que te convenga.",
+    "url": "/dinero/necesito-un-prestamo-pero-no-se-si-puedo-permitirmelo/"
+  },
+  {
+    "id": "dinero-no-llego-a-fin-de-mes",
+    "category": "dinero",
+    "title": "No llego a fin de mes: qué hacer primero",
+    "description": "Si no llegas a fin de mes, empieza por proteger lo esencial y averiguar si el problema es puntual, estructural o provocado por deudas. Un plan práctico sin empujarte a pedir otro préstamo.",
+    "url": "/dinero/no-llego-a-fin-de-mes/"
+  },
+  {
+    "id": "dinero-no-puedo-pagar-la-vivienda",
+    "category": "dinero",
+    "title": "No puedo pagar el alquiler o la hipoteca: qué hacer primero",
+    "description": "Si temes no poder pagar el alquiler o la hipoteca, separa primero tu situación: vivienda alquilada o hipotecada, fecha de pago, atrasos, comunicaciones y alternativas antes de firmar nueva deuda.",
+    "url": "/dinero/no-puedo-pagar-la-vivienda/"
+  },
+  {
+    "id": "dinero-quiero-reunificar-mis-deudas",
+    "category": "dinero",
+    "title": "Quiero reunificar mis deudas: qué comparar antes de hacerlo",
+    "description": "Si quieres reunificar deudas para bajar tus cuotas, compara cuota, plazo, coste total, TAE, comisiones y garantías antes de aceptar. Una cuota menor no siempre significa pagar menos.",
+    "url": "/dinero/quiero-reunificar-mis-deudas/"
+  },
+  {
+    "id": "dinero-tengo-deudas-y-no-se-por-donde-empezar",
+    "category": "dinero",
+    "title": "Tengo deudas y no sé por dónde empezar",
+    "description": "Si tienes varias deudas y no sabes qué pagar primero, ordena cifras, cartas, necesidades básicas y consecuencias antes de decidir bajo presión.",
+    "url": "/dinero/tengo-deudas-y-no-se-por-donde-empezar/"
+  },
+  {
+    "id": "violencia",
+    "category": "violencia",
+    "title": "Violencia, abuso y acoso: encuentra ayuda segura",
+    "description": "Si alguien te está dañando, controlando, amenazando, acosando o ha cometido una agresión, prioriza seguridad y encuentra recursos adecuados en España.",
+    "url": "/violencia/"
+  }
+]
