@@ -23,7 +23,9 @@ test('el monitor de producción valida TLS sin bypass', () => {
 });
 
 test('el monitor exige V9 y rechaza señales del WordPress histórico', () => {
-  assert.match(script, /Historias y recursos para momentos difíciles/);
+  const page = fs.readFileSync('index.html', 'utf8');
+  const title = page.match(/<title>[^<]+<\/title>/)?.[0];
+  assert.ok(title && script.includes(title), 'origin probe must match the approved public title');
   assert.match(script, /UN ESPACIO ANÓNIMO, HUMANO Y RESPETUOSO/);
   assert.match(script, /Hay momentos/);
   assert.match(script, /dice basta\./);
