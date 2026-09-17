@@ -7,7 +7,9 @@ import { fileURLToPath } from 'node:url';
 import { auditLaunchMeasurementSafety as auditV1 } from './audit-launch-measurement-safety.mjs';
 
 const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const APPROVED_APP_SHA256 = 'deeaf8dc805812637d801a0b68c94ea0ead56f0f6288afdf033c1c77032c5e6b';
+// 2026-09-17: reviewed owner-requested full-card urgent navigation. DOM-only,
+// fixed local destination; network/storage behavior and dependency closure unchanged.
+const APPROVED_APP_SHA256 = '4c5226d8d38393d0b780771e82fb4a0a9909869acd9c4a90da3a750e442fd8d2';
 const APPROVED_HOME_CLOSURE = [
   'app-core.js',
   'app.js',
