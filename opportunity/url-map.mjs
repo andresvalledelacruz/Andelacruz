@@ -1,4 +1,5 @@
 export const URL_OPPORTUNITY_MAP = Object.freeze({
+  '/recursos/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'contextual',consent:'contextual',commercialPolicy:'contextual',defaultFlags:[]},
   '/sobre.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/como-revisamos.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
@@ -71,7 +72,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/':{domain:'grief',needs:['support_grieving_person'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 64;
+export const EXPECTED_PRODUCTION_URL_COUNT = 65;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
