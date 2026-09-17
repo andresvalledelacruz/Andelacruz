@@ -31,6 +31,12 @@
       .story-example-read{border:0;border-radius:999px;padding:8px 12px;background:#28332f;color:#fff;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}
       .story-example-read:hover{filter:brightness(1.06)}.story-example-read:focus-visible{outline:3px solid #b78d66;outline-offset:3px}
       .story-example-label{font-weight:700}.story-example-context{opacity:.72}
+      #historias .section-heading.horizontal{display:block}#historias .story-filters{display:flex;flex-wrap:wrap;margin-top:20px;gap:8px}
+      #historias .story-filters button{white-space:normal}#historias .story-filters [data-priority]{border:2px solid #82664f}
+      #historias .story-example-card[hidden]{display:none}#historias .story-example-card .story-visual{min-height:0;padding:20px}
+      #historias .story-example-card h3{font-size:1.18rem}#historias .story-example-card .story-meta{padding:14px 20px}
+      #historias .story-example-intro .story-visual{padding:16px 20px}#historias .story-example-intro h3{font-size:1.05rem}
+      #historias .story-example-more{display:block;margin:18px auto}#historias .story-example-more[hidden]{display:none}
       .story-example-dialog{border:0;border-radius:20px;padding:0;width:min(900px,calc(100% - 24px));max-height:min(90vh,900px);box-shadow:0 24px 90px rgba(25,34,31,.28);color:#28332f;background:#fff}
       .story-example-dialog::backdrop{background:rgba(31,39,36,.52)}
       .story-example-shell{padding:clamp(20px,4vw,42px);position:relative}.story-example-close{position:absolute;right:18px;top:14px;border:0;background:transparent;font-size:2rem;line-height:1;cursor:pointer;color:#28332f}
@@ -268,6 +274,64 @@
     injectStyles();
     grid.replaceChildren(createIntroCard(library));
     library.stories.forEach((story, index) => grid.append(createCard(story, index, library)));
+    installGroups(grid, library);
+  }
+
+  function installGroups(grid, library) {
+    const filters = document.querySelector(`${STORY_SECTION} .story-filters`);
+    if (!filters) return;
+    const groups = [
+      ['crisis', 'Crisis y suicidio'], ['violencia', 'Violencia, abuso y acoso'],
+      ['ansiedad', 'Ansiedad y desbordamiento'], ['cuidados', 'Salud y cuidados'],
+      ['duelo', 'Duelo y pérdidas'], ['soledad', 'Soledad'],
+      ['pareja', 'Pareja y rupturas'], ['familia', 'Familia'],
+      ['trabajo', 'Trabajo'], ['dinero', 'Dinero'], ['all', 'Todas']
+    ];
+    let selected = 'all';
+    let limit = 6;
+    const status = document.createElement('p');
+    status.className = 'section-subtitle';
+    status.setAttribute('role', 'status');
+    const more = document.createElement('button');
+    more.type = 'button';
+    more.className = 'btn btn-ghost story-example-more';
+    more.textContent = 'Mostrar más relatos de ejemplo';
+    grid.before(status);
+    grid.after(more);
+    const cards = [...grid.querySelectorAll('[data-story-example]')];
+    const refresh = () => {
+      let count = 0;
+      cards.forEach((card) => {
+        const matches = selected === 'all' || card.dataset.category === selected;
+        card.hidden = !matches || ++count > limit;
+      });
+      status.textContent = `${Math.min(count, limit)} de ${count} relatos de ejemplo. Elige una situación para acotar la lectura.`;
+      more.hidden = count <= limit;
+      filters.querySelectorAll('button').forEach((button) => {
+        const active = button.dataset.group === selected;
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+    };
+    filters.replaceChildren();
+    groups.forEach(([key, label], index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'filter';
+      button.dataset.group = key;
+      if (index < 4) button.dataset.priority = 'true';
+      button.textContent = label;
+      button.addEventListener('click', () => { selected = key; limit = 6; refresh(); });
+      filters.append(button);
+    });
+    more.addEventListener('click', () => {
+      const previousLimit = limit;
+      limit += 6;
+      refresh();
+      const visible = cards.filter((card) => !card.hidden);
+      visible[previousLimit]?.querySelector('button')?.focus();
+    });
+    refresh();
   }
 
   function isConfirmedEmpty(grid) {
