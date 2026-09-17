@@ -96,6 +96,7 @@ test('search privacy gate audits the complete current module dependency closure'
     'buscar/index.html',
     'src/search-clarification.js',
     'src/search-crisis-router.js',
+    'src/search-normalization.js',
     'src/suicide-context-classifier.js'
   ]) assert.ok(relativeFiles.includes(expected), `Missing audited dependency: ${expected}`);
   assert.deepEqual(privacyViolations(closure), []);

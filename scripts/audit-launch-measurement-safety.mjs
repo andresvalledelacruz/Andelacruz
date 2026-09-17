@@ -24,8 +24,10 @@ const PINNED_MEASUREMENT_FILES = new Map([
   ['search-home-entry.js', 'fb10b825de35df713295037d80d180702b2cf603419f78303b18ad00edc67545'],
   ['urgent-help-nav.js', 'bbfbc113b2a2aa4057dd18b92b921a074714bed45415b0f0b342812efb9dd9b7'],
   ['src/search-clarification.js', '4044c9d91594583cb3ff78eb696c0eca73257dd558917ebf81ba5493f63ee55c'],
-  ['src/search-content-catalog.js', '205f1af6a0698faf58dafb0509d2035df6839d7d1e0cc3d3cd153e2682c89fb2'],
-  ['src/search-crisis-router.js', '318aed3141fe0b36b92d4e6e726afd38d9af1624cd14d68b8ad0d2159102b992'],
+  // Reviewed 2026-09-17: bounded lexical normalization, no network/storage or query retention.
+  ['src/search-content-catalog.js', '9df6766ec926ced0d7b76f6d6969bd0230c38c5c2319160b1ea6113457faf5f6'],
+  ['src/search-crisis-router.js', '876392e7eda7e9ba2097d46d0d06c33eb073918c9c8b70f0154ac08a2ffa6d2d'],
+  ['src/search-normalization.js', 'ffe49da051c2ed2c0c8318deec8bbcbf131559f0a1ed1cdeb4fbfb049ca8b66b'],
   ['src/suicide-context-classifier.js', '2cf96cb615bcce941ab1a8546a6a1ede8cd8d66698d194759696d2a84e880d17'],
 ]);
 const APPROVED_HOME_CLOSURE = [
@@ -34,7 +36,7 @@ const APPROVED_HOME_CLOSURE = [
 ];
 const APPROVED_SEARCH_CLOSURE = [
   'src/search-clarification.js', 'src/search-content-catalog.js',
-  'src/search-crisis-router.js', 'src/suicide-context-classifier.js',
+  'src/search-crisis-router.js', 'src/search-normalization.js', 'src/suicide-context-classifier.js',
 ];
 const APPROVED_PROTECTED_INLINE = new Map([
   ['/ayuda-urgente.html', ['1c40cd4e59a05c9039247e0c0cfff6fe3017d8e8b1b8431be8d481a354b9e25c']],

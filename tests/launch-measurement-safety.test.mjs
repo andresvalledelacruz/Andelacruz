@@ -128,6 +128,7 @@ test('exact surface closures reject newly introduced obfuscated executables', as
     await mutate(root, 'index.html', (source) => source.replace('</body>', '<script src="/evil.js"></script></body>'));
   }, /homepage dependency set changed/);
   await expectHold(async (root) => mutate(root, 'src/search-crisis-router.js', (source) => `${source}\n${reflectLeak}`), /pinned measurement file changed/);
+  await expectHold(async (root) => mutate(root, 'src/search-normalization.js', (source) => `${source}\n${reflectLeak}`), /pinned measurement file changed/);
   await expectHold(async (root) => mutate(root, 'resource-links.js', (source) => `${source}\n${reflectLeak}`), /pinned measurement file changed/);
   await expectHold(async (root) => mutate(root, 'ayuda-urgente.html', (source) => source.replace('</body>', `<script>${reflectLeak}</script></body>`)), /protected surface inline executable set changed/);
   await expectHold(async (root) => mutate(root, 'index.html', (source) => source.replace('</body>', `<script>${reflectLeak}</script></body>`)), /homepage has unapproved inline executable code/);
