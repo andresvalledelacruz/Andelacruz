@@ -28,10 +28,10 @@
     style.textContent = `
       .story-example-intro{grid-column:1/-1}.story-example-intro .story-visual{min-height:auto}
       .story-example-card{cursor:pointer;position:relative}.story-example-card .story-meta{align-items:center;gap:10px;flex-wrap:wrap}
-      .story-example-card .story-example-read::after{content:'';position:absolute;inset:0;border-radius:inherit}
+      .story-example-card .story-example-read::after{content:'';position:absolute;inset:0;border-radius:inherit;z-index:3}
       .story-example-card:focus-within{outline:3px solid #b78d66;outline-offset:3px}
       .story-example-read{border:0;border-radius:999px;padding:8px 12px;background:#28332f;color:#fff;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}
-      .story-example-read:hover{filter:brightness(1.06)}.story-example-read:focus-visible{outline:3px solid #b78d66;outline-offset:3px}
+      .story-example-read:hover{background:#435449}.story-example-read:focus-visible{outline:3px solid #b78d66;outline-offset:3px}
       .story-example-label{font-weight:700}.story-example-context{opacity:.72}
       #historias .section-heading.horizontal{display:block}#historias .story-filters{display:flex;flex-wrap:wrap;margin-top:20px;gap:8px}
       #historias .story-filters button{white-space:normal}#historias .story-filters [data-priority]{border:2px solid #82664f}

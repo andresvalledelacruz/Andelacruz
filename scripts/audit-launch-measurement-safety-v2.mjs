@@ -9,7 +9,7 @@ import { auditLaunchMeasurementSafety as auditV1 } from './audit-launch-measurem
 const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // 2026-09-17: reviewed full-card urgent navigation and local resource directory.
 // The directory adds only DOM navigation/filtering, with no query, storage or network API.
-const APPROVED_APP_SHA256 = 'c5febb8f368d13f89f01a9b38b626b0b160c3785ef7a629324dae08c8d190306';
+const APPROVED_APP_SHA256 = '3dd45ad971733639fcc8cfb910bc52916ee3d6a9fec4b161f1da51297dc54bce';
 const APPROVED_HOME_CLOSURE = [
   'app-core.js',
   'app.js',

@@ -1,6 +1,41 @@
 (function(){
   'use strict';
 
+  // User-approved central invitation; keep the frozen V9 source intact.
+  const heroActions=document.querySelector('.hero-final-actions');
+  const heroUrgent=heroActions?.querySelector('[data-urgent-entry="hero"]');
+  const invitation=document.querySelector('.header-cta[data-open-story]');
+  if(heroUrgent && invitation){
+    const group=document.createElement('div');
+    group.className='hero-help-group';
+    heroUrgent.replaceWith(group);
+    group.append(heroUrgent);
+    const button=invitation.cloneNode(true);
+    button.classList.add('hero-story-invitation');
+    group.append(button);
+    const style=document.createElement('style');
+    style.textContent='.hero-help-group{display:grid;gap:8px;min-width:0}.hero-help-group .final-card{height:auto;min-height:110px}.hero-story-invitation{display:flex!important;align-items:center;justify-content:center;gap:16px;width:100%;min-height:76px;font-size:clamp(1.1rem,2vw,1.7rem);color:#794a2d;background:#f0e0d0;border:1px solid #c9a384;border-radius:20px}.hero-story-invitation svg{width:32px;height:32px}.hero-final-actions{align-items:end}.hero-story-invitation:focus-visible{outline:3px solid #8a4939;outline-offset:4px}';
+    document.head.append(style);
+  }
+  // Single-destination navigation cards use native links over the whole surface.
+  document.querySelectorAll('article.need-card').forEach(card=>{
+    const links=card.querySelectorAll('a[href]');
+    if(links.length!==1 || card.querySelector('button,input,select,textarea')) return;
+    const link=links[0];
+    if(link.hasAttribute('data-urgent-entry')) return;
+    const replacement=document.createElement('a');
+    replacement.className=card.className;
+    replacement.href=link.getAttribute('href');
+    replacement.style.color='inherit';
+    replacement.style.textDecoration='none';
+    const label=document.createElement('span');
+    label.className=link.className;
+    label.append(...link.childNodes);
+    link.replaceWith(label);
+    replacement.append(...card.childNodes);
+    card.replaceWith(replacement);
+  });
+
   // Enhance the whole urgent-help card before loading any optional runtime.
   // The static link remains available when JavaScript is disabled.
   const urgentLink=document.querySelector('.need-card [data-urgent-entry="needs"]');

@@ -25,4 +25,5 @@ button:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid #6
 .urgent{border:2px solid #8F3F35;background:#FFF9F7}
 .choices{display:grid;gap:10px;margin-top:16px}.choice{justify-self:stretch;text-align:left;border-radius:12px;background:var(--sage-soft);color:var(--ink);border:1px solid #CBD2B5;box-shadow:none}.choice:hover{background:#DCE4C7;color:var(--ink)}.choice[data-safety="P0"]{border:2px solid #8F3F35;background:#FFF3EF}
 @media(max-width:560px){main{width:min(100% - 28px,820px);padding-top:24px}form{padding:20px;border-radius:18px}textarea{min-height:150px}button{width:100%;justify-self:stretch}.result{padding:20px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}/* Compact search headings without changing private routing. */
+h1{font-size:clamp(1.5rem,3.3vw,2rem)}h2{font-size:clamp(1.15rem,2.8vw,1.45rem)}main{padding-top:22px}form{margin-top:20px;padding:20px}

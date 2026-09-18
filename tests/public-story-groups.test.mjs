@@ -6,6 +6,12 @@ import vm from 'node:vm';
 const runtime = readFileSync(new URL('../story-example-library.js', import.meta.url), 'utf8');
 const library = JSON.parse(readFileSync(new URL('../content/historias-ejemplo-v1.json', import.meta.url), 'utf8'));
 
+test('the full-card button keeps its containing block when hovered',()=>{
+  const hover=runtime.match(/\.story-example-read:hover\{([^}]+)\}/)[1];
+  assert.doesNotMatch(hover,/filter:|transform:|perspective:/);
+  assert.match(runtime,/inset:0;border-radius:inherit;z-index:3/);
+});
+
 test('each card has a single native dialog button with a story-specific accessible name', () => {
   class Element {
     children = []; dataset = {}; attributes = {}; handlers = {};
