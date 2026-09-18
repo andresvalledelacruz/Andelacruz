@@ -9,7 +9,7 @@ Se revisaron los hilos «Desgracias Gestión Integral» (6a96bafe-1010-83ed-8112
 | País/ámbito | Evidencia disponible | Decisión operativa |
 |---|---|---|
 | España | Mercado base explícito en INTERNATIONAL_LOCALIZATION_INTELLIGENCE.md; recursos públicos españoles actuales | Consolidar producto y medición antes de replicar |
-| México | Investigación inicial de deuda; soledad en WATCH | Candidato de investigación, sin fecha ni prioridad de lanzamiento confirmadas |
+| México | Investigación inicial de deuda; soledad en WATCH | Primer paquete de preparación en la secuencia recuperada; publicación condicionada a validación local |
 | Reino Unido, Estados Unidos y Japón | Bases de investigación por temas; READY-RESEARCH en matrices concretas | No equivale a publicación autorizada ni revisión local completada |
 | Argentina y Colombia | Matrices por tema con WATCH/HOLD | Completar fuentes y validación local |
 | Canadá y Australia | Incluidos en el radar anglófono | No se encontró primera entrega definida |
@@ -17,13 +17,13 @@ Se revisaron los hilos «Desgracias Gestión Integral» (6a96bafe-1010-83ed-8112
 | Corea del Norte | Observatorio humanitario expresamente no comercial | Fuera de adquisición y monetización |
 | Otros países/LATAM en conjunto | No hay orden de lanzamiento confirmado en la evidencia revisada | No inventar países prioritarios ni tratar LATAM como un país |
 
-No se ha encontrado una decisión confirmada de «los primeros N países» después de España. La selección deberá quedar registrada con demanda comprobada, capacidad editorial local y mantenimiento. Los estados de investigación son históricos y se revalidan antes de usarlos para una entrega.
+Ampliación de la revisión histórica: el hilo Desgracias ×1000 (6a9580c5-681c-83eb-b8e9-5daccd3f74e3), mensaje c64e167b-0961-4a0a-a6fe-ca988af33537, menciona España → México → Argentina → Colombia → Chile → Portugal → Francia → Reino Unido como ejemplo de expansión. Se recupera esa secuencia para la preparación, comenzando por México, sin confundirla con una autorización o fecha de publicación. Véase PREPARACION_INTERNACIONAL_PAISES.md. Los estados de investigación son históricos y se revalidan antes de publicar.
 
 ## Expansión en entregas pequeñas
 
 1. Mantener España como piloto: rutas útiles, recursos verificados, buscador privado, accesibilidad y comprobación del dominio público.
 2. Crear una ficha por candidato: necesidad concreta, lenguaje local, fuentes oficiales, jurisdicción, teléfonos, responsable de mantenimiento y riesgos. Comparar candidatos con evidencia, sin asignar puntuaciones ficticias.
-3. Seleccionar una necesidad y un país para el primer piloto internacional; validar contenido con una persona local identificada cuando sea sensible. No afirmar que existe un consejo de expertos o una afiliación que no esté acreditada.
+3. Preparar una necesidad concreta para México como primer paquete de la secuencia recuperada; validar contenido con una persona local identificada cuando sea sensible. No afirmar que existe un consejo de expertos o una afiliación que no esté acreditada.
 4. Publicar solo tras Native-First Gate: intención, lenguaje, contexto cultural, fuentes, ley, Safety, encaje local y mantenimiento. URLs diferenciadas y hreflang solo cuando exista contenido local real. No redirigir por IP ni asumir que el idioma identifica el país.
 5. Cerrar la pieza cuando esté integrada, desplegada y revisada visualmente; mantener país y teléfonos claramente indicados. Un sitio español accesible desde el extranjero no acredita lanzamiento local.
 
