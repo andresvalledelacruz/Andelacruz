@@ -27,7 +27,9 @@
     style.id = 'story-example-library-styles';
     style.textContent = `
       .story-example-intro{grid-column:1/-1}.story-example-intro .story-visual{min-height:auto}
-      .story-example-card{cursor:default}.story-example-card .story-meta{align-items:center;gap:10px;flex-wrap:wrap}
+      .story-example-card{cursor:pointer;position:relative}.story-example-card .story-meta{align-items:center;gap:10px;flex-wrap:wrap}
+      .story-example-card .story-example-read::after{content:'';position:absolute;inset:0;border-radius:inherit}
+      .story-example-card:focus-within{outline:3px solid #b78d66;outline-offset:3px}
       .story-example-read{border:0;border-radius:999px;padding:8px 12px;background:#28332f;color:#fff;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}
       .story-example-read:hover{filter:brightness(1.06)}.story-example-read:focus-visible{outline:3px solid #b78d66;outline-offset:3px}
       .story-example-label{font-weight:700}.story-example-context{opacity:.72}
@@ -67,7 +69,9 @@
           if (!data || data.is_real_user_content !== false || data.governance?.never_label_as_real !== true) {
             throw new Error('story_examples_governance_invalid');
           }
-          if (!Array.isArray(data.stories) || data.stories.length !== 18) throw new Error('story_examples_count_invalid');
+          if (!Array.isArray(data.stories) || data.stories.length < 40) throw new Error('story_examples_count_invalid');
+          const groups = ['pareja', 'familia', 'trabajo', 'dinero', 'duelo', 'soledad', 'ansiedad', 'violencia', 'crisis', 'cuidados'];
+          if (groups.some((group) => data.stories.filter((story) => categoryKey(story.category) === group).length < 4)) throw new Error('story_examples_category_incomplete');
           return data;
         });
     }
@@ -103,7 +107,7 @@
     tag.className = 'tag';
     tag.textContent = 'Biblioteca inicial';
     const title = document.createElement('h3');
-    title.textContent = '18 relatos de ejemplo para encontrar experiencias parecidas';
+    title.textContent = `${library.stories.length} relatos de ejemplo para encontrar experiencias parecidas`;
     const text = document.createElement('p');
     text.textContent = library.public_disclosure;
     visual.append(tag, title, text);
@@ -141,6 +145,7 @@
     read.className = 'story-example-read';
     read.textContent = 'Leer historia completa';
     read.setAttribute('aria-haspopup', 'dialog');
+    read.setAttribute('aria-label', `Leer historia de ejemplo: ${story.title}`);
     read.addEventListener('click', () => openStory(story, library));
     meta.append(label, context, read);
     article.append(visual, meta);
