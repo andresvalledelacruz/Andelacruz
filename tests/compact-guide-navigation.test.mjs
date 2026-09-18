@@ -12,7 +12,12 @@ test('topic guides offer native navigation choices before the long introduction'
     const options=html.match(/<section class="wrap guide-options">([\s\S]*?)<\/section>/)[1];
     const cards=[...options.matchAll(/<a class="cardlink" href="([^"]+)"/g)];
     assert.ok(cards.length>=2,hub);
-    for(const [,url] of cards)if(url.startsWith('/'))assert.ok(existsSync(`.${url}${url.endsWith('/')?'index.html':''}`),url);
+    for(const [,url] of cards)if(url.startsWith('/')){
+      const [pathname,fragment]=url.split('#');
+      const file=`.${pathname}${pathname.endsWith('/')?'index.html':''}`;
+      assert.ok(existsSync(file),url);
+      if(fragment)assert.ok(readFileSync(file,'utf8').includes(`id="${fragment}"`),url);
+    }
     assert.doesNotMatch(options,/<button|<input|<select/);
   }
 });
