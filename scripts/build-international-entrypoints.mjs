@@ -1,0 +1,25 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const data=JSON.parse(readFileSync('data/international-entrypoints.json','utf8'));
+const esc=s=>s.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+const cards=data.countries.map(c=>`<a class="country-card" id="${c.id}" data-country="${c.code}" href="${esc(c.url)}" rel="noreferrer"><h2>${esc(c.name)}</h2><div lang="${c.lang}"><strong>${esc(c.service)}</strong><p>${esc(c.description)}</p></div><span class="official">${new URL(c.url).hostname} →</span></a>`).join('\n');
+const sources=data.countries.map(c=>`<li><a href="${esc(c.source)}" rel="noreferrer">${esc(c.name)}: fuente oficial</a></li>`).join('\n');
+writeFileSync('internacional.html',`<!doctype html>
+<html lang="es"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ayuda por país: primeros recursos oficiales | Desgracias.es</title>
+<meta name="description" content="Recursos oficiales de orientación en México, Argentina, Colombia, Chile, Portugal, Francia y Reino Unido. Elige el país donde necesitas ayuda.">
+<meta name="robots" content="index,follow,max-image-preview:large"><meta name="referrer" content="no-referrer">
+<link rel="canonical" href="https://desgracias.es/internacional.html"><link rel="stylesheet" href="/styles.css"><link rel="icon" href="/favicon.ico">
+<meta property="og:site_name" content="Desgracias.es"><meta property="og:type" content="website"><meta property="og:title" content="Ayuda por país"><meta property="og:url" content="https://desgracias.es/internacional.html"><meta name="twitter:card" content="summary">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Ayuda por país","url":"https://desgracias.es/internacional.html","inLanguage":"es","dateModified":"${data.reviewedAt}"}</script>
+<style>
+body{background:#fff9f2;color:#40372f}.country-wrap{max-width:1120px;margin:auto;padding:20px}.country-header{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.country-header a{min-height:44px;display:inline-flex;align-items:center}.country-wrap h1{font-size:clamp(1.4rem,3vw,1.9rem);margin:24px 0 14px}.country-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:1fr;gap:12px}.country-card{display:flex;flex-direction:column;gap:8px;min-width:0;padding:18px;border:1px solid #d9c9b8;border-radius:14px;background:#fffdf9;color:#40372f;text-decoration:none;overflow-wrap:anywhere}.country-card h2{font-size:1.2rem;margin:0;color:#794a2d}.country-card strong{font-size:.95rem}.country-card p{font-size:.9rem;line-height:1.5;margin:8px 0}.official{margin-top:auto;text-decoration:underline;font-size:.8rem}.country-card:hover{background:#f4e8d8}.country-wrap a:focus-visible{outline:3px solid #794a2d;outline-offset:4px}.country-note{line-height:1.6;font-size:.95rem}.country-safety{padding:12px 16px;border-left:4px solid #8a4939;background:#f8ecdf;margin:14px 0}.country-wrap summary{cursor:pointer;padding:12px 0;min-height:44px}.country-wrap li{margin:12px 0}@media(max-width:900px){.country-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.country-grid{grid-template-columns:minmax(0,1fr)}.country-wrap{padding:16px}}
+</style></head><body>
+<header class="country-wrap country-header"><a class="brand" href="/">Desgracias.es</a><a href="/webs-amigas.html">Organizaciones en España →</a></header>
+<main class="country-wrap"><h1>Elige el país donde necesitas ayuda</h1>
+<p class="country-safety">Si hay peligro inmediato, contacta con los servicios de emergencia del lugar donde estás. Desgracias.es no es un servicio de emergencias ni atiende en directo.</p>
+<div class="country-grid"><a class="country-card" data-country="ES" href="/ayuda-urgente.html"><h2>España</h2><strong>Ayuda urgente y orientación</strong><p>Recursos de España según la situación que estás viviendo.</p><span class="official">Consultar ayuda en España →</span></a>
+${cards}</div>
+<p class="country-note">Directorio inicial: España y siete países en la primera secuencia internacional. Las fichas llevan a servicios oficiales externos y no implican colaboración, patrocinio ni acuerdo. Todavía no ofrecemos versiones nacionales completas. Los teléfonos y condiciones dependen del país y pueden no funcionar desde el extranjero. En Reino Unido, comprueba el servicio de tu nación: la vía NHS 111 indicada corresponde a Inglaterra.</p>
+<details><summary>Fuentes y alcance de esta primera selección</summary><p>Fuentes oficiales consultadas el ${data.reviewedAt}. Cada servicio explica su cobertura, requisitos y vías de contacto. No recogemos consultas ni relatos en esta página.</p><ul>${sources}</ul><p>Próxima ampliación: orientación laboral, económica y social, con revisión local antes de publicar.</p></details>
+</main><footer class="country-wrap"><a href="/privacidad.html">Privacidad</a> · <a href="/">Volver al inicio</a></footer></body></html>\n`);
