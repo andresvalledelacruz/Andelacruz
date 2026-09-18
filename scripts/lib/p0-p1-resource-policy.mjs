@@ -2,6 +2,14 @@ import { readFile } from 'node:fs/promises';
 
 export const OWN_HOSTS = new Set(['desgracias.es', 'www.desgracias.es']);
 
+// Official entrypoints reviewed 2026-09-18; exact hosts, not country-wide suffixes.
+// Sources and territorial scope: data/international-entrypoints.json.
+const INTERNATIONAL_AUTHORITY_HOSTS = new Set([
+  'lineadelavida.salud.gob.mx', 'www.gob.mx', 'www.argentina.gob.ar',
+  'www.minsalud.gov.co', 'saludresponde.minsal.cl', 'www.minsal.cl',
+  'www.gov.pt', 'www.service-public.gouv.fr',
+]);
+
 export const PUBLIC_AUTHORITY_BASE_DOMAINS = [
   'sanidad.gob.es',
   'guiasalud.es',
@@ -75,7 +83,7 @@ export function externalAnchorLinks(html) {
 
 export function isAuthorityHost(hostname) {
   const normalized = hostname.toLowerCase();
-  return PUBLIC_AUTHORITY_BASE_DOMAINS.some((base) => normalized === base || normalized.endsWith(`.${base}`));
+  return INTERNATIONAL_AUTHORITY_HOSTS.has(normalized) || PUBLIC_AUTHORITY_BASE_DOMAINS.some((base) => normalized === base || normalized.endsWith(`.${base}`));
 }
 
 export function classifyExternalLink(href) {

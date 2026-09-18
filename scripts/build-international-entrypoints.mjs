@@ -1,8 +1,8 @@
 import {readFileSync,writeFileSync} from 'node:fs';
 const data=JSON.parse(readFileSync('data/international-entrypoints.json','utf8'));
 const esc=s=>s.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-const cards=data.countries.map(c=>`<a class="country-card" id="${c.id}" data-country="${c.code}" href="${esc(c.url)}" rel="noreferrer"><h2>${esc(c.name)}</h2><div lang="${c.lang}"><strong>${esc(c.service)}</strong><p>${esc(c.description)}</p></div><span class="official">${new URL(c.url).hostname} →</span></a>`).join('\n');
-const sources=data.countries.map(c=>`<li><a href="${esc(c.source)}" rel="noreferrer">${esc(c.name)}: fuente oficial</a></li>`).join('\n');
+const cards=data.countries.map(c=>`<a class="country-card" id="${c.id}" data-country="${c.code}" href="${esc(c.url)}" rel="noopener noreferrer"><h2>${esc(c.name)}</h2><div lang="${c.lang}"><strong>${esc(c.service)}</strong><p>${esc(c.description)}</p></div><span class="official">${new URL(c.url).hostname} →</span></a>`).join('\n');
+const sources=data.countries.map(c=>`<li><a href="${esc(c.source)}" rel="noopener noreferrer">${esc(c.name)}: fuente oficial</a></li>`).join('\n');
 writeFileSync('internacional.html',`<!doctype html>
 <html lang="es"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
