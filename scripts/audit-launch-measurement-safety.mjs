@@ -27,7 +27,7 @@ const PINNED_MEASUREMENT_FILES = new Map([
   // Reviewed 2026-09-17: bounded lexical normalization, no network/storage or query retention.
   ['src/search-content-catalog.js', '9df6766ec926ced0d7b76f6d6969bd0230c38c5c2319160b1ea6113457faf5f6'],
   ['src/search-crisis-router.js', '876392e7eda7e9ba2097d46d0d06c33eb073918c9c8b70f0154ac08a2ffa6d2d'],
-  ['src/search-normalization.js', 'ffe49da051c2ed2c0c8318deec8bbcbf131559f0a1ed1cdeb4fbfb049ca8b66b'],
+  ['src/search-normalization.js', '69577ab77552fa85a4cb5596054c27ff0107cecdbcc1c9e4b3770b640e7c4b3e'],
   ['src/suicide-context-classifier.js', '2cf96cb615bcce941ab1a8546a6a1ede8cd8d66698d194759696d2a84e880d17'],
 ]);
 const APPROVED_HOME_CLOSURE = [

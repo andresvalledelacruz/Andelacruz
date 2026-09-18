@@ -4,17 +4,26 @@ import { readFileSync, existsSync } from 'node:fs';
 
 const page = readFileSync('webs-amigas.html', 'utf8');
 test('national directory has dated official sources and useful static entries without partnerships', () => {
-  const cards = [...page.matchAll(/<article\b[^>]*data-organization="([^"]+)"[^>]*>([\s\S]*?)<\/article>/g)];
-  assert.equal(cards.length, 5);
-  const domains = new Set(['www.anar.org', 'www.caritas.es', 'www.contraelcancer.es', 'inclusion.enfermedades-raras.org', 'www.cear.es']);
-  for (const [, id, html] of cards) {
-    assert.match(html, /<h2>[^<]+<\/h2>/);
-    assert.match(html, /Fuente oficial consultada: <time datetime="2026-09-17">/);
-    const url = new URL(html.match(/href="(https:[^"]+)"/)[1]);
-    assert.ok(domains.delete(url.hostname), `${id} must have its own official source`);
-    assert.match(html, /rel="noreferrer"/);
+  const records=JSON.parse(readFileSync('data/national-organizations.json','utf8'));
+  const cards=[...page.matchAll(/<a\b[^>]*data-organization="([^"]+)"[^>]*>[\s\S]*?<\/a>/g)];
+  assert.equal(cards.length,50);
+  assert.equal(records.length,50);
+  assert.equal(new Set(records.map(r=>r.id)).size,50);
+  assert.equal(new Set(records.map(r=>r.url)).size,50);
+  for(const [html,id] of cards){
+    const record=records.find(r=>r.id===id);
+    assert.ok(record,id);
+    assert.match(html,/<h3>[^<]+<\/h3>/);
+    assert.ok(html.includes(record.description));
+    assert.ok(html.includes('href="'+record.url+'"'));
+    assert.equal(new URL(record.url).protocol,'https:');
+    assert.equal(record.sourceUrl,record.url);
+    assert.match(record.reviewedAt,/^2026-09-18$/);
+    assert.ok(record.description.length<110);
+    assert.equal((html.match(/<a\b/g)||[]).length,1);
+    assert.match(html,/rel="noreferrer"/);
   }
-  assert.equal(domains.size, 0);
+  assert.match(page,/Fuente oficial consultada: <time datetime="2026-09-18">/);
   assert.match(page, /no implica colaboración, patrocinio ni acuerdo/);
   assert.ok(page.indexOf('href="tel:112"') < page.indexOf('data-organization='));
   assert.doesNotMatch(page, /<form|<input|<script[^>]+src=/);

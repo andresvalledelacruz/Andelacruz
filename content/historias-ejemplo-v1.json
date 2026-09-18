@@ -1,6 +1,6 @@
 {
-  "version": "2026-09-12-v1",
-  "status": "prepared_not_public",
+  "version": "2026-09-18-v2",
+  "status": "public_editorial_examples",
   "source_type": "editorial_composite",
   "is_real_user_content": false,
   "display_label": "Historia de ejemplo",
@@ -410,6 +410,864 @@
       ],
       "helped": ["Registrar hechos concretos y fechas", "Hablar con una persona externa al conflicto", "Pedir orientación laboral o jurídica antes de actuar"],
       "nextSteps": ["Distinguir conflicto puntual de patrones repetidos", "Conservar documentación de forma legítima y segura", "Consultar representación laboral, prevención o asesoramiento jurídico según el caso"]
+    },
+    {
+      "id": "example-19",
+      "slug": "separarnos-tambien-significo-ordenar-la-casa-y-los-gastos",
+      "category": "Pareja y Rupturas",
+      "voice": "editorial-ficticia",
+      "title": "Separarnos también significó ordenar la casa y los gastos",
+      "excerpt": "Habíamos decidido separarnos, pero aún compartíamos alquiler. Cada recibo se mezclaba con una discusión sobre lo que había salido mal.",
+      "context": "Convivencia después de una ruptura",
+      "body": [
+        "Habíamos decidido separarnos, pero aún compartíamos alquiler. Cada recibo se mezclaba con una discusión sobre lo que había salido mal.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Pusimos por escrito los asuntos prácticos pendientes y buscamos información antes de firmar cambios. Separar una conversación sobre gastos de otra sobre sentimientos redujo algunas discusiones.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Convivencia después de una ruptura. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Pusimos por escrito los asuntos prácticos pendientes y buscamos información antes de firmar cambios. Separar una conversación sobre gastos de otra sobre sentimientos redujo algunas discusiones."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-20",
+      "slug": "la-primera-celebracion-familiar-despues-de-separarnos",
+      "category": "Pareja y Rupturas",
+      "voice": "editorial-ficticia",
+      "title": "La primera celebración familiar después de separarnos",
+      "excerpt": "Me preocupaba llegar solo y tener que explicar la ruptura a todo el mundo. Estuve a punto de cancelar aunque quería ver a mi familia.",
+      "context": "Ruptura y encuentros familiares",
+      "body": [
+        "Me preocupaba llegar solo y tener que explicar la ruptura a todo el mundo. Estuve a punto de cancelar aunque quería ver a mi familia.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Avisé a una persona de confianza de que no quería responder preguntas y acordamos que podría marcharme antes. Elegir cuánto contar me permitió participar sin representar que todo estaba bien.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Ruptura y encuentros familiares. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Avisé a una persona de confianza de que no quería responder preguntas y acordamos que podría marcharme antes. Elegir cuánto contar me permitió participar sin representar que todo estaba bien."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-21",
+      "slug": "volver-al-trabajo-no-hizo-desaparecer-mi-duelo",
+      "category": "Duelo y Pérdidas",
+      "voice": "editorial-ficticia",
+      "title": "Volver al trabajo no hizo desaparecer mi duelo",
+      "excerpt": "Volví al trabajo y descubrí que tareas que antes hacía sin pensar me agotaban. Me dolía que pareciera que la pérdida había terminado porque yo había vuelto.",
+      "context": "Duelo y regreso a la rutina",
+      "body": [
+        "Volví al trabajo y descubrí que tareas que antes hacía sin pensar me agotaban. Me dolía que pareciera que la pérdida había terminado porque yo había vuelto.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Expliqué únicamente lo necesario a una persona responsable y pregunté por ajustes temporales. Reservar un momento para recordar a quien había muerto me ayudó a dejar de pelear con cada recuerdo.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Duelo y regreso a la rutina. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Expliqué únicamente lo necesario a una persona responsable y pregunté por ajustes temporales. Reservar un momento para recordar a quien había muerto me ayudó a dejar de pelear con cada recuerdo."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-22",
+      "slug": "me-costo-decir-que-necesitaba-ayuda-para-seguir-a-salvo",
+      "category": "Crisis y Suicidio",
+      "voice": "editorial-ficticia",
+      "title": "Me costó decir que necesitaba ayuda para seguir a salvo",
+      "excerpt": "Llevaba días sintiéndome sin salida y me daba miedo reconocer que estaba teniendo pensamientos de suicidio. No sabía cómo empezar una conversación tan difícil.",
+      "context": "Crisis emocional y petición de ayuda",
+      "body": [
+        "Llevaba días sintiéndome sin salida y me daba miedo reconocer que estaba teniendo pensamientos de suicidio. No sabía cómo empezar una conversación tan difícil.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Dije a una persona de confianza que necesitaba ayuda para mantenerme a salvo. Pedimos apoyo profesional y, ante peligro inmediato, el recurso es llamar al 112; en España el 024 ofrece atención a la conducta suicida.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Crisis emocional y petición de ayuda. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Dije a una persona de confianza que necesitaba ayuda para mantenerme a salvo. Pedimos apoyo profesional y, ante peligro inmediato, el recurso es llamar al 112; en España el 024 ofrece atención a la conducta suicida."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Ante peligro inmediato en España, llamar al 112",
+        "Contactar con el 024 en España para atención a la conducta suicida",
+        "Mantener el seguimiento con profesionales y pedir ayuda si cambia la seguridad"
+      ]
+    },
+    {
+      "id": "example-23",
+      "slug": "despues-de-la-crisis-necesite-acompanamiento-continuado",
+      "category": "Crisis y Suicidio",
+      "voice": "editorial-ficticia",
+      "title": "Después de la crisis necesité acompañamiento continuado",
+      "excerpt": "Al volver a casa esperaba sentir alivio, pero seguía muy vulnerable. Me preocupaba que las demás personas creyeran que una primera atención ya lo había solucionado todo.",
+      "context": "Seguimiento después de una crisis",
+      "body": [
+        "Al volver a casa esperaba sentir alivio, pero seguía muy vulnerable. Me preocupaba que las demás personas creyeran que una primera atención ya lo había solucionado todo.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Revisé con el equipo que me atendía el seguimiento y a quién acudir si volvía a sentirme en peligro. Pedí compañía de una forma concreta y mantuve las indicaciones acordadas con profesionales.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Seguimiento después de una crisis. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Revisé con el equipo que me atendía el seguimiento y a quién acudir si volvía a sentirme en peligro. Pedí compañía de una forma concreta y mantuve las indicaciones acordadas con profesionales."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Ante peligro inmediato en España, llamar al 112",
+        "Contactar con el 024 en España para atención a la conducta suicida",
+        "Mantener el seguimiento con profesionales y pedir ayuda si cambia la seguridad"
+      ]
+    },
+    {
+      "id": "example-24",
+      "slug": "pedir-otra-cita-no-significaba-haber-fracasado",
+      "category": "Crisis y Suicidio",
+      "voice": "editorial-ficticia",
+      "title": "Pedir otra cita no significaba haber fracasado",
+      "excerpt": "Cuando reaparecieron pensamientos de suicidio me dio vergüenza contarlo. Pensaba que pedir ayuda de nuevo decepcionaría a quienes me habían acompañado.",
+      "context": "Reaparición del malestar y apoyo profesional",
+      "body": [
+        "Cuando reaparecieron pensamientos de suicidio me dio vergüenza contarlo. Pensaba que pedir ayuda de nuevo decepcionaría a quienes me habían acompañado.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Contacté con mi equipo de atención y expliqué el cambio sin esperar a encontrar palabras perfectas. Si hay peligro inmediato, se llama al 112; el 024 en España también puede orientar y acompañar.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Reaparición del malestar y apoyo profesional. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Contacté con mi equipo de atención y expliqué el cambio sin esperar a encontrar palabras perfectas. Si hay peligro inmediato, se llama al 112; el 024 en España también puede orientar y acompañar."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Ante peligro inmediato en España, llamar al 112",
+        "Contactar con el 024 en España para atención a la conducta suicida",
+        "Mantener el seguimiento con profesionales y pedir ayuda si cambia la seguridad"
+      ]
+    },
+    {
+      "id": "example-25",
+      "slug": "busque-orientacion-sin-tener-que-decidirlo-todo-ese-dia",
+      "category": "Violencia, Abuso y Acoso",
+      "voice": "editorial-ficticia",
+      "title": "Busqué orientación sin tener que decidirlo todo ese día",
+      "excerpt": "Mi pareja controlaba mis decisiones y cada vez me daba más miedo expresar desacuerdo. No sabía si podía pedir información sin decidir de inmediato qué hacer con la relación.",
+      "context": "Violencia y búsqueda de seguridad",
+      "body": [
+        "Mi pareja controlaba mis decisiones y cada vez me daba más miedo expresar desacuerdo. No sabía si podía pedir información sin decidir de inmediato qué hacer con la relación.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Busqué ayuda desde un dispositivo seguro y recibí orientación especializada. No tenía que confrontar a la otra persona ni resolver todo a la vez: mi seguridad y la de las personas a mi cargo eran lo primero.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Violencia y búsqueda de seguridad. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Busqué ayuda desde un dispositivo seguro y recibí orientación especializada. No tenía que confrontar a la otra persona ni resolver todo a la vez: mi seguridad y la de las personas a mi cargo eran lo primero."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Ante peligro inmediato en España, llamar al 112",
+        "El 016 orienta sobre violencia contra las mujeres; consultar recursos especializados para otras situaciones de violencia",
+        "Buscar un dispositivo seguro y apoyo especializado sin presionar para denunciar ni confrontar"
+      ]
+    },
+    {
+      "id": "example-26",
+      "slug": "los-mensajes-pendientes-me-acompanaban-hasta-la-cama",
+      "category": "Ansiedad y Desbordamiento",
+      "voice": "editorial-ficticia",
+      "title": "Los mensajes pendientes me acompañaban hasta la cama",
+      "excerpt": "Contestaba mensajes incluso cuando estaba cenando. Me acostaba pensando que algo malo pasaría si tardaba en responder, aunque no hubiera una urgencia real.",
+      "context": "Preocupación y dificultad para desconectar",
+      "body": [
+        "Contestaba mensajes incluso cuando estaba cenando. Me acostaba pensando que algo malo pasaría si tardaba en responder, aunque no hubiera una urgencia real.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Acordé horarios de respuesta donde era posible y pedí apoyo para entender qué estaba sosteniendo esa preocupación. El descanso no apareció de golpe y necesité revisar mis expectativas.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Preocupación y dificultad para desconectar. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Acordé horarios de respuesta donde era posible y pedí apoyo para entender qué estaba sosteniendo esa preocupación. El descanso no apareció de golpe y necesité revisar mis expectativas."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-27",
+      "slug": "una-sala-de-espera-se-me-hizo-demasiado-grande",
+      "category": "Ansiedad y Desbordamiento",
+      "voice": "editorial-ficticia",
+      "title": "Una sala de espera se me hizo demasiado grande",
+      "excerpt": "En una sala de espera noté sensaciones físicas intensas y me asusté. No podía saber por mi cuenta si eran ansiedad u otra cosa, y reconocer esa duda fue importante.",
+      "context": "Malestar físico y atención sanitaria",
+      "body": [
+        "En una sala de espera noté sensaciones físicas intensas y me asusté. No podía saber por mi cuenta si eran ansiedad u otra cosa, y reconocer esa duda fue importante.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Lo expliqué al personal sanitario en lugar de asumir un diagnóstico. Después pregunté cómo pedir ayuda si volvía a pasar y fui preparando las siguientes citas con acompañamiento.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Malestar físico y atención sanitaria. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Lo expliqué al personal sanitario en lugar de asumir un diagnóstico. Después pregunté cómo pedir ayuda si volvía a pasar y fui preparando las siguientes citas con acompañamiento."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-28",
+      "slug": "deje-de-responder-que-podia-con-todo",
+      "category": "Ansiedad y Desbordamiento",
+      "voice": "editorial-ficticia",
+      "title": "Dejé de responder que podía con todo",
+      "excerpt": "Entre tareas de casa, trabajo y compromisos sentía que siempre llegaba tarde. Decía que sí para no molestar y terminaba sin fuerzas para las cosas básicas.",
+      "context": "Sobrecarga cotidiana y límites",
+      "body": [
+        "Entre tareas de casa, trabajo y compromisos sentía que siempre llegaba tarde. Decía que sí para no molestar y terminaba sin fuerzas para las cosas básicas.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Hice una lista breve de lo imprescindible y hablé con quienes podían compartir responsabilidades. Decir que necesitaba tiempo no resolvió todos los problemas, pero hizo visible una carga que llevaba en silencio.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Sobrecarga cotidiana y límites. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Hice una lista breve de lo imprescindible y hablé con quienes podían compartir responsabilidades. Decir que necesitaba tiempo no resolvió todos los problemas, pero hizo visible una carga que llevaba en silencio."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-29",
+      "slug": "un-rechazo-laboral-no-resumia-todo-lo-que-sabia-hacer",
+      "category": "Trabajo",
+      "voice": "editorial-ficticia",
+      "title": "Un rechazo laboral no resumía todo lo que sabía hacer",
+      "excerpt": "Después de varias entrevistas sin respuesta empecé a leer cada rechazo como una valoración de toda mi persona. Abrir el correo se convirtió en algo que evitaba.",
+      "context": "Búsqueda de empleo y frustración",
+      "body": [
+        "Después de varias entrevistas sin respuesta empecé a leer cada rechazo como una valoración de toda mi persona. Abrir el correo se convirtió en algo que evitaba.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Pedí que revisaran mi candidatura en un servicio de orientación y fijé tiempos limitados de búsqueda. Separar lo que podía mejorar de lo que no dependía de mí me permitió continuar sin ocupar todo el día.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Búsqueda de empleo y frustración. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Pedí que revisaran mi candidatura en un servicio de orientación y fijé tiempos limitados de búsqueda. Separar lo que podía mejorar de lo que no dependía de mí me permitió continuar sin ocupar todo el día."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-30",
+      "slug": "necesitaba-aclarar-mi-carga-antes-de-aceptar-otra-tarea",
+      "category": "Trabajo",
+      "voice": "editorial-ficticia",
+      "title": "Necesitaba aclarar mi carga antes de aceptar otra tarea",
+      "excerpt": "Cada petición parecía pequeña, pero juntas hacían imposible terminar la jornada. Me daba miedo explicar que no podía hacer todo al mismo tiempo.",
+      "context": "Trabajo y sobrecarga",
+      "body": [
+        "Cada petición parecía pequeña, pero juntas hacían imposible terminar la jornada. Me daba miedo explicar que no podía hacer todo al mismo tiempo.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Preparé una relación de tareas y pedí que se aclararan prioridades y plazos. Si un conflicto laboral necesita asesoramiento, consultar un servicio especializado permite valorar opciones antes de tomar decisiones.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Trabajo y sobrecarga. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Preparé una relación de tareas y pedí que se aclararan prioridades y plazos. Si un conflicto laboral necesita asesoramiento, consultar un servicio especializado permite valorar opciones antes de tomar decisiones."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-31",
+      "slug": "cambiar-de-ciudad-me-dejo-sin-las-conversaciones-pequenas",
+      "category": "Soledad",
+      "voice": "editorial-ficticia",
+      "title": "Cambiar de ciudad me dejó sin las conversaciones pequeñas",
+      "excerpt": "Tenía contactos en el teléfono, pero nadie con quien tomar un café cerca de casa. Me sorprendió cuánto echaba de menos las conversaciones que antes sucedían sin planearlas.",
+      "context": "Mudanza y vínculos cotidianos",
+      "body": [
+        "Tenía contactos en el teléfono, pero nadie con quien tomar un café cerca de casa. Me sorprendió cuánto echaba de menos las conversaciones que antes sucedían sin planearlas.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Busqué una actividad accesible y repetida en mi barrio, sin exigirme hacer amistades enseguida. También pedí una llamada a alguien conocido en lugar de esperar a que adivinara cómo estaba.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Mudanza y vínculos cotidianos. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Busqué una actividad accesible y repetida en mi barrio, sin exigirme hacer amistades enseguida. También pedí una llamada a alguien conocido en lugar de esperar a que adivinara cómo estaba."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-32",
+      "slug": "aprendi-a-proponer-un-encuentro-sin-medir-mi-valor-por-la-respuesta",
+      "category": "Soledad",
+      "voice": "editorial-ficticia",
+      "title": "Aprendí a proponer un encuentro sin medir mi valor por la respuesta",
+      "excerpt": "Cuando alguien no podía quedar yo lo interpretaba como falta de interés. Dejé de proponer planes y mi rutina se hizo todavía más aislada.",
+      "context": "Soledad y miedo al rechazo",
+      "body": [
+        "Cuando alguien no podía quedar yo lo interpretaba como falta de interés. Dejé de proponer planes y mi rutina se hizo todavía más aislada.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Empecé con invitaciones concretas y sencillas, respetando que la otra persona pudiera decir que no. Busqué también espacios comunitarios donde el contacto no dependiera siempre de una sola relación.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Soledad y miedo al rechazo. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Empecé con invitaciones concretas y sencillas, respetando que la otra persona pudiera decir que no. Busqué también espacios comunitarios donde el contacto no dependiera siempre de una sola relación."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-33",
+      "slug": "abrir-las-cartas-pendientes-fue-un-primer-paso-pequeno",
+      "category": "Dinero",
+      "voice": "editorial-ficticia",
+      "title": "Abrir las cartas pendientes fue un primer paso pequeño",
+      "excerpt": "Guardaba las cartas sin abrir porque temía encontrar una cifra imposible. La incertidumbre seguía creciendo y me costaba distinguir una notificación importante de la publicidad.",
+      "context": "Deudas y miedo a revisar documentos",
+      "body": [
+        "Guardaba las cartas sin abrir porque temía encontrar una cifra imposible. La incertidumbre seguía creciendo y me costaba distinguir una notificación importante de la publicidad.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Pedí compañía para ordenar documentos y buscar asesoramiento social o jurídico. Antes de aceptar un nuevo crédito quería comprender costes y alternativas; nadie podía garantizarme una solución rápida.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Deudas y miedo a revisar documentos. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Pedí compañía para ordenar documentos y buscar asesoramiento social o jurídico. Antes de aceptar un nuevo crédito quería comprender costes y alternativas; nadie podía garantizarme una solución rápida."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-34",
+      "slug": "pedir-ayuda-con-los-gastos-basicos-me-daba-verguenza",
+      "category": "Dinero",
+      "voice": "editorial-ficticia",
+      "title": "Pedir ayuda con los gastos básicos me daba vergüenza",
+      "excerpt": "Había reducido tantos gastos que ya no sabía qué más recortar. Me comparaba con otras personas y eso me impedía explicar que necesitaba ayuda para lo imprescindible.",
+      "context": "Necesidades básicas y apoyo social",
+      "body": [
+        "Había reducido tantos gastos que ya no sabía qué más recortar. Me comparaba con otras personas y eso me impedía explicar que necesitaba ayuda para lo imprescindible.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Solicité información en servicios sociales sobre apoyos y requisitos. Preparé los documentos que me pidieron y pregunté qué hacer mientras se valoraba la solicitud, sin dar por garantizada ninguna prestación.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Necesidades básicas y apoyo social. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Solicité información en servicios sociales sobre apoyos y requisitos. Preparé los documentos que me pidieron y pregunté qué hacer mientras se valoraba la solicitud, sin dar por garantizada ninguna prestación."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-35",
+      "slug": "no-podia-ser-quien-resolviera-cada-discusion-familiar",
+      "category": "Familia",
+      "voice": "editorial-ficticia",
+      "title": "No podía ser quien resolviera cada discusión familiar",
+      "excerpt": "Cada desacuerdo terminaba en una llamada para que yo mediara. Quería a mi familia, pero estaba dejando de descansar y sentía que todo dependía de mí.",
+      "context": "Conflictos familiares y límites",
+      "body": [
+        "Cada desacuerdo terminaba en una llamada para que yo mediara. Quería a mi familia, pero estaba dejando de descansar y sentía que todo dependía de mí.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Expliqué qué conversaciones podía mantener y cuándo necesitaba parar. Poner un límite no era decidir quién tenía razón; era reconocer que también necesitaba cuidado y apoyo.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Conflictos familiares y límites. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Expliqué qué conversaciones podía mantener y cuándo necesitaba parar. Poner un límite no era decidir quién tenía razón; era reconocer que también necesitaba cuidado y apoyo."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-36",
+      "slug": "compartir-los-cuidados-exigio-hablar-de-tareas-concretas",
+      "category": "Familia",
+      "voice": "editorial-ficticia",
+      "title": "Compartir los cuidados exigió hablar de tareas concretas",
+      "excerpt": "Decíamos que todos ayudábamos, pero las citas y gestiones terminaban siempre en mi agenda. Me costaba pedir un cambio sin que pareciera una acusación.",
+      "context": "Familia y reparto de responsabilidades",
+      "body": [
+        "Decíamos que todos ayudábamos, pero las citas y gestiones terminaban siempre en mi agenda. Me costaba pedir un cambio sin que pareciera una acusación.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Anotamos tareas concretas y quién podía asumirlas de verdad. También preguntamos por recursos de apoyo disponibles, porque no todas las necesidades pueden resolverse solo dentro de la familia.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Familia y reparto de responsabilidades. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Anotamos tareas concretas y quién podía asumirlas de verdad. También preguntamos por recursos de apoyo disponibles, porque no todas las necesidades pueden resolverse solo dentro de la familia."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-37",
+      "slug": "una-conversacion-pendiente-pudo-esperar-a-un-momento-mas-tranquilo",
+      "category": "Familia",
+      "voice": "editorial-ficticia",
+      "title": "Una conversación pendiente pudo esperar a un momento más tranquilo",
+      "excerpt": "Intentábamos resolver asuntos importantes al final del día, cuando ya estábamos agotados. Acabábamos diciendo cosas que alejaban todavía más la conversación que queríamos tener.",
+      "context": "Comunicación familiar y desacuerdos",
+      "body": [
+        "Intentábamos resolver asuntos importantes al final del día, cuando ya estábamos agotados. Acabábamos diciendo cosas que alejaban todavía más la conversación que queríamos tener.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Propuse tratar un solo tema y dejar una pausa si subía la tensión. Esta opción solo tenía sentido donde había seguridad: ante amenazas o violencia lo prioritario es buscar ayuda especializada, no negociar en peligro.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Comunicación familiar y desacuerdos. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Propuse tratar un solo tema y dejar una pausa si subía la tensión. Esta opción solo tenía sentido donde había seguridad: ante amenazas o violencia lo prioritario es buscar ayuda especializada, no negociar en peligro."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-38",
+      "slug": "sali-de-la-consulta-con-mas-preguntas-de-las-que-esperaba",
+      "category": "Salud y Cuidados",
+      "voice": "editorial-ficticia",
+      "title": "Salí de la consulta con más preguntas de las que esperaba",
+      "excerpt": "Después de recibir información médica apenas recordaba lo que me habían explicado. Me preocupaba preguntar otra vez y parecer que no había prestado atención.",
+      "context": "Diagnóstico y dudas para el equipo sanitario",
+      "body": [
+        "Después de recibir información médica apenas recordaba lo que me habían explicado. Me preocupaba preguntar otra vez y parecer que no había prestado atención.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Apunté las dudas y consulté al equipo que llevaba mi atención. Pedir explicaciones claras y llevar compañía cuando yo lo deseaba me ayudó a participar en las decisiones sin buscar certezas en relatos ajenos.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Diagnóstico y dudas para el equipo sanitario. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Apunté las dudas y consulté al equipo que llevaba mi atención. Pedir explicaciones claras y llevar compañía cuando yo lo deseaba me ayudó a participar en las decisiones sin buscar certezas en relatos ajenos."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-39",
+      "slug": "cuidar-a-otra-persona-tambien-me-estaba-agotando",
+      "category": "Salud y Cuidados",
+      "voice": "editorial-ficticia",
+      "title": "Cuidar a otra persona también me estaba agotando",
+      "excerpt": "Había organizado el día alrededor de las necesidades de un familiar. Cuando me preguntaban por mí cambiaba de tema, como si mi cansancio no tuviera sitio.",
+      "context": "Cuidados y descanso de la persona cuidadora",
+      "body": [
+        "Había organizado el día alrededor de las necesidades de un familiar. Cuando me preguntaban por mí cambiaba de tema, como si mi cansancio no tuviera sitio.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Conté qué tareas me estaban desbordando y pregunté por apoyos sanitarios y sociales. Buscar descansos posibles y compartir cuidados no significaba querer menos a mi familiar.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Cuidados y descanso de la persona cuidadora. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Conté qué tareas me estaban desbordando y pregunté por apoyos sanitarios y sociales. Buscar descansos posibles y compartir cuidados no significaba querer menos a mi familiar."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
+    },
+    {
+      "id": "example-40",
+      "slug": "mi-recuperacion-no-seguia-el-calendario-que-habia-imaginado",
+      "category": "Salud y Cuidados",
+      "voice": "editorial-ficticia",
+      "title": "Mi recuperación no seguía el calendario que había imaginado",
+      "excerpt": "Pensaba que recuperarme significaría volver pronto a hacer todo igual. Los días difíciles me hacían sentir que estaba retrocediendo incluso cuando seguía las indicaciones recibidas.",
+      "context": "Recuperación y adaptación cotidiana",
+      "body": [
+        "Pensaba que recuperarme significaría volver pronto a hacer todo igual. Los días difíciles me hacían sentir que estaba retrocediendo incluso cuando seguía las indicaciones recibidas.",
+        "En este relato ficticio, poner nombre a lo que ocurría no fue una solución automática. Necesité distinguir lo urgente de lo que podía esperar y reconocer que no tenía que decidir sin información ni apoyo.",
+        "Hablé con el equipo sanitario sobre mis límites actuales y señales que debía consultar. Ajusté algunas actividades sin cambiar tratamientos por mi cuenta ni comparar mi evolución con la de otras personas.",
+        "La situación no quedó resuelta de una vez. Hubo momentos de alivio y otros en los que necesité volver a pedir ayuda. Este ejemplo no describe un plazo de recuperación ni una respuesta que sirva para todas las personas; cada contexto necesita sus propios apoyos."
+      ],
+      "timeline": [
+        {
+          "label": "Al principio",
+          "text": "Recuperación y adaptación cotidiana. Costaba explicar qué ayuda hacía falta."
+        },
+        {
+          "label": "Primer apoyo",
+          "text": "Hablé con el equipo sanitario sobre mis límites actuales y señales que debía consultar. Ajusté algunas actividades sin cambiar tratamientos por mi cuenta ni comparar mi evolución con la de otras personas."
+        },
+        {
+          "label": "Después",
+          "text": "Revisión de necesidades y apoyos, sin un plazo universal de mejoría."
+        }
+      ],
+      "helped": [
+        "Explicar una necesidad concreta a una persona o servicio de confianza",
+        "Separar las decisiones inmediatas de las que podían esperar",
+        "Revisar los apoyos cuando cambiaba la situación"
+      ],
+      "nextSteps": [
+        "Identificar una necesidad concreta y el apoyo adecuado",
+        "Consultar servicios profesionales cuando la situación lo requiera",
+        "Si hay peligro inmediato en España, llamar al 112"
+      ]
     }
   ]
 }

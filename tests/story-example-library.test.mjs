@@ -10,13 +10,16 @@ function findStory(slug) {
   return library.stories.find((story) => story.slug === slug);
 }
 
-test('editorial story library contains exactly 18 complete, uniquely identified examples', () => {
+test('editorial story library contains forty complete, uniquely identified examples and four per group', () => {
   assert.equal(library.is_real_user_content, false);
   assert.equal(library.source_type, 'editorial_composite');
   assert.equal(library.display_label, 'Historia de ejemplo');
   assert.match(library.public_disclosure, /ficticio/i);
   assert.match(library.public_disclosure, /no corresponde a una persona real/i);
-  assert.equal(library.stories.length, 18);
+  assert.equal(library.stories.length, 40);
+  const counts = library.stories.reduce((result, story) => { result[story.category] = (result[story.category] || 0) + 1; return result; }, {});
+  assert.equal(Object.keys(counts).length, 10);
+  assert.ok(Object.values(counts).every(count => count >= 4));
 
   const ids = new Set();
   const slugs = new Set();
@@ -54,6 +57,10 @@ test('governance forbids fake social proof and false real-story labeling', () =>
 });
 
 test('high-risk examples include appropriate Spain safety routes', () => {
+  for (const story of library.stories.filter(story => story.category === 'Crisis y Suicidio' || (story.category === 'Violencia, Abuso y Acoso' && story.voice === 'editorial-ficticia'))) {
+    assert.match(story.nextSteps.join(' '), /112/);
+    if (story.category === 'Crisis y Suicidio') assert.match(story.nextSteps.join(' '), /024/);
+  }
   const suicide = findStory('la-noche-que-por-fin-dije-no-estoy-seguro-conmigo-mismo');
   const abuse = findStory('tarde-mucho-en-llamar-maltrato-a-lo-que-me-pasaba');
   const assault = findStory('durante-meses-pense-que-como-no-grite-no-tenia-derecho-a-sentirme-asi');
