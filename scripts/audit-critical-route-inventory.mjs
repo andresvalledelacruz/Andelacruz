@@ -21,7 +21,7 @@ async function walk(dir, out = []) {
     const relative = path.relative(ROOT, absolute).replaceAll(path.sep, '/');
     const info = await stat(absolute);
     if (info.isDirectory()) await walk(absolute, out);
-    else if (entry === 'index.html' || relative === 'ayuda-urgente.html') out.push(relative);
+    else if (entry.endsWith('.html')) out.push(relative);
   }
   return out;
 }

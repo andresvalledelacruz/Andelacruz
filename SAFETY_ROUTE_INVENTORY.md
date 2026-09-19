@@ -17,6 +17,8 @@ Este inventario sirve como control conservador para separar contenido crítico d
 | `/dinero/tengo-deudas-y-no-se-por-donde-empezar/` | presión financiera intensa con bloque explícito de riesgo personal y decisiones patrimoniales de alto impacto | 112 + 024 + fuente oficial Sanidad |
 | `/violencia/` | puerta de entrada transversal a violencia, abuso y acoso con posibles situaciones de peligro inmediato | sin monetización; 112 visible y 016 con alcance específico |
 
+| `/internacional.html` | acceso a orientación y emergencias de siete países | sin scripts, sin monetización, fuentes y alcance territorial explícitos |
+
 ## Regla de alta
 
 Toda nueva superficie P0/P1 debe entrar en este inventario y quedar cubierta por `tests/p0-p1-noncommercial-invariant.test.mjs` dentro del mismo PR. Si necesita recursos oficiales específicos, el Safety Gate debe comprobarlos explícitamente.
