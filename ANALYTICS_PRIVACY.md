@@ -41,6 +41,16 @@ No se guardan:
 
 ## Consultas operativas
 
+### Panel privado local
+
+El informe local ofrece hoy, últimos siete o treinta días, historial completo, páginas y procedencia. Es una exportación fechada con actualización manual, no un contador en directo. Agrupa `/` y `/index.html` como portada y muestra explícitamente que no hay ubicación física ni personas únicas disponibles. Las pruebas internas históricas no pueden separarse de otros registros.
+
+1. Ejecutar `scripts/export-private-analytics.sql` en el editor SQL privado de Supabase con una cuenta autorizada. Solo consulta agregados: no modifica permisos, tablas ni contadores.
+2. Guardar el contenido JSON de la celda `snapshot` fuera de este repositorio público.
+3. Ejecutar `node scripts/build-private-analytics-report.mjs /ruta/privada/exportacion.json /ruta/privada/visitas.html` y abrir el HTML generado. El generador rechaza destinos dentro del repositorio.
+
+El HTML funciona sin red, claves ni almacenamiento del navegador. No publicar el JSON ni el HTML en GitHub Pages. Una página oculta mediante `noindex` no es un control de acceso. La consulta y el generador son reutilizables; los datos permanecen fuera del árbol desplegable. Un futuro panel en directo necesita acceso individual autorizado antes de exponer lecturas de la tabla.
+
 ### Pageviews por día
 
 ```sql
