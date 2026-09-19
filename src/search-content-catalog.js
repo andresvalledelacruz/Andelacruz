@@ -1,4 +1,14 @@
 import { normalizeSearchText as normalize } from './search-normalization.js';
+// Whole expressions keep ambiguous words such as "palo" or "chungo" unresolved.
+const COLLOQUIAL_PHRASES = Object.freeze({
+  work_overload: ['voy hasta arriba en el trabajo', 'estoy hasta arriba de trabajo'],
+  work_disconnect: ['me llevo el trabajo a casa', 'no paro de darle vueltas al trabajo'],
+  cv_problem: ['echo curriculums y no me llama nadie', 'he echado curriculums y no me llaman'],
+  ends_meet: ['se me va el sueldo en recibos', 'no me da el sueldo para pasar el mes'],
+  housing_payment: ['no me da para pagar el alquiler', 'no me llega para pagar la hipoteca'],
+  no_friends: ['no tengo con quien quedar'],
+  no_one_to_talk: ['me he quedado sin nadie con quien hablar']
+});
 const RULES = Object.freeze([
   ['breakup', '/rupturas/mi-pareja-me-ha-dejado/', 'Mi pareja me ha dejado', ['mi pareja me ha dejado', 'me ha dejado mi pareja', 'mi novio me ha dejado', 'mi novia me ha dejado', 'hemos roto', 'acabamos de romper']],
   ['ex_rumination', '/rupturas/no-puedo-dejar-de-pensar-en-mi-ex/', 'No puedo dejar de pensar en mi ex', ['no puedo dejar de pensar en mi ex', 'pienso todo el rato en mi ex', 'no paro de pensar en mi ex', 'sigo pensando en mi ex']],
@@ -7,6 +17,7 @@ const RULES = Object.freeze([
 
   ['lonely_with_people', '/soledad/me-siento-solo-aunque-tengo-gente/', 'Me siento solo aunque tengo gente', ['me siento solo aunque tengo gente', 'estoy rodeado de gente pero me siento solo', 'tengo gente pero me siento sola', 'acompanado pero solo']],
   ['no_friends', '/soledad/no-tengo-amigos/', 'No tengo amigos', ['no tengo amigos', 'no tengo amigas', 'me he quedado sin amigos', 'no tengo amistades']],
+  ['no_one_to_talk', '/soledad/no-tengo-con-quien-hablar/', 'No tengo con quién hablar', ['no tengo con quien hablar', 'no tengo a nadie con quien hablar']],
   ['night_loneliness', '/soledad/me-siento-solo-por-la-noche/', 'Me siento solo por la noche', ['me siento solo por la noche', 'por la noche me siento sola', 'la soledad por la noche', 'las noches se me hacen muy duras']],
   ['general_loneliness', '/soledad/me-siento-solo/', 'Me siento solo', ['me siento solo', 'me siento sola', 'siento mucha soledad', 'estoy muy solo']],
 
@@ -117,7 +128,8 @@ export function routeKnownContentQuery(query = '') {
   }
 
   for (const rule of RULES) {
-    if (rule.phrases.some((phrase) => text.includes(normalize(phrase)))) {
+    if (rule.phrases.some((phrase) => text.includes(normalize(phrase))) ||
+        (COLLOQUIAL_PHRASES[rule.intent] || []).some((phrase) => text === normalize(phrase))) {
       return Object.freeze({
         matched: true,
         needs_clarification: false,
