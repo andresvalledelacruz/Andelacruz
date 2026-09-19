@@ -25,7 +25,8 @@ const PINNED_MEASUREMENT_FILES = new Map([
   ['urgent-help-nav.js', 'bbfbc113b2a2aa4057dd18b92b921a074714bed45415b0f0b342812efb9dd9b7'],
   ['src/search-clarification.js', '4044c9d91594583cb3ff78eb696c0eca73257dd558917ebf81ba5493f63ee55c'],
   // Reviewed 2026-09-17: bounded lexical normalization, no network/storage or query retention.
-  ['src/search-content-catalog.js', '9df6766ec926ced0d7b76f6d6969bd0230c38c5c2319160b1ea6113457faf5f6'],
+  // Reviewed 2026-09-19: bounded phrase aliases and conversation guide; no I/O or query retention.
+  ['src/search-content-catalog.js', 'fcd0b72eb1d2464343437874b934d4d555035d5d983c45d1959d945638fa0a7a'],
   ['src/search-crisis-router.js', '876392e7eda7e9ba2097d46d0d06c33eb073918c9c8b70f0154ac08a2ffa6d2d'],
   ['src/search-normalization.js', '69577ab77552fa85a4cb5596054c27ff0107cecdbcc1c9e4b3770b640e7c4b3e'],
   ['src/suicide-context-classifier.js', '2cf96cb615bcce941ab1a8546a6a1ede8cd8d66698d194759696d2a84e880d17'],
