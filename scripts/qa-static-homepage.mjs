@@ -20,10 +20,11 @@ await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
 const origin = `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch();
 await mkdir(path.join(root, 'qa-static-homepage'), { recursive: true });
-try {
-  for (const mode of ['no-js', 'normal', 'failed-core']) {
-    for (const width of [320, 360, 390, 414, 430, 1440]) {
+const scenarios = ['no-js', 'normal', 'failed-core'].flatMap(mode =>
+  [320, 360, 390, 414, 430, 1440].map(width => ({ mode, width })));
+async function checkScenario({ mode, width }) {
       const context = await browser.newContext({ javaScriptEnabled: mode !== 'no-js', viewport: { width, height: 900 } });
+      try {
       await context.route('**/*', route => {
         const url = route.request().url();
         if (!url.startsWith(origin) || (mode === 'failed-core' && url.endsWith('/app-core.js'))) return route.abort();
@@ -69,8 +70,19 @@ try {
       await page.locator('[data-search-entry="hero"]').click();
       await page.waitForURL(`${origin}/buscar/`);
       assert.ok(await page.locator('main').isVisible());
-      await context.close();
       console.log(`PASS ${mode} ${width}px: urgent, search, ten resources, privacy, keyboard and layout`);
-    }
+      } finally { await context.close(); }
+}
+const started = Date.now();
+try {
+  // Bound memory use to three isolated contexts; preserve every scenario and assertion.
+  for (let offset = 0; offset < scenarios.length; offset += 3) {
+    const batch = scenarios.slice(offset, offset + 3);
+    const results = await Promise.allSettled(batch.map(checkScenario));
+    const failures = results.flatMap((result, index) => result.status === 'rejected'
+      ? [new Error(`${batch[index].mode}/${batch[index].width}: ${result.reason?.message || result.reason}`, { cause: result.reason })]
+      : []);
+    if (failures.length) throw new AggregateError(failures, failures.map(error => error.message).join('\n'));
   }
+  console.log(`PASS all ${scenarios.length} scenarios in ${((Date.now() - started) / 1000).toFixed(1)}s (concurrency 3)`);
 } finally { await browser.close(); await new Promise(resolve => server.close(resolve)); }
