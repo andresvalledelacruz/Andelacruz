@@ -9,6 +9,12 @@ export const categories = [
   ['rupturas', 'Rupturas y relaciones'], ['familia', 'Familia'],
   ['trabajo', 'Trabajo'], ['dinero', 'Dinero y deudas']
 ];
+export const nextSteps = [
+  { title: 'No sé por dónde empezar', description: 'Encuentra una orientación si se mezclan varias preocupaciones.', url: '/buscar/' },
+  { title: 'Necesito apoyo con trabajo o dinero', description: 'Elige entre empleo, deudas, gastos y vivienda.', url: '/trabajo-dinero/' },
+  { title: 'Quiero contactar con una organización', description: 'Consulta 50 entidades y sus canales oficiales de ayuda.', url: '/webs-amigas.html' },
+  { title: 'Busco ayuda fuera de España', description: 'Consulta los primeros contactos oficiales de otros siete países.', url: '/internacional.html' }
+];
 const root = new URL('../', import.meta.url);
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export async function renderDirectory() {
@@ -23,11 +29,12 @@ export async function renderDirectory() {
 <link rel="canonical" href="https://desgracias.es/recursos/"><link rel="icon" href="/favicon.ico"><link rel="stylesheet" href="/guia.css">
 <meta property="og:site_name" content="Desgracias.es"><meta property="og:title" content="Recursos de ayuda por situación"><meta property="og:type" content="website"><meta property="og:url" content="https://desgracias.es/recursos/"><meta name="twitter:card" content="summary">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Recursos de ayuda por situación","url":"https://desgracias.es/recursos/"}</script>
-<style>.directory{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}.directory li[hidden]{display:none}.directory .cardlink{height:100%;box-sizing:border-box}.filters[hidden]{display:none}.filters{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:24px 0}.filters select,.filters button{font:inherit;padding:12px;border:1px solid #79583f;border-radius:6px;background:white;color:#342b25}a:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid #79583f;outline-offset:4px}.skip{display:block;padding:8px 16px}.help-links{display:flex;gap:20px;flex-wrap:wrap}</style>
+<style>.directory{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}.next-steps{grid-template-columns:repeat(4,minmax(0,1fr));grid-auto-rows:1fr}@media(max-width:900px){.next-steps{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.next-steps{grid-template-columns:1fr}}.next-steps strong{font-size:1rem}.directory li[hidden]{display:none}.directory .cardlink{height:100%;box-sizing:border-box}.filters[hidden]{display:none}.filters{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:24px 0}.filters select,.filters button{font:inherit;padding:12px;border:1px solid #79583f;border-radius:6px;background:white;color:#342b25}a:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid #79583f;outline-offset:4px}.skip{display:block;padding:8px 16px}.help-links{display:flex;gap:20px;flex-wrap:wrap}</style>
 </head><body><a class="skip" href="#contenido">Saltar al contenido</a>
 <header class="sitebar"><div class="wrap sitebar-inner"><a class="brand" href="/">Desgracias.es</a><a href="/buscar/">Buscar ayuda</a></div></header>
 <main id="contenido" class="wrap"><section class="hero"><p class="eyebrow">Recursos por situación</p><h1>Encuentra un siguiente paso.</h1><p class="lead">Explora las guías por tema. No necesitas contar tu situación ni introducir datos personales para usar este directorio.</p>
 <aside class="quick" aria-label="Ayuda urgente"><strong>Si hay peligro inmediato, llama al <a href="tel:112">112</a> en España.</strong> Para atención a la conducta suicida está el <a href="tel:024">024</a>. <a href="/ayuda-urgente.html">Ver toda la ayuda urgente</a>. Este acceso permanece visible al filtrar.</aside></section>
+<section aria-labelledby="next-steps-title"><h2 id="next-steps-title">¿Qué necesitas hacer hoy?</h2><ul class="directory next-steps">${nextSteps.map(r => `<li><a class="cardlink" href="${escape(r.url)}"><strong>${escape(r.title)}</strong><span>${escape(r.description)}</span></a></li>`).join('')}</ul></section>
 <section aria-label="Directorio de guías"><div class="filters" id="resource-filters" hidden><label for="resource-category">Filtrar por tema</label><select id="resource-category"><option value="all">Todos los temas</option>${categories.map(([id,label])=>`<option value="${id}">${label}</option>`).join('')}</select><button type="button" id="resource-reset">Mostrar todo</button></div>
 <p id="resource-count" role="status" aria-live="polite">${records.length} guías disponibles</p><ul class="directory" id="resource-directory">${cards}</ul>
 <noscript><p>Todos los recursos están disponibles arriba. Para orientarte también puedes usar <a href="/buscar/">Buscar ayuda</a>.</p></noscript></section>
