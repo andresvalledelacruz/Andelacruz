@@ -24,14 +24,16 @@ test('partner violence outranks a practical money need', () => {
   assert.equal(result.suppress_commercial_ui, true);
 });
 
-test('clear non-safety needs preserve first-seen order at equal priority', () => {
+test('clear needs preserve the existing Safety taxonomy before practical ordering', () => {
   const result = resolveMultipleNeeds('me han despedido y tengo deudas y no tengo con quien hablar');
   assert.equal(result.needs_clarification, false);
   assert.deepEqual(
     result.relevant_needs.map((need) => need.intent),
-    ['job_loss', 'debt_overwhelm', 'loneliness']
+    ['debt_overwhelm', 'job_loss', 'loneliness']
   );
-  assert.equal(result.suppress_commercial_ui, false);
+  assert.equal(result.primary_need.safety_level, 'P1');
+  assert.equal(result.secondary_needs[0].safety_level, 'P2');
+  assert.equal(result.suppress_commercial_ui, true);
 });
 
 test('negated current suicide language does not get hidden behind debt', () => {
