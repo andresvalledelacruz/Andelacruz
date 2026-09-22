@@ -5,10 +5,10 @@ select jsonb_build_object(
   'source', 'public.pageview_daily_analytics',
   'timezone', 'UTC',
   'rows', coalesce((select jsonb_agg(t) from (
-    select day::text, path, referrer_host, device_class,
+    select day::text, path, referrer_host, device_class, country_code,
            sum(pageviews)::bigint as pageviews
     from public.pageview_daily_analytics
-    group by day, path, referrer_host, device_class
-    order by day, path, referrer_host, device_class
+    group by day, path, referrer_host, device_class, country_code
+    order by day, path, referrer_host, device_class, country_code
   ) t), '[]'::jsonb)
 ) as snapshot;
