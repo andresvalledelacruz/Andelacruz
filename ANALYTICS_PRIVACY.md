@@ -43,7 +43,7 @@ No se guardan:
 
 ### Panel privado local
 
-El informe local ofrece hoy, últimos siete o treinta días, historial completo, páginas y procedencia. Es una exportación fechada con actualización manual, no un contador en directo. Agrupa `/` y `/index.html` como portada y muestra explícitamente que no hay ubicación física ni personas únicas disponibles. Las pruebas internas históricas no pueden separarse de otros registros.
+El informe local ofrece hoy, últimos siete o treinta días, historial completo, páginas, procedencia, clase de dispositivo y país inferido por locale. Es una exportación fechada con actualización manual, no un contador en directo. Agrupa `/` y `/index.html` como portada y muestra explícitamente que no hay ubicación física ni personas únicas disponibles. Los códigos de país son únicamente una señal agregada del locale y nunca se presentan como geolocalización. Las pruebas internas históricas no pueden separarse de otros registros.
 
 1. Ejecutar `scripts/export-private-analytics.sql` en el editor SQL privado de Supabase con una cuenta autorizada. Solo consulta agregados: no modifica permisos, tablas ni contadores.
 2. Guardar el contenido JSON de la celda `snapshot` fuera de este repositorio público.
