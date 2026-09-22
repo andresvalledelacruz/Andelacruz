@@ -70,6 +70,7 @@ export function capabilityForOpsRoute(method, route) {
   const key = `${String(method || '').toUpperCase()} ${String(route || '')}`;
   const capabilities = new Map([
     ['GET /ops/summary', OPS_CAPABILITIES.SUMMARY_READ],
+    ['GET /ops/analytics/summary', OPS_CAPABILITIES.SUMMARY_READ],
     ['GET /ops/moderation/pending', OPS_CAPABILITIES.MODERATION_QUEUE_READ],
     ['GET /ops/moderation/:messageId/brief', OPS_CAPABILITIES.MODERATION_BRIEF_READ],
     ['POST /ops/moderation/:messageId/decision', OPS_CAPABILITIES.MODERATION_DECIDE_STANDARD],
