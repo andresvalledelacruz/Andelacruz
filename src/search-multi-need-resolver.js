@@ -17,7 +17,7 @@ function freezeNeed(result, firstSeen) {
 
 function splitCandidateClauses(query) {
   return String(query ?? '')
-    .split(/(?:[.;,!?\\n]+|\\s+(?:pero|además|ademas|también|tambien|y)\\s+)/iu)
+    .split(/(?:[.;,!?\n]+|\s+(?:pero|además|ademas|también|tambien|y)\s+)/iu)
     .map((part) => part.trim())
     .filter(Boolean)
     .slice(0, 12);
@@ -48,11 +48,6 @@ export function resolveMultipleNeeds(query = '') {
     unresolvedSafetyContexts.push(full.context ?? 'unresolved_safety');
   }
 
-  // Safety from the complete sentence wins before any clause-level practical need.
-  if (full.matched && ['P0', 'P1'].includes(full.safety_level) && full.route?.url) {
-    matches.set(full.route.url, freezeNeed(full, -1));
-  }
-
   const clauses = splitCandidateClauses(query);
   clauses.forEach((clause, index) => {
     const result = routeSearchQuery(clause);
@@ -66,9 +61,14 @@ export function resolveMultipleNeeds(query = '') {
     }
   });
 
-  // Preserve a clear single full-query match when clause splitting did not recover it.
+  // The complete sentence may catch Safety language spanning clauses, but it must
+  // not override an explicit unresolved/negated Safety context recovered from a
+  // clause. Clause-level evidence is therefore the confirmation layer.
+  const fullIsSafety = full.matched && ['P0', 'P1'].includes(full.safety_level);
   if (full.matched && full.route?.url && !matches.has(full.route.url)) {
-    matches.set(full.route.url, freezeNeed(full, clauses.length + 1));
+    if (!fullIsSafety || unresolvedSafetyContexts.length === 0) {
+      matches.set(full.route.url, freezeNeed(full, fullIsSafety ? -1 : clauses.length + 1));
+    }
   }
 
   const ranked = Object.freeze([...matches.values()].sort(sortNeeds));
