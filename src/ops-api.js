@@ -534,6 +534,41 @@ app.get('/ops/summary', { preHandler: requireOpsCapability('GET', '/ops/summary'
   }
 });
 
+app.get('/ops/analytics/summary', { preHandler: requireOpsCapability('GET', '/ops/analytics/summary') }, async (_request, reply) => {
+  if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
+  try {
+    const [dailyResult,pathResult,deviceResult,referrerResult,countryResult] = await Promise.all([
+      pool.query("select day::text as day, sum(pageviews)::bigint as pageviews from pageview_daily_analytics where day >= (now() at time zone 'utc')::date - 29 group by day order by day asc"),
+      pool.query("select path, sum(pageviews)::bigint as pageviews from pageview_daily_analytics where day >= (now() at time zone 'utc')::date - 29 group by path order by pageviews desc limit 12"),
+      pool.query("select device_class as label, sum(pageviews)::bigint as pageviews from pageview_daily_analytics where day >= (now() at time zone 'utc')::date - 29 group by device_class order by pageviews desc"),
+      pool.query("select referrer_host as label, sum(pageviews)::bigint as pageviews from pageview_daily_analytics where day >= (now() at time zone 'utc')::date - 29 group by referrer_host order by pageviews desc limit 10"),
+      pool.query("select country_code as label, sum(pageviews)::bigint as pageviews from pageview_daily_analytics where day >= (now() at time zone 'utc')::date - 29 group by country_code order by pageviews desc limit 10")
+    ]);
+    let interactions=[];
+    try {
+      const r=await pool.query("select event_type,target_key,sum(events)::bigint as events from interaction_daily_analytics where day >= (now() at time zone 'utc')::date - 29 group by event_type,target_key order by events desc");
+      interactions=r.rows.map(row=>({event_type:row.event_type,target_key:row.target_key,events:Number(row.events||0)}));
+    } catch (error) { if (error?.code !== '42P01') throw error; }
+    const daily=dailyResult.rows.map(row=>({day:row.day,pageviews:Number(row.pageviews||0)}));
+    const todayKey=new Date().toISOString().slice(0,10);
+    const today=daily.find(row=>row.day===todayKey)?.pageviews||0;
+    const sumDays=(days)=>daily.slice(-days).reduce((sum,row)=>sum+row.pageviews,0);
+    const mapRows=(rows)=>rows.map(row=>({label:row.label,pageviews:Number(row.pageviews||0)}));
+    return {
+      environment,
+      privacy:{aggregate_only:true,no_eye_tracking:true,no_free_text:true,no_persistent_user_ids:true,note:'Los clics y la profundidad de scroll son señales agregadas de interacción; no son seguimiento ocular.'},
+      totals:{today,last_7_days:sumDays(7),last_30_days:sumDays(30)},
+      daily,
+      top_paths:pathResult.rows.map(row=>({path:row.path,pageviews:Number(row.pageviews||0)})),
+      devices:mapRows(deviceResult.rows),referrers:mapRows(referrerResult.rows),countries:mapRows(countryResult.rows),
+      clicks:interactions.filter(row=>row.event_type==='click'),scroll:interactions.filter(row=>row.event_type==='scroll')
+    };
+  } catch (error) {
+    app.log.error({ err:error }, 'ops analytics summary failed');
+    return reply.code(503).send({ error:'analytics_summary_unavailable' });
+  }
+});
+
 app.get('/ops/moderation/pending', { preHandler: requireOpsCapability('GET', '/ops/moderation/pending') }, async (request, reply) => {
   if (!pool) return reply.code(503).send({ error: 'database_not_configured' });
   const requestedLimit = Number(request.query?.limit || 10);
