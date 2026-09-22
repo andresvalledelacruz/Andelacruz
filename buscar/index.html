@@ -13,7 +13,7 @@
   <main>
     <p><a href="/">← Inicio</a></p>
     <h1>¿Qué te está pasando?</h1>
-    <p>Escríbelo con tus propias palabras. Esta página procesa la búsqueda en tu navegador; Desgracias.es no envía ni almacena el texto que escribas.</p>
+    <p>Escríbelo como te salga. Intentamos entender faltas habituales, abreviaturas y formas coloquiales, pero no adivinamos lo que no has escrito ni hacemos diagnósticos. El texto se procesa en tu navegador y no se envía ni se almacena.</p>
 
     <noscript>
       <style>#search-form{display:none}</style>
@@ -38,11 +38,11 @@
     <form id="search-form" autocomplete="off" novalidate>
       <label for="search-query">Describe tu situación</label>
       <textarea id="search-query" maxlength="500" autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false" aria-describedby="privacy-note"></textarea>
-      <p id="privacy-note" class="muted">No incluyas nombres, direcciones, teléfonos ni otros datos personales.</p>
+      <p id="privacy-note" class="muted">No incluyas nombres, direcciones, teléfonos ni otros datos personales. Si una frase puede significar varias cosas, te pediremos aclarar en vez de inventar.</p>
       <button type="submit">Encontrar por dónde empezar</button>
     </form>
 
-    <p class="muted privacy-links"><a href="/privacidad.html">Privacidad</a> · <a href="mailto:info@desgracias.es">Contacto</a></p>
+    <p class="muted privacy-links"><a href="/privacidad.html">Privacidad</a> · <a href="/contacto.html">Contacto</a> · <a href="/recursos/">Todos los recursos</a></p>
 
     <section id="result" class="result" aria-live="polite" tabindex="-1" hidden></section>
   </main>
@@ -51,6 +51,7 @@
     import { routeSearchQuery } from '../src/search-crisis-router.js';
     import { routeKnownContentQuery } from '../src/search-content-catalog.js';
     import { buildSearchClarification } from '../src/search-clarification.js';
+    import { normalizeHelpLanguage } from '../src/search-language-bridge.js';
 
     const form = document.querySelector('#search-form');
     const query = document.querySelector('#search-query');
@@ -173,9 +174,18 @@
         return;
       }
 
+      const language = normalizeHelpLanguage(submittedQuery);
       let routed = routeSearchQuery(submittedQuery);
+
+      // Safety always runs on the original text first. A conservative typo bridge
+      // gets a second Safety pass only when the original did not already match.
+      if (!routed.matched && !routed.urgent_support?.available && language.changed) {
+        const correctedSafety = routeSearchQuery(language.normalized);
+        if (correctedSafety.matched || correctedSafety.urgent_support?.available) routed = correctedSafety;
+      }
+
       if (!routed.matched && !routed.urgent_support?.available) {
-        const contentRouted = routeKnownContentQuery(submittedQuery);
+        const contentRouted = routeKnownContentQuery(language.semanticText);
         if (contentRouted.matched) routed = contentRouted;
       }
 
