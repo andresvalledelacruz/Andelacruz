@@ -24,6 +24,10 @@ const productProposal = document.querySelector('#productProposal');
 const productCouncilStatus = document.querySelector('#productCouncilStatus');
 const productCouncilResult = document.querySelector('#productCouncilResult');
 const evaluateProductButton = document.querySelector('#evaluateProductButton');
+const analyticsToday = document.querySelector('#analyticsToday');
+const analytics7 = document.querySelector('#analytics7');
+const analytics30 = document.querySelector('#analytics30');
+const analyticsTopPath = document.querySelector('#analyticsTopPath');
 
 const decisionReasonMap = {
   approve: new Set(['safe_and_useful']),
@@ -215,43 +219,50 @@ async function loadAuthoritativeBrief(item) {
   }
 }
 
-async function loadConsole() {
-  refreshButton.disabled = true;
-  try {
-    const [summary, pending] = await Promise.all([
-      api('/ops/summary'),
-      api('/ops/moderation/pending?limit=25')
-    ]);
+const analyticsClickLabels={header_urgent:'Urgente · cabecera',header_story:'Contar historia · cabecera',hero_urgent:'Urgente · portada',hero_search:'Buscar ayuda · portada',hero_stories:'Historias · portada',needs_urgent:'Urgente · Qué necesitas',needs_search:'Orientación · Qué necesitas',needs_stories:'Leer historias · Qué necesitas',resources_all:'Todos los recursos',stories_topics:'Historias por temas',nav_search:'Buscar · menú',nav_stories:'Historias · menú',nav_resources:'Recursos · menú',nav_professionals:'Profesionales · menú',nav_contact:'Contacto · menú',resource_suicide:'Recurso · suicidio',resource_violence:'Recurso · violencia',resource_grief:'Recurso · duelo',resource_anxiety:'Recurso · ansiedad',resource_emotions:'Recurso · emociones',resource_loneliness:'Recurso · soledad',resource_health:'Recurso · salud',resource_work_money:'Recurso · trabajo/dinero',resource_breakups:'Recurso · rupturas',resource_family:'Recurso · familia'};
 
-    document.querySelector('#metricModeration').textContent = queueLength(summary.queues?.moderation);
-    document.querySelector('#metricSafety').textContent = queueLength(summary.queues?.safety);
-    document.querySelector('#metricTasks').textContent = queueLength(summary.queues?.internal_tasks);
-    document.querySelector('#metricApi').textContent = 'OK';
-    const triage = pending.triage_summary || {};
-    const triageText = Number(triage.P0 || 0) + Number(triage.P1 || 0) > 0
-      ? ` · ${Number(triage.P0 || 0) + Number(triage.P1 || 0)} prioridad crítica`
-      : '';
-    document.querySelector('#lastRefresh').textContent = `Actualizado ${new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(new Date())}${triageText}`;
-
-    queueItems = Array.isArray(pending.items) ? pending.items : [];
-    renderQueue();
-
-    if (selectedItem) {
-      const stillThere = queueItems.find((item) => item.message_id === selectedItem.message_id);
-      if (stillThere) selectItem(stillThere);
-      else clearReview();
-    }
-  } catch (error) {
-    if (error.status === 401) {
-      logout('El token ya no es válido. Vuelve a introducirlo.');
-      return;
-    }
-    document.querySelector('#metricApi').textContent = 'ERROR';
-    document.querySelector('#lastRefresh').textContent = 'No se pudo actualizar';
-    queueList.replaceChildren(messageNode('No se pudo cargar la cola. Revisa la API interna de staging.'));
-  } finally {
-    refreshButton.disabled = false;
+function renderBarList(id,rows,labelField,valueField,labeler=(value)=>value){
+  const root=document.querySelector(id); if(!root)return; root.replaceChildren();
+  const safe=Array.isArray(rows)?rows.filter(row=>Number(row?.[valueField])>0).slice(0,10):[];
+  if(!safe.length){const p=document.createElement('p');p.className='analytics-empty';p.textContent='Aún no hay datos suficientes.';root.append(p);return;}
+  const max=Math.max(...safe.map(row=>Number(row[valueField])||0),1);
+  for(const row of safe){
+    const line=document.createElement('div');line.className='analytics-row';
+    const label=document.createElement('span');label.className='analytics-label';label.textContent=labeler(row[labelField]);
+    const track=document.createElement('span');track.className='analytics-track';
+    const fill=document.createElement('span');fill.className='analytics-fill';fill.style.width=Math.max(2,Math.round((Number(row[valueField])||0)/max*100))+'%';
+    const value=document.createElement('span');value.className='analytics-value';value.textContent=String(Number(row[valueField])||0);
+    track.append(fill);line.append(label,track,value);root.append(line);
   }
+}
+
+function renderAnalytics(data){
+  const totals=data?.totals||{};
+  analyticsToday.textContent=String(Number(totals.today)||0);analytics7.textContent=String(Number(totals.last_7_days)||0);analytics30.textContent=String(Number(totals.last_30_days)||0);analyticsTopPath.textContent=data?.top_paths?.[0]?.path||'—';
+  renderBarList('#analyticsPaths',data?.top_paths,'path','pageviews');
+  renderBarList('#analyticsClicks',data?.clicks,'target_key','events',v=>analyticsClickLabels[v]||v);
+  renderBarList('#analyticsScroll',data?.scroll,'target_key','events',v=>String(v).replace('depth_','Hasta ')+'%');
+  renderBarList('#analyticsDevices',data?.devices,'label','pageviews');renderBarList('#analyticsReferrers',data?.referrers,'label','pageviews');renderBarList('#analyticsCountries',data?.countries,'label','pageviews');
+}
+
+function renderAnalyticsUnavailable(){
+  analyticsToday.textContent=analytics7.textContent=analytics30.textContent='—';analyticsTopPath.textContent='No disponible';
+  for(const id of ['#analyticsPaths','#analyticsClicks','#analyticsScroll','#analyticsDevices','#analyticsReferrers','#analyticsCountries']) renderBarList(id,[],'label','pageviews');
+}
+
+async function loadConsole() {
+  refreshButton.disabled=true;
+  try {
+    const [summaryResult,analyticsResult,pendingResult]=await Promise.allSettled([api('/ops/summary'),api('/ops/analytics/summary'),api('/ops/moderation/pending?limit=25')]);
+    const authFail=[summaryResult,analyticsResult,pendingResult].find(result=>result.status==='rejected'&&result.reason?.status===401);
+    if(authFail){logout('El token ya no es válido. Vuelve a introducirlo.');return;}
+    if(summaryResult.status==='fulfilled'){const summary=summaryResult.value;document.querySelector('#metricModeration').textContent=queueLength(summary.queues?.moderation);document.querySelector('#metricSafety').textContent=queueLength(summary.queues?.safety);document.querySelector('#metricTasks').textContent=queueLength(summary.queues?.internal_tasks);}else{document.querySelector('#metricModeration').textContent='—';document.querySelector('#metricSafety').textContent='—';document.querySelector('#metricTasks').textContent='—';}
+    if(analyticsResult.status==='fulfilled')renderAnalytics(analyticsResult.value);else renderAnalyticsUnavailable();
+    if(pendingResult.status==='fulfilled'){const pending=pendingResult.value;queueItems=Array.isArray(pending.items)?pending.items:[];renderQueue();if(selectedItem){const stillThere=queueItems.find(item=>item.message_id===selectedItem.message_id);if(stillThere)selectItem(stillThere);else clearReview();}}else{queueItems=[];queueCount.textContent='0';queueList.replaceChildren(messageNode('La cola de moderación requiere identidad individual + AAL2. La analítica agregada puede consultarse de forma independiente.'));clearReview();}
+    document.querySelector('#metricApi').textContent=(summaryResult.status==='fulfilled'||analyticsResult.status==='fulfilled')?'OK':'ERROR';
+    document.querySelector('#lastRefresh').textContent='Actualizado '+new Intl.DateTimeFormat('es-ES',{hour:'2-digit',minute:'2-digit',second:'2-digit'}).format(new Date());
+  } catch (_error) {document.querySelector('#metricApi').textContent='ERROR';document.querySelector('#lastRefresh').textContent='No se pudo actualizar';renderAnalyticsUnavailable();queueList.replaceChildren(messageNode('No se pudo cargar el Centro de Mando.'));}
+  finally {refreshButton.disabled=false;}
 }
 
 function messageNode(text) {
