@@ -16,7 +16,8 @@ const PINNED_MEASUREMENT_FILES = new Map([
   ['public-page-runtime.js', 'a0654d52caf4b7fbb5c191a609a6336c8d25ff8814aadd7142afc811ca405845'],
   ['visitor-analytics.js', '3ca9ed490f749aea8f9728e0f762a26c42f4d390658954fbb13dd98b1cc99031'],
   ['supabase/migrations/20260830002000_add_privacy_safe_pageview_analytics.sql', '384c3210cd9e38c9922efda675eb9eae1e0104e0dc77103075c0cb08e61f5a9c'],
-  // Reviewed 2026-09-22: multi-need UI remains browser-local, non-persistent and non-navigating.\n  ['buscar/index.html', 'c10698b3384859a342e92847ca5222bb58bbac472840f1f3bdc2e1712aaa87d8'],
+  // Reviewed 2026-09-22: multi-need UI remains browser-local, non-persistent and non-navigating.
+  ['buscar/index.html', 'c10698b3384859a342e92847ca5222bb58bbac472840f1f3bdc2e1712aaa87d8'],
   ['app-core.js', 'ff19669031de4d79412b72674971e5b443d022fc44eb907e76154953e231e67f'],
   ['next-step-adapter.js', '488372c8bde96402afe8bf87fae0a6ff368a06e9cab69c3090f7e03419436641'],
   ['next-step-guidance.js', 'ead14c25e029c01173f01f1cae6047e13644b329e073d6792da8f8e8c8268915'],
@@ -28,7 +29,9 @@ const PINNED_MEASUREMENT_FILES = new Map([
   // Reviewed 2026-09-19: bounded phrase aliases and conversation guide; no I/O or query retention.
   ['src/search-content-catalog.js', 'fcd0b72eb1d2464343437874b934d4d555035d5d983c45d1959d945638fa0a7a'],
   ['src/search-crisis-router.js', '876392e7eda7e9ba2097d46d0d06c33eb073918c9c8b70f0154ac08a2ffa6d2d'],
-  ['src/search-normalization.js', '69577ab77552fa85a4cb5596054c27ff0107cecdbcc1c9e4b3770b640e7c4b3e'],\n  // Reviewed 2026-09-22: bounded clause splitting, no I/O, raw-query retention or auto-navigation.\n  ['src/search-multi-need-resolver.js', '547a180f2e097b2c6fbd08321f18e909aeb31fbcf24e46b608669afe673763fc'],
+  ['src/search-normalization.js', '69577ab77552fa85a4cb5596054c27ff0107cecdbcc1c9e4b3770b640e7c4b3e'],
+  // Reviewed 2026-09-22: bounded clause splitting, no I/O, raw-query retention or auto-navigation.
+  ['src/search-multi-need-resolver.js', '547a180f2e097b2c6fbd08321f18e909aeb31fbcf24e46b608669afe673763fc'],
   ['src/suicide-context-classifier.js', '2cf96cb615bcce941ab1a8546a6a1ede8cd8d66698d194759696d2a84e880d17'],
 ]);
 const APPROVED_HOME_CLOSURE = [
@@ -37,7 +40,8 @@ const APPROVED_HOME_CLOSURE = [
 ];
 const APPROVED_SEARCH_CLOSURE = [
   'src/search-clarification.js', 'src/search-content-catalog.js',
-  'src/search-crisis-router.js', 'src/search-multi-need-resolver.js',\n  'src/search-normalization.js', 'src/suicide-context-classifier.js',
+  'src/search-crisis-router.js', 'src/search-multi-need-resolver.js',
+  'src/search-normalization.js', 'src/suicide-context-classifier.js',
 ];
 const APPROVED_PROTECTED_INLINE = new Map([
   ['/ayuda-urgente.html', ['1c40cd4e59a05c9039247e0c0cfff6fe3017d8e8b1b8431be8d481a354b9e25c']],
