@@ -17,8 +17,7 @@ function freezeNeed(result, firstSeen) {
 
 function splitCandidateClauses(query) {
   return String(query ?? '')
-    .split(/(?:[.;,!?
-]+|\s+(?:pero|además|ademas|también|tambien|y)\s+)/iu)
+    .split(/(?:[.;,!?\\n]+|\\s+(?:pero|además|ademas|también|tambien|y)\\s+)/iu)
     .map((part) => part.trim())
     .filter(Boolean)
     .slice(0, 12);
