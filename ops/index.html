@@ -6,8 +6,8 @@
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="theme-color" content="#f7f3ee">
   <title>Desgracias.es · Centro de Mando interno</title>
-  <link rel="stylesheet" href="/ops/ops.css?v=20260826-command-4">
-  <script src="/ops/ops.js?v=20260826-command-4" defer></script>
+  <link rel="stylesheet" href="/ops/ops.css?v=20260922-analytics-1">
+  <script src="/ops/ops.js?v=20260922-analytics-1" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Saltar al contenido</a>
@@ -54,6 +54,25 @@
         <article><span>Tareas</span><strong id="metricTasks">—</strong><small>Procesamiento interno</small></article>
         <article><span>API interna</span><strong id="metricApi" class="metric-word">—</strong><small id="lastRefresh">Sin comprobar</small></article>
       </div>
+
+      <section id="analyticsPanel" class="analytics-panel" aria-labelledby="analyticsTitle">
+        <div class="panel-head"><div><p class="eyebrow">Analítica privada · agregada</p><h2 id="analyticsTitle">Qué se visita y con qué se interactúa</h2></div><span class="server-badge">Sin cookies · sin texto sensible</span></div>
+        <div class="analytics-summary">
+          <article><span>Hoy</span><strong id="analyticsToday">—</strong><small>visualizaciones</small></article>
+          <article><span>7 días</span><strong id="analytics7">—</strong><small>visualizaciones</small></article>
+          <article><span>30 días</span><strong id="analytics30">—</strong><small>visualizaciones</small></article>
+          <article><span>Ruta principal</span><strong id="analyticsTopPath" class="metric-word">—</strong><small>últimos 30 días</small></article>
+        </div>
+        <div class="analytics-grid">
+          <article><h3>Páginas más vistas</h3><div id="analyticsPaths" class="analytics-bars"></div></article>
+          <article><h3>Clics en portada</h3><div id="analyticsClicks" class="analytics-bars"></div></article>
+          <article><h3>Profundidad de lectura</h3><div id="analyticsScroll" class="analytics-bars"></div></article>
+          <article><h3>Dispositivos</h3><div id="analyticsDevices" class="analytics-bars"></div></article>
+          <article><h3>Procedencia</h3><div id="analyticsReferrers" class="analytics-bars"></div></article>
+          <article><h3>País aproximado</h3><div id="analyticsCountries" class="analytics-bars"></div></article>
+        </div>
+        <p class="analytics-note">“En qué se fijan” se aproxima con clics y profundidad de scroll agregados. No usamos seguimiento ocular, texto escrito, cookies analíticas ni identificadores persistentes.</p>
+      </section>
 
       <div class="workspace">
         <section class="queue-panel" aria-labelledby="queueTitle">
