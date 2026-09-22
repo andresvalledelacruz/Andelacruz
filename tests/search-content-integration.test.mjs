@@ -7,11 +7,13 @@ import { routeKnownContentQuery } from '../src/search-content-catalog.js';
 const ui = fs.readFileSync(new URL('../buscar/index.html', import.meta.url), 'utf8');
 
 test('public search invokes Safety router before ordinary content fallback', () => {
+  const multiCall = ui.indexOf('resolveMultipleNeeds(submittedQuery)');
   const safetyCall = ui.indexOf('routeSearchQuery(submittedQuery)');
   const contentCall = ui.indexOf('routeKnownContentQuery(submittedQuery)');
-  assert.ok(safetyCall >= 0);
+  assert.ok(multiCall >= 0);
+  assert.ok(safetyCall > multiCall);
   assert.ok(contentCall > safetyCall);
-  assert.match(ui, /if \(!routed\.matched && !routed\.urgent_support\?\.available\)/);
+  assert.match(ui, /if \(!routed\.matched && !routed\.urgent_support\?\.available && !multipleNeeds\.needs_clarification\)/);
   assert.match(ui, /if \(contentRouted\.matched\) routed = contentRouted/);
 });
 
