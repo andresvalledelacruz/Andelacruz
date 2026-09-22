@@ -98,6 +98,7 @@
   // JavaScript only improves ergonomics; core safety links remain present without it.
   enhanceDiscovery();
   load('/visitor-analytics.js');
+  load('/visitor-interactions.js');
   load('/app-core.js',()=>{
     coreReady=true;
     load('/story-example-library.js');
