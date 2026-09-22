@@ -93,7 +93,7 @@ jobs:
             fi
           }
 
-          verify_locked_file "styles.css" "498279823716dd2b7be6bdc312239399d3f9fdc7"
+          verify_locked_file "styles.css" "3a44bb394366abad3f515aa4fb2bb97ea545d338"
           verify_locked_file "styles-1.css" "598bd9c2ba87732a675411b970bf1aac1c9165b3"
           verify_locked_file "styles-2.css" "2c6fd743984101a1d7755820eb46b943c7c30253"
           verify_locked_file "styles-3.css" "d2258f4c098fc2047cea33934f3b127f53412a68"
