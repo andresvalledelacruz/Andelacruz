@@ -17,6 +17,7 @@ test('public search page remains isolated from V9 and is not indexed before laun
   assert.match(source, /https:\/\/desgracias\.es\/buscar\//i);
   assert.match(source, /\.\.\/src\/search-crisis-router\.js/);
   assert.match(source, /\.\.\/src\/search-clarification\.js/);
+  assert.match(source, /\.\.\/src\/search-multi-need-resolver\.js/);
 });
 
 test('public search page states browser-local processing and discourages personal data', async () => {
@@ -90,6 +91,27 @@ test('clarification UI does not silently route non-P0 choices', async () => {
   assert.match(source, /if \(option\.id === 'safety_self'\)/);
   assert.match(source, /if \(option\.id === 'safety_other'\)/);
   assert.doesNotMatch(source, /option\.url/);
+});
+
+
+test('multiple needs are presented in priority order without automatic navigation', async () => {
+  const source = await html();
+  assert.match(source, /resolveMultipleNeeds\(submittedQuery\)/);
+  assert.match(source, /function renderMultipleNeeds\(resolved\)/);
+  assert.match(source, /Empieza por lo más importante/i);
+  assert.match(source, /Otras preocupaciones que también has mencionado/i);
+  assert.match(source, /resolved\.secondary_needs/);
+  assert.match(source, /sin enviarte automáticamente a ninguna página/i);
+  assert.doesNotMatch(source, /window\.location|location\.href|location\.assign|location\.replace/);
+});
+
+test('unresolved aggregate Safety context blocks broad non-P0 single-route fallbacks', async () => {
+  const source = await html();
+  assert.match(source, /multipleNeeds\.needs_clarification/);
+  assert.match(source, /multipleNeeds\.primary_need\?\.safety_level !== 'P0'/);
+  assert.match(source, /suppress_commercial_ui: true/);
+  assert.match(source, /!multipleNeeds\.needs_clarification/);
+  assert.match(source, /if \(renderMultipleNeeds\(multipleNeeds\)\) return;/);
 });
 
 test('search form has explicit labeling and live result region', async () => {
