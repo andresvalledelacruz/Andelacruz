@@ -4,26 +4,26 @@ import { readFileSync, existsSync } from 'node:fs';
 
 const page = readFileSync('webs-amigas.html', 'utf8');
 test('national directory has dated official sources and useful static entries without partnerships', () => {
-  const records=JSON.parse(readFileSync('data/national-organizations.json','utf8'));
+  const records=JSON.parse(readFileSync('data/help-directory.json','utf8')).records;
   const cards=[...page.matchAll(/<a\b[^>]*data-organization="([^"]+)"[^>]*>[\s\S]*?<\/a>/g)];
-  assert.equal(cards.length,50);
-  assert.equal(records.length,50);
-  assert.equal(new Set(records.map(r=>r.id)).size,50);
-  assert.equal(new Set(records.map(r=>r.url)).size,50);
+  assert.equal(cards.length,200);
+  assert.equal(records.length,200);
+  assert.equal(new Set(records.map(r=>r.id)).size,200);
+  assert.equal(new Set(records.map(r=>r.url)).size,200);
   for(const [html,id] of cards){
     const record=records.find(r=>r.id===id);
     assert.ok(record,id);
-    assert.match(html,/<h3>[^<]+<\/h3>/);
+    assert.match(html,/<h3\b[^>]*>[^<]+<\/h3>/);
     assert.ok(html.includes(record.description));
     assert.ok(html.includes('href="'+record.url+'"'));
     assert.equal(new URL(record.url).protocol,'https:');
     assert.equal(record.sourceUrl,record.url);
-    assert.match(record.reviewedAt,/^2026-09-18$/);
+    assert.match(record.reviewedAt,/^2026-09-(18|20)$/);
     assert.ok(record.description.length<110);
     assert.equal((html.match(/<a\b/g)||[]).length,1);
     assert.match(html,/rel="noreferrer"/);
   }
-  assert.match(page,/Fuente oficial consultada: <time datetime="2026-09-18">/);
+  assert.match(page,/<time datetime="2026-09-20">/);
   assert.match(page, /no implica colaboración, patrocinio ni acuerdo/);
   assert.ok(page.indexOf('href="tel:112"') < page.indexOf('data-organization='));
   assert.doesNotMatch(page, /<form|<input|<script[^>]+src=/);

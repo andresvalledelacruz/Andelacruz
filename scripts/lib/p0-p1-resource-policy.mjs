@@ -5,6 +5,10 @@ export const OWN_HOSTS = new Set(['desgracias.es', 'www.desgracias.es']);
 // Official entrypoints reviewed 2026-09-18; exact hosts, not country-wide suffixes.
 // Sources and territorial scope: data/international-entrypoints.json.
 const INTERNATIONAL_AUTHORITY_HOSTS = new Set([
+  // Source URLs and successful checks recorded in data/help-directory.json (2026-09-20).
+  'www.chileatiende.gob.cl', 'europa.eu', 'www.cndh.org.mx',
+  'www.defensoria.gov.co', 'www.unidadvictimas.gov.co', 'www.gov.uk',
+  'www.icbf.gov.co', 'www.imss.gob.mx', 'www.empleo.gob.mx',
   'lineadelavida.salud.gob.mx', 'www.gob.mx', 'www.argentina.gob.ar',
   'www.minsalud.gov.co', 'saludresponde.minsal.cl', 'www.minsal.cl',
   'www.gov.pt', 'www.service-public.gouv.fr',

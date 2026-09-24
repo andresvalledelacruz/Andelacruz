@@ -1,13 +1,14 @@
 import { normalizeSearchText as normalize } from './search-normalization.js';
 // Whole expressions keep ambiguous words such as "palo" or "chungo" unresolved.
 const COLLOQUIAL_PHRASES = Object.freeze({
-  work_overload: ['voy hasta arriba en el trabajo', 'estoy hasta arriba de trabajo'],
   work_disconnect: ['me llevo el trabajo a casa', 'no paro de darle vueltas al trabajo'],
-  cv_problem: ['echo curriculums y no me llama nadie', 'he echado curriculums y no me llaman'],
-  ends_meet: ['se me va el sueldo en recibos', 'no me da el sueldo para pasar el mes'],
-  housing_payment: ['no me da para pagar el alquiler', 'no me llega para pagar la hipoteca'],
   no_friends: ['no tengo con quien quedar'],
-  no_one_to_talk: ['me he quedado sin nadie con quien hablar']
+  no_one_to_talk: ['me he quedado sin nadie con quien hablar', 'no tengo con quien platicar', 'no tengo con quien conversar'],
+  general_loneliness: ['me siento re solo', 'me siento re sola'],
+  housing_payment: ['no me da para pagar el alquiler', 'no me llega para pagar la hipoteca', 'no puedo pagar la renta', 'no me alcanza para el arriendo', 'no puedo pagar el arriendo', 'no me alcanza para pagar la renta'],
+  ends_meet: ['se me va el sueldo en recibos', 'no me da el sueldo para pasar el mes', 'no me alcanza la plata para fin de mes', 'no me alcanza la lana para fin de mes', 'no llego a fin d mes'],
+  work_overload: ['voy hasta arriba en el trabajo', 'estoy hasta arriba de trabajo', 'no puedo mas en la chamba', 'no puedo mas en el laburo', 'no aguanto mas en la pega'],
+  cv_problem: ['echo curriculums y no me llama nadie', 'he echado curriculums y no me llaman', 'mando hojas de vida y no me llaman', 'envio hojas de vida y nadie responde']
 });
 const RULES = Object.freeze([
   ['breakup', '/rupturas/mi-pareja-me-ha-dejado/', 'Mi pareja me ha dejado', ['mi pareja me ha dejado', 'me ha dejado mi pareja', 'mi novio me ha dejado', 'mi novia me ha dejado', 'hemos roto', 'acabamos de romper']],
@@ -127,6 +128,10 @@ export function routeKnownContentQuery(query = '') {
     });
   }
 
+  // Preserve explicit ability/negation instead of treating shared nouns as a hardship.
+  if (/^(?:si )?puedo pagar (?:la renta|el alquiler|el arriendo)$/.test(text)) {
+    return Object.freeze({ matched: false, needs_clarification: true, raw_query_retained: false });
+  }
   for (const rule of RULES) {
     if (rule.phrases.some((phrase) => text.includes(normalize(phrase))) ||
         (COLLOQUIAL_PHRASES[rule.intent] || []).some((phrase) => text === normalize(phrase))) {
@@ -165,4 +170,3 @@ export function routeKnownContentQuery(query = '') {
 export function searchContentCatalog() {
   return Object.freeze(RULES.map(({ intent, url, label }) => Object.freeze({ intent, url, label })));
 }
-

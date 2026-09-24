@@ -1,407 +1,11 @@
 [
   {
-    "id": "anar",
-    "category": "infancia",
-    "name": "Fundación ANAR",
-    "description": "Ayuda a niños, adolescentes y familias.",
-    "url": "https://www.anar.org/",
-    "sourceUrl": "https://www.anar.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "save",
-    "category": "infancia",
-    "name": "Save the Children España",
-    "description": "Protección y derechos de la infancia.",
-    "url": "https://www.savethechildren.es/",
-    "sourceUrl": "https://www.savethechildren.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "unicef",
-    "category": "infancia",
-    "name": "UNICEF España",
-    "description": "Derechos y bienestar de niños y niñas.",
-    "url": "https://www.unicef.es/",
-    "sourceUrl": "https://www.unicef.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "aldeas",
-    "category": "infancia",
-    "name": "Aldeas Infantiles SOS España",
-    "description": "Protección de la infancia y apoyo familiar.",
-    "url": "https://www.aldeasinfantiles.es/",
-    "sourceUrl": "https://www.aldeasinfantiles.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "fad",
-    "category": "infancia",
-    "name": "Fad Juventud",
-    "description": "Orientación juvenil, familias y prevención.",
-    "url": "https://fad.es/",
-    "sourceUrl": "https://fad.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "diagrama",
-    "category": "infancia",
-    "name": "Fundación Diagrama",
-    "description": "Atención socioeducativa y apoyo familiar.",
-    "url": "https://www.fundaciondiagrama.es/",
-    "sourceUrl": "https://www.fundaciondiagrama.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "caritas",
-    "category": "social",
-    "name": "Cáritas Española",
-    "description": "Acogida y acompañamiento social.",
-    "url": "https://www.caritas.es/",
-    "sourceUrl": "https://www.caritas.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "cruzroja",
-    "category": "social",
-    "name": "Cruz Roja Española",
-    "description": "Apoyo social y atención a la vulnerabilidad.",
-    "url": "https://www2.cruzroja.es/",
-    "sourceUrl": "https://www2.cruzroja.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "gitanos",
-    "category": "social",
-    "name": "Fundación Secretariado Gitano",
-    "description": "Inclusión, educación y empleo.",
-    "url": "https://www.gitanos.org/",
-    "sourceUrl": "https://www.gitanos.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "fesbal",
-    "category": "social",
-    "name": "FESBAL",
-    "description": "Federación Española de Bancos de Alimentos.",
-    "url": "https://fesbal.org/",
-    "sourceUrl": "https://fesbal.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "eapn",
-    "category": "social",
-    "name": "EAPN España",
-    "description": "Red contra la pobreza y la exclusión social.",
-    "url": "https://www.eapn.es/",
-    "sourceUrl": "https://www.eapn.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "hogarsi",
-    "category": "social",
-    "name": "HOGAR SÍ",
-    "description": "Soluciones y derechos ante el sinhogarismo.",
-    "url": "https://www.hogarsi.org/somos/",
-    "sourceUrl": "https://www.hogarsi.org/somos/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "cear",
-    "category": "refugio",
-    "name": "CEAR",
-    "description": "Refugio, asilo y acogida.",
-    "url": "https://www.cear.es/",
-    "sourceUrl": "https://www.cear.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "accem",
-    "category": "refugio",
-    "name": "Accem",
-    "description": "Apoyo a personas refugiadas y migrantes.",
-    "url": "https://www.accem.es/",
-    "sourceUrl": "https://www.accem.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "cepaim",
-    "category": "refugio",
-    "name": "CONVIVE Fundación Cepaim",
-    "description": "Inclusión y convivencia intercultural.",
-    "url": "https://www.cepaim.org/",
-    "sourceUrl": "https://www.cepaim.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "redacoge",
-    "category": "refugio",
-    "name": "Red Acoge",
-    "description": "Derechos e inclusión de personas migrantes.",
-    "url": "https://redacoge.org/",
-    "sourceUrl": "https://redacoge.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "mpdl",
-    "category": "refugio",
-    "name": "Movimiento por la Paz",
-    "description": "Acción social, derechos y convivencia.",
-    "url": "https://www.mpdl.org/",
-    "sourceUrl": "https://www.mpdl.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "esperanza",
-    "category": "emocional",
-    "name": "Teléfono de la Esperanza",
-    "description": "Escucha y apoyo emocional en crisis.",
-    "url": "https://telefonodelaesperanza.org/intervencion-en-crisis",
-    "sourceUrl": "https://telefonodelaesperanza.org/intervencion-en-crisis",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "proyectohombre",
-    "category": "emocional",
-    "name": "Proyecto Hombre",
-    "description": "Prevención y atención de adicciones.",
-    "url": "https://proyectohombre.es/asociacion-proyecto-hombre/",
-    "sourceUrl": "https://proyectohombre.es/asociacion-proyecto-hombre/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "unad",
-    "category": "emocional",
-    "name": "UNAD",
-    "description": "Red de atención a las adicciones.",
-    "url": "https://www.unad.org/",
-    "sourceUrl": "https://www.unad.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "aecc",
-    "category": "salud",
-    "name": "Asociación Española Contra el Cáncer",
-    "description": "Información y apoyo a pacientes y familias.",
-    "url": "https://www.contraelcancer.es/es",
-    "sourceUrl": "https://www.contraelcancer.es/es",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "feder",
-    "category": "salud",
-    "name": "FEDER",
-    "description": "Enfermedades raras y derechos de las familias.",
-    "url": "https://inclusion.enfermedades-raras.org/f-e-d-e-r/",
-    "sourceUrl": "https://inclusion.enfermedades-raras.org/f-e-d-e-r/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "ceafa",
-    "category": "salud",
-    "name": "CEAFA",
-    "description": "Alzhéimer y otras demencias; apoyo familiar.",
-    "url": "https://www.ceafa.es/es",
-    "sourceUrl": "https://www.ceafa.es/es",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "parkinson",
-    "category": "salud",
-    "name": "Federación Española de Párkinson",
-    "description": "Información y red de asociaciones.",
-    "url": "https://esparkinson.es/",
-    "sourceUrl": "https://esparkinson.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "eme",
-    "category": "salud",
-    "name": "Esclerosis Múltiple España",
-    "description": "Recursos sobre esclerosis múltiple.",
-    "url": "https://esclerosismultiple.com/",
-    "sourceUrl": "https://esclerosismultiple.com/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "alcer",
-    "category": "salud",
-    "name": "Federación Nacional ALCER",
-    "description": "Información y apoyo en enfermedad renal.",
-    "url": "https://alcer.org/",
-    "sourceUrl": "https://alcer.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "face",
-    "category": "salud",
-    "name": "FACE",
-    "description": "Celiaquía y red de asociaciones.",
-    "url": "https://celiacos.org/",
-    "sourceUrl": "https://celiacos.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "accu",
-    "category": "salud",
-    "name": "ACCU España",
-    "description": "Crohn, colitis ulcerosa y apoyo asociativo.",
-    "url": "https://accuesp.com/",
-    "sourceUrl": "https://accuesp.com/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "fq",
-    "category": "salud",
-    "name": "Federación Española de Fibrosis Quística",
-    "description": "Información y recursos para las familias.",
-    "url": "https://fibrosisquistica.org/",
-    "sourceUrl": "https://fibrosisquistica.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "fedhemo",
-    "category": "salud",
-    "name": "Fedhemo",
-    "description": "Hemofilia y otras coagulopatías.",
-    "url": "https://fedhemo.com/",
-    "sourceUrl": "https://fedhemo.com/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "fonce",
-    "category": "discapacidad",
-    "name": "Fundación ONCE",
-    "description": "Empleo, formación y accesibilidad.",
-    "url": "https://www.fundaciononce.es/es",
-    "sourceUrl": "https://www.fundaciononce.es/es",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "plena",
-    "category": "discapacidad",
-    "name": "Plena inclusión España",
-    "description": "Discapacidad intelectual y del desarrollo.",
-    "url": "https://www.plenainclusion.org/",
-    "sourceUrl": "https://www.plenainclusion.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "down",
-    "category": "discapacidad",
-    "name": "Down España",
-    "description": "Síndrome de Down y apoyo a familias.",
-    "url": "https://www.sindromedown.org/",
-    "sourceUrl": "https://www.sindromedown.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "aspaym",
-    "category": "discapacidad",
-    "name": "Federación Nacional ASPAYM",
-    "description": "Lesión medular y discapacidad física.",
-    "url": "https://www.aspaym.org/",
-    "sourceUrl": "https://www.aspaym.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "cocemfe",
-    "category": "discapacidad",
-    "name": "COCEMFE",
-    "description": "Discapacidad física y orgánica; derechos.",
-    "url": "https://www.cocemfe.es/",
-    "sourceUrl": "https://www.cocemfe.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "autismo",
-    "category": "discapacidad",
-    "name": "Autismo España",
-    "description": "Derechos y apoyos para personas autistas.",
-    "url": "https://autismo.org.es/nosotros/quienes-somos/",
-    "sourceUrl": "https://autismo.org.es/nosotros/quienes-somos/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "cnse",
-    "category": "discapacidad",
-    "name": "CNSE",
-    "description": "Derechos de las personas sordas.",
-    "url": "https://www.cnse.es/",
-    "sourceUrl": "https://www.cnse.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "fiapas",
-    "category": "discapacidad",
-    "name": "FIAPAS",
-    "description": "Familias de personas sordas.",
-    "url": "https://fiapas.es/",
-    "sourceUrl": "https://fiapas.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "once",
-    "category": "discapacidad",
-    "name": "ONCE",
-    "description": "Autonomía e inclusión con discapacidad visual.",
-    "url": "https://www.once.es/",
-    "sourceUrl": "https://www.once.es/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "aspace",
-    "category": "discapacidad",
-    "name": "Confederación ASPACE",
-    "description": "Parálisis cerebral y grandes necesidades de apoyo.",
-    "url": "https://www.aspace.org/",
-    "sourceUrl": "https://www.aspace.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "fedace",
-    "category": "discapacidad",
-    "name": "Daño Cerebral Estatal (FEDACE)",
-    "description": "Daño cerebral adquirido y apoyo familiar.",
-    "url": "https://fedace.org/",
-    "sourceUrl": "https://fedace.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "mujeres",
-    "category": "igualdad",
-    "name": "Fundación Mujeres",
-    "description": "Igualdad y prevención de la violencia.",
-    "url": "https://fundacionmujeres.es/conocenos/",
-    "sourceUrl": "https://fundacionmujeres.es/conocenos/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "apramp",
-    "category": "igualdad",
-    "name": "APRAMP",
-    "description": "Apoyo frente a la trata y explotación sexual.",
-    "url": "https://apramp.org/",
-    "sourceUrl": "https://apramp.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "anabella",
-    "category": "igualdad",
-    "name": "Fundación Ana Bella",
-    "description": "Apoyo a mujeres ante violencia de género.",
-    "url": "https://www.fundacionanabella.org/",
-    "sourceUrl": "https://www.fundacionanabella.org/",
-    "reviewedAt": "2026-09-18"
-  },
-  {
-    "id": "felgtbi",
-    "category": "igualdad",
-    "name": "FELGTBI+",
-    "description": "Derechos y entidades del colectivo LGTBI+.",
-    "url": "https://felgtbi.org/quienes-somos/",
-    "sourceUrl": "https://felgtbi.org/quienes-somos/",
+    "id": "entreculturas",
+    "category": "humanitaria",
+    "name": "Entreculturas",
+    "description": "Educación, inclusión y justicia social.",
+    "url": "https://www.entreculturas.org/",
+    "sourceUrl": "https://www.entreculturas.org/",
     "reviewedAt": "2026-09-18"
   },
   {
@@ -423,12 +27,282 @@
     "reviewedAt": "2026-09-18"
   },
   {
-    "id": "entreculturas",
-    "category": "humanitaria",
-    "name": "Entreculturas",
-    "description": "Educación, inclusión y justicia social.",
-    "url": "https://www.entreculturas.org/",
-    "sourceUrl": "https://www.entreculturas.org/",
+    "id": "proyectohombre",
+    "category": "emocional",
+    "name": "Proyecto Hombre",
+    "description": "Prevención y atención de adicciones.",
+    "url": "https://proyectohombre.es/asociacion-proyecto-hombre/",
+    "sourceUrl": "https://proyectohombre.es/asociacion-proyecto-hombre/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "esperanza",
+    "category": "emocional",
+    "name": "Teléfono de la Esperanza",
+    "description": "Escucha y apoyo emocional en crisis.",
+    "url": "https://telefonodelaesperanza.org/intervencion-en-crisis",
+    "sourceUrl": "https://telefonodelaesperanza.org/intervencion-en-crisis",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "unad",
+    "category": "emocional",
+    "name": "UNAD",
+    "description": "Red de atención a las adicciones.",
+    "url": "https://www.unad.org/",
+    "sourceUrl": "https://www.unad.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "caritas",
+    "category": "social",
+    "name": "Cáritas Española",
+    "description": "Acogida y acompañamiento social.",
+    "url": "https://www.caritas.es/",
+    "sourceUrl": "https://www.caritas.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "cruzroja",
+    "category": "social",
+    "name": "Cruz Roja Española",
+    "description": "Apoyo social y atención a la vulnerabilidad.",
+    "url": "https://www2.cruzroja.es/",
+    "sourceUrl": "https://www2.cruzroja.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "eapn",
+    "category": "social",
+    "name": "EAPN España",
+    "description": "Red contra la pobreza y la exclusión social.",
+    "url": "https://www.eapn.es/",
+    "sourceUrl": "https://www.eapn.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "fesbal",
+    "category": "social",
+    "name": "FESBAL",
+    "description": "Federación Española de Bancos de Alimentos.",
+    "url": "https://fesbal.org/",
+    "sourceUrl": "https://fesbal.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "gitanos",
+    "category": "social",
+    "name": "Fundación Secretariado Gitano",
+    "description": "Inclusión, educación y empleo.",
+    "url": "https://www.gitanos.org/",
+    "sourceUrl": "https://www.gitanos.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "hogarsi",
+    "category": "social",
+    "name": "HOGAR SÍ",
+    "description": "Soluciones y derechos ante el sinhogarismo.",
+    "url": "https://www.hogarsi.org/somos/",
+    "sourceUrl": "https://www.hogarsi.org/somos/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "autismo",
+    "category": "discapacidad",
+    "name": "Autismo España",
+    "description": "Derechos y apoyos para personas autistas.",
+    "url": "https://autismo.org.es/nosotros/quienes-somos/",
+    "sourceUrl": "https://autismo.org.es/nosotros/quienes-somos/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "cnse",
+    "category": "discapacidad",
+    "name": "CNSE",
+    "description": "Derechos de las personas sordas.",
+    "url": "https://www.cnse.es/",
+    "sourceUrl": "https://www.cnse.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "cocemfe",
+    "category": "discapacidad",
+    "name": "COCEMFE",
+    "description": "Discapacidad física y orgánica; derechos.",
+    "url": "https://www.cocemfe.es/",
+    "sourceUrl": "https://www.cocemfe.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "aspace",
+    "category": "discapacidad",
+    "name": "Confederación ASPACE",
+    "description": "Parálisis cerebral y grandes necesidades de apoyo.",
+    "url": "https://www.aspace.org/",
+    "sourceUrl": "https://www.aspace.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "fedace",
+    "category": "discapacidad",
+    "name": "Daño Cerebral Estatal (FEDACE)",
+    "description": "Daño cerebral adquirido y apoyo familiar.",
+    "url": "https://fedace.org/",
+    "sourceUrl": "https://fedace.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "down",
+    "category": "discapacidad",
+    "name": "Down España",
+    "description": "Síndrome de Down y apoyo a familias.",
+    "url": "https://www.sindromedown.org/",
+    "sourceUrl": "https://www.sindromedown.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "aspaym",
+    "category": "discapacidad",
+    "name": "Federación Nacional ASPAYM",
+    "description": "Lesión medular y discapacidad física.",
+    "url": "https://www.aspaym.org/",
+    "sourceUrl": "https://www.aspaym.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "fiapas",
+    "category": "discapacidad",
+    "name": "FIAPAS",
+    "description": "Familias de personas sordas.",
+    "url": "https://fiapas.es/",
+    "sourceUrl": "https://fiapas.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "fonce",
+    "category": "discapacidad",
+    "name": "Fundación ONCE",
+    "description": "Empleo, formación y accesibilidad.",
+    "url": "https://www.fundaciononce.es/es",
+    "sourceUrl": "https://www.fundaciononce.es/es",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "once",
+    "category": "discapacidad",
+    "name": "ONCE",
+    "description": "Autonomía e inclusión con discapacidad visual.",
+    "url": "https://www.once.es/",
+    "sourceUrl": "https://www.once.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "plena",
+    "category": "discapacidad",
+    "name": "Plena inclusión España",
+    "description": "Discapacidad intelectual y del desarrollo.",
+    "url": "https://www.plenainclusion.org/",
+    "sourceUrl": "https://www.plenainclusion.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "apramp",
+    "category": "igualdad",
+    "name": "APRAMP",
+    "description": "Apoyo frente a la trata y explotación sexual.",
+    "url": "https://apramp.org/",
+    "sourceUrl": "https://apramp.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "felgtbi",
+    "category": "igualdad",
+    "name": "FELGTBI+",
+    "description": "Derechos y entidades del colectivo LGTBI+.",
+    "url": "https://felgtbi.org/quienes-somos/",
+    "sourceUrl": "https://felgtbi.org/quienes-somos/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "anabella",
+    "category": "igualdad",
+    "name": "Fundación Ana Bella",
+    "description": "Apoyo a mujeres ante violencia de género.",
+    "url": "https://www.fundacionanabella.org/",
+    "sourceUrl": "https://www.fundacionanabella.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "mujeres",
+    "category": "igualdad",
+    "name": "Fundación Mujeres",
+    "description": "Igualdad y prevención de la violencia.",
+    "url": "https://fundacionmujeres.es/conocenos/",
+    "sourceUrl": "https://fundacionmujeres.es/conocenos/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "aldeas",
+    "category": "infancia",
+    "name": "Aldeas Infantiles SOS España",
+    "description": "Protección de la infancia y apoyo familiar.",
+    "url": "https://www.aldeasinfantiles.es/",
+    "sourceUrl": "https://www.aldeasinfantiles.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "fad",
+    "category": "infancia",
+    "name": "Fad Juventud",
+    "description": "Orientación juvenil, familias y prevención.",
+    "url": "https://fad.es/",
+    "sourceUrl": "https://fad.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "anar",
+    "category": "infancia",
+    "name": "Fundación ANAR",
+    "description": "Teléfono y chat para menores en España; acceso diferenciado para familias y centros escolares.",
+    "url": "https://www.anar.org/que-hacemos/telefono-chat-anar/",
+    "sourceUrl": "https://www.anar.org/que-hacemos/telefono-chat-anar/",
+    "reviewedAt": "2026-09-20"
+  },
+  {
+    "id": "diagrama",
+    "category": "infancia",
+    "name": "Fundación Diagrama",
+    "description": "Atención socioeducativa y apoyo familiar.",
+    "url": "https://www.fundaciondiagrama.es/",
+    "sourceUrl": "https://www.fundaciondiagrama.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "save",
+    "category": "infancia",
+    "name": "Save the Children España",
+    "description": "Protección y derechos de la infancia.",
+    "url": "https://www.savethechildren.es/",
+    "sourceUrl": "https://www.savethechildren.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "unicef",
+    "category": "infancia",
+    "name": "UNICEF España",
+    "description": "Derechos y bienestar de niños y niñas.",
+    "url": "https://www.unicef.es/",
+    "sourceUrl": "https://www.unicef.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "psicologia",
+    "category": "profesional",
+    "name": "Consejo General de la Psicología",
+    "description": "Información y colegios profesionales.",
+    "url": "https://www.cop.es/index.php",
+    "sourceUrl": "https://www.cop.es/index.php",
     "reviewedAt": "2026-09-18"
   },
   {
@@ -441,12 +315,138 @@
     "reviewedAt": "2026-09-18"
   },
   {
-    "id": "psicologia",
-    "category": "profesional",
-    "name": "Consejo General de la Psicología",
-    "description": "Información y colegios profesionales.",
-    "url": "https://www.cop.es/index.php",
-    "sourceUrl": "https://www.cop.es/index.php",
+    "id": "accem",
+    "category": "refugio",
+    "name": "Accem",
+    "description": "Apoyo a personas refugiadas y migrantes.",
+    "url": "https://www.accem.es/",
+    "sourceUrl": "https://www.accem.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "cear",
+    "category": "refugio",
+    "name": "CEAR",
+    "description": "Refugio, asilo y acogida.",
+    "url": "https://www.cear.es/",
+    "sourceUrl": "https://www.cear.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "cepaim",
+    "category": "refugio",
+    "name": "CONVIVE Fundación Cepaim",
+    "description": "Inclusión y convivencia intercultural.",
+    "url": "https://www.cepaim.org/",
+    "sourceUrl": "https://www.cepaim.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "mpdl",
+    "category": "refugio",
+    "name": "Movimiento por la Paz",
+    "description": "Acción social, derechos y convivencia.",
+    "url": "https://www.mpdl.org/",
+    "sourceUrl": "https://www.mpdl.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "redacoge",
+    "category": "refugio",
+    "name": "Red Acoge",
+    "description": "Derechos e inclusión de personas migrantes.",
+    "url": "https://redacoge.org/",
+    "sourceUrl": "https://redacoge.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "accu",
+    "category": "salud",
+    "name": "ACCU España",
+    "description": "Crohn, colitis ulcerosa y apoyo asociativo.",
+    "url": "https://accuesp.com/",
+    "sourceUrl": "https://accuesp.com/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "aecc",
+    "category": "salud",
+    "name": "Asociación Española Contra el Cáncer",
+    "description": "Información y apoyo a pacientes y familias.",
+    "url": "https://www.contraelcancer.es/es",
+    "sourceUrl": "https://www.contraelcancer.es/es",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "ceafa",
+    "category": "salud",
+    "name": "CEAFA",
+    "description": "Alzhéimer y otras demencias; apoyo familiar.",
+    "url": "https://www.ceafa.es/es",
+    "sourceUrl": "https://www.ceafa.es/es",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "eme",
+    "category": "salud",
+    "name": "Esclerosis Múltiple España",
+    "description": "Recursos sobre esclerosis múltiple.",
+    "url": "https://esclerosismultiple.com/",
+    "sourceUrl": "https://esclerosismultiple.com/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "face",
+    "category": "salud",
+    "name": "FACE",
+    "description": "Celiaquía y red de asociaciones.",
+    "url": "https://celiacos.org/",
+    "sourceUrl": "https://celiacos.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "feder",
+    "category": "salud",
+    "name": "FEDER",
+    "description": "Enfermedades raras y derechos de las familias.",
+    "url": "https://inclusion.enfermedades-raras.org/f-e-d-e-r/",
+    "sourceUrl": "https://inclusion.enfermedades-raras.org/f-e-d-e-r/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "fq",
+    "category": "salud",
+    "name": "Federación Española de Fibrosis Quística",
+    "description": "Información y recursos para las familias.",
+    "url": "https://fibrosisquistica.org/",
+    "sourceUrl": "https://fibrosisquistica.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "parkinson",
+    "category": "salud",
+    "name": "Federación Española de Párkinson",
+    "description": "Información y red de asociaciones.",
+    "url": "https://esparkinson.es/",
+    "sourceUrl": "https://esparkinson.es/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "alcer",
+    "category": "salud",
+    "name": "Federación Nacional ALCER",
+    "description": "Información y apoyo en enfermedad renal.",
+    "url": "https://alcer.org/",
+    "sourceUrl": "https://alcer.org/",
+    "reviewedAt": "2026-09-18"
+  },
+  {
+    "id": "fedhemo",
+    "category": "salud",
+    "name": "Fedhemo",
+    "description": "Hemofilia y otras coagulopatías.",
+    "url": "https://fedhemo.com/",
+    "sourceUrl": "https://fedhemo.com/",
     "reviewedAt": "2026-09-18"
   }
 ]

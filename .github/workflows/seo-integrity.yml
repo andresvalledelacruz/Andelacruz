@@ -176,7 +176,8 @@ jobs:
               parser = PageParser()
               parser.feed(html)
 
-              assert parser.lang and parser.lang.lower().startswith('es'), f'Missing/invalid html lang on {url}'
+              expected_lang = {'/ayuda/en/': 'en', '/ayuda/fr/': 'fr', '/ayuda/pt/': 'pt'}.get(urlparse(url).path, 'es')
+              assert parser.lang == expected_lang, f'Missing/invalid html lang on {url}: expected {expected_lang}'
               assert parser.title, f'Missing title on {url}'
               assert 15 <= len(parser.title) <= 90, f'Title length outside guardrail on {url}: {len(parser.title)} chars'
               if parser.title in seen_titles:

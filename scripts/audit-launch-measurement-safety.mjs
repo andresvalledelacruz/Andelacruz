@@ -12,11 +12,14 @@ const SAFE_PAYLOAD_KEYS = ['p_country_code', 'p_device_class', 'p_path', 'p_refe
 const APPROVED_ANALYTICS_ORIGIN = 'https://enspficpubtttybpzhph.supabase.co';
 const APPROVED_HOME_EXTERNAL_MODULE = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 const PINNED_MEASUREMENT_FILES = new Map([
+  // Reviewed 2026-09-20: pure multilingual topic matching and local UI, no network/storage.
+  ['international-help-ui.js', '4c1e7bd5c5b5027939fbf76ac3fc921d67acd592469525461dbf41d57f4c6d84'],
+  ['src/international-help.js', 'e7cb20378318e1a3964181bad53c348e68c5b6ee15539b6bae1b1034d8a0c1bb'],
   ['app.js', 'afac2737553d45aa9275b551c9ebb734ee5ead06b7cfbe8dec59b0a225420238'],
   ['public-page-runtime.js', 'a0654d52caf4b7fbb5c191a609a6336c8d25ff8814aadd7142afc811ca405845'],
   ['visitor-analytics.js', '3ca9ed490f749aea8f9728e0f762a26c42f4d390658954fbb13dd98b1cc99031'],
   ['supabase/migrations/20260830002000_add_privacy_safe_pageview_analytics.sql', '384c3210cd9e38c9922efda675eb9eae1e0104e0dc77103075c0cb08e61f5a9c'],
-  ['buscar/index.html', '97fc7f3a439f6a6f9e7ce3339e0b45b6ba8eebdf821e9a6949b2a1356ef6f2f4'],
+  ['buscar/index.html', 'e0c3660d79974a8d09ae5cfa91e6c0a4d920a46862a7211d5cab0d0d124d3ea5'],
   ['app-core.js', 'ff19669031de4d79412b72674971e5b443d022fc44eb907e76154953e231e67f'],
   ['next-step-adapter.js', '488372c8bde96402afe8bf87fae0a6ff368a06e9cab69c3090f7e03419436641'],
   ['next-step-guidance.js', 'ead14c25e029c01173f01f1cae6047e13644b329e073d6792da8f8e8c8268915'],
@@ -26,7 +29,7 @@ const PINNED_MEASUREMENT_FILES = new Map([
   ['src/search-clarification.js', '4044c9d91594583cb3ff78eb696c0eca73257dd558917ebf81ba5493f63ee55c'],
   // Reviewed 2026-09-17: bounded lexical normalization, no network/storage or query retention.
   // Reviewed 2026-09-19: bounded phrase aliases and conversation guide; no I/O or query retention.
-  ['src/search-content-catalog.js', 'fcd0b72eb1d2464343437874b934d4d555035d5d983c45d1959d945638fa0a7a'],
+  ['src/search-content-catalog.js', 'd15f705dc482a1c78d461e5965a6617a087d54680a7f339176406b0d190c665a'],
   ['src/search-crisis-router.js', '876392e7eda7e9ba2097d46d0d06c33eb073918c9c8b70f0154ac08a2ffa6d2d'],
   ['src/search-normalization.js', '69577ab77552fa85a4cb5596054c27ff0107cecdbcc1c9e4b3770b640e7c4b3e'],
   ['src/suicide-context-classifier.js', '2cf96cb615bcce941ab1a8546a6a1ede8cd8d66698d194759696d2a84e880d17'],
@@ -283,7 +286,7 @@ export async function auditHtmlEntry({ root = DEFAULT_ROOT, htmlFile, protectedS
     .filter((item) => stripComments(item.source).trim())
     .map((item) => createHash('sha256').update(item.source).digest('hex'))
     .sort();
-  return { htmlFile, failures: [...new Set(failures)], files: [...closure.files.keys()].map((file) => path.relative(closure.root, file)).sort(), inline_hashes: inlineHashes };
+  return { htmlFile, failures: [...new Set(failures)], files: [...closure.files.keys()].map((file) => path.relative(closure.root, file).split(path.sep).join('/')).sort(), inline_hashes: inlineHashes };
 }
 
 export async function auditAnalyticsRuntime({ root = DEFAULT_ROOT, analyticsFile = ANALYTICS_FILE }) {
@@ -386,7 +389,7 @@ export async function auditLaunchMeasurementSafety({ root = DEFAULT_ROOT } = {})
     const result = await auditHtmlEntry({ root: rootReal, htmlFile, protectedSurface: true });
     surfaces.push({ route, ...result });
     failures.push(...result.failures);
-    const approved = route === '/buscar/' ? APPROVED_SEARCH_CLOSURE : [];
+    const approved = route === '/buscar/' ? APPROVED_SEARCH_CLOSURE : /^\/ayuda\/(es|en|fr|pt)\/$/.test(route) ? ['international-help-ui.js', 'src/international-help.js'] : [];
     if (JSON.stringify(result.files) !== JSON.stringify(approved)) failures.push(`protected surface dependency set changed: ${route}`);
     if (route !== '/buscar/') {
       const approvedInline = APPROVED_PROTECTED_INLINE.get(route) ?? [];

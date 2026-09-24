@@ -3,9 +3,10 @@ import assert from 'node:assert/strict';
 import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { auditLaunchMeasurementSafety } from '../scripts/audit-launch-measurement-safety-v2.mjs';
 
-const ROOT = path.resolve(new URL('..', import.meta.url).pathname);
+const ROOT = fileURLToPath(new URL('..', import.meta.url));
 
 async function fixture(mutator) {
   const root = await mkdtemp(path.join(os.tmpdir(), 'measurement-gate-'));
