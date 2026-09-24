@@ -106,7 +106,8 @@ export function auditHtml(html, source = '<memory>') {
   const htmlTag = html.match(/<html\b[^>]*>/i)?.[0];
   const htmlAttrs = htmlTag ? attrsFrom(htmlTag) : new Map();
   const lang = htmlAttrs.get('lang') || '';
-  if (!/^es(?:-|$)/i.test(lang)) fail('html debe declarar lang="es" o variante española');
+  const expectedLanguage = source.match(/\/ayuda\/(en|fr|pt)\//)?.[1] || 'es';
+  if (!(new RegExp(`^${expectedLanguage}(?:-|$)`, 'i')).test(lang)) fail(`html debe declarar lang="${expectedLanguage}" o variante regional`);
 
   if (!/<meta\b[^>]*name=["']viewport["'][^>]*>/i.test(html)) fail('falta meta viewport');
 

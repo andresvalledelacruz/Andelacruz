@@ -19,6 +19,14 @@ Este inventario sirve como control conservador para separar contenido crítico d
 
 | `/internacional.html` | acceso a orientación y emergencias de siete países | sin scripts, sin monetización, fuentes y alcance territorial explícitos |
 
+| `/ayuda/es/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
+
+| `/ayuda/en/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
+
+| `/ayuda/fr/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
+
+| `/ayuda/pt/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
+
 ## Regla de alta
 
 Toda nueva superficie P0/P1 debe entrar en este inventario y quedar cubierta por `tests/p0-p1-noncommercial-invariant.test.mjs` dentro del mismo PR. Si necesita recursos oficiales específicos, el Safety Gate debe comprobarlos explícitamente.

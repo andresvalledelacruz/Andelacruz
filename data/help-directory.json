@@ -1,0 +1,3330 @@
+{
+  "countries": {
+    "ES": "España",
+    "MX": "México",
+    "AR": "Argentina",
+    "CO": "Colombia",
+    "CL": "Chile",
+    "PT": "Portugal",
+    "FR": "Francia",
+    "GB": "Reino Unido",
+    "EU": "Unión Europea"
+  },
+  "categories": {
+    "humanitaria": "Acción humanitaria y educación",
+    "emocional": "Apoyo emocional y adicciones",
+    "social": "Apoyo social",
+    "consumo": "Consumo y derechos financieros",
+    "discapacidad": "Discapacidad y autonomía",
+    "igualdad": "Igualdad y protección",
+    "infancia": "Familia, infancia y juventud",
+    "profesional": "Organizaciones profesionales",
+    "refugio": "Refugio y migración",
+    "salud": "Salud y familias",
+    "empleo": "Trabajo y prestaciones",
+    "vivienda": "Vivienda y suministros",
+    "duelo": "Duelo y trámites tras un fallecimiento"
+  },
+  "records": [
+    {
+      "id": "entreculturas",
+      "category": "humanitaria",
+      "name": "Entreculturas",
+      "description": "Educación, inclusión y justicia social.",
+      "url": "https://www.entreculturas.org/",
+      "sourceUrl": "https://www.entreculturas.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "mdm",
+      "category": "humanitaria",
+      "name": "Médicos del Mundo España",
+      "description": "Derecho a la salud e intervención social.",
+      "url": "https://www.medicosdelmundo.org/",
+      "sourceUrl": "https://www.medicosdelmundo.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "msf",
+      "category": "humanitaria",
+      "name": "Médicos Sin Fronteras España",
+      "description": "Acción médico-humanitaria internacional.",
+      "url": "https://www.msf.es/",
+      "sourceUrl": "https://www.msf.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-co-142",
+      "category": "emocional",
+      "name": "Línea 106 y apoyo territorial",
+      "description": "Apoyo emocional y adicciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CO",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.minsalud.gov.co/salud/publica/salud-mental/Paginas/linea-106.aspx",
+      "sourceUrl": "https://www.minsalud.gov.co/salud/publica/salud-mental/Paginas/linea-106.aspx",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:56.171Z",
+        "title": "Línea 106",
+        "discoveredAt": "https://www.minsalud.gov.co/salud/publica/salud-mental/Paginas/linea-106.aspx"
+      }
+    },
+    {
+      "id": "official-mx-108",
+      "category": "emocional",
+      "name": "Línea de la Vida",
+      "description": "Apoyo emocional y adicciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "MX",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.gob.mx/conasama/es/articulos/linea-de-la-vida-800-911-2000?idiom=es",
+      "sourceUrl": "https://www.gob.mx/conasama/es/articulos/linea-de-la-vida-800-911-2000?idiom=es",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:45.302Z",
+        "title": "La Línea de la Vida, te escucha | Comisión Nacional de Salud Mental y Adicciones | Gobierno | gob.mx",
+        "discoveredAt": "https://www.gob.mx/conasama/es/articulos/linea-de-la-vida-800-911-2000?idiom=es"
+      }
+    },
+    {
+      "id": "official-ar-124",
+      "category": "emocional",
+      "name": "Orientación y apoyo en urgencias de salud mental",
+      "description": "Apoyo emocional y adicciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/noticias/orientacion-y-apoyo-en-la-urgencia-de-salud-mental",
+      "sourceUrl": "https://www.argentina.gob.ar/noticias/orientacion-y-apoyo-en-la-urgencia-de-salud-mental",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:51.931Z",
+        "title": "Orientación y Apoyo en la Urgencia de Salud Mental | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/noticias/orientacion-y-apoyo-en-la-urgencia-de-salud-mental"
+      }
+    },
+    {
+      "id": "proyectohombre",
+      "category": "emocional",
+      "name": "Proyecto Hombre",
+      "description": "Prevención y atención de adicciones.",
+      "url": "https://proyectohombre.es/asociacion-proyecto-hombre/",
+      "sourceUrl": "https://proyectohombre.es/asociacion-proyecto-hombre/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-ar-117",
+      "category": "emocional",
+      "name": "SEDRONAR: acompañamiento ante consumos",
+      "description": "Apoyo emocional y adicciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/salud/sedronar",
+      "sourceUrl": "https://www.argentina.gob.ar/salud/sedronar",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:50.087Z",
+        "title": "Sedronar | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/jefatura/sedronar"
+      }
+    },
+    {
+      "id": "esperanza",
+      "category": "emocional",
+      "name": "Teléfono de la Esperanza",
+      "description": "Escucha y apoyo emocional en crisis.",
+      "url": "https://telefonodelaesperanza.org/intervencion-en-crisis",
+      "sourceUrl": "https://telefonodelaesperanza.org/intervencion-en-crisis",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "unad",
+      "category": "emocional",
+      "name": "UNAD",
+      "description": "Red de atención a las adicciones.",
+      "url": "https://www.unad.org/",
+      "sourceUrl": "https://www.unad.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-ar-143",
+      "category": "social",
+      "name": "ANSES: seguridad social",
+      "description": "Apoyo social. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/anses",
+      "sourceUrl": "https://www.argentina.gob.ar/anses",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:21:20.032Z",
+        "title": "ANSES | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/anses"
+      }
+    },
+    {
+      "id": "official-ar-119",
+      "category": "social",
+      "name": "Atención a la ciudadanía en Mi Argentina",
+      "description": "Apoyo social. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/miargentina/mesadeayuda",
+      "sourceUrl": "https://www.argentina.gob.ar/miargentina/mesadeayuda",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:50.401Z",
+        "title": "Mesa de ayuda de Mi Argentina | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/miargentina/mesadeayuda"
+      }
+    },
+    {
+      "id": "official-cl-133",
+      "category": "social",
+      "name": "Bonos y beneficios del Estado",
+      "description": "Apoyo social. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CL",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.chileatiende.gob.cl/temas/bonos-y-beneficios-del-estado",
+      "sourceUrl": "https://www.chileatiende.gob.cl/temas/bonos-y-beneficios-del-estado",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:53.228Z",
+        "title": "ChileAtiende - Bonos y beneficios del Estado",
+        "discoveredAt": "https://www.chileatiende.gob.cl/temas/bonos-y-beneficios-del-estado"
+      }
+    },
+    {
+      "id": "caritas",
+      "category": "social",
+      "name": "Cáritas Española",
+      "description": "Acogida y acompañamiento social.",
+      "url": "https://www.caritas.es/",
+      "sourceUrl": "https://www.caritas.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-cl-121",
+      "category": "social",
+      "name": "ChileAtiende: atención telefónica",
+      "description": "Apoyo social. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CL",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.chileatiende.gob.cl/ayuda/atencion-telefonica",
+      "sourceUrl": "https://www.chileatiende.gob.cl/ayuda/atencion-telefonica",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:51.188Z",
+        "title": "ChileAtiende",
+        "discoveredAt": "https://www.chileatiende.gob.cl/ayuda/atencion-telefonica"
+      }
+    },
+    {
+      "id": "official-cl-122",
+      "category": "social",
+      "name": "ChileAtiende: sucursales y horarios",
+      "description": "Apoyo social. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CL",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.chileatiende.gob.cl/ayuda/sucursales",
+      "sourceUrl": "https://www.chileatiende.gob.cl/ayuda/sucursales",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:51.563Z",
+        "title": "ChileAtiende",
+        "discoveredAt": "https://www.chileatiende.gob.cl/ayuda/sucursales"
+      }
+    },
+    {
+      "id": "cruzroja",
+      "category": "social",
+      "name": "Cruz Roja Española",
+      "description": "Apoyo social y atención a la vulnerabilidad.",
+      "url": "https://www2.cruzroja.es/",
+      "sourceUrl": "https://www2.cruzroja.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "eapn",
+      "category": "social",
+      "name": "EAPN España",
+      "description": "Red contra la pobreza y la exclusión social.",
+      "url": "https://www.eapn.es/",
+      "sourceUrl": "https://www.eapn.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "fesbal",
+      "category": "social",
+      "name": "FESBAL",
+      "description": "Federación Española de Bancos de Alimentos.",
+      "url": "https://fesbal.org/",
+      "sourceUrl": "https://fesbal.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "gitanos",
+      "category": "social",
+      "name": "Fundación Secretariado Gitano",
+      "description": "Inclusión, educación y empleo.",
+      "url": "https://www.gitanos.org/",
+      "sourceUrl": "https://www.gitanos.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "hogarsi",
+      "category": "social",
+      "name": "HOGAR SÍ",
+      "description": "Soluciones y derechos ante el sinhogarismo.",
+      "url": "https://www.hogarsi.org/somos/",
+      "sourceUrl": "https://www.hogarsi.org/somos/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-cl-129",
+      "category": "social",
+      "name": "Liquidación de pensión o beneficio",
+      "description": "Apoyo social. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CL",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.chileatiende.gob.cl/fichas/5250-liquidacion-de-pago-de-pension-o-beneficio",
+      "sourceUrl": "https://www.chileatiende.gob.cl/fichas/5250-liquidacion-de-pago-de-pension-o-beneficio",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:52.928Z",
+        "title": "ChileAtiende - Liquidación de beneficio",
+        "discoveredAt": "https://www.chileatiende.gob.cl/fichas/5250-liquidacion-de-pago-de-pension-o-beneficio"
+      }
+    },
+    {
+      "id": "official-cl-127",
+      "category": "social",
+      "name": "Pagos por cobrar del IPS",
+      "description": "Apoyo social. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CL",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.chileatiende.gob.cl/fichas/114831-pagos-por-cobrar-del-instituto-de-prevision-social-ips",
+      "sourceUrl": "https://www.chileatiende.gob.cl/fichas/114831-pagos-por-cobrar-del-instituto-de-prevision-social-ips",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:52.672Z",
+        "title": "Chileatiende - Pagos por cobrar del Instituto de Previsión Social (IPS)",
+        "discoveredAt": "https://www.chileatiende.gob.cl/fichas/114831-pagos-por-cobrar-del-instituto-de-prevision-social-ips"
+      }
+    },
+    {
+      "id": "official-cl-130",
+      "category": "social",
+      "name": "Registro Social de Hogares y Cartola Hogar",
+      "description": "Apoyo social. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CL",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.chileatiende.gob.cl/fichas/42344-registro-social-de-hogares-rsh-y-cartola-hogar",
+      "sourceUrl": "https://www.chileatiende.gob.cl/fichas/42344-registro-social-de-hogares-rsh-y-cartola-hogar",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:52.954Z",
+        "title": "Chileatiende - Registro Social de Hogares (RSH) y Cartola Hogar",
+        "discoveredAt": "https://www.chileatiende.gob.cl/fichas/42344-registro-social-de-hogares-rsh-y-cartola-hogar"
+      }
+    },
+    {
+      "id": "official-pt-132",
+      "category": "social",
+      "name": "Subsídios e apoios sociais",
+      "description": "Apoyo social. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "PT",
+      "language": "pt",
+      "kind": "resource",
+      "url": "https://www.gov.pt/guias/subsidios-e-apoios-sociais",
+      "sourceUrl": "https://www.gov.pt/guias/subsidios-e-apoios-sociais",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:53.219Z",
+        "title": "gov.pt",
+        "discoveredAt": "https://www.gov.pt/guias/subsidios-e-apoios-sociais"
+      }
+    },
+    {
+      "id": "official-eu-098",
+      "category": "consumo",
+      "name": "Acciones legales de los consumidores.",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/consumers-dispute-resolution/legal-action-consumers/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/consumers-dispute-resolution/legal-action-consumers/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.376Z",
+        "title": "Acciones legales de los consumidores: procedimientos judiciales, acciones de representación y procedimientos de escasa cuantía - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-097",
+      "category": "consumo",
+      "name": "Cláusulas contractuales abusivas",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/unfair-treatment/unfair-contract-terms/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/unfair-treatment/unfair-contract-terms/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.373Z",
+        "title": "Cláusulas contractuales abusivas - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-mx-145",
+      "category": "consumo",
+      "name": "CONDUSEF: protección de usuarios financieros",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "MX",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.gob.mx/condusef",
+      "sourceUrl": "https://www.gob.mx/condusef",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:21:20.597Z",
+        "title": "Comisión Nacional para la Protección y Defensa de los Usuarios de Servicios Financieros | Gobierno | gob.mx",
+        "discoveredAt": "https://www.gob.mx/condusef"
+      }
+    },
+    {
+      "id": "official-eu-092",
+      "category": "consumo",
+      "name": "Créditos al consumo y préstamos",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/financial-products-and-services/consumer-credits-and-loans/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/financial-products-and-services/consumer-credits-and-loans/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.275Z",
+        "title": "Créditos al consumo y préstamos - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-093",
+      "category": "consumo",
+      "name": "Cuentas bancarias en la UE:",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/financial-products-and-services/bank-accounts-eu/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/financial-products-and-services/bank-accounts-eu/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.282Z",
+        "title": "Abrir una cuenta bancaria básica en la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-ar-113",
+      "category": "consumo",
+      "name": "Defensa del consumidor",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/economia/industria-y-comercio/defensadelconsumidor",
+      "sourceUrl": "https://www.argentina.gob.ar/economia/industria-y-comercio/defensadelconsumidor",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:48.845Z",
+        "title": "Defensa del consumidor | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/produccion/defensadelconsumidor"
+      }
+    },
+    {
+      "id": "official-eu-094",
+      "category": "consumo",
+      "name": "Devoluciones",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/shopping/returns/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/shopping/returns/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.283Z",
+        "title": "Devoluciones y derecho de desistimiento - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-088",
+      "category": "consumo",
+      "name": "Garantías",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/shopping/guarantees/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/shopping/guarantees/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.187Z",
+        "title": "Garantías de los bienes comprados en la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-095",
+      "category": "consumo",
+      "name": "Prácticas comerciales desleales",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/unfair-treatment/unfair-commercial-practices/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/unfair-treatment/unfair-commercial-practices/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.284Z",
+        "title": "Prácticas comerciales desleales y que están en la lista negra - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-mx-103",
+      "category": "consumo",
+      "name": "PROFECO: derechos del consumidor",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "MX",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.gob.mx/profeco",
+      "sourceUrl": "https://www.gob.mx/profeco",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:35.109Z",
+        "title": "Procuraduría Federal del Consumidor | Gobierno | gob.mx",
+        "discoveredAt": "https://www.gob.mx/profeco"
+      }
+    },
+    {
+      "id": "official-eu-096",
+      "category": "consumo",
+      "name": "Protección de datos y privacidad online",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/internet-telecoms/data-protection-online-privacy/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/internet-telecoms/data-protection-online-privacy/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.298Z",
+        "title": "Protección de datos y privacidad online - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-101",
+      "category": "consumo",
+      "name": "Reclamaciones y resolución de litigios",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/energy-supply/complaints-dispute-resolution/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/energy-supply/complaints-dispute-resolution/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.383Z",
+        "title": "Reclamaciones y resolución de litigios con proveedores de energía - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-100",
+      "category": "consumo",
+      "name": "Resolución informal/alternativa de litigios en materia de consumo",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/consumers-dispute-resolution/informal-alternative-dispute-resolution/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/consumers-dispute-resolution/informal-alternative-dispute-resolution/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.380Z",
+        "title": "Resolución informal de litigios en materia de consumo, resolución alternativa de litigios, resolución informal extrajudicial - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-091",
+      "category": "consumo",
+      "name": "Seguridad de los productos",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/shopping/product-safety/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/shopping/product-safety/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.274Z",
+        "title": "Seguridad de los productos - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-099",
+      "category": "consumo",
+      "name": "Servicios de energía: acceso y utilización",
+      "description": "Consumo y derechos financieros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/consumers/energy-supply/access-use-energy-services/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/consumers/energy-supply/access-use-energy-services/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.379Z",
+        "title": "UE - Servicios de energía: acceso y utilización - Tu Europa - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-pt-131",
+      "category": "discapacidad",
+      "name": "Apoios para pessoas com doenças incapacitantes",
+      "description": "Discapacidad y autonomía. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "PT",
+      "language": "pt",
+      "kind": "resource",
+      "url": "https://www.gov.pt/guias/apoios-para-pessoas-com-doencas-incapacitantes",
+      "sourceUrl": "https://www.gov.pt/guias/apoios-para-pessoas-com-doencas-incapacitantes",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:53.197Z",
+        "title": "gov.pt",
+        "discoveredAt": "https://www.gov.pt/guias/apoios-para-pessoas-com-doencas-incapacitantes"
+      }
+    },
+    {
+      "id": "official-pt-138",
+      "category": "discapacidad",
+      "name": "Atendimento em Língua Gestual Portuguesa",
+      "description": "Discapacidad y autonomía. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "PT",
+      "language": "pt",
+      "kind": "resource",
+      "url": "https://www.gov.pt/guias/atendimento-em-lingua-gestual-portuguesa-lgp",
+      "sourceUrl": "https://www.gov.pt/guias/atendimento-em-lingua-gestual-portuguesa-lgp",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:53.598Z",
+        "title": "gov.pt",
+        "discoveredAt": "https://www.gov.pt/guias/atendimento-em-lingua-gestual-portuguesa-lgp"
+      }
+    },
+    {
+      "id": "autismo",
+      "category": "discapacidad",
+      "name": "Autismo España",
+      "description": "Derechos y apoyos para personas autistas.",
+      "url": "https://autismo.org.es/nosotros/quienes-somos/",
+      "sourceUrl": "https://autismo.org.es/nosotros/quienes-somos/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "cnse",
+      "category": "discapacidad",
+      "name": "CNSE",
+      "description": "Derechos de las personas sordas.",
+      "url": "https://www.cnse.es/",
+      "sourceUrl": "https://www.cnse.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "cocemfe",
+      "category": "discapacidad",
+      "name": "COCEMFE",
+      "description": "Discapacidad física y orgánica; derechos.",
+      "url": "https://www.cocemfe.es/",
+      "sourceUrl": "https://www.cocemfe.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "aspace",
+      "category": "discapacidad",
+      "name": "Confederación ASPACE",
+      "description": "Parálisis cerebral y grandes necesidades de apoyo.",
+      "url": "https://www.aspace.org/",
+      "sourceUrl": "https://www.aspace.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "fedace",
+      "category": "discapacidad",
+      "name": "Daño Cerebral Estatal (FEDACE)",
+      "description": "Daño cerebral adquirido y apoyo familiar.",
+      "url": "https://fedace.org/",
+      "sourceUrl": "https://fedace.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "down",
+      "category": "discapacidad",
+      "name": "Down España",
+      "description": "Síndrome de Down y apoyo a familias.",
+      "url": "https://www.sindromedown.org/",
+      "sourceUrl": "https://www.sindromedown.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "aspaym",
+      "category": "discapacidad",
+      "name": "Federación Nacional ASPAYM",
+      "description": "Lesión medular y discapacidad física.",
+      "url": "https://www.aspaym.org/",
+      "sourceUrl": "https://www.aspaym.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "fiapas",
+      "category": "discapacidad",
+      "name": "FIAPAS",
+      "description": "Familias de personas sordas.",
+      "url": "https://fiapas.es/",
+      "sourceUrl": "https://fiapas.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "fonce",
+      "category": "discapacidad",
+      "name": "Fundación ONCE",
+      "description": "Empleo, formación y accesibilidad.",
+      "url": "https://www.fundaciononce.es/es",
+      "sourceUrl": "https://www.fundaciononce.es/es",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "once",
+      "category": "discapacidad",
+      "name": "ONCE",
+      "description": "Autonomía e inclusión con discapacidad visual.",
+      "url": "https://www.once.es/",
+      "sourceUrl": "https://www.once.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "plena",
+      "category": "discapacidad",
+      "name": "Plena inclusión España",
+      "description": "Discapacidad intelectual y del desarrollo.",
+      "url": "https://www.plenainclusion.org/",
+      "sourceUrl": "https://www.plenainclusion.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-ar-114",
+      "category": "discapacidad",
+      "name": "Secretaría Nacional de Discapacidad",
+      "description": "Discapacidad y autonomía. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/salud/senadis",
+      "sourceUrl": "https://www.argentina.gob.ar/salud/senadis",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:48.908Z",
+        "title": "Secretaría Nacional de Discapacidad | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/andis"
+      }
+    },
+    {
+      "id": "apramp",
+      "category": "igualdad",
+      "name": "APRAMP",
+      "description": "Apoyo frente a la trata y explotación sexual.",
+      "url": "https://apramp.org/",
+      "sourceUrl": "https://apramp.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-ar-123",
+      "category": "igualdad",
+      "name": "Centros de Acceso a la Justicia",
+      "description": "Igualdad y protección. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/justicia/afianzar/caj",
+      "sourceUrl": "https://www.argentina.gob.ar/justicia/afianzar/caj",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:51.648Z",
+        "title": "Centros de Acceso a la Justicia | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/justicia/afianzar/caj"
+      }
+    },
+    {
+      "id": "official-mx-107",
+      "category": "igualdad",
+      "name": "CNDH: derechos humanos",
+      "description": "Igualdad y protección. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "MX",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.cndh.org.mx/",
+      "sourceUrl": "https://www.cndh.org.mx/",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:36.744Z",
+        "title": "CNDH | Comisión Nacional de los Derechos Humanos",
+        "discoveredAt": "https://www.cndh.org.mx/"
+      }
+    },
+    {
+      "id": "official-co-140",
+      "category": "igualdad",
+      "name": "Defensoría del Pueblo",
+      "description": "Igualdad y protección. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CO",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.defensoria.gov.co/",
+      "sourceUrl": "https://www.defensoria.gov.co/",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:55.621Z",
+        "title": "Defensoría del Pueblo de Colombia - Defensoria",
+        "discoveredAt": "https://www.defensoria.gov.co/"
+      }
+    },
+    {
+      "id": "official-ar-111",
+      "category": "igualdad",
+      "name": "Derecho Fácil: situaciones cotidianas",
+      "description": "Igualdad y protección. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/justicia/derechofacil/aplicalaley",
+      "sourceUrl": "https://www.argentina.gob.ar/justicia/derechofacil/aplicalaley",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:46.607Z",
+        "title": "Aplicá la ley | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/justicia/derechofacil/aplicalaley"
+      }
+    },
+    {
+      "id": "felgtbi",
+      "category": "igualdad",
+      "name": "FELGTBI+",
+      "description": "Derechos y entidades del colectivo LGTBI+.",
+      "url": "https://felgtbi.org/quienes-somos/",
+      "sourceUrl": "https://felgtbi.org/quienes-somos/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "anabella",
+      "category": "igualdad",
+      "name": "Fundación Ana Bella",
+      "description": "Apoyo a mujeres ante violencia de género.",
+      "url": "https://www.fundacionanabella.org/",
+      "sourceUrl": "https://www.fundacionanabella.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "mujeres",
+      "category": "igualdad",
+      "name": "Fundación Mujeres",
+      "description": "Igualdad y prevención de la violencia.",
+      "url": "https://fundacionmujeres.es/conocenos/",
+      "sourceUrl": "https://fundacionmujeres.es/conocenos/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-ar-118",
+      "category": "igualdad",
+      "name": "Protección contra toda forma de violencia",
+      "description": "Igualdad y protección. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/justicia/proteccion-contra-toda-forma-de-violencia",
+      "sourceUrl": "https://www.argentina.gob.ar/justicia/proteccion-contra-toda-forma-de-violencia",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:50.356Z",
+        "title": "Protección contra toda forma de violencia | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/linea144"
+      }
+    },
+    {
+      "id": "official-co-139",
+      "category": "igualdad",
+      "name": "Unidad para las Víctimas",
+      "description": "Igualdad y protección. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CO",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.unidadvictimas.gov.co/",
+      "sourceUrl": "https://www.unidadvictimas.gov.co/",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:54.784Z",
+        "title": "Unidad para las Víctimas",
+        "discoveredAt": "https://www.unidadvictimas.gov.co/"
+      }
+    },
+    {
+      "id": "official-fr-049",
+      "category": "infancia",
+      "name": "Aides financières pour la scolarité",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N67",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N67",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.102Z",
+        "title": "Aides financières pour la scolarité | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19805"
+      }
+    },
+    {
+      "id": "aldeas",
+      "category": "infancia",
+      "name": "Aldeas Infantiles SOS España",
+      "description": "Protección de la infancia y apoyo familiar.",
+      "url": "https://www.aldeasinfantiles.es/",
+      "sourceUrl": "https://www.aldeasinfantiles.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-fr-054",
+      "category": "infancia",
+      "name": "Allocations destinées aux familles",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N156",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N156",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.121Z",
+        "title": "Allocations destinées aux familles | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19805"
+      }
+    },
+    {
+      "id": "official-pt-144",
+      "category": "infancia",
+      "name": "Apoio à família",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "PT",
+      "language": "pt",
+      "kind": "resource",
+      "url": "https://www.gov.pt/guias/apoio-a-familia",
+      "sourceUrl": "https://www.gov.pt/guias/apoio-a-familia",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:21:20.187Z",
+        "title": "gov.pt",
+        "discoveredAt": "https://www.gov.pt/guias/apoio-a-familia"
+      }
+    },
+    {
+      "id": "official-fr-051",
+      "category": "infancia",
+      "name": "Autorité parentale",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N135",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N135",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.119Z",
+        "title": "Autorité parentale | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19805"
+      }
+    },
+    {
+      "id": "official-cl-128",
+      "category": "infancia",
+      "name": "Bono por Hijo",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CL",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.chileatiende.gob.cl/fichas/5194-bono-por-hijo",
+      "sourceUrl": "https://www.chileatiende.gob.cl/fichas/5194-bono-por-hijo",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:52.914Z",
+        "title": "Chileatiende - Bono por Hijo",
+        "discoveredAt": "https://www.chileatiende.gob.cl/fichas/5194-bono-por-hijo"
+      }
+    },
+    {
+      "id": "official-gb-022",
+      "category": "infancia",
+      "name": "Childcare",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/childcare-parenting/childcare",
+      "sourceUrl": "https://www.gov.uk/browse/childcare-parenting/childcare",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.072Z",
+        "title": "Childcare - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/childcare-parenting"
+      }
+    },
+    {
+      "id": "official-mx-104",
+      "category": "infancia",
+      "name": "DIF Nacional: asistencia social",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "MX",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.gob.mx/difnacional",
+      "sourceUrl": "https://www.gob.mx/difnacional",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:35.148Z",
+        "title": "Sistema Nacional DIF | Gobierno | gob.mx",
+        "discoveredAt": "https://www.gob.mx/difnacional"
+      }
+    },
+    {
+      "id": "official-gb-026",
+      "category": "infancia",
+      "name": "Divorce, separation and legal issues",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/childcare-parenting/divorce-separation-legal",
+      "sourceUrl": "https://www.gov.uk/browse/childcare-parenting/divorce-separation-legal",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.374Z",
+        "title": "Divorce, separation and legal issues - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/childcare-parenting"
+      }
+    },
+    {
+      "id": "official-fr-050",
+      "category": "infancia",
+      "name": "Divorce, séparation de corps",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N159",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N159",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.103Z",
+        "title": "Divorce, séparation de corps | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19805"
+      }
+    },
+    {
+      "id": "official-eu-086",
+      "category": "infancia",
+      "name": "Divorcio y separación legal",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/family/couple/divorce-separation/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/family/couple/divorce-separation/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.180Z",
+        "title": "Separación legal y divorcio en la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "fad",
+      "category": "infancia",
+      "name": "Fad Juventud",
+      "description": "Orientación juvenil, familias y prevención.",
+      "url": "https://fad.es/",
+      "sourceUrl": "https://fad.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-eu-085",
+      "category": "duelo",
+      "name": "Fallecimiento y repatriación",
+      "description": "Trámites tras un fallecimiento en la UE. Consulta las condiciones del país en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/family/inheritances/death-repatriation/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/family/inheritances/death-repatriation/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.168Z",
+        "title": "Normas en diferentes países de la UE para registrar un fallecimiento y repatriar los restos a otro país de la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-gb-024",
+      "category": "infancia",
+      "name": "Financial help if you have children",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/childcare-parenting/financial-help-children",
+      "sourceUrl": "https://www.gov.uk/browse/childcare-parenting/financial-help-children",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.165Z",
+        "title": "Financial help if you have children - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/childcare-parenting"
+      }
+    },
+    {
+      "id": "anar",
+      "category": "infancia",
+      "name": "Fundación ANAR",
+      "description": "Teléfono y chat para menores en España; acceso diferenciado para familias y centros escolares.",
+      "url": "https://www.anar.org/que-hacemos/telefono-chat-anar/",
+      "sourceUrl": "https://www.anar.org/que-hacemos/telefono-chat-anar/",
+      "reviewedAt": "2026-09-20",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "diagrama",
+      "category": "infancia",
+      "name": "Fundación Diagrama",
+      "description": "Atención socioeducativa y apoyo familiar.",
+      "url": "https://www.fundaciondiagrama.es/",
+      "sourceUrl": "https://www.fundaciondiagrama.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-co-141",
+      "category": "infancia",
+      "name": "ICBF: bienestar familiar",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CO",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.icbf.gov.co/",
+      "sourceUrl": "https://www.icbf.gov.co/",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:55.697Z",
+        "title": "Inicio | Portal ICBF - Instituto Colombiano de Bienestar Familiar ICBF",
+        "discoveredAt": "https://www.icbf.gov.co/"
+      }
+    },
+    {
+      "id": "official-ar-116",
+      "category": "infancia",
+      "name": "Línea 102: derechos de niños y adolescentes",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/capital-humano/familia/ninez-y-familia/linea-102",
+      "sourceUrl": "https://www.argentina.gob.ar/capital-humano/familia/ninez-y-familia/linea-102",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:49.505Z",
+        "title": "Línea 102 | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/capital-humano/familia/ninez-y-adolescencia/linea-102"
+      }
+    },
+    {
+      "id": "official-eu-087",
+      "category": "infancia",
+      "name": "Obligaciones de alimentos - manutención de los miembros de la familia",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/family/couple/maintenance/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/family/couple/maintenance/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.181Z",
+        "title": "Obligaciones de alimentos transfronterizas en la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-ar-112",
+      "category": "infancia",
+      "name": "Pareja y familia",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/tema/parejayfamilia",
+      "sourceUrl": "https://www.argentina.gob.ar/tema/parejayfamilia",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:47.832Z",
+        "title": "Pareja y familia | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/tema/hogar/hijo"
+      }
+    },
+    {
+      "id": "official-gb-021",
+      "category": "infancia",
+      "name": "Pregnancy and birth",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/childcare-parenting/pregnancy-birth",
+      "sourceUrl": "https://www.gov.uk/browse/childcare-parenting/pregnancy-birth",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.070Z",
+        "title": "Pregnancy and birth - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/childcare-parenting"
+      }
+    },
+    {
+      "id": "official-eu-090",
+      "category": "infancia",
+      "name": "Reconocimiento de tus documentos públicos en la UE",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/family/couple/getting-public-documents-accepted/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/family/couple/getting-public-documents-accepted/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.195Z",
+        "title": "Conseguir que otro país de la UE acepte tus documentos públicos (certificado de nacimiento, matrimonio, etc.) - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-083",
+      "category": "infancia",
+      "name": "Responsabilidad parental",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/family/children/parental-responsibility/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/family/children/parental-responsibility/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.079Z",
+        "title": "Responsabilidad parental y derechos de custodia y visita tras la separación - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "save",
+      "category": "infancia",
+      "name": "Save the Children España",
+      "description": "Protección y derechos de la infancia.",
+      "url": "https://www.savethechildren.es/",
+      "sourceUrl": "https://www.savethechildren.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-gb-025",
+      "category": "infancia",
+      "name": "Schools and education",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/childcare-parenting/schools-education",
+      "sourceUrl": "https://www.gov.uk/browse/childcare-parenting/schools-education",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.352Z",
+        "title": "Schools and education - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/childcare-parenting"
+      }
+    },
+    {
+      "id": "official-fr-052",
+      "category": "infancia",
+      "name": "Séparation des parents",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N18775",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N18775",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.120Z",
+        "title": "Séparation des parents | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19805"
+      }
+    },
+    {
+      "id": "official-eu-082",
+      "category": "infancia",
+      "name": "Sustracción de menores",
+      "description": "Familia, infancia y juventud. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/family/children/abduction/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/family/children/abduction/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.078Z",
+        "title": "Sustracción transfronteriza de menores por sus padres en la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-089",
+      "category": "duelo",
+      "name": "Tramitación de herencias transfronterizas",
+      "description": "Trámites tras un fallecimiento en la UE. Consulta las condiciones del país en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/family/inheritances/managing-inheritance/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/family/inheritances/managing-inheritance/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.190Z",
+        "title": "Tramitar la herencia transfronteriza en la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "unicef",
+      "category": "infancia",
+      "name": "UNICEF España",
+      "description": "Derechos y bienestar de niños y niñas.",
+      "url": "https://www.unicef.es/",
+      "sourceUrl": "https://www.unicef.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "psicologia",
+      "category": "profesional",
+      "name": "Consejo General de la Psicología",
+      "description": "Información y colegios profesionales.",
+      "url": "https://www.cop.es/index.php",
+      "sourceUrl": "https://www.cop.es/index.php",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "trabajosocial",
+      "category": "profesional",
+      "name": "Consejo General del Trabajo Social",
+      "description": "Información y organización profesional.",
+      "url": "https://www.cgtrabajosocial.es/",
+      "sourceUrl": "https://www.cgtrabajosocial.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "accem",
+      "category": "refugio",
+      "name": "Accem",
+      "description": "Apoyo a personas refugiadas y migrantes.",
+      "url": "https://www.accem.es/",
+      "sourceUrl": "https://www.accem.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "cear",
+      "category": "refugio",
+      "name": "CEAR",
+      "description": "Refugio, asilo y acogida.",
+      "url": "https://www.cear.es/",
+      "sourceUrl": "https://www.cear.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "cepaim",
+      "category": "refugio",
+      "name": "CONVIVE Fundación Cepaim",
+      "description": "Inclusión y convivencia intercultural.",
+      "url": "https://www.cepaim.org/",
+      "sourceUrl": "https://www.cepaim.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-eu-070",
+      "category": "refugio",
+      "name": "Cónyuges e hijos que no son ciudadanos de la UE",
+      "description": "Refugio y migración. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/residence/family-residence-rights/non-eu-wife-husband-children/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/residence/family-residence-rights/non-eu-wife-husband-children/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.856Z",
+        "title": "Derechos de residencia de tu cónyuge y tus hijos de países no miembros de la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-068",
+      "category": "refugio",
+      "name": "Demandantes de empleo: derechos de residencia",
+      "description": "Refugio y migración. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/residence/residence-rights/jobseekers/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/residence/residence-rights/jobseekers/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.852Z",
+        "title": "Demandantes de empleo en otros países de la UE: derechos de residencia - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-148",
+      "category": "refugio",
+      "name": "Estudiantes: derechos de residencia",
+      "description": "Refugio y migración. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/residence/residence-rights/students/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/residence/residence-rights/students/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:22:52.868Z",
+        "title": "Estudiantes en otros países de la UE: derechos de residencia - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-ar-120",
+      "category": "refugio",
+      "name": "Migraciones: trámites y orientación",
+      "description": "Refugio y migración. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/migraciones",
+      "sourceUrl": "https://www.argentina.gob.ar/migraciones",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:50.444Z",
+        "title": "Migraciones | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/interior/migraciones"
+      }
+    },
+    {
+      "id": "mpdl",
+      "category": "refugio",
+      "name": "Movimiento por la Paz",
+      "description": "Acción social, derechos y convivencia.",
+      "url": "https://www.mpdl.org/",
+      "sourceUrl": "https://www.mpdl.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-eu-146",
+      "category": "refugio",
+      "name": "Pensionistas: derechos de residencia",
+      "description": "Refugio y migración. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/residence/residence-rights/pensioners/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/residence/residence-rights/pensioners/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:22:52.851Z",
+        "title": "Pensionistas en otros países de la UE: derechos de residencia - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "redacoge",
+      "category": "refugio",
+      "name": "Red Acoge",
+      "description": "Derechos e inclusión de personas migrantes.",
+      "url": "https://redacoge.org/",
+      "sourceUrl": "https://redacoge.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-eu-072",
+      "category": "refugio",
+      "name": "Tarjeta de residencia para familiares que no son ciudadanos de la UE",
+      "description": "Refugio y migración. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/residence/documents-formalities/non-eu-family-members-residence-card/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/residence/documents-formalities/non-eu-family-members-residence-card/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.875Z",
+        "title": "Inscribir a familiares que no son ciudadanos de la UE en otro país de la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-069",
+      "category": "refugio",
+      "name": "Trabajadores: derechos de residencia",
+      "description": "Refugio y migración. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/residence/residence-rights/workers/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/residence/residence-rights/workers/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.854Z",
+        "title": "Trabajadores: derechos de residencia - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "accu",
+      "category": "salud",
+      "name": "ACCU España",
+      "description": "Crohn, colitis ulcerosa y apoyo asociativo.",
+      "url": "https://accuesp.com/",
+      "sourceUrl": "https://accuesp.com/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-fr-039",
+      "category": "salud",
+      "name": "Allocation chômage d'aide au retour à l'emploi (ARE)",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N178",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N178",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.918Z",
+        "title": "Allocation chômage d&#39;aide au retour à l&#39;emploi (ARE) | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19811"
+      }
+    },
+    {
+      "id": "official-fr-048",
+      "category": "salud",
+      "name": "Allocations et aides (AAH, AEEH, PCH...)",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N12230",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N12230",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.023Z",
+        "title": "Handicap : allocations (AAH, AEEH, ...) et aides | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19811"
+      }
+    },
+    {
+      "id": "official-fr-045",
+      "category": "salud",
+      "name": "Allocations et aides aux personnes âgées",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N392",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N392",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.017Z",
+        "title": "Allocations et aides aux personnes âgées | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19811"
+      }
+    },
+    {
+      "id": "official-pt-134",
+      "category": "salud",
+      "name": "Apoios para familiares e cuidadores",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "PT",
+      "language": "pt",
+      "kind": "resource",
+      "url": "https://www.gov.pt/guias/doencas-incapacitantes-apoios-para-familiares-e-cuidadores",
+      "sourceUrl": "https://www.gov.pt/guias/doencas-incapacitantes-apoios-para-familiares-e-cuidadores",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:53.308Z",
+        "title": "gov.pt",
+        "discoveredAt": "https://www.gov.pt/guias/doencas-incapacitantes-apoios-para-familiares-e-cuidadores"
+      }
+    },
+    {
+      "id": "official-eu-073",
+      "category": "salud",
+      "name": "Asistencia sanitaria no programada: pagos y reembolsos",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/payments-reimbursements/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/payments-reimbursements/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.959Z",
+        "title": "Pagos y reembolsos de tratamientos médicos en el extranjero - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "aecc",
+      "category": "salud",
+      "name": "Asociación Española Contra el Cáncer",
+      "description": "Información y apoyo a pacientes y familias.",
+      "url": "https://www.contraelcancer.es/es",
+      "sourceUrl": "https://www.contraelcancer.es/es",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-fr-043",
+      "category": "salud",
+      "name": "Assurance maladie d'un étranger en France",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N31348",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N31348",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.015Z",
+        "title": "Assurance maladie d&#39;un étranger en France | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19811"
+      }
+    },
+    {
+      "id": "ceafa",
+      "category": "salud",
+      "name": "CEAFA",
+      "description": "Alzhéimer y otras demencias; apoyo familiar.",
+      "url": "https://www.ceafa.es/es",
+      "sourceUrl": "https://www.ceafa.es/es",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-eu-076",
+      "category": "salud",
+      "name": "Cobertura médica para estancias temporales",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/temporary-stays/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/temporary-stays/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.964Z",
+        "title": "Cobertura médica para estancias temporales en otro país de la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-pt-137",
+      "category": "salud",
+      "name": "Contactos de emergência em Portugal",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "PT",
+      "language": "pt",
+      "kind": "resource",
+      "url": "https://www.gov.pt/guias/contactos-de-emergencia-em-portugal",
+      "sourceUrl": "https://www.gov.pt/guias/contactos-de-emergencia-em-portugal",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:53.510Z",
+        "title": "gov.pt",
+        "discoveredAt": "https://www.gov.pt/guias/contactos-de-emergencia-em-portugal"
+      }
+    },
+    {
+      "id": "eme",
+      "category": "salud",
+      "name": "Esclerosis Múltiple España",
+      "description": "Recursos sobre esclerosis múltiple.",
+      "url": "https://esclerosismultiple.com/",
+      "sourceUrl": "https://esclerosismultiple.com/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "face",
+      "category": "salud",
+      "name": "FACE",
+      "description": "Celiaquía y red de asociaciones.",
+      "url": "https://celiacos.org/",
+      "sourceUrl": "https://celiacos.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "feder",
+      "category": "salud",
+      "name": "FEDER",
+      "description": "Enfermedades raras y derechos de las familias.",
+      "url": "https://inclusion.enfermedades-raras.org/f-e-d-e-r/",
+      "sourceUrl": "https://inclusion.enfermedades-raras.org/f-e-d-e-r/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "fq",
+      "category": "salud",
+      "name": "Federación Española de Fibrosis Quística",
+      "description": "Información y recursos para las familias.",
+      "url": "https://fibrosisquistica.org/",
+      "sourceUrl": "https://fibrosisquistica.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "parkinson",
+      "category": "salud",
+      "name": "Federación Española de Párkinson",
+      "description": "Información y red de asociaciones.",
+      "url": "https://esparkinson.es/",
+      "sourceUrl": "https://esparkinson.es/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "alcer",
+      "category": "salud",
+      "name": "Federación Nacional ALCER",
+      "description": "Información y apoyo en enfermedad renal.",
+      "url": "https://alcer.org/",
+      "sourceUrl": "https://alcer.org/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "fedhemo",
+      "category": "salud",
+      "name": "Fedhemo",
+      "description": "Hemofilia y otras coagulopatías.",
+      "url": "https://fedhemo.com/",
+      "sourceUrl": "https://fedhemo.com/",
+      "reviewedAt": "2026-09-18",
+      "country": "ES",
+      "language": "es",
+      "kind": "organization"
+    },
+    {
+      "id": "official-fr-047",
+      "category": "salud",
+      "name": "Hébergement social",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N17160",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N17160",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.019Z",
+        "title": "Hébergement social | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19811"
+      }
+    },
+    {
+      "id": "official-fr-046",
+      "category": "salud",
+      "name": "Hospitalisation et soins à domicile",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N432",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N432",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.018Z",
+        "title": "Hospitalisation et soins à domicile | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19811"
+      }
+    },
+    {
+      "id": "official-mx-106",
+      "category": "salud",
+      "name": "IMSS: salud y seguridad social",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "MX",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.imss.gob.mx/",
+      "sourceUrl": "https://www.imss.gob.mx/",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:35.813Z",
+        "title": "Sitio Web del IMSS",
+        "discoveredAt": "https://www.imss.gob.mx/"
+      }
+    },
+    {
+      "id": "official-fr-044",
+      "category": "salud",
+      "name": "Information du patient : dossier médical, montant des prestations, ...",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N17179",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N17179",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.017Z",
+        "title": "Information du patient : dossier médical, montant des prestations, ... | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19811"
+      }
+    },
+    {
+      "id": "official-eu-074",
+      "category": "salud",
+      "name": "Ir al médico o al hospital en el extranjero",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/going-to-doctor-hospital-abroad/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/going-to-doctor-hospital-abroad/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.961Z",
+        "title": "Ir al médico o al hospital en el extranjero - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-080",
+      "category": "salud",
+      "name": "Las recetas en el extranjero: gastos y reembolsos",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/health/prescription-medicine-abroad/expenses-reimbursements/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/health/prescription-medicine-abroad/expenses-reimbursements/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.056Z",
+        "title": "Las recetas en el extranjero: gastos y reembolsos - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-ar-115",
+      "category": "salud",
+      "name": "Ministerio de Salud",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/salud",
+      "sourceUrl": "https://www.argentina.gob.ar/salud",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:49.361Z",
+        "title": "Ministerio de Salud | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/salud"
+      }
+    },
+    {
+      "id": "official-fr-038",
+      "category": "salud",
+      "name": "Mutuelle - Complémentaire santé",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N20286",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N20286",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.918Z",
+        "title": "Complémentaire santé (mutuelle) et complémentaire santé solidaire | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19811"
+      }
+    },
+    {
+      "id": "official-eu-077",
+      "category": "salud",
+      "name": "Organizar un tratamiento médico programado en otro país de la UE",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/health/planned-healthcare/right-to-treatment/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/health/planned-healthcare/right-to-treatment/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.971Z",
+        "title": "Organizar un tratamiento médico programado en otro país de la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-pt-135",
+      "category": "salud",
+      "name": "Prestações e benefícios sociais e de saúde",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "PT",
+      "language": "pt",
+      "kind": "resource",
+      "url": "https://www.gov.pt/guias/prestacoes-e-beneficios-sociais-e-de-saude",
+      "sourceUrl": "https://www.gov.pt/guias/prestacoes-e-beneficios-sociais-e-de-saude",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:53.309Z",
+        "title": "gov.pt",
+        "discoveredAt": "https://www.gov.pt/guias/prestacoes-e-beneficios-sociais-e-de-saude"
+      }
+    },
+    {
+      "id": "official-fr-040",
+      "category": "salud",
+      "name": "Prime d'activité",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N31477",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N31477",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.918Z",
+        "title": "Prime d&#39;activité | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19811"
+      }
+    },
+    {
+      "id": "official-eu-078",
+      "category": "salud",
+      "name": "Puntos de información sobre asistencia sanitaria transfronteriza",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/health/planned-healthcare/get-more-info/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/health/planned-healthcare/get-more-info/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.982Z",
+        "title": "Puntos de información sobre asistencia sanitaria transfronteriza - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-fr-041",
+      "category": "salud",
+      "name": "Revenu de solidarité active (RSA)",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19775",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19775",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.920Z",
+        "title": "Revenu de solidarité active (RSA) | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19811"
+      }
+    },
+    {
+      "id": "official-eu-075",
+      "category": "salud",
+      "name": "Tarjeta sanitaria europea (TSE)",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/ehic/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/health/unplanned-healthcare/ehic/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.964Z",
+        "title": "Tarjeta sanitaria europea (TSE) - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-084",
+      "category": "salud",
+      "name": "Trasladarse a una residencia asistencial",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/health/when-living-abroad/residential-care-home/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/health/when-living-abroad/residential-care-home/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.080Z",
+        "title": "Trasladarse a una residencia asistencial - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-081",
+      "category": "salud",
+      "name": "Tu cobertura sanitaria",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/health/when-living-abroad/health-insurance-cover/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/health/when-living-abroad/health-insurance-cover/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.059Z",
+        "title": "Cobertura sanitaria en tu país de acogida - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-079",
+      "category": "salud",
+      "name": "Utilizar una receta en otro país de la UE",
+      "description": "Salud y familias. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/health/prescription-medicine-abroad/prescriptions/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/health/prescription-medicine-abroad/prescriptions/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.055Z",
+        "title": "Utilizar una receta en una farmacia de otro país de la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-147",
+      "category": "empleo",
+      "name": "¿Qué es una profesión regulada?",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/professional-qualifications/regulated-professions/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/professional-qualifications/regulated-professions/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:22:52.858Z",
+        "title": "Profesiones reguladas - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-pt-136",
+      "category": "empleo",
+      "name": "Apoios para conseguir um emprego",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "PT",
+      "language": "pt",
+      "kind": "resource",
+      "url": "https://www.gov.pt/servicos/procurar-apoios-para-conseguir-um-emprego",
+      "sourceUrl": "https://www.gov.pt/servicos/procurar-apoios-para-conseguir-um-emprego",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:53.496Z",
+        "title": "gov.pt",
+        "discoveredAt": "https://www.gov.pt/servicos/procurar-apoios-para-conseguir-um-emprego"
+      }
+    },
+    {
+      "id": "official-fr-032",
+      "category": "empleo",
+      "name": "Arrêt de travail (secteur privé)",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N526",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N526",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.711Z",
+        "title": "Maladie ou accident du travail dans le secteur privé | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-gb-003",
+      "category": "empleo",
+      "name": "Benefits and financial support for families",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/benefits/families",
+      "sourceUrl": "https://www.gov.uk/browse/benefits/families",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.520Z",
+        "title": "Benefits and financial support for families - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/benefits"
+      }
+    },
+    {
+      "id": "official-gb-006",
+      "category": "empleo",
+      "name": "Benefits and financial support if you're caring for someone",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/benefits/help-for-carers",
+      "sourceUrl": "https://www.gov.uk/browse/benefits/help-for-carers",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.564Z",
+        "title": "Benefits and financial support if you&#39;re caring for someone - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/benefits"
+      }
+    },
+    {
+      "id": "official-gb-002",
+      "category": "empleo",
+      "name": "Benefits and financial support if you're disabled or have a health condition",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/benefits/disability",
+      "sourceUrl": "https://www.gov.uk/browse/benefits/disability",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.520Z",
+        "title": "Benefits and financial support if you&#39;re disabled or have a health condition - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/benefits"
+      }
+    },
+    {
+      "id": "official-gb-004",
+      "category": "empleo",
+      "name": "Benefits and financial support if you're looking for work",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/benefits/looking-for-work",
+      "sourceUrl": "https://www.gov.uk/browse/benefits/looking-for-work",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.522Z",
+        "title": "Benefits and financial support if you&#39;re looking for work - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/benefits"
+      }
+    },
+    {
+      "id": "official-gb-005",
+      "category": "empleo",
+      "name": "Benefits and financial support if you're on a low income",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/benefits/low-income",
+      "sourceUrl": "https://www.gov.uk/browse/benefits/low-income",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.522Z",
+        "title": "Benefits and financial support if you&#39;re on a low income - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/benefits"
+      }
+    },
+    {
+      "id": "official-gb-001",
+      "category": "empleo",
+      "name": "Benefits and financial support if you're temporarily unable to work",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/benefits/unable-to-work",
+      "sourceUrl": "https://www.gov.uk/browse/benefits/unable-to-work",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.510Z",
+        "title": "Benefits and financial support if you&#39;re temporarily unable to work - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/benefits"
+      }
+    },
+    {
+      "id": "official-gb-007",
+      "category": "empleo",
+      "name": "Benefits and financial support when someone dies",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/benefits/bereavement",
+      "sourceUrl": "https://www.gov.uk/browse/benefits/bereavement",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.668Z",
+        "title": "Benefits and financial support when someone dies - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/benefits"
+      }
+    },
+    {
+      "id": "official-ar-109",
+      "category": "empleo",
+      "name": "Buscar trabajo",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/trabajo/buscastrabajo",
+      "sourceUrl": "https://www.argentina.gob.ar/trabajo/buscastrabajo",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:46.313Z",
+        "title": "Buscás trabajo | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/trabajo/buscastrabajo"
+      }
+    },
+    {
+      "id": "official-fr-037",
+      "category": "empleo",
+      "name": "Chômage : démarches auprès de France Travail (anciennement Pôle emploi)",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N549",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N549",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.917Z",
+        "title": "Chômage : démarches auprès de France Travail (anciennement Pôle emploi) | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-eu-064",
+      "category": "empleo",
+      "name": "Cobertura de seguridad social en el extranjero",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/country-coverage/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/country-coverage/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.512Z",
+        "title": "Cobertura de seguridad social si vives o trabajas en otro país de la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-fr-033",
+      "category": "empleo",
+      "name": "Conditions de travail (secteur privé)",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N492",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N492",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.711Z",
+        "title": "Conditions de travail dans le secteur privé | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-fr-035",
+      "category": "empleo",
+      "name": "Conflits du travail dans le secteur privé",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N470",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N470",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.824Z",
+        "title": "Conflits du travail dans le secteur privé | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-eu-060",
+      "category": "empleo",
+      "name": "Contratos de trabajo",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/work-abroad/employment-contracts/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/work-abroad/employment-contracts/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.381Z",
+        "title": "Contratos de trabajo - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-fr-028",
+      "category": "empleo",
+      "name": "Contrats de travail dans le secteur privé",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19871",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19871",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.515Z",
+        "title": "Contrats de travail dans le secteur privé | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-ar-110",
+      "category": "empleo",
+      "name": "Derechos de las personas trabajadoras",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "AR",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.argentina.gob.ar/trabajo/estastrabajando",
+      "sourceUrl": "https://www.argentina.gob.ar/trabajo/estastrabajando",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:46.554Z",
+        "title": "Estás Trabajando | Argentina.gob.ar",
+        "discoveredAt": "https://www.argentina.gob.ar/trabajo/estastrabajando"
+      }
+    },
+    {
+      "id": "official-eu-063",
+      "category": "empleo",
+      "name": "Desempleo en el extranjero",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/unemployment/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/unemployment/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.471Z",
+        "title": "Desempleo en el extranjero - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-gb-009",
+      "category": "empleo",
+      "name": "Finding a job",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/working/finding-job",
+      "sourceUrl": "https://www.gov.uk/browse/working/finding-job",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.669Z",
+        "title": "Finding a job - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/working"
+      }
+    },
+    {
+      "id": "official-fr-031",
+      "category": "empleo",
+      "name": "Formation des personnes handicapées",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N198",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N198",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.710Z",
+        "title": "Formation des personnes handicapées | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-fr-027",
+      "category": "empleo",
+      "name": "Formation des salariés du secteur privé",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N177",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N177",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.509Z",
+        "title": "Formation des salariés du secteur privé | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-fr-034",
+      "category": "empleo",
+      "name": "Handicap et emploi (secteur privé)",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N451",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N451",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.723Z",
+        "title": "Handicap et emploi dans le secteur privé | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-gb-008",
+      "category": "empleo",
+      "name": "Holidays, time off, sick leave, maternity and paternity leave",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/working/time-off",
+      "sourceUrl": "https://www.gov.uk/browse/working/time-off",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.668Z",
+        "title": "Holidays, time off, sick leave, maternity and paternity leave - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/working"
+      }
+    },
+    {
+      "id": "official-eu-059",
+      "category": "empleo",
+      "name": "Igualdad de trato en el trabajo",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/work-abroad/equal-treatment-with-nationals/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/work-abroad/equal-treatment-with-nationals/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.380Z",
+        "title": "Igualdad de trato cuando se trabaja en la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-fr-029",
+      "category": "empleo",
+      "name": "Je cherche un emploi",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17556",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/F17556",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.526Z",
+        "title": "Je recherche un emploi | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-fr-042",
+      "category": "empleo",
+      "name": "Licenciement économique",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N481",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N481",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.920Z",
+        "title": "Licenciement économique | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-gb-012",
+      "category": "empleo",
+      "name": "Manage an existing benefit, payment or claim",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/benefits/manage-your-benefit",
+      "sourceUrl": "https://www.gov.uk/browse/benefits/manage-your-benefit",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.756Z",
+        "title": "Manage an existing benefit, payment or claim - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/benefits"
+      }
+    },
+    {
+      "id": "official-eu-066",
+      "category": "empleo",
+      "name": "Pensiones de supervivencia y subsidios por defunción",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/death-grants/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/death-grants/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.755Z",
+        "title": "Pensiones de supervivencia y subsidios por defunción: derechos de los ciudadanos que viven en otro país de la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-067",
+      "category": "empleo",
+      "name": "Pensiones públicas en el extranjero",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/retire-abroad/state-pensions-abroad/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/retire-abroad/state-pensions-abroad/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.842Z",
+        "title": "Pensiones públicas en el extranjero - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-057",
+      "category": "empleo",
+      "name": "Permisos de trabajo",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/work-abroad/work-permits/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/work-abroad/work-permits/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.379Z",
+        "title": "Permisos de trabajo - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-mx-105",
+      "category": "empleo",
+      "name": "Portal del Empleo",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "MX",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.empleo.gob.mx/",
+      "sourceUrl": "https://www.empleo.gob.mx/",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:35.295Z",
+        "title": "Portal del Empleo",
+        "discoveredAt": "https://www.empleo.gob.mx/"
+      }
+    },
+    {
+      "id": "official-eu-065",
+      "category": "empleo",
+      "name": "Prestaciones familiares",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/family-benefits/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/family-benefits/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.712Z",
+        "title": "Prestaciones familiares - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-mx-102",
+      "category": "empleo",
+      "name": "PROFEDET: defensa del trabajo",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "MX",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.gob.mx/profedet",
+      "sourceUrl": "https://www.gob.mx/profedet",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:34.719Z",
+        "title": "Procuraduría Federal de la Defensa del Trabajo | Gobierno | gob.mx",
+        "discoveredAt": "https://www.gob.mx/profedet"
+      }
+    },
+    {
+      "id": "official-cl-126",
+      "category": "empleo",
+      "name": "Quedar sin trabajo",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CL",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.chileatiende.gob.cl/momentos-de-vida/Quedar+sin+trabajo",
+      "sourceUrl": "https://www.chileatiende.gob.cl/momentos-de-vida/Quedar+sin+trabajo",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:52.592Z",
+        "title": "Quedar sin trabajo",
+        "discoveredAt": "https://www.chileatiende.gob.cl/hito-vida/Quedar+sin+trabajo"
+      }
+    },
+    {
+      "id": "official-gb-011",
+      "category": "empleo",
+      "name": "Redundancies, dismissals and disciplinaries",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/working/redundancies-dismissals",
+      "sourceUrl": "https://www.gov.uk/browse/working/redundancies-dismissals",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.745Z",
+        "title": "Redundancies, dismissals and disciplinaries - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/working"
+      }
+    },
+    {
+      "id": "official-fr-036",
+      "category": "empleo",
+      "name": "Rupture du contrat de travail dans le secteur privé",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19611",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19611",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.827Z",
+        "title": "Rupture du contrat de travail dans le secteur privé | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-eu-071",
+      "category": "empleo",
+      "name": "Salud y seguridad en el trabajo",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/health-and-safety/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/health-and-safety/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.874Z",
+        "title": "Salud y seguridad en el trabajo - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-061",
+      "category": "empleo",
+      "name": "Si no encuentras trabajo",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/cannot-find-work-abroad/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/cannot-find-work-abroad/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.469Z",
+        "title": "Si no encuentras trabajo - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-058",
+      "category": "empleo",
+      "name": "Sistemas de seguridad social en la UE",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/social-security/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/social-security/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.379Z",
+        "title": "Sistemas de seguridad social en la UE - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-gb-010",
+      "category": "empleo",
+      "name": "State Pension",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/working/state-pension",
+      "sourceUrl": "https://www.gov.uk/browse/working/state-pension",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.669Z",
+        "title": "State Pension - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/working"
+      }
+    },
+    {
+      "id": "official-eu-150",
+      "category": "empleo",
+      "name": "Trabajadores desplazados",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/work-abroad/posted-workers/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/work-abroad/posted-workers/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:22:52.884Z",
+        "title": "Desplazamientos laborales cortos - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-149",
+      "category": "empleo",
+      "name": "Trabajadores pendulares transfronterizos",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/work-abroad/cross-border-commuters/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/work-abroad/cross-border-commuters/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:22:52.881Z",
+        "title": "Trabajadores pendulares transfronterizos - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-eu-062",
+      "category": "empleo",
+      "name": "Transferencia de prestaciones de desempleo",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "EU",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/transferring-unemployment-benefits/index_es.htm",
+      "sourceUrl": "https://europa.eu/youreurope/citizens/work/social-security-and-benefits/transferring-unemployment-benefits/index_es.htm",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.471Z",
+        "title": "Transferencia de prestaciones de desempleo - Your Europe",
+        "discoveredAt": "https://europa.eu/youreurope/citizens/index_es.htm"
+      }
+    },
+    {
+      "id": "official-fr-030",
+      "category": "empleo",
+      "name": "Un proche est décédé",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F16507",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/F16507",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.622Z",
+        "title": "Un proche est décédé | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19806"
+      }
+    },
+    {
+      "id": "official-gb-017",
+      "category": "empleo",
+      "name": "Workplace and personal pensions",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/working/workplace-personal-pensions",
+      "sourceUrl": "https://www.gov.uk/browse/working/workplace-personal-pensions",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.937Z",
+        "title": "Workplace and personal pensions - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/working"
+      }
+    },
+    {
+      "id": "official-gb-013",
+      "category": "empleo",
+      "name": "Your contract and working hours",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/working/contract-working-hours",
+      "sourceUrl": "https://www.gov.uk/browse/working/contract-working-hours",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.858Z",
+        "title": "Your contract and working hours - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/working"
+      }
+    },
+    {
+      "id": "official-gb-014",
+      "category": "empleo",
+      "name": "Your pay, tax and the National Minimum Wage",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/working/tax-minimum-wage",
+      "sourceUrl": "https://www.gov.uk/browse/working/tax-minimum-wage",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.858Z",
+        "title": "Your pay, tax and the National Minimum Wage - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/working"
+      }
+    },
+    {
+      "id": "official-gb-018",
+      "category": "empleo",
+      "name": "Your rights at work and trade unions",
+      "description": "Trabajo y prestaciones. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/working/rights-trade-unions",
+      "sourceUrl": "https://www.gov.uk/browse/working/rights-trade-unions",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.972Z",
+        "title": "Your rights at work and trade unions - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/working"
+      }
+    },
+    {
+      "id": "official-cl-125",
+      "category": "vivienda",
+      "name": "Acceder a una vivienda",
+      "description": "Vivienda y suministros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "CL",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.chileatiende.gob.cl/momentos-de-vida/Acceder+a+una+vivienda",
+      "sourceUrl": "https://www.chileatiende.gob.cl/momentos-de-vida/Acceder+a+una+vivienda",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:52.550Z",
+        "title": "Acceder a una vivienda",
+        "discoveredAt": "https://www.chileatiende.gob.cl/hito-vida/Acceder+a+una+vivienda"
+      }
+    },
+    {
+      "id": "official-fr-055",
+      "category": "vivienda",
+      "name": "Aide pour le dépôt de garantie ou la caution d'un logement en location",
+      "description": "Vivienda y suministros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N20359",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N20359",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.201Z",
+        "title": "Aide pour le dépôt de garantie ou la caution d&#39;un logement en location | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19808"
+      }
+    },
+    {
+      "id": "official-fr-056",
+      "category": "vivienda",
+      "name": "Aides au paiement des factures : eau, téléphone, électricité, gaz",
+      "description": "Vivienda y suministros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N23557",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N23557",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.201Z",
+        "title": "Aides au paiement des factures : eau, téléphone, électricité, gaz | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19808"
+      }
+    },
+    {
+      "id": "official-fr-053",
+      "category": "vivienda",
+      "name": "Aides personnelles au logement",
+      "description": "Vivienda y suministros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/N20360",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/N20360",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:33.120Z",
+        "title": "Aides personnelles au logement | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/N19808"
+      }
+    },
+    {
+      "id": "official-gb-015",
+      "category": "vivienda",
+      "name": "Council housing and housing associations",
+      "description": "Vivienda y suministros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/housing-local-services/council-housing-association",
+      "sourceUrl": "https://www.gov.uk/browse/housing-local-services/council-housing-association",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.858Z",
+        "title": "Council housing and housing associations - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/housing-local-services"
+      }
+    },
+    {
+      "id": "official-gb-019",
+      "category": "vivienda",
+      "name": "Council Tax",
+      "description": "Vivienda y suministros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/housing-local-services/council-tax",
+      "sourceUrl": "https://www.gov.uk/browse/housing-local-services/council-tax",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.006Z",
+        "title": "Council Tax - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/housing-local-services"
+      }
+    },
+    {
+      "id": "official-gb-023",
+      "category": "vivienda",
+      "name": "Household energy",
+      "description": "Vivienda y suministros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/housing-local-services/household-energy",
+      "sourceUrl": "https://www.gov.uk/browse/housing-local-services/household-energy",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.165Z",
+        "title": "Household energy - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/housing-local-services"
+      }
+    },
+    {
+      "id": "official-gb-016",
+      "category": "vivienda",
+      "name": "Renting a property",
+      "description": "Vivienda y suministros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/housing-local-services/renting-property",
+      "sourceUrl": "https://www.gov.uk/browse/housing-local-services/renting-property",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:31.864Z",
+        "title": "Renting a property - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/housing-local-services"
+      }
+    },
+    {
+      "id": "official-gb-020",
+      "category": "vivienda",
+      "name": "Repossessions, homelessness, emergency housing and evictions",
+      "description": "Vivienda y suministros. Consulta requisitos y cobertura en la fuente oficial.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/browse/housing-local-services/repossessions-evictions",
+      "sourceUrl": "https://www.gov.uk/browse/housing-local-services/repossessions-evictions",
+      "reviewedAt": "2026-09-20",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-20T08:19:32.069Z",
+        "title": "Repossessions, homelessness, emergency housing and evictions - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/browse/housing-local-services"
+      }
+    }
+  ]
+}

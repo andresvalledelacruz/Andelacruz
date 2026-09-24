@@ -90,7 +90,7 @@ function privacyViolations(closure) {
 
 test('search privacy gate audits the complete current module dependency closure', async () => {
   const closure = await collectDependencyClosure(searchPage);
-  const relativeFiles = [...closure.keys()].map((filename) => path.relative(repoRoot, filename)).sort();
+  const relativeFiles = [...closure.keys()].map((filename) => path.relative(repoRoot, filename).split(path.sep).join('/')).sort();
 
   for (const expected of [
     'buscar/index.html',

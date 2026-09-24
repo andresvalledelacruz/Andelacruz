@@ -115,6 +115,17 @@ jobs:
       - name: Verify essential homepage with no JavaScript and failed core
         run: node scripts/qa-static-homepage.mjs
 
+      - name: Verify multilingual help and compact directory
+        run: node scripts/qa-global-help.mjs
+
+      - name: Preserve multilingual visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-help-qa
+          path: qa-global/
+          if-no-files-found: ignore
+
       - name: Preserve static homepage visual evidence
         if: always()
         uses: actions/upload-artifact@v4

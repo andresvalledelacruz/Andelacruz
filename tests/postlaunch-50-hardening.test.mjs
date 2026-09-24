@@ -76,7 +76,12 @@ test('43 cada URL del sitemap resuelve a un archivo físico', () => assert.ok(si
 test('44 el sitemap no incluye páginas noindex', () => assert.ok(publicPages.every(x => !/meta[^>]+name=["']robots["'][^>]+content=["'][^"']*noindex/i.test(x.html))));
 test('45 cada página indexable tiene exactamente un canonical', () => assert.ok(publicPages.every(x => (x.html.match(/<link\b[^>]*rel=["']canonical["'][^>]*>/gi) || []).length === 1)));
 test('46 canonical coincide con la URL declarada en sitemap', () => assert.ok(publicPages.every(x => x.html.includes(`href="${x.loc}"`) || x.html.includes(`href='${x.loc}'`))));
-test('47 todas las páginas indexables declaran lang es', () => assert.ok(publicPages.every(x => /<html\b[^>]*lang=["']es["']/i.test(x.html))));
+test('47 cada página indexable declara el idioma correspondiente a su ruta', () => {
+  for (const page of publicPages) {
+    const expected = new URL(page.loc).pathname.match(/^\/ayuda\/(en|fr|pt)\/$/)?.[1] || 'es';
+    assert.equal(page.html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1], expected, page.loc);
+  }
+});
 test('48 todas las páginas indexables tienen un único h1', () => assert.ok(publicPages.every(x => (x.html.match(/<h1\b/gi) || []).length === 1)));
 test('49 ningún href público usa javascript:', () => assert.ok(publicPages.every(x => !/href\s*=\s*["']javascript:/i.test(x.html))));
 test('50 ningún href público apunta a localhost, staging o pages.dev', () => assert.ok(publicPages.every(x => !/href\s*=\s*["'][^"']*(?:localhost|127\.0\.0\.1|pages\.dev)/i.test(x.html))));
