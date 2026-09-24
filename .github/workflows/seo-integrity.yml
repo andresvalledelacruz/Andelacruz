@@ -211,7 +211,12 @@ jobs:
           assert 'name="robots" content="index,follow' in friends, 'Organization directory must be indexable'
           assert friends.count('data-organization=') >= 5, 'Directory needs substantive organization entries'
           assert 'no implica colaboración, patrocinio ni acuerdo' in friends, 'Directory must not imply partnerships'
-          assert 'Fuente oficial consultada:' in friends, 'Directory requires dated source verification'
+          cards = re.findall(r'<a\b[^>]*data-organization="[^"]+"[^>]*>(.*?)</a>', friends, re.S)
+          assert len(cards) == 200, 'Directory must expose its 200 resource cards'
+          for card in cards:
+              reviewed = re.search(r'<time datetime="(\d{4}-\d{2}-\d{2})">\1</time>', card)
+              assert reviewed, 'Each resource requires a visible, machine-readable review date'
+              assert date.fromisoformat(reviewed.group(1)) <= today, 'Resource review date must not be in the future'
           assert 'Sitemap: https://desgracias.es/sitemap.xml' in robots, 'robots.txt must advertise canonical sitemap'
           assert 'Disallow: /\n' not in robots, 'robots.txt must not block the whole site'
 
