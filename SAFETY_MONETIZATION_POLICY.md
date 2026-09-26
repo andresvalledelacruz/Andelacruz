@@ -39,6 +39,16 @@ Las rutas de suicidio incluidas en este inventario conservan además una comprob
 
 Este inventario es deliberadamente conservador: incluir una ruta impide monetizarla por accidente; excluirla no autoriza monetización. Cada nueva URL P0/P1 deberá añadirse al inventario protegido en el mismo PR que la crea. No se considera completa una nueva ruta crítica sin esta cobertura.
 
+## Guard ejecutable de elegibilidad
+
+La preparación comercial consume además `scripts/lib/monetization-eligibility.mjs`, que aplica fallo cerrado antes de cualquier futura integración publicitaria o de afiliación:
+
+- las rutas del inventario P0/P1 se deniegan siempre;
+- una clasificación P0/P1 se deniega aunque la ruta aún no figure en el inventario;
+- una clasificación desconocida o no revisada se deniega;
+- P2/P3 solo pueden declararse elegibles cuando están explícitamente verdes la fase comercial, seguro/riesgo, revisión legal-privacidad, mecanismo de consentimiento y revisión específica de la superficie;
+- declarar una ruta elegible **no activa** anuncios, afiliación ni scripts: la activación requiere una integración separada y revisada.
+
 ## Regla de revisión
 
 Si una URL cambia de clasificación de riesgo, la monetización no se activa automáticamente. Requiere revisión específica Safety + editorial + legal/privacidad cuando proceda.
