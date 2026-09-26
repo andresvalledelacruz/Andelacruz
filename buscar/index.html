@@ -51,6 +51,7 @@
     import { routeSearchQuery } from '../src/search-crisis-router.js';
     import { routeKnownContentQuery } from '../src/search-content-catalog.js';
     import { buildSearchClarification } from '../src/search-clarification.js';
+    import { resolveMultipleNeeds } from '../src/search-multi-need-resolver.js';
 
     const form = document.querySelector('#search-form');
     const query = document.querySelector('#search-query');
@@ -123,6 +124,42 @@
       query.focus();
     }
 
+    function renderMultipleNeeds(resolved) {
+      if (!resolved.multiple_needs || resolved.needs_clarification || !resolved.primary_need?.route) return false;
+
+      const primary = resolved.primary_need;
+      result.className = primary.safety_level === 'P0' ? 'result urgent' : 'result';
+      result.replaceChildren(
+        element('h2', 'Empieza por lo más importante'),
+        element('p', 'Has mencionado varias cosas. Las ordenamos por nivel de precaución y después dejamos visibles las demás, sin enviarte automáticamente a ninguna página.')
+      );
+
+      if (primary.urgent) {
+        const paragraph = document.createElement('p');
+        paragraph.append(element('strong', 'Si existe peligro inmediato, utiliza el recurso oficial adecuado ahora.'));
+        result.append(paragraph);
+      }
+
+      const resources = officialResources(primary.official_resources_spain);
+      if (resources) result.append(resources);
+      result.append(paragraphWithLink(primary.route.label, primary.route.url));
+
+      if (resolved.secondary_needs.length) {
+        result.append(element('h3', 'Otras preocupaciones que también has mencionado'));
+        const list = document.createElement('ul');
+        for (const need of resolved.secondary_needs) {
+          if (!need.route) continue;
+          const item = document.createElement('li');
+          item.append(element('a', need.route.label, { href: need.route.url }));
+          list.append(item);
+        }
+        if (list.childElementCount) result.append(list);
+      }
+
+      result.focus();
+      return true;
+    }
+
     function renderClarification(routed) {
       const clarification = buildSearchClarification(routed);
       if (!clarification.needed) return false;
@@ -173,8 +210,28 @@
         return;
       }
 
+      const multipleNeeds = resolveMultipleNeeds(submittedQuery);
       let routed = routeSearchQuery(submittedQuery);
-      if (!routed.matched && !routed.urgent_support?.available) {
+
+      // If clause-level analysis detects an unresolved Safety context, do not let
+      // a broad ordinary fallback silently decide for the person. A confirmed P0
+      // primary remains visible immediately.
+      if (
+        multipleNeeds.needs_clarification &&
+        multipleNeeds.matched &&
+        multipleNeeds.primary_need?.safety_level !== 'P0'
+      ) {
+        routed = Object.freeze({
+          matched: false,
+          needs_clarification: true,
+          route: null,
+          safety_level: 'NONE',
+          suppress_commercial_ui: true,
+          raw_query_retained: false
+        });
+      }
+
+      if (!routed.matched && !routed.urgent_support?.available && !multipleNeeds.needs_clarification) {
         const contentRouted = routeKnownContentQuery(submittedQuery);
         if (contentRouted.matched) routed = contentRouted;
       }
@@ -182,6 +239,8 @@
       result.hidden = false;
       result.className = routed.safety_level === 'P0' ? 'result urgent' : 'result';
       result.replaceChildren();
+
+      if (renderMultipleNeeds(multipleNeeds)) return;
 
       if (!routed.matched) {
         if (renderClarification(routed)) return;
