@@ -28,6 +28,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 - <<'PY'
+          import json
           import re
           import xml.etree.ElementTree as ET
           from datetime import date
@@ -118,6 +119,8 @@ jobs:
           robots = Path('robots.txt').read_text(encoding='utf-8')
           withdrawal = Path('retirar.html').read_text(encoding='utf-8')
           friends = Path('webs-amigas.html').read_text(encoding='utf-8')
+          friends_js_path = Path('webs-amigas-country-filter.js')
+          directory_path = Path('data/help-directory.json')
           hero_webp = Path('assets/manos-apoyo.webp')
 
           required_home = [
@@ -209,20 +212,49 @@ jobs:
 
           assert 'name="robots" content="noindex,follow"' in withdrawal, 'Withdrawal page must stay noindex,follow'
           assert 'name="robots" content="index,follow' in friends, 'Organization directory must be indexable'
-          assert friends.count('data-organization=') >= 5, 'Directory needs substantive organization entries'
           assert 'no implica colaboración, patrocinio ni acuerdo' in friends, 'Directory must not imply partnerships'
-          cards = re.findall(r'<a\b[^>]*data-organization="[^"]+"[^>]*>(.*?)</a>', friends, re.S)
-          assert len(cards) == 200, 'Directory must expose its 200 resource cards'
-          for card in cards:
-              reviewed = re.search(r'<time datetime="(\d{4}-\d{2}-\d{2})">\1</time>', card)
-              assert reviewed, 'Each resource requires a visible, machine-readable review date'
-              assert date.fromisoformat(reviewed.group(1)) <= today, 'Resource review date must not be in the future'
+          assert 'id="country-buttons"' in friends, 'Country selector mount point missing'
+          assert 'id="friends-groups"' in friends, 'Dynamic resource directory mount point missing'
+          assert 'src="/webs-amigas-country-filter.js"' in friends, 'Country filter runtime is not loaded'
+          assert friends_js_path.exists(), 'Country filter runtime file is missing'
+          assert directory_path.exists(), 'Verified help directory data is missing'
+
+          friends_js = friends_js_path.read_text(encoding='utf-8')
+          assert "fetch('/data/help-directory.json'" in friends_js, 'Webs Amigas must render from the verified help directory'
+          assert "renderCountry('ES')" in friends_js, 'Spain must remain the default country'
+          country_options = re.findall(r"\['[A-Z]{2}','[^']+','[^']+'\]", friends_js)
+          assert len(country_options) >= 50, f'Country selector must expose at least 50 countries, found {len(country_options)}'
+
+          directory = json.loads(directory_path.read_text(encoding='utf-8'))
+          assert isinstance(directory.get('records'), list), 'Help directory records must be a list'
+          assert isinstance(directory.get('countries'), dict), 'Help directory countries must be an object'
+          assert isinstance(directory.get('categories'), dict), 'Help directory categories must be an object'
+          records = directory['records']
+          assert len(records) == 200, f'Verified help directory must contain 200 records, found {len(records)}'
+
+          seen_ids = set()
+          for record in records:
+              for key in ('id', 'name', 'category', 'country', 'url', 'reviewedAt'):
+                  assert record.get(key), f'Help directory record missing {key}: {record.get("id", "unknown")}'
+              assert record['id'] not in seen_ids, f'Duplicate help directory id: {record["id"]}'
+              seen_ids.add(record['id'])
+              assert record['category'] in directory['categories'], f'Unknown help directory category: {record["category"]}'
+              assert record['country'] in directory['countries'], f'Unknown help directory country: {record["country"]}'
+              parsed_resource = urlparse(record['url'])
+              assert parsed_resource.scheme == 'https' and parsed_resource.netloc, f'Invalid HTTPS resource URL: {record["url"]}'
+              try:
+                  reviewed = date.fromisoformat(record['reviewedAt'])
+              except ValueError as exc:
+                  raise AssertionError(f'Invalid reviewedAt for {record["id"]}: {record["reviewedAt"]}') from exc
+              assert reviewed <= today, f'Resource review date must not be in the future: {record["id"]}'
+
           assert 'Sitemap: https://desgracias.es/sitemap.xml' in robots, 'robots.txt must advertise canonical sitemap'
           assert 'Disallow: /\n' not in robots, 'robots.txt must not block the whole site'
 
           total = len(entries)
           print(f'SEO integrity checks passed for {total} sitemap URLs.')
           print(f'Validated {checked_internal_links} root-relative navigational links.')
+          print(f'Webs Amigas verified directory: {len(records)} records, {len(country_options)} country selector options.')
           print(f'Mandatory metadata coverage: JSON-LD {total}/{total}, OG site_name {total}/{total}, Twitter card {total}/{total}.')
           print(f'Hero WebP: {hero_bytes} bytes.')
           PY
