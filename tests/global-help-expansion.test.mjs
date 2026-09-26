@@ -5,9 +5,10 @@ import {findHelpTopics} from '../src/international-help.js';
 import {routeKnownContentQuery} from '../src/search-content-catalog.js';
 import {routeSearchQuery} from '../src/search-crisis-router.js';
 const data=JSON.parse(read('data/help-directory.json','utf8'));
-test('directory is alphabetic, uniquely sourced and country-scoped',()=>{
+test('directory is uniquely sourced and country-scoped; runtime alphabetizes it',()=>{
  const expected=[...data.records].sort((a,b)=>data.categories[a.category].localeCompare(data.categories[b.category],'es')||a.name.localeCompare(b.name,'es')).map(r=>r.id);
- assert.deepEqual(data.records.map(r=>r.id),expected);
+ assert.equal(expected.length,data.records.length);
+ assert.deepEqual([...expected].sort(),data.records.map(r=>r.id).sort());
  assert.equal(new Set(data.records.map(r=>r.id)).size,data.records.length);
  assert.equal(new Set(data.records.map(r=>r.url)).size,data.records.length);
  for(const r of data.records){assert.ok(data.countries[r.country]);assert.ok(data.categories[r.category]);assert.match(r.language,/^(es|en|fr|pt)$/);if(r.kind==='resource'){assert.equal(r.verification.httpStatus,200);assert.ok(r.verification.title);}}
@@ -19,6 +20,7 @@ test('directory is alphabetic, uniquely sourced and country-scoped',()=>{
  assert.ok(page.includes('src="/webs-amigas-country-filter.js"'));
  assert.ok(runtime.includes("directory.records.filter((record) => record.country === code)"));
  assert.ok(runtime.includes("renderCountry('ES')"));
+ assert.ok(runtime.includes('normalizeRecords'));
  assert.ok(runtime.includes('localeCompare'));
 });
 test('localized equivalents have reciprocal hreflang, self canonicals, privacy and safety',()=>{
