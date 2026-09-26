@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "default_status": "denied",
+  "activation_enabled": false,
+  "last_reviewed": "2026-09-26",
+  "surfaces": [
+    {
+      "route": "/trabajo/necesito-formacion-para-encontrar-trabajo/",
+      "safety_level": "P3",
+      "status": "candidate_review",
+      "surface_approved": false,
+      "commercial_models_under_review": [
+        "education_partner",
+        "qualified_lead"
+      ],
+      "requirements_before_approval": [
+        "commercial_phase_authorized",
+        "insurance_risk_review_complete",
+        "legal_privacy_review_complete",
+        "consent_mechanism_ready",
+        "partner_due_diligence_complete",
+        "pricing_and_disclosure_review_complete",
+        "surface_approved"
+      ],
+      "editorial_rule": "Public and free alternatives remain visible before any commercial option. No provider may buy editorial ranking or verification.",
+      "reason": "Low-sensitivity employment-training page with an existing compare-before-buy editorial framework; candidate only, not authorized for monetization."
+    }
+  ]
+}
