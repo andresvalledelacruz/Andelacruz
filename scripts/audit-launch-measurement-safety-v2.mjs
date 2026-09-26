@@ -10,6 +10,9 @@ const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 
 // 2026-09-17: reviewed full-card urgent navigation and local resource directory.
 // The directory adds only DOM navigation/filtering, with no query, storage or network API.
 const APPROVED_APP_SHA256 = "76918e22d34267715430d9b1e834f5d21dadf0f53d84f538acdecc4638209c7b";
+// 2026-09-26: reviewed Search Help 3.0 lexical expansion. This file remains a
+// bounded, explicit token normalizer with no network, storage or raw-query retention.
+const APPROVED_SEARCH_NORMALIZATION_SHA256 = "fd72d4f16cd3cef3a06751da774b1f2329abdd3474b5690110ae43036e71ac76";
 const APPROVED_HOME_CLOSURE = [
   'app-core.js',
   'app.js',
@@ -21,6 +24,7 @@ const APPROVED_HOME_CLOSURE = [
 ].sort();
 const INTENTIONAL_V1_DRIFT = new Set([
   'pinned measurement file changed: app.js',
+  'pinned measurement file changed: src/search-normalization.js',
   'homepage dependency set changed',
 ]);
 
@@ -34,6 +38,12 @@ export async function auditLaunchMeasurementSafety(options = {}) {
   const appSha256 = createHash('sha256').update(appSource).digest('hex');
   if (appSha256 !== APPROVED_APP_SHA256) {
     failures.push('pinned measurement file changed: app.js (v2 approved runtime hash mismatch)');
+  }
+
+  const searchNormalizationSource = await readFile(path.join(rootReal, 'src/search-normalization.js'));
+  const searchNormalizationSha256 = createHash('sha256').update(searchNormalizationSource).digest('hex');
+  if (searchNormalizationSha256 !== APPROVED_SEARCH_NORMALIZATION_SHA256) {
+    failures.push('pinned measurement file changed: src/search-normalization.js (v2 reviewed lexical hash mismatch)');
   }
 
   const actualClosure = [...report.homepage_dependency_files].sort();
@@ -52,6 +62,7 @@ export async function auditLaunchMeasurementSafety(options = {}) {
     hard_failures: uniqueFailures,
     measurement_gate_version: 2,
     approved_app_sha256: APPROVED_APP_SHA256,
+    approved_search_normalization_sha256: APPROVED_SEARCH_NORMALIZATION_SHA256,
     approved_home_closure: APPROVED_HOME_CLOSURE,
   };
 }
