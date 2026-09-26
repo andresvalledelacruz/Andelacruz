@@ -7,6 +7,8 @@ const {chromium}=createRequire(import.meta.url)('playwright');
 import assert from 'node:assert/strict';
 import {mkdir} from 'node:fs/promises';
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url)));
+const directory=JSON.parse(await readFile(path.join(root,'data/help-directory.json'),'utf8'));
+const countFor=(code)=>directory.records.filter(record=>record.country===code).length;
 const server=createServer(async(req,res)=>{try{
  const url=new URL(req.url,'http://127.0.0.1');
  const file=path.resolve(root,'.'+decodeURIComponent(url.pathname)+(url.pathname.endsWith('/')?'index.html':''));
@@ -45,9 +47,21 @@ try{
    if(lang==='en')await page.screenshot({path:new URL(`english-${width}.png`,out).pathname.replace(/^\/([A-Za-z]:)/,'$1'),fullPage:false});
   }
   await page.goto(`${origin}/webs-amigas.html`,{waitUntil:'networkidle'});
-  assert.equal(await page.locator('[data-organization]').count(),200);
+  assert.equal(await page.locator('[data-organization]').count(),countFor('ES'));
+  assert.equal(await page.locator('[data-organization][data-country="ES"]').count(),countFor('ES'));
+  assert.equal(await page.locator('#selected-country-label').textContent(),'🇪🇸 España');
   const anar=page.locator('[data-organization="anar"]');await anar.scrollIntoViewIfNeeded();
   assert.ok((await anar.getAttribute('href')).includes('/telefono-chat-anar/'));
+  await page.locator('button[data-country="MX"]').click();
+  assert.equal(await page.locator('[data-organization]').count(),countFor('MX'));
+  assert.equal(await page.locator('[data-organization][data-country="MX"]').count(),countFor('MX'));
+  assert.equal(await page.locator('[data-organization][data-country="ES"]').count(),0);
+  assert.equal(await page.locator('#selected-country-label').textContent(),'🇲🇽 México');
+  await page.locator('button[data-country="JP"]').click();
+  assert.equal(await page.locator('[data-organization]').count(),0);
+  assert.match(await page.locator('#country-status').textContent(),/ampliando/i);
+  await page.locator('button[data-country="ES"]').click();
+  assert.equal(await page.locator('[data-organization]').count(),countFor('ES'));
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   await page.screenshot({path:new URL(`directory-${width}.png`,out).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
   await page.goto(`${origin}/recursos/`,{waitUntil:'networkidle'});await page.locator('.resource-branch summary').first().click();
