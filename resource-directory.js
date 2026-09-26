@@ -72,6 +72,8 @@
   });
 
   function enhanceResourceTree() {
+    if (typeof document.querySelectorAll !== 'function') return;
+
     for (const details of document.querySelectorAll('.resource-branch')) {
       const summary = details.querySelector(':scope > summary');
       const list = details.querySelector(':scope > ul');
@@ -114,15 +116,6 @@
   const filters = document.getElementById('resource-filters');
   const reset = document.getElementById('resource-reset');
   if (!select || !list || !count || !filters || !reset) return;
-
-  // The resources directory did not previously load the common pageview runtime.
-  // Add the same privacy-first, aggregate-only counter used by other public hubs.
-  if (!document.querySelector('script[src="/visitor-analytics.js"]')) {
-    const analytics = document.createElement('script');
-    analytics.src = '/visitor-analytics.js';
-    analytics.defer = true;
-    document.head.append(analytics);
-  }
 
   const cards = [...list.children];
   function filter() {
