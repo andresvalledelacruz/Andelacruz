@@ -22,10 +22,23 @@ const APPROVED_HOME_CLOSURE = [
   'story-example-library.js',
   'visitor-analytics.js',
 ].sort();
+const APPROVED_SEARCH_CLOSURE = [
+  'src/search-clarification.js',
+  'src/search-content-catalog.js',
+  'src/search-crisis-router.js',
+  'src/search-multi-need-resolver.js',
+  'src/search-normalization.js',
+  'src/suicide-context-classifier.js',
+].sort();
 const INTENTIONAL_V1_DRIFT = new Set([
   'pinned measurement file changed: app.js',
   'pinned measurement file changed: src/search-normalization.js',
   'homepage dependency set changed',
+  // 2026-09-26: /buscar/ adds the already-reviewed local multi-need resolver.
+  // V2 revalidates the exact protected closure below; all privacy sink failures
+  // from V1 remain fatal.
+  'pinned measurement file changed: buscar/index.html',
+  'protected surface dependency set changed: /buscar/',
 ]);
 
 export async function auditLaunchMeasurementSafety(options = {}) {
@@ -55,6 +68,19 @@ export async function auditLaunchMeasurementSafety(options = {}) {
     if (actualClosure.includes(legacy)) failures.push(`legacy DOM injector re-entered homepage dependency graph: ${legacy}`);
   }
 
+  const searchSurface = report.protected_surfaces.find((surface) => surface.route === '/buscar/');
+  if (!searchSurface) {
+    failures.push('protected /buscar/ surface missing from v2 report');
+  } else {
+    const searchFiles = [...searchSurface.files].sort();
+    if (JSON.stringify(searchFiles) !== JSON.stringify(APPROVED_SEARCH_CLOSURE)) {
+      failures.push('protected /buscar/ dependency set changed (v2 multi-need closure mismatch)');
+    }
+    if (searchSurface.failures.length) {
+      failures.push(...searchSurface.failures.map((failure) => `/buscar/ v2 protected-surface failure: ${failure}`));
+    }
+  }
+
   const uniqueFailures = [...new Set(failures)].sort();
   return {
     ...report,
@@ -64,6 +90,7 @@ export async function auditLaunchMeasurementSafety(options = {}) {
     approved_app_sha256: APPROVED_APP_SHA256,
     approved_search_normalization_sha256: APPROVED_SEARCH_NORMALIZATION_SHA256,
     approved_home_closure: APPROVED_HOME_CLOSURE,
+    approved_search_closure: APPROVED_SEARCH_CLOSURE,
   };
 }
 
