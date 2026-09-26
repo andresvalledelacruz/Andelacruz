@@ -2,7 +2,7 @@
 // Keep this dictionary explicit and reviewable: the goal is to understand likely
 // human spelling/phonetic variants without silently rewriting ambiguous language.
 const CORRECTIONS = Object.freeze({
-  q: 'que', k: 'que', xq: 'porque', pq: 'porque',
+  q: 'que', k: 'que', xq: 'porque', pq: 'porque', qiero: 'quiero', kiero: 'quiero',
 
   // Trabajo / empleo
   travajo: 'trabajo', trabjo: 'trabajo', trbajo: 'trabajo', trabago: 'trabajo',
