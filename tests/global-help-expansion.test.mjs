@@ -6,11 +6,20 @@ import {routeKnownContentQuery} from '../src/search-content-catalog.js';
 import {routeSearchQuery} from '../src/search-crisis-router.js';
 const data=JSON.parse(read('data/help-directory.json','utf8'));
 test('directory is alphabetic, uniquely sourced and country-scoped',()=>{
- const html=read('webs-amigas.html','utf8');
  const expected=[...data.records].sort((a,b)=>data.categories[a.category].localeCompare(data.categories[b.category],'es')||a.name.localeCompare(b.name,'es')).map(r=>r.id);
- assert.deepEqual([...html.matchAll(/data-organization="([^"]+)"/g)].map(m=>m[1]),expected);
+ assert.deepEqual(data.records.map(r=>r.id),expected);
+ assert.equal(new Set(data.records.map(r=>r.id)).size,data.records.length);
+ assert.equal(new Set(data.records.map(r=>r.url)).size,data.records.length);
  for(const r of data.records){assert.ok(data.countries[r.country]);assert.ok(data.categories[r.category]);assert.match(r.language,/^(es|en|fr|pt)$/);if(r.kind==='resource'){assert.equal(r.verification.httpStatus,200);assert.ok(r.verification.title);}}
  assert.equal(data.records.find(r=>r.id==='anar').url,'https://www.anar.org/que-hacemos/telefono-chat-anar/');
+ const page=read('webs-amigas.html','utf8');
+ const runtime=read('webs-amigas-country-filter.js','utf8');
+ assert.ok(page.includes('id="country-buttons"'));
+ assert.ok(page.includes('id="friends-groups"'));
+ assert.ok(page.includes('src="/webs-amigas-country-filter.js"'));
+ assert.ok(runtime.includes("directory.records.filter((record) => record.country === code)"));
+ assert.ok(runtime.includes("renderCountry('ES')"));
+ assert.ok(runtime.includes('localeCompare'));
 });
 test('localized equivalents have reciprocal hreflang, self canonicals, privacy and safety',()=>{
  for(const lang of ['es','en','fr','pt']){
