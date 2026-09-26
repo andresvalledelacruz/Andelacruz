@@ -88,7 +88,7 @@
 
     for (const category of categories) {
       const label = directory.categories[category] || category;
-      const anchor = `cat-${category}`;
+      const anchor = category;
       nav.append(el('a', label, {href:`#${anchor}`}));
 
       const section = el('section', null, {class:'friends-group', id:anchor});
