@@ -46,6 +46,7 @@ La preparación comercial consume además `scripts/lib/monetization-eligibility.
 - las rutas del inventario P0/P1 se deniegan siempre;
 - una clasificación P0/P1 se deniega aunque la ruta aún no figure en el inventario;
 - una clasificación desconocida o no revisada se deniega;
+- si el inventario Safety canónico no está disponible, está vacío o no puede interpretarse, P2/P3 también se deniega;
 - P2/P3 solo pueden declararse elegibles cuando están explícitamente verdes la fase comercial, seguro/riesgo, revisión legal-privacidad, mecanismo de consentimiento y revisión específica de la superficie;
 - declarar una ruta elegible **no activa** anuncios, afiliación ni scripts: la activación requiere una integración separada y revisada.
 
