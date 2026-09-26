@@ -5,7 +5,8 @@ import { isIndexable } from './lib/robots-indexability.mjs';
 const root = new URL('..', import.meta.url).pathname;
 const ignoredDirs = new Set(['.git', 'node_modules', 'ops-api', 'supabase', 'tests', 'scripts', '.github']);
 const ignoredFiles = new Set(['404.html']);
-const marker = '/public-page-runtime.js';
+const runtimeMarker = '/public-page-runtime.js';
+const directMarker = '/visitor-analytics.js';
 
 async function walk(dir, out = []) {
   for (const name of await readdir(dir)) {
@@ -27,7 +28,7 @@ for (const file of files) {
   const homepage = rel === 'index.html';
   const hasAnalytics = homepage
     ? /<script\s+src=["']app\.js["']/i.test(html)
-    : html.includes(marker);
+    : html.includes(runtimeMarker) || html.includes(directMarker);
   rows.push({ file: rel, analytics: hasAnalytics ? 'yes' : 'no' });
 }
 
