@@ -8,7 +8,7 @@ const REQUIRED_PREREQUISITES = Object.freeze([
 
 function normalizeRoute(route) {
   const value = String(route ?? '').trim();
-  if (!value.startsWith('/') || value.includes('?') || value.includes('#') || value.includes('..') || value.length > 240) return null;
+  if (!value.startsWith('/') || value.includes('?') || value.includes('#') || value.includes('..') || value.includes('%') || value.includes('\\') || value.length > 240) return null;
   if (value === '/') return '/';
   if (value.endsWith('.html')) return value;
   return value.endsWith('/') ? value : value + '/';
@@ -27,23 +27,35 @@ export function parseCriticalSafetyRoutes(markdown = '') {
 export function evaluateMonetizationEligibility({
   route,
   safety_level = 'UNKNOWN',
-  critical_routes = [],
+  critical_routes = null,
   prerequisites = {}
 } = {}) {
   const pathname = normalizeRoute(route);
-  const critical = new Set(critical_routes.map(normalizeRoute).filter(Boolean));
   const safetyLevel = String(safety_level ?? 'UNKNOWN').toUpperCase();
 
   if (!pathname) {
     return Object.freeze({ allowed:false, reason:'invalid_route', route:null, monetization_enabled:false });
   }
 
-  if (critical.has(pathname) || safetyLevel === 'P0' || safetyLevel === 'P1') {
+  // P0/P1 and unknown classifications fail closed even if the inventory cannot be loaded.
+  if (safetyLevel === 'P0' || safetyLevel === 'P1') {
     return Object.freeze({ allowed:false, reason:'safety_surface', route:pathname, monetization_enabled:false });
   }
-
   if (!['P2','P3'].includes(safetyLevel)) {
     return Object.freeze({ allowed:false, reason:'unknown_or_unreviewed_safety', route:pathname, monetization_enabled:false });
+  }
+
+  // A P2/P3 route can never become eligible if the canonical Safety deny-list is absent,
+  // malformed or empty. Missing policy data is a blocker, not permission to monetize.
+  if (!Array.isArray(critical_routes)) {
+    return Object.freeze({ allowed:false, reason:'critical_inventory_unavailable', route:pathname, monetization_enabled:false });
+  }
+  const critical = new Set(critical_routes.map(normalizeRoute).filter(Boolean));
+  if (critical.size === 0) {
+    return Object.freeze({ allowed:false, reason:'critical_inventory_unavailable', route:pathname, monetization_enabled:false });
+  }
+  if (critical.has(pathname)) {
+    return Object.freeze({ allowed:false, reason:'safety_surface', route:pathname, monetization_enabled:false });
   }
 
   const missing = REQUIRED_PREREQUISITES.filter((key) => prerequisites[key] !== true);
@@ -72,6 +84,7 @@ export function monetizationEligibilityCapabilities() {
     version:2,
     deny_by_default:true,
     p0_p1_always_denied:true,
+    requires_critical_inventory:true,
     requires_explicit_surface_approval:true,
     activation_side_effects:false,
     required_prerequisites:REQUIRED_PREREQUISITES
