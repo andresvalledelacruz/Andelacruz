@@ -10,18 +10,23 @@ Ejecutar con prioridad: Webs Amigas 2.0, Resources EXPAND, Buscar Ayuda 3.0, ana
 ### Webs Amigas 2.0
 - [x] Rama creada: `improve/webs-amigas-country-filter-p0`
 - [x] Componente inicial de selector/filtrado por país creado
-- [ ] Integrar componente en `webs-amigas.html`
-- [ ] España por defecto en vista inicial
-- [ ] Selector visible con 50+ países de todos los continentes
-- [ ] Mostrar solo recursos del país seleccionado
-- [ ] Ocultar metadatos repetitivos de país/idioma/fecha en tarjetas
-- [ ] Rediseño de tarjetas compactas
-- [ ] Orden A-Z por categoría y organización
-- [ ] Estado claro para países sin cobertura verificada
+- [x] Integrar componente en `webs-amigas.html`
+- [x] España por defecto en vista inicial
+- [x] Selector visible con 50+ países de todos los continentes
+- [x] Mostrar solo recursos del país seleccionado
+- [x] Ocultar metadatos repetitivos de país/idioma/fecha en tarjetas
+- [x] Rediseño de tarjetas compactas
+- [x] Orden A-Z por categoría y organización
+- [x] Estado claro para países sin cobertura verificada
 - [ ] Pruebas de accesibilidad/móvil
 - [ ] Checks CI/SEO
 - [ ] Merge a `production-v9`
 - [ ] Verificación visual en producción
+
+Notas:
+- El render usa `/data/help-directory.json` como fuente única de recursos verificados.
+- No se inventa cobertura: los países sin registros muestran estado “en ampliación”.
+- Se ha añadido `visitor-analytics.js` a Webs Amigas para cubrir esta página en analítica privacy-first.
 
 ### Resources EXPAND
 - [ ] Llevar categorías generales deficitarias a >=10 situaciones útiles cuando tenga sentido
@@ -38,15 +43,16 @@ Ejecutar con prioridad: Webs Amigas 2.0, Resources EXPAND, Buscar Ayuda 3.0, ana
 
 ### Analítica
 - [x] Pageviews agregados privacy-first confirmados
+- [x] Webs Amigas incorporada a `visitor-analytics.js`
 - [ ] Cobertura en todas las páginas públicas
 - [ ] Panel privado operativo y fácilmente consultable
 - [ ] Integración de métricas SEO/traffic para priorización
 
 ### Internacionalización
-- [ ] Arquitectura visible 50+ países
+- [x] Arquitectura visible 50+ países
 - [ ] Recursos verificados país por país
 - [ ] Prioridad: España -> México -> inglés/UK -> Francia -> resto UE -> otros continentes
-- [ ] No prometer cobertura donde aún no exista
+- [x] No prometer cobertura donde aún no exista
 
 ### Monetización
 - [ ] CMP/consentimiento donde corresponda
