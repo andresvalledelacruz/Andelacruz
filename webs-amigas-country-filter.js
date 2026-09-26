@@ -96,7 +96,13 @@
       const grid = el('div', null, {class:'friends-grid'});
 
       for (const record of grouped.get(category).sort((a,b) => a.name.localeCompare(b.name, 'es', {sensitivity:'base'}))) {
-        const card = el('a', null, {class:'friends-card', href:record.url, rel:'noreferrer'});
+        const card = el('a', null, {
+          class:'friends-card',
+          href:record.url,
+          rel:'noreferrer',
+          'data-organization':record.id,
+          'data-country':record.country
+        });
         if (record.language) card.setAttribute('lang', record.language);
         card.append(
           el('h3', record.name),
