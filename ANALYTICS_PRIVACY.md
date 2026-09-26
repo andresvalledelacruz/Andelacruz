@@ -111,6 +111,8 @@ Después de un despliegue de analítica:
 
 El contador está habilitado en la portada y en los hubs públicos que ya cargan el runtime común, incluidos Familia, Rupturas, Duelo, Dinero, Trabajo y Soledad. La extensión a guías individuales debe hacerse en lotes pequeños y revisables para evitar reescrituras accidentales de contenido YMYL.
 
+Ejecutar `node scripts/analytics-coverage-inventory.mjs` para obtener la cobertura por página indexable. El campo `missing` cuenta páginas sin beacon, **no fallos**. El desglose distingue `explicitly_unmeasured` (Recursos y las cinco páginas internacionales cuyo contrato conserva ausencia de medición o scripts), `safety_review` (rutas P0/P1 que requieren una decisión específica) y `review_needed` (otras páginas aún sin decisión individual). No añadir analítica automáticamente a cualquiera de estos grupos por el mero hecho de aparecer en el inventario.
+
 ## Principios de producto
 
 - Analítica sirve para mejorar ayuda, seguridad, UX e indexación; no para perfilar vulnerabilidad.
