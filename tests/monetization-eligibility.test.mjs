@@ -14,6 +14,7 @@ const allGreen = Object.freeze({
   consent_mechanism_ready:true,
   surface_approved:true
 });
+const availableInventory = Object.freeze(['/ayuda-urgente.html']);
 
 test('every route in the Safety inventory remains denied even if commercial prerequisites are green', async () => {
   const markdown = await readFile(new URL('../SAFETY_ROUTE_INVENTORY.md', import.meta.url), 'utf8');
@@ -32,12 +33,12 @@ test('every route in the Safety inventory remains denied even if commercial prer
   }
 });
 
-test('P0 and P1 are denied even when a route is absent from the inventory', () => {
+test('P0 and P1 are denied even when the inventory is unavailable', () => {
   for (const safety_level of ['P0','P1']) {
     const result = evaluateMonetizationEligibility({
       route:'/future-sensitive-route/',
       safety_level,
-      critical_routes:[],
+      critical_routes:null,
       prerequisites:allGreen
     });
     assert.equal(result.allowed, false);
@@ -45,22 +46,36 @@ test('P0 and P1 are denied even when a route is absent from the inventory', () =
   }
 });
 
-test('unknown safety classification fails closed', () => {
+test('unknown safety classification fails closed before commercial evaluation', () => {
   const result = evaluateMonetizationEligibility({
     route:'/familia/',
     safety_level:'UNKNOWN',
-    critical_routes:[],
+    critical_routes:null,
     prerequisites:allGreen
   });
   assert.equal(result.allowed, false);
   assert.equal(result.reason, 'unknown_or_unreviewed_safety');
 });
 
+test('P2/P3 fail closed if the canonical critical inventory is unavailable or empty', () => {
+  for (const critical_routes of [null, [], ['bad route']]) {
+    const result = evaluateMonetizationEligibility({
+      route:'/trabajo/necesito-formacion-para-encontrar-trabajo/',
+      safety_level:'P3',
+      critical_routes,
+      prerequisites:allGreen
+    });
+    assert.equal(result.allowed, false);
+    assert.equal(result.reason, 'critical_inventory_unavailable');
+    assert.equal(result.monetization_enabled, false);
+  }
+});
+
 test('P2/P3 still fail closed until every prerequisite and surface approval is explicit', () => {
   const result = evaluateMonetizationEligibility({
-    route:'/familia/',
+    route:'/trabajo/necesito-formacion-para-encontrar-trabajo/',
     safety_level:'P3',
-    critical_routes:[],
+    critical_routes:availableInventory,
     prerequisites:{ commercial_phase_authorized:true }
   });
   assert.equal(result.allowed, false);
@@ -71,9 +86,9 @@ test('P2/P3 still fail closed until every prerequisite and surface approval is e
 
 test('eligibility never activates ads or other commercial side effects', () => {
   const result = evaluateMonetizationEligibility({
-    route:'/familia/',
+    route:'/trabajo/necesito-formacion-para-encontrar-trabajo/',
     safety_level:'P3',
-    critical_routes:[],
+    critical_routes:availableInventory,
     prerequisites:allGreen
   });
   assert.equal(result.allowed, true);
@@ -82,9 +97,9 @@ test('eligibility never activates ads or other commercial side effects', () => {
   assert.equal(result.activation_requires_separate_integration, true);
 });
 
-test('query strings, fragments and traversal-like routes are rejected', () => {
-  for (const route of ['/familia/?x=1','/familia/#x','/../familia/']) {
-    const result = evaluateMonetizationEligibility({route,safety_level:'P3',prerequisites:allGreen});
+test('query strings, fragments, traversal and encoded route tricks are rejected', () => {
+  for (const route of ['/familia/?x=1','/familia/#x','/../familia/','/%2e%2e/familia/','/familia\\otra/']) {
+    const result = evaluateMonetizationEligibility({route,safety_level:'P3',critical_routes:availableInventory,prerequisites:allGreen});
     assert.equal(result.allowed, false);
     assert.equal(result.reason, 'invalid_route');
   }
@@ -95,6 +110,7 @@ test('capabilities pin deny-by-default behavior', () => {
   assert.equal(caps.version, 2);
   assert.equal(caps.deny_by_default, true);
   assert.equal(caps.p0_p1_always_denied, true);
+  assert.equal(caps.requires_critical_inventory, true);
   assert.equal(caps.requires_explicit_surface_approval, true);
   assert.equal(caps.activation_side_effects, false);
 });
