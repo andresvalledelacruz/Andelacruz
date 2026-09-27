@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const data=JSON.parse(readFileSync('data/international-entrypoints.json','utf8'));
 const html=readFileSync('internacional.html','utf8');
-test('twenty-one international destinations preserve their official sources and regional scope',()=>{
-  assert.deepEqual(new Set(data.countries.map(c=>c.code)),new Set(['MX','AR','CO','CL','PT','FR','GB','DE','IE','IT','NL','BE','AT','LU','DK','PL','SE','AU','CA','US','UY']));
+test('forty-nine international destinations preserve their official sources and regional scope',()=>{
+  assert.deepEqual(new Set(data.countries.map(c=>c.code)),new Set(['MX','AR','CO','CL','PT','FR','GB','DE','IE','IT','NL','BE','AT','LU','DK','PL','SE','AU','CA','US','UY','FI','NZ','CZ','GR','PY','PA','DO','RO','HU','HR','SK','SI','LV','LT','MT','EC','SV','IN','JP','ZA','GT','EE','KR','PE','BG','CY','MA','NG']));
   for(const c of data.countries){
     assert.ok(html.includes(`data-country="${c.code}" href="${c.url.replaceAll('&','&amp;')}"`));
     assert.ok(html.includes(`lang="${c.lang}"`));
@@ -17,7 +17,7 @@ test('twenty-one international destinations preserve their official sources and 
 test('international help remains static, private and reachable without scripts',()=>{
   assert.doesNotMatch(html,/<form\b|<input\b|<iframe\b|<script(?! type="application\/ld\+json")/);
   assert.match(html,/name="referrer" content="no-referrer"/);
-  assert.equal((html.match(/data-country=/g)||[]).length,22);
+  assert.equal((html.match(/data-country=/g)||[]).length,50);
   assert.ok(readFileSync('recursos/index.html','utf8').includes('href="/internacional.html"'));
   assert.ok(readFileSync('sitemap.xml','utf8').includes('https://desgracias.es/internacional.html'));
 });

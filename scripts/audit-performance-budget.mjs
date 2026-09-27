@@ -5,6 +5,9 @@ import { publicAuditUrls } from './public-audit-targets.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const MAX_HTML_BYTES = 128 * 1024;
+// The international resource directory renders all verified links in HTML so
+// they remain discoverable and usable when JavaScript is unavailable.
+const MAX_RESOURCE_DIRECTORY_HTML_BYTES = 160 * 1024;
 const MAX_JS_BYTES = 96 * 1024;
 const MAX_OPTIMIZED_HERO_BYTES = 100 * 1024;
 
@@ -41,8 +44,9 @@ export function auditPerformance(root = ROOT) {
 
     const bytes = fs.statSync(file).size;
     if (bytes > largestHtml.bytes) largestHtml = { url, bytes };
-    if (bytes > MAX_HTML_BYTES) {
-      errors.push(`${url}: HTML ${bytes} bytes supera presupuesto ${MAX_HTML_BYTES}`);
+    const htmlBudget = new URL(url).pathname === '/recursos/' ? MAX_RESOURCE_DIRECTORY_HTML_BYTES : MAX_HTML_BYTES;
+    if (bytes > htmlBudget) {
+      errors.push(`${url}: HTML ${bytes} bytes supera presupuesto ${htmlBudget}`);
     }
 
     const html = fs.readFileSync(file, 'utf8');
@@ -93,6 +97,6 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   } else {
     console.log(`Performance budget audit passed for ${result.urls.length} public URLs, including critical non-sitemap routes.`);
     console.log(`Largest HTML: ${result.largestHtml.bytes} bytes (${result.largestHtml.url}).`);
-    console.log(`Local scripts checked: ${result.checkedScripts.size}. Budgets: HTML <= ${MAX_HTML_BYTES} B, JS <= ${MAX_JS_BYTES} B, optimized hero <= ${MAX_OPTIMIZED_HERO_BYTES} B.`);
+    console.log(`Local scripts checked: ${result.checkedScripts.size}. Budgets: HTML <= ${MAX_HTML_BYTES} B (resource directory <= ${MAX_RESOURCE_DIRECTORY_HTML_BYTES} B), JS <= ${MAX_JS_BYTES} B, optimized hero <= ${MAX_OPTIMIZED_HERO_BYTES} B.`);
   }
 }

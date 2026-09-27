@@ -20,6 +20,21 @@ const INTERNATIONAL_AUTHORITY_HOSTS = new Set([
   'www.sosalarm.se', 'arbetsformedlingen.se',
   'www.infrastructure.gov.au', 'my.gov.au', 'www.canada.ca', 'www.jobbank.gc.ca',
   'www.usa.gov', 'www.gub.uy',
+  '112.fi', 'tyomarkkinatori.fi', 'www.govt.nz', 'www.workandincome.govt.nz',
+  'portal.gov.cz', 'up.gov.cz', 'civilprotection.gov.gr', 'www.dypa.gov.gr',
+  'policianacional.gov.py', 'emplea.mtess.gov.py', 'www.sinaproc.gob.pa', 'www.mitradel.gob.pa',
+  'adn.gob.do', 'empleateya.mt.gob.do', 'serviciipublice.gov.ro', 'www.anofm.ro',
+  'www.police.hu', 'nfsz.munka.hu', 'civilna-zastita.gov.hr', 'hzz.hr',
+  'www.slovensko.sk', 'www.upsvr.gov.sk',
+  'www.gov.si', 'www.ess.gov.si', 'www.vugd.gov.lv', 'www.nva.gov.lv',
+  'bpc.lrv.lt', 'uzt.lt', 'pulizija.gov.mt', 'jobsplus.gov.mt',
+  'www.policia.gob.ec', 'encuentraempleo.trabajo.gob.ec',
+  'www.pnc.gob.sv', 'www.mtps.gob.sv', 'www.mha.gov.in', 'ncs.gov.in',
+  'www.japan.travel', 'www.hellowork.mhlw.go.jp', 'www.westerncape.gov.za', 'www.labour.gov.za',
+  'conred.gob.gt', 'guatemala.gob.gt', 'www.112.ee', 'www.tootukassa.ee',
+  'www.mois.go.kr', 'm.work24.go.kr',
+  'www.gob.pe', 'www.empleosperu.gob.pe', '112.mvr.bg', 'www.identity.egov.bg',
+  'www.gov.cy', 'www.sante.gov.ma', 'www.emploi-public.ma', 'ncc.gov.ng', 'nelex.gov.ng',
 ]);
 
 export const PUBLIC_AUTHORITY_BASE_DOMAINS = [

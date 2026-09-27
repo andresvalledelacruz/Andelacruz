@@ -22,7 +22,35 @@
     "AU": "Australia",
     "CA": "Canadá",
     "US": "Estados Unidos",
-    "UY": "Uruguay"
+    "UY": "Uruguay",
+    "FI": "Finlandia",
+    "NZ": "Nueva Zelanda",
+    "CZ": "Chequia",
+    "GR": "Grecia",
+    "PY": "Paraguay",
+    "PA": "Panamá",
+    "DO": "República Dominicana",
+    "RO": "Rumanía",
+    "HU": "Hungría",
+    "HR": "Croacia",
+    "SK": "Eslovaquia",
+    "SI": "Eslovenia",
+    "LV": "Letonia",
+    "LT": "Lituania",
+    "MT": "Malta",
+    "EC": "Ecuador",
+    "SV": "El Salvador",
+    "IN": "India",
+    "JP": "Japón",
+    "ZA": "Sudáfrica",
+    "GT": "Guatemala",
+    "EE": "Estonia",
+    "KR": "Corea del Sur",
+    "PE": "Perú",
+    "BG": "Bulgaria",
+    "CY": "Chipre",
+    "MA": "Marruecos",
+    "NG": "Nigeria"
   },
   "categories": {
     "humanitaria": "Acción humanitaria y educación",
@@ -3950,6 +3978,1014 @@
         "checkedAt": "2026-09-27",
         "title": "Centros públicos de empleo (CePE)",
         "discoveredAt": "https://www.gub.uy/ministerio-trabajo-seguridad-social/centros-publicos-empleo"
+      }
+    },
+    {
+      "id": "fi-emergency",
+      "category": "salud",
+      "name": "Hätäkeskuslaitos: hätänumero 112",
+      "description": "El centro finlandés de emergencias explica cuándo llamar al 112 para pedir ayuda urgente.",
+      "country": "FI",
+      "language": "fi",
+      "kind": "resource",
+      "url": "https://112.fi/hatanumero112",
+      "sourceUrl": "https://112.fi/hatanumero112",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Milloin soitat hätänumeroon 112?",
+        "discoveredAt": "https://112.fi/hatanumero112"
+      }
+    },
+    {
+      "id": "fi-unemployment",
+      "category": "empleo",
+      "name": "Työmarkkinatori: ilmoittautuminen työnhakijaksi",
+      "description": "Servicio público para inscribirse como demandante de empleo y consultar las condiciones.",
+      "country": "FI",
+      "language": "fi",
+      "kind": "resource",
+      "url": "https://tyomarkkinatori.fi/henkiloasiakkaat/tietoa-tyoelamasta/tyonhaku/ilmoittautuminen-tyonhakijaksi",
+      "sourceUrl": "https://tyomarkkinatori.fi/henkiloasiakkaat/tietoa-tyoelamasta/tyonhaku/ilmoittautuminen-tyonhakijaksi",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Asiointi ja ilmoittautuminen työnhakijaksi",
+        "discoveredAt": "https://tyomarkkinatori.fi/henkiloasiakkaat/tietoa-tyoelamasta/tyonhaku/ilmoittautuminen-tyonhakijaksi"
+      }
+    },
+    {
+      "id": "nz-emergency",
+      "category": "salud",
+      "name": "New Zealand Government: 111 emergency service",
+      "description": "El Gobierno explica cuándo llamar al 111 para policía, bomberos o ambulancia.",
+      "country": "NZ",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.govt.nz/browse/law-crime-and-justice/crimes-and-emergencies/111-emergency-service/",
+      "sourceUrl": "https://www.govt.nz/browse/law-crime-and-justice/crimes-and-emergencies/111-emergency-service/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "111 emergency service",
+        "discoveredAt": "https://www.govt.nz/browse/law-crime-and-justice/crimes-and-emergencies/111-emergency-service/"
+      }
+    },
+    {
+      "id": "nz-employment",
+      "category": "empleo",
+      "name": "Work and Income: Find jobs",
+      "description": "El servicio público permite buscar empleos y explica cómo preparar una solicitud.",
+      "country": "NZ",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.workandincome.govt.nz/work/find-jobs/index.html",
+      "sourceUrl": "https://www.workandincome.govt.nz/work/find-jobs/index.html",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Find jobs",
+        "discoveredAt": "https://www.workandincome.govt.nz/work/find-jobs/index.html"
+      }
+    },
+    {
+      "id": "cz-emergency",
+      "category": "salud",
+      "name": "gov.cz: Tísňové volání",
+      "description": "El portal público enumera el 112 y los números nacionales para emergencias en Chequia.",
+      "country": "CZ",
+      "language": "cs",
+      "kind": "resource",
+      "url": "https://portal.gov.cz/sluzby-vs/tisnove-volani-S2824",
+      "sourceUrl": "https://portal.gov.cz/sluzby-vs/tisnove-volani-S2824",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Tísňové volání",
+        "discoveredAt": "https://portal.gov.cz/sluzby-vs/tisnove-volani-S2824"
+      }
+    },
+    {
+      "id": "cz-unemployment",
+      "category": "empleo",
+      "name": "Úřad práce: zprostředkování zaměstnání",
+      "description": "La oficina pública explica cómo solicitar ayuda para encontrar empleo y cómo pedir prestación.",
+      "country": "CZ",
+      "language": "cs",
+      "kind": "resource",
+      "url": "https://up.gov.cz/zadost-o-zprostredkovani-zamestnani-a-podporu-v-nezamestnanosti",
+      "sourceUrl": "https://up.gov.cz/zadost-o-zprostredkovani-zamestnani-a-podporu-v-nezamestnanosti",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Žádost o zprostředkování zaměstnání a podporu v nezaměstnanosti",
+        "discoveredAt": "https://up.gov.cz/zadost-o-zprostredkovani-zamestnani-a-podporu-v-nezamestnanosti"
+      }
+    },
+    {
+      "id": "gr-emergency",
+      "category": "salud",
+      "name": "Πολιτική Προστασία: 112",
+      "description": "Protección Civil explica cuándo llamar al 112 para obtener ayuda inmediata en Grecia.",
+      "country": "GR",
+      "language": "el",
+      "kind": "resource",
+      "url": "https://civilprotection.gov.gr/112",
+      "sourceUrl": "https://civilprotection.gov.gr/112",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "112",
+        "discoveredAt": "https://civilprotection.gov.gr/112"
+      }
+    },
+    {
+      "id": "gr-unemployment",
+      "category": "empleo",
+      "name": "ΔΥΠΑ: Register as unemployed",
+      "description": "El servicio público de empleo explica los requisitos y trámites de inscripción como desempleado.",
+      "country": "GR",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.dypa.gov.gr/en/register-as-unemployed-unemployment-cards",
+      "sourceUrl": "https://www.dypa.gov.gr/en/register-as-unemployed-unemployment-cards",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Register as unemployed - Unemployment cards",
+        "discoveredAt": "https://www.dypa.gov.gr/en/register-as-unemployed-unemployment-cards"
+      }
+    },
+    {
+      "id": "py-emergency",
+      "category": "salud",
+      "name": "Policía Nacional: Sistema 911",
+      "description": "La Policía Nacional de Paraguay identifica el 911 como número único para la atención de emergencias.",
+      "country": "PY",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://policianacional.gov.py/celebracion-del-dia-internacional-del-numero-unico-de-servicios-de-emergencias-y-acto-de-reconocimiento-y-gratitud-al-personal-del-sistema-911/",
+      "sourceUrl": "https://policianacional.gov.py/celebracion-del-dia-internacional-del-numero-unico-de-servicios-de-emergencias-y-acto-de-reconocimiento-y-gratitud-al-personal-del-sistema-911/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Celebración del día Internacional del Numero Único de Servicios de Emergencias",
+        "discoveredAt": "https://policianacional.gov.py/celebracion-del-dia-internacional-del-numero-unico-de-servicios-de-emergencias-y-acto-de-reconocimiento-y-gratitud-al-personal-del-sistema-911/"
+      }
+    },
+    {
+      "id": "py-employment",
+      "category": "empleo",
+      "name": "EmpleaPY · MTESS",
+      "description": "Portal oficial del Ministerio de Trabajo paraguayo para oportunidades laborales y creación de CV.",
+      "country": "PY",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://emplea.mtess.gov.py/",
+      "sourceUrl": "https://emplea.mtess.gov.py/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Emplea PY | MTESS",
+        "discoveredAt": "https://emplea.mtess.gov.py/"
+      }
+    },
+    {
+      "id": "pa-emergency",
+      "category": "salud",
+      "name": "SINAPROC: Centro de Operaciones de Emergencia",
+      "description": "Protección Civil de Panamá indica la línea 911, disponible las 24 horas, para emergencias.",
+      "country": "PA",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.sinaproc.gob.pa/centro-de-operaciones-de-emergencia/",
+      "sourceUrl": "https://www.sinaproc.gob.pa/centro-de-operaciones-de-emergencia/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Centro de Operaciones de Emergencia - Sinaproc",
+        "discoveredAt": "https://www.sinaproc.gob.pa/centro-de-operaciones-de-emergencia/"
+      }
+    },
+    {
+      "id": "pa-employment",
+      "category": "empleo",
+      "name": "MITRADEL: Dirección Nacional de Empleo",
+      "description": "El Ministerio de Trabajo de Panamá ofrece acceso al Servicio Público de Empleo y sus programas.",
+      "country": "PA",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.mitradel.gob.pa/empleo/",
+      "sourceUrl": "https://www.mitradel.gob.pa/empleo/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Empleo - Ministerio de Trabajo y Desarrollo Laboral",
+        "discoveredAt": "https://www.mitradel.gob.pa/empleo/"
+      }
+    },
+    {
+      "id": "do-emergency",
+      "category": "salud",
+      "name": "Sistema Nacional de Atención a Emergencias y Seguridad 911",
+      "description": "El Ayuntamiento del Distrito Nacional identifica el 911 como sistema nacional de atención a emergencias.",
+      "country": "DO",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://adn.gob.do/emergencia/",
+      "sourceUrl": "https://adn.gob.do/emergencia/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Emergencia | Ayuntamiento del Distrito Nacional",
+        "discoveredAt": "https://adn.gob.do/emergencia/"
+      }
+    },
+    {
+      "id": "do-employment",
+      "category": "empleo",
+      "name": "República Dominicana Trabaja",
+      "description": "Portal oficial de empleo del Ministerio de Trabajo; requiere registro para acceder a las ofertas.",
+      "country": "DO",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://empleateya.mt.gob.do/idp/Account/Login",
+      "sourceUrl": "https://empleateya.mt.gob.do/idp/Account/Login",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Bienvenido a República Dominicana Trabaja",
+        "discoveredAt": "https://empleateya.mt.gob.do/idp/Account/Login"
+      }
+    },
+    {
+      "id": "ro-emergency",
+      "category": "salud",
+      "name": "Serviciul de urgență 112",
+      "description": "El portal público de Rumanía explica que el 112 comunica con los servicios de intervención.",
+      "country": "RO",
+      "language": "ro",
+      "kind": "resource",
+      "url": "https://serviciipublice.gov.ro/serviciu/serviciul-de-urgenta-112-asigurat-cetatenilor",
+      "sourceUrl": "https://serviciipublice.gov.ro/serviciu/serviciul-de-urgenta-112-asigurat-cetatenilor",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Serviciul de urgență 112 asigurat cetățenilor",
+        "discoveredAt": "https://serviciipublice.gov.ro/serviciu/serviciul-de-urgenta-112-asigurat-cetatenilor"
+      }
+    },
+    {
+      "id": "ro-employment",
+      "category": "empleo",
+      "name": "ANOFM: Agenția Națională pentru Ocuparea Forței de Muncă",
+      "description": "La agencia pública de empleo ofrece vacantes, inscripción, orientación y prestaciones.",
+      "country": "RO",
+      "language": "ro",
+      "kind": "resource",
+      "url": "https://www.anofm.ro/",
+      "sourceUrl": "https://www.anofm.ro/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "ANOFM",
+        "discoveredAt": "https://www.anofm.ro/"
+      }
+    },
+    {
+      "id": "hu-emergency",
+      "category": "salud",
+      "name": "Rendőrség: 112-es segélyhívószám",
+      "description": "La Policía de Hungría explica que el 112 es gratuito y atiende emergencias las 24 horas.",
+      "country": "HU",
+      "language": "hu",
+      "kind": "resource",
+      "url": "https://www.police.hu/hu/112",
+      "sourceUrl": "https://www.police.hu/hu/112",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Mi a 112-es segélyhívószám?",
+        "discoveredAt": "https://www.police.hu/hu/112"
+      }
+    },
+    {
+      "id": "hu-employment",
+      "category": "empleo",
+      "name": "Nemzeti Foglalkoztatási Szolgálat",
+      "description": "El servicio público de empleo ofrece información y servicios para quienes buscan trabajo.",
+      "country": "HU",
+      "language": "hu",
+      "kind": "resource",
+      "url": "https://nfsz.munka.hu/tart/allaskeresok",
+      "sourceUrl": "https://nfsz.munka.hu/tart/allaskeresok",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Nemzeti Foglalkoztatási Szolgálat",
+        "discoveredAt": "https://nfsz.munka.hu/tart/allaskeresok"
+      }
+    },
+    {
+      "id": "hr-emergency",
+      "category": "salud",
+      "name": "Ravnateljstvo civilne zaštite: Broj 112",
+      "description": "Protección Civil de Croacia explica cómo solicitar ayuda de emergencia mediante el 112.",
+      "country": "HR",
+      "language": "hr",
+      "kind": "resource",
+      "url": "https://civilna-zastita.gov.hr/broj112/81",
+      "sourceUrl": "https://civilna-zastita.gov.hr/broj112/81",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Ravnateljstvo civilne zaštite - Broj 112",
+        "discoveredAt": "https://civilna-zastita.gov.hr/broj112/81"
+      }
+    },
+    {
+      "id": "hr-employment",
+      "category": "empleo",
+      "name": "Hrvatski zavod za zapošljavanje",
+      "description": "El servicio público de empleo ofrece inscripción, vacantes y prestaciones por desempleo.",
+      "country": "HR",
+      "language": "hr",
+      "kind": "resource",
+      "url": "https://hzz.hr/",
+      "sourceUrl": "https://hzz.hr/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "HZZ – Hrvatski zavod za zapošljavanje",
+        "discoveredAt": "https://hzz.hr/"
+      }
+    },
+    {
+      "id": "sk-emergency",
+      "category": "salud",
+      "name": "Slovensko.sk: tiesňové volanie 112",
+      "description": "El portal público de Eslovaquia explica el 112 y los demás números de emergencia.",
+      "country": "SK",
+      "language": "sk",
+      "kind": "resource",
+      "url": "https://www.slovensko.sk/sk/zivotne-situacie/zivotna-situacia/_sluzby-poskytovane-prostrednic",
+      "sourceUrl": "https://www.slovensko.sk/sk/zivotne-situacie/zivotna-situacia/_sluzby-poskytovane-prostrednic",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Služby poskytované prostredníctvom národných čísel tiesňového volania",
+        "discoveredAt": "https://www.slovensko.sk/sk/zivotne-situacie/zivotna-situacia/_sluzby-poskytovane-prostrednic"
+      }
+    },
+    {
+      "id": "sk-employment",
+      "category": "empleo",
+      "name": "ÚPSVaR: služby zamestnanosti",
+      "description": "La oficina pública explica la intermediación laboral, la inscripción y la orientación profesional.",
+      "country": "SK",
+      "language": "sk",
+      "kind": "resource",
+      "url": "https://www.upsvr.gov.sk/sluzby-zamestnanosti/zakladne-informacie-o-sluzbach-zamestnanosti/kompetencie-uradov-prace-socialnych-veci-a-rodiny.html?lang=sk&page_id=12821",
+      "sourceUrl": "https://www.upsvr.gov.sk/sluzby-zamestnanosti/zakladne-informacie-o-sluzbach-zamestnanosti/kompetencie-uradov-prace-socialnych-veci-a-rodiny.html?lang=sk&page_id=12821",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Kompetencie úradov práce, sociálnych vecí a rodiny",
+        "discoveredAt": "https://www.upsvr.gov.sk/sluzby-zamestnanosti/zakladne-informacie-o-sluzbach-zamestnanosti/kompetencie-uradov-prace-socialnych-veci-a-rodiny.html?lang=sk&page_id=12821"
+      }
+    },
+    {
+      "id": "si-emergency",
+      "category": "salud",
+      "name": "GOV.SI: Klici v sili",
+      "description": "El Gobierno de Eslovenia explica cómo funciona la llamada de urgencia al 112.",
+      "country": "SI",
+      "language": "sl",
+      "kind": "resource",
+      "url": "https://www.gov.si/teme/klic-v-sili/",
+      "sourceUrl": "https://www.gov.si/teme/klic-v-sili/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Klici v sili | GOV.SI",
+        "discoveredAt": "https://www.gov.si/teme/klic-v-sili/"
+      }
+    },
+    {
+      "id": "si-employment",
+      "category": "empleo",
+      "name": "ZRSZ: Registration with the Employment Service",
+      "description": "El servicio público de empleo explica cómo registrarse para buscar trabajo o solicitar apoyo.",
+      "country": "SI",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.ess.gov.si/en/jobseekers/registration-with-the-ess",
+      "sourceUrl": "https://www.ess.gov.si/en/jobseekers/registration-with-the-ess",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Registration with the ESS - ZRSZ",
+        "discoveredAt": "https://www.ess.gov.si/en/jobseekers/registration-with-the-ess"
+      }
+    },
+    {
+      "id": "lv-emergency",
+      "category": "salud",
+      "name": "VUGD: 112 Latvia",
+      "description": "El servicio estatal de rescate explica cómo el 112 coordina llamadas de emergencia en Letonia.",
+      "country": "LV",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.vugd.gov.lv/en/single-emergency-call-number-112-latvia",
+      "sourceUrl": "https://www.vugd.gov.lv/en/single-emergency-call-number-112-latvia",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "The single emergency call number 112 of Latvia",
+        "discoveredAt": "https://www.vugd.gov.lv/en/single-emergency-call-number-112-latvia"
+      }
+    },
+    {
+      "id": "lv-employment",
+      "category": "empleo",
+      "name": "NVA: Bezdarbniekiem un darba meklētājiem",
+      "description": "La agencia pública de empleo ofrece servicios para personas desempleadas y buscadoras de trabajo.",
+      "country": "LV",
+      "language": "lv",
+      "kind": "resource",
+      "url": "https://www.nva.gov.lv/lv/bezdarbniekiem-un-darba-mekletajiem",
+      "sourceUrl": "https://www.nva.gov.lv/lv/bezdarbniekiem-un-darba-mekletajiem",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Bezdarbniekiem un darba meklētājiem",
+        "discoveredAt": "https://www.nva.gov.lv/lv/bezdarbniekiem-un-darba-mekletajiem"
+      }
+    },
+    {
+      "id": "lt-emergency",
+      "category": "salud",
+      "name": "Bendrasis pagalbos centras: Numeris 112",
+      "description": "El centro nacional de emergencias explica cuándo llamar al 112 en Lituania.",
+      "country": "LT",
+      "language": "lt",
+      "kind": "resource",
+      "url": "https://bpc.lrv.lt/lt/numeris-112/",
+      "sourceUrl": "https://bpc.lrv.lt/lt/numeris-112/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Numeris 112 - Bendrasis pagalbos centras",
+        "discoveredAt": "https://bpc.lrv.lt/lt/numeris-112/"
+      }
+    },
+    {
+      "id": "lt-employment",
+      "category": "empleo",
+      "name": "Užimtumo tarnyba",
+      "description": "El servicio público de empleo permite buscar trabajo y consultar servicios tras perderlo.",
+      "country": "LT",
+      "language": "lt",
+      "kind": "resource",
+      "url": "https://uzt.lt/",
+      "sourceUrl": "https://uzt.lt/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Pagrindinis darbo ieškantiems - Užimtumo tarnyba",
+        "discoveredAt": "https://uzt.lt/"
+      }
+    },
+    {
+      "id": "mt-emergency",
+      "category": "salud",
+      "name": "Malta Police Force: Emergency Services 112",
+      "description": "La Policía de Malta explica cuándo llamar al 112 para una urgencia médica, policial o de bomberos.",
+      "country": "MT",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://pulizija.gov.mt/en/emergency-services-112/",
+      "sourceUrl": "https://pulizija.gov.mt/en/emergency-services-112/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Emergency Services (112) | The Malta Police Force",
+        "discoveredAt": "https://pulizija.gov.mt/en/emergency-services-112/"
+      }
+    },
+    {
+      "id": "mt-employment",
+      "category": "empleo",
+      "name": "Jobsplus Malta",
+      "description": "El servicio público muestra vacantes y permite registrarse para buscar empleo.",
+      "country": "MT",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://jobsplus.gov.mt/",
+      "sourceUrl": "https://jobsplus.gov.mt/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Job Search Malta: Unlock Your Professional Potential",
+        "discoveredAt": "https://jobsplus.gov.mt/"
+      }
+    },
+    {
+      "id": "ec-emergency",
+      "category": "salud",
+      "name": "Policía Nacional: ECU-911",
+      "description": "La Policía Nacional de Ecuador indica que el 911 sirve para pedir ayuda urgente desde el país.",
+      "country": "EC",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.policia.gob.ec/unidad-nacional-de-policia-de-control-de-seguridad-privada-y-control-de-armas-letales-y-no-letales/",
+      "sourceUrl": "https://www.policia.gob.ec/unidad-nacional-de-policia-de-control-de-seguridad-privada-y-control-de-armas-letales-y-no-letales/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Policía Nacional del Ecuador | Unidad Nacional de Policía de Control de Seguridad Privada",
+        "discoveredAt": "https://www.policia.gob.ec/unidad-nacional-de-policia-de-control-de-seguridad-privada-y-control-de-armas-letales-y-no-letales/"
+      }
+    },
+    {
+      "id": "ec-employment",
+      "category": "empleo",
+      "name": "Encuentra Empleo Ecuador",
+      "description": "La bolsa pública de Ecuador ofrece vacantes, entrevistas y apoyo gratuito a personas que buscan trabajo.",
+      "country": "EC",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://encuentraempleo.trabajo.gob.ec/socioEmpleo-war/paginas/quienesSomos.jsf",
+      "sourceUrl": "https://encuentraempleo.trabajo.gob.ec/socioEmpleo-war/paginas/quienesSomos.jsf",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Encuentra Empleo",
+        "discoveredAt": "https://encuentraempleo.trabajo.gob.ec/socioEmpleo-war/paginas/quienesSomos.jsf"
+      }
+    },
+    {
+      "id": "sv-emergency",
+      "category": "salud",
+      "name": "Policía Nacional Civil: Sistema 911",
+      "description": "La Policía de El Salvador atiende en el 911 situaciones que requieren intervención policial inmediata.",
+      "country": "SV",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.pnc.gob.sv/servicios/sistema-911/",
+      "sourceUrl": "https://www.pnc.gob.sv/servicios/sistema-911/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "POLICÍA NACIONAL CIVIL - Sistema 911",
+        "discoveredAt": "https://www.pnc.gob.sv/servicios/sistema-911/"
+      }
+    },
+    {
+      "id": "sv-employment",
+      "category": "empleo",
+      "name": "MTPS: Programa Oportunidades",
+      "description": "El Ministerio de Trabajo ofrece acceso a ofertas laborales mediante su Programa Oportunidades.",
+      "country": "SV",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.mtps.gob.sv/servicios/programa-oportunidades-registro-de-usuarios/",
+      "sourceUrl": "https://www.mtps.gob.sv/servicios/programa-oportunidades-registro-de-usuarios/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Ministerio de Trabajo y Previsión Social - Programa Oportunidades",
+        "discoveredAt": "https://www.mtps.gob.sv/servicios/programa-oportunidades-registro-de-usuarios/"
+      }
+    },
+    {
+      "id": "in-emergency",
+      "category": "salud",
+      "name": "Ministry of Home Affairs: ERSS 112",
+      "description": "El Ministerio del Interior de India indica que el 112 conecta con el sistema nacional de emergencias.",
+      "country": "IN",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.mha.gov.in/en/commoncontent/emergency-response-support-system-erss",
+      "sourceUrl": "https://www.mha.gov.in/en/commoncontent/emergency-response-support-system-erss",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Ministry of Home Affairs | Emergency Response Support System",
+        "discoveredAt": "https://www.mha.gov.in/en/commoncontent/emergency-response-support-system-erss"
+      }
+    },
+    {
+      "id": "in-employment",
+      "category": "empleo",
+      "name": "National Career Service",
+      "description": "El portal público del Ministerio de Trabajo permite buscar empleo y orientación profesional.",
+      "country": "IN",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://ncs.gov.in/",
+      "sourceUrl": "https://ncs.gov.in/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "National Career Service",
+        "discoveredAt": "https://ncs.gov.in/"
+      }
+    },
+    {
+      "id": "jp-emergency",
+      "category": "salud",
+      "name": "JNTO: Emergency phone numbers 110 and 119",
+      "description": "La oficina pública de turismo de Japón indica 110 para la policía y 119 para bomberos y ambulancias.",
+      "country": "JP",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.japan.travel/en/plan/hotline/",
+      "sourceUrl": "https://www.japan.travel/en/plan/hotline/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Japan Visitor Hotline | Travel Japan | JNTO",
+        "discoveredAt": "https://www.japan.travel/en/plan/hotline/"
+      }
+    },
+    {
+      "id": "jp-employment",
+      "category": "empleo",
+      "name": "ハローワークインターネットサービス",
+      "description": "El servicio público Hello Work ofrece información y búsqueda de empleo en Japón.",
+      "country": "JP",
+      "language": "ja",
+      "kind": "resource",
+      "url": "https://www.hellowork.mhlw.go.jp/",
+      "sourceUrl": "https://www.hellowork.mhlw.go.jp/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "ハローワークインターネットサービス - トップページ",
+        "discoveredAt": "https://www.hellowork.mhlw.go.jp/"
+      }
+    },
+    {
+      "id": "za-emergency",
+      "category": "salud",
+      "name": "Western Cape Government: emergency contacts",
+      "description": "La guía pública distingue policía 10111, ambulancias 10177 y 112 desde teléfono móvil; no hay número único.",
+      "country": "ZA",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.westerncape.gov.za/health-wellness/know-who-you-can-call-emergency",
+      "sourceUrl": "https://www.westerncape.gov.za/health-wellness/know-who-you-can-call-emergency",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Know who you can call in an emergency | Western Cape Government",
+        "discoveredAt": "https://www.westerncape.gov.za/health-wellness/know-who-you-can-call-emergency"
+      }
+    },
+    {
+      "id": "za-employment",
+      "category": "empleo",
+      "name": "Public Employment Services",
+      "description": "El Departamento de Empleo ofrece registro, intermediación y orientación para personas que buscan trabajo.",
+      "country": "ZA",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.labour.gov.za/About-Us/Pages/PUBLIC-EMPLOYMENT-SERVICES.aspx",
+      "sourceUrl": "https://www.labour.gov.za/About-Us/Pages/PUBLIC-EMPLOYMENT-SERVICES.aspx",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Public Employment Services - Department of Employment and Labour",
+        "discoveredAt": "https://www.labour.gov.za/About-Us/Pages/PUBLIC-EMPLOYMENT-SERVICES.aspx"
+      }
+    },
+    {
+      "id": "gt-emergency",
+      "category": "salud",
+      "name": "CONRED: Números de emergencia",
+      "description": "CONRED 119 para desastres; bomberos 122 o 123; policía 110 o 120. Elige el servicio según la emergencia.",
+      "country": "GT",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://conred.gob.gt/numeros-de-emergencia/",
+      "sourceUrl": "https://conred.gob.gt/numeros-de-emergencia/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Números de emergencia - CONRED",
+        "discoveredAt": "https://conred.gob.gt/numeros-de-emergencia/"
+      }
+    },
+    {
+      "id": "gt-employment",
+      "category": "empleo",
+      "name": "Servicio Nacional de Empleo: kioscos",
+      "description": "El ministerio informa sobre kioscos de empleo y la intermediación del Servicio Nacional de Empleo.",
+      "country": "GT",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://guatemala.gob.gt/mintrab-realiza-kioscos-de-empleo-en-chiquimula/",
+      "sourceUrl": "https://guatemala.gob.gt/mintrab-realiza-kioscos-de-empleo-en-chiquimula/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Mintrab realiza Kioscos de Empleo en Chiquimula - Gobierno de Guatemala",
+        "discoveredAt": "https://guatemala.gob.gt/mintrab-realiza-kioscos-de-empleo-en-chiquimula/"
+      }
+    },
+    {
+      "id": "ee-emergency",
+      "category": "salud",
+      "name": "Emergency phone number 112",
+      "description": "El 112 atiende policía, ambulancias y rescate en Estonia cuando hay peligro inmediato.",
+      "country": "EE",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.112.ee/en/emergency-phone-number-112",
+      "sourceUrl": "https://www.112.ee/en/emergency-phone-number-112",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Emergency phone number 112 - Emergency Response Centre",
+        "discoveredAt": "https://www.112.ee/en/emergency-phone-number-112"
+      }
+    },
+    {
+      "id": "ee-employment",
+      "category": "empleo",
+      "name": "Töötukassa: E-töötukassa",
+      "description": "El portal público permite buscar empleo y consultar servicios; el acceso requiere identificación.",
+      "country": "EE",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.tootukassa.ee/etootukassa/eng/logi-sisse",
+      "sourceUrl": "https://www.tootukassa.ee/etootukassa/eng/logi-sisse",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Log in | Estonian Unemployment Insurance Fund",
+        "discoveredAt": "https://www.tootukassa.ee/etootukassa/eng/logi-sisse"
+      }
+    },
+    {
+      "id": "kr-emergency",
+      "category": "salud",
+      "name": "Integrated Emergency Telephone Number Service",
+      "description": "El ministerio señala el 112 y el 119 para emergencias; el 110 es para consultas públicas.",
+      "country": "KR",
+      "language": "ko",
+      "kind": "resource",
+      "url": "https://www.mois.go.kr/eng/sub/a03/bestPractices3/screen.do",
+      "sourceUrl": "https://www.mois.go.kr/eng/sub/a03/bestPractices3/screen.do",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Integrated Emergency Telephone Number Service - Ministry of the Interior and Safety",
+        "discoveredAt": "https://www.mois.go.kr/eng/sub/a03/bestPractices3/screen.do"
+      }
+    },
+    {
+      "id": "kr-employment",
+      "category": "empleo",
+      "name": "고용24",
+      "description": "Portal público de ofertas de empleo, formación y prestaciones del Ministerio de Empleo.",
+      "country": "KR",
+      "language": "ko",
+      "kind": "resource",
+      "url": "https://m.work24.go.kr/cm/main.do",
+      "sourceUrl": "https://m.work24.go.kr/cm/main.do",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "고용24 - Ministry of Employment and Labor",
+        "discoveredAt": "https://m.work24.go.kr/cm/main.do"
+      }
+    },
+    {
+      "id": "pe-emotional-support",
+      "category": "emocional",
+      "name": "Línea 113 Salud: opción 5",
+      "description": "Orientación y apoyo psicológico gratuitos mediante la opción 5 de la Línea 113 Salud.",
+      "country": "PE",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.gob.pe/institucion/minsa/noticias/1332478-minsa-recuerda-que-la-linea-113-brinda-orientacion-y-apoyo-psicologico-gratuito-las-24-horas",
+      "sourceUrl": "https://www.gob.pe/institucion/minsa/noticias/1332478-minsa-recuerda-que-la-linea-113-brinda-orientacion-y-apoyo-psicologico-gratuito-las-24-horas",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Línea 113 Salud - Ministerio de Salud del Perú",
+        "discoveredAt": "https://www.gob.pe/institucion/minsa/noticias/1332478-minsa-recuerda-que-la-linea-113-brinda-orientacion-y-apoyo-psicologico-gratuito-las-24-horas"
+      }
+    },
+    {
+      "id": "pe-employment",
+      "category": "empleo",
+      "name": "Portal Empleos Perú",
+      "description": "Portal del Ministerio de Trabajo para consultar vacantes y servicios laborales en Perú.",
+      "country": "PE",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.empleosperu.gob.pe/portal-mtpe/",
+      "sourceUrl": "https://www.empleosperu.gob.pe/portal-mtpe/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Portal Empleos Perú - Ministerio de Trabajo",
+        "discoveredAt": "https://www.empleosperu.gob.pe/portal-mtpe/"
+      }
+    },
+    {
+      "id": "bg-emergency",
+      "category": "salud",
+      "name": "Emergencias 112 en Bulgaria",
+      "description": "En situaciones de emergencia en Bulgaria, el 112 conecta con los servicios de respuesta.",
+      "country": "BG",
+      "language": "bg",
+      "kind": "resource",
+      "url": "https://112.mvr.bg/",
+      "sourceUrl": "https://112.mvr.bg/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "112 Bulgaria - Ministry of Interior",
+        "discoveredAt": "https://112.mvr.bg/"
+      }
+    },
+    {
+      "id": "bg-employment",
+      "category": "empleo",
+      "name": "Búsqueda de empleo en Bulgaria",
+      "description": "El portal público explica la inscripción en las oficinas de empleo en Bulgaria.",
+      "country": "BG",
+      "language": "bg",
+      "kind": "resource",
+      "url": "https://www.identity.egov.bg/wps/portal/egov/vashata%20evropa/epizodi%20ot%20zhivota/rabota",
+      "sourceUrl": "https://www.identity.egov.bg/wps/portal/egov/vashata%20evropa/epizodi%20ot%20zhivota/rabota",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Работа - Bulgaria eGov",
+        "discoveredAt": "https://www.identity.egov.bg/wps/portal/egov/vashata%20evropa/epizodi%20ot%20zhivota/rabota"
+      }
+    },
+    {
+      "id": "cy-emergency",
+      "category": "salud",
+      "name": "Emergencias en Chipre: 112",
+      "description": "La Policía de Chipre explica cómo las llamadas al 112 se derivan a su centro de control.",
+      "country": "CY",
+      "language": "el",
+      "kind": "resource",
+      "url": "https://www.gov.cy/police/monades/limeniki-naytiki-astynomia-l-n-a/voitheia-pros-to-koino-epikoinonia/",
+      "sourceUrl": "https://www.gov.cy/police/monades/limeniki-naytiki-astynomia-l-n-a/voitheia-pros-to-koino-epikoinonia/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Policía de Chipre - Gov.cy",
+        "discoveredAt": "https://www.gov.cy/police/monades/limeniki-naytiki-astynomia-l-n-a/voitheia-pros-to-koino-epikoinonia/"
+      }
+    },
+    {
+      "id": "cy-employment",
+      "category": "empleo",
+      "name": "Servicio público de empleo de Chipre",
+      "description": "Portal oficial para buscar vacantes laborales disponibles por perfil y zona de interés.",
+      "country": "CY",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.cy/en/service/job-search/",
+      "sourceUrl": "https://www.gov.cy/en/service/job-search/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Search for job vacancies - Gov.cy",
+        "discoveredAt": "https://www.gov.cy/en/service/job-search/"
+      }
+    },
+    {
+      "id": "ma-emergency",
+      "category": "salud",
+      "name": "Urgencias sanitarias en Marruecos",
+      "description": "El Ministerio de Salud publica teléfonos de urgencias y hospitales por ciudad; consulta la cobertura.",
+      "country": "MA",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.sante.gov.ma/urgences/Pages/default.aspx",
+      "sourceUrl": "https://www.sante.gov.ma/urgences/Pages/default.aspx",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Les urgences - Ministère de la Santé",
+        "discoveredAt": "https://www.sante.gov.ma/urgences/Pages/default.aspx"
+      }
+    },
+    {
+      "id": "ma-employment",
+      "category": "empleo",
+      "name": "Emploi-Public Marruecos",
+      "description": "Portal oficial con convocatorias y concursos de empleo en el sector público marroquí.",
+      "country": "MA",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.emploi-public.ma/fr/",
+      "sourceUrl": "https://www.emploi-public.ma/fr/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Emploi-Public - Royaume du Maroc",
+        "discoveredAt": "https://www.emploi-public.ma/fr/"
+      }
+    },
+    {
+      "id": "ng-emergency",
+      "category": "salud",
+      "name": "Emergency Communications Centres: 112",
+      "description": "El regulador de telecomunicaciones publica el 112 para emergencias; consulta la cobertura local.",
+      "country": "NG",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://ncc.gov.ng/media-centre/press-releases/press-release-emergency-communications-centres-launch-ncc",
+      "sourceUrl": "https://ncc.gov.ng/media-centre/press-releases/press-release-emergency-communications-centres-launch-ncc",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Emergency Communications Centres - NCC Nigeria",
+        "discoveredAt": "https://ncc.gov.ng/media-centre/press-releases/press-release-emergency-communications-centres-launch-ncc"
+      }
+    },
+    {
+      "id": "ng-employment",
+      "category": "empleo",
+      "name": "National Electronic Labour Exchange",
+      "description": "Bolsa pública de empleo gestionada por el Ministerio Federal de Trabajo de Nigeria.",
+      "country": "NG",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://nelex.gov.ng/",
+      "sourceUrl": "https://nelex.gov.ng/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "NELEX - Federal Ministry of Labour and Employment",
+        "discoveredAt": "https://nelex.gov.ng/"
       }
     }
   ]
