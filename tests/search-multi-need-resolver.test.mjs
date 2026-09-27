@@ -59,6 +59,32 @@ test('repeated expressions deduplicate the same route', () => {
   assert.equal(result.relevant_needs.filter((need) => need.intent === 'debt_overwhelm').length, 1);
 });
 
+test('published guides remain visible beside a confirmed urgent concern', () => {
+  const result = resolveMultipleNeeds('me siento solo y quiero morir');
+  assert.equal(result.primary_need.intent, 'active_self_harm');
+  assert.equal(result.secondary_needs.some((need) => need.intent === 'general_loneliness'), true);
+  assert.equal(result.suppress_commercial_ui, true);
+});
+
+test('two ordinary published guides are shown together', () => {
+  const result = resolveMultipleNeeds('mi ex me ha bloqueado, no tengo amigos');
+  assert.deepEqual(result.relevant_needs.map((need) => need.intent), ['ex_blocked', 'no_friends']);
+  assert.equal(result.multiple_needs, true);
+  assert.equal(result.needs_clarification, false);
+});
+
+test('specific housing guide stays available beside job loss', () => {
+  const result = resolveMultipleNeeds('me han despedido y no puedo pagar el alquiler');
+  assert.deepEqual(result.relevant_needs.map((need) => need.intent), ['job_loss', 'housing_payment']);
+});
+
+test('negated safety language cannot be cleared by an ordinary guide', () => {
+  const result = resolveMultipleNeeds('no quiero morir pero no puedo pagar el alquiler');
+  assert.equal(result.relevant_needs.some((need) => need.intent === 'housing_payment'), true);
+  assert.equal(result.needs_clarification, true);
+  assert.equal(result.suppress_commercial_ui, true);
+});
+
 test('unknown text remains clarification-first without inventing a route', () => {
   const result = resolveMultipleNeeds('zxqv asunto completamente distinto');
   assert.equal(result.matched, false);

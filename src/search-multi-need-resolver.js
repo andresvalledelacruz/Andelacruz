@@ -1,6 +1,7 @@
 import { routeSearchQuery } from './search-crisis-router.js';
+import { routeKnownContentQuery } from './search-content-catalog.js';
 
-const SAFETY_RANK = Object.freeze({ P0: 300, P1: 200, NONE: 100 });
+const SAFETY_RANK = Object.freeze({ P0: 300, P1: 200, P2: 150, P3: 125, NONE: 100 });
 const CONFIDENCE_RANK = Object.freeze({ high: 20, medium: 10, low: 0 });
 
 function freezeNeed(result, firstSeen) {
@@ -58,6 +59,15 @@ export function resolveMultipleNeeds(query = '') {
 
     if (result.matched && result.route?.url && !matches.has(result.route.url)) {
       matches.set(result.route.url, freezeNeed(result, index));
+    }
+
+    // Specific published guides can be a second concern alongside an urgent
+    // route. Only consider them after the safety router has seen this clause.
+    if (!result.matched && !result.suppress_commercial_ui && !result.urgent_support?.available) {
+      const content = routeKnownContentQuery(clause);
+      if (content.matched && !matches.has(content.route.url)) {
+        matches.set(content.route.url, freezeNeed(content, index));
+      }
     }
   });
 
