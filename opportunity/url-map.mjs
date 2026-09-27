@@ -1,4 +1,8 @@
 export const URL_OPPORTUNITY_MAP = Object.freeze({
+  '/ansiedad/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
+  '/salud/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
+  '/violencia/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
+
   '/ayuda/es/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/ayuda/en/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/ayuda/fr/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
@@ -83,7 +87,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/':{domain:'grief',needs:['support_grieving_person'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 76;
+export const EXPECTED_PRODUCTION_URL_COUNT = 79;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };
