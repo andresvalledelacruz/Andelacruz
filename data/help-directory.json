@@ -12,7 +12,10 @@
     "DE": "Alemania",
     "IE": "Irlanda",
     "IT": "Italia",
-    "NL": "Países Bajos"
+    "NL": "Países Bajos",
+    "BE": "Bélgica",
+    "AT": "Austria",
+    "LU": "Luxemburgo"
   },
   "categories": {
     "humanitaria": "Acción humanitaria y educación",
@@ -3544,6 +3547,150 @@
         "checkedAt": "2026-09-27",
         "title": "Rented housing",
         "discoveredAt": "https://www.government.nl/themes/building-and-housing/housing/rented-housing"
+      }
+    },
+    {
+      "id": "be-emergency",
+      "category": "salud",
+      "name": "Bélgica: cómo llamar al 112",
+      "description": "Guía oficial para pedir asistencia urgente por el 112 en Bélgica.",
+      "country": "BE",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://112.be/en/how-call/how-call-112",
+      "sourceUrl": "https://112.be/en/how-call/how-call-112",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "How to call 112?",
+        "discoveredAt": "https://112.be/en/how-call/how-call-112"
+      }
+    },
+    {
+      "id": "be-unemployment",
+      "category": "empleo",
+      "name": "ONEM: desempleo completo",
+      "description": "Consulta tipos de prestación, requisitos y solicitud según tu situación.",
+      "country": "BE",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.onem.be/citoyens/chomage-complet",
+      "sourceUrl": "https://www.onem.be/citoyens/chomage-complet",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Chômage complet",
+        "discoveredAt": "https://www.onem.be/citoyens/chomage-complet"
+      }
+    },
+    {
+      "id": "at-emergency",
+      "category": "salud",
+      "name": "Austria: números oficiales de emergencia",
+      "description": "Consulta el 112 europeo y otros números según el tipo de emergencia en Austria.",
+      "country": "AT",
+      "language": "de",
+      "kind": "resource",
+      "url": "https://www.gesundheit.gv.at/service/notruf/notrufnummern.html",
+      "sourceUrl": "https://www.gesundheit.gv.at/service/notruf/notrufnummern.html",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Notrufnummern",
+        "discoveredAt": "https://www.gesundheit.gv.at/service/notruf/notrufnummern.html"
+      }
+    },
+    {
+      "id": "at-unemployment",
+      "category": "empleo",
+      "name": "AMS: solicitar la prestación por desempleo",
+      "description": "Información oficial sobre inscripción y solicitud de ayuda por desempleo en Austria.",
+      "country": "AT",
+      "language": "de",
+      "kind": "resource",
+      "url": "https://www.ams.at/arbeitsuchende/arbeitslos-was-tun/beim-ams-arbeitslosengeld-beantragen",
+      "sourceUrl": "https://www.ams.at/arbeitsuchende/arbeitslos-was-tun/beim-ams-arbeitslosengeld-beantragen",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Arbeitslos melden und Arbeitslosengeld beantragen",
+        "discoveredAt": "https://www.ams.at/arbeitsuchende/arbeitslos-was-tun/beim-ams-arbeitslosengeld-beantragen"
+      }
+    },
+    {
+      "id": "at-housing",
+      "category": "vivienda",
+      "name": "Austria: ayudas de vivienda por estado federado",
+      "description": "El portal público enlaza las ayudas y autoridades competentes de cada estado federado.",
+      "country": "AT",
+      "language": "de",
+      "kind": "resource",
+      "url": "https://www.oesterreich.gv.at/de/themen/bauen_und_wohnen/wohnen/2",
+      "sourceUrl": "https://www.oesterreich.gv.at/de/themen/bauen_und_wohnen/wohnen/2",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Wohnbauförderungen und Finanzierungen in den Bundesländern",
+        "discoveredAt": "https://www.oesterreich.gv.at/de/themen/bauen_und_wohnen/wohnen/2"
+      }
+    },
+    {
+      "id": "lu-emergency",
+      "category": "salud",
+      "name": "Luxemburgo: emergencias 112",
+      "description": "Para incendios o emergencias médicas, consulta la guía oficial del 112.",
+      "country": "LU",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://guichet.public.lu/en/citoyens/sante/services-urgence/appel-urgence.html",
+      "sourceUrl": "https://guichet.public.lu/en/citoyens/sante/services-urgence/appel-urgence.html",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Dial 112 - the European emergency number",
+        "discoveredAt": "https://guichet.public.lu/en/citoyens/sante/services-urgence/appel-urgence.html"
+      }
+    },
+    {
+      "id": "lu-employment",
+      "category": "empleo",
+      "name": "ADEM: inscripción como demandante de empleo",
+      "description": "Información oficial sobre inscripción por internet o en una oficina de ADEM.",
+      "country": "LU",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://adem.public.lu/fr/demandeurs-demploi/sinscrire-a-ladem.html",
+      "sourceUrl": "https://adem.public.lu/fr/demandeurs-demploi/sinscrire-a-ladem.html",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "S'inscrire comme demandeur d'emploi",
+        "discoveredAt": "https://adem.public.lu/fr/demandeurs-demploi/sinscrire-a-ladem.html"
+      }
+    },
+    {
+      "id": "lu-housing",
+      "category": "vivienda",
+      "name": "Luxemburgo: ayuda para el alquiler",
+      "description": "Consulta requisitos y solicitud de la subvención oficial para el alquiler.",
+      "country": "LU",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://guichet.public.lu/en/citoyens/logement/aides/aides-logement/subvention-loyer.html",
+      "sourceUrl": "https://guichet.public.lu/en/citoyens/logement/aides/aides-logement/subvention-loyer.html",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Rent subsidy",
+        "discoveredAt": "https://guichet.public.lu/en/citoyens/logement/aides/aides-logement/subvention-loyer.html"
       }
     }
   ]
