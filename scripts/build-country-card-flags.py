@@ -21,6 +21,7 @@ base = """/* Country cards: flags stay visible beneath a light veil so every cou
 .country-button[data-country]::before{content:"";position:absolute;z-index:-1;inset:0;border-radius:inherit;background-image:linear-gradient(90deg,#fff9f299,#fff9f299),url(/assets/country-flags.png);background-size:100% 100%,100% 5800%;opacity:.64;filter:saturate(.92)}
 .country-button[data-country] .flag-image{display:none}
 .country-button[data-country] span:last-child{overflow-wrap:normal;word-break:normal;hyphens:auto}
+.country-button[data-country="LU"]{font-size:.69rem}
 .country-button[data-country].country-unavailable{opacity:.72}
 .country-button[data-country][aria-pressed="true"],.country-button[data-country][aria-current="page"]{border:2px solid #704324;background-color:#f9eddf;color:#26190f;opacity:1;box-shadow:0 2px 7px #4a2d203d,inset 0 0 0 1px #fff}
 .country-button[data-country]:hover{background-color:#f9ead9;opacity:1}
