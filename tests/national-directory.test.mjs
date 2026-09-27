@@ -36,7 +36,8 @@ test('national directory has dated verified sources and a country-first runtime 
   assert.equal((page.match(/<li><a href="https:\/\//g)||[]).length,50);
   for(const record of records.filter(r=>r.kind==='resource'))assert.ok(!page.includes(`href="${record.url}"`),record.id);
   for (const [, href] of page.matchAll(/href="(\/[^"#]*)"/g)) {
-    assert.ok(existsSync(`.${href}${href.endsWith('/') ? 'index.html' : ''}`), href);
+    const pathname = href.split('?')[0];
+    assert.ok(existsSync(`.${pathname}${pathname.endsWith('/') ? 'index.html' : ''}`), href);
   }
 });
 

@@ -13,7 +13,12 @@ test('la portada V9 permanece byte-a-byte intacta', () => {
   const html = readFileSync('index.html', 'utf8').replaceAll('\r\n', '\n');
   assert.equal(html.split(approvedFooter).length, 2, 'one exact language footer is required');
   assert.ok(html.includes(approvedFooter + '</footer>'), 'language coverage belongs at the end of the footer');
-  const actual = execFileSync('git', ['hash-object', '--stdin'], { input: html.replace(approvedFooter, ''), encoding: 'utf8' }).trim();
+  const addedStylesheet = '  <link rel="stylesheet" href="/assets/country-card.css?v=20260927-3">\n';
+  const countryBlock = /<!-- country-cards:start -->[\s\S]*?<!-- country-cards:end -->\n/;
+  assert.equal(html.split(addedStylesheet).length, 2, 'one approved country card stylesheet is required');
+  assert.match(html, countryBlock, 'the approved country card block is required');
+  const baseline = html.replace(approvedFooter, '').replace(addedStylesheet, '').replace(countryBlock, '');
+  const actual = execFileSync('git', ['hash-object', '--stdin'], { input: baseline, encoding: 'utf8' }).trim();
 
   assert.equal(
     actual,

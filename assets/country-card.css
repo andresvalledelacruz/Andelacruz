@@ -1,0 +1,73 @@
+/* Country cards: flags stay visible beneath a light veil so every country name remains readable. */
+.home-country-links{margin:22px 0 4px;padding:20px;border:1px solid #dac9b7;border-radius:14px;background:#fffaf4}
+.home-country-links h3{margin:0 0 7px;font-size:1.2rem}
+.home-country-links p{margin:0 0 14px;line-height:1.45}
+.country-buttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.country-button[data-country]{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;min-height:58px;padding:7px 9px;border:1px solid #b9a38b;border-radius:9px;background-color:#f8f1e9;color:#30231b;font-size:.84rem;font-weight:750;line-height:1.18;text-align:center;text-shadow:0 1px 2px #fff,0 0 7px #fff;box-shadow:0 2px 5px #4a2d2020,inset 0 1px 2px #ffffffcc;opacity:1;text-decoration:none}
+.country-button[data-country]::before{content:"";position:absolute;z-index:-1;inset:0;border-radius:inherit;background-image:linear-gradient(90deg,#fff9f299,#fff9f299),url(/assets/country-flags.png);background-size:100% 100%,100% 5800%;opacity:.64;filter:saturate(.92)}
+.country-button[data-country] .flag-image{display:none}
+.country-button[data-country] span:last-child{overflow-wrap:normal;word-break:normal;hyphens:auto}
+.country-button[data-country].country-unavailable{opacity:.72}
+.country-button[data-country][aria-pressed="true"],.country-button[data-country][aria-current="page"]{border:2px solid #704324;background-color:#f9eddf;color:#26190f;opacity:1;box-shadow:0 2px 7px #4a2d203d,inset 0 0 0 1px #fff}
+.country-button[data-country]:hover{background-color:#f9ead9;opacity:1}
+.country-button[data-country]:focus-visible{outline:3px solid #704324;outline-offset:3px}
+@media(max-width:650px){.country-buttons{grid-template-columns:repeat(3,minmax(0,1fr))}.country-button[data-country]{min-height:56px;font-size:.8rem;padding:5px}}
+@media(max-width:390px){.country-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.country-button[data-country="ES"]::before{background-position:center,center 0.000000%}
+.country-button[data-country="DE"]::before{background-position:center,center 1.754386%}
+.country-button[data-country="AR"]::before{background-position:center,center 3.508772%}
+.country-button[data-country="AU"]::before{background-position:center,center 5.263158%}
+.country-button[data-country="AT"]::before{background-position:center,center 7.017544%}
+.country-button[data-country="BE"]::before{background-position:center,center 8.771930%}
+.country-button[data-country="BO"]::before{background-position:center,center 10.526316%}
+.country-button[data-country="BG"]::before{background-position:center,center 12.280702%}
+.country-button[data-country="CA"]::before{background-position:center,center 14.035088%}
+.country-button[data-country="CZ"]::before{background-position:center,center 15.789474%}
+.country-button[data-country="CL"]::before{background-position:center,center 17.543860%}
+.country-button[data-country="CY"]::before{background-position:center,center 19.298246%}
+.country-button[data-country="CO"]::before{background-position:center,center 21.052632%}
+.country-button[data-country="KR"]::before{background-position:center,center 22.807018%}
+.country-button[data-country="CR"]::before{background-position:center,center 24.561404%}
+.country-button[data-country="HR"]::before{background-position:center,center 26.315789%}
+.country-button[data-country="CU"]::before{background-position:center,center 28.070175%}
+.country-button[data-country="DK"]::before{background-position:center,center 29.824561%}
+.country-button[data-country="EC"]::before{background-position:center,center 31.578947%}
+.country-button[data-country="SV"]::before{background-position:center,center 33.333333%}
+.country-button[data-country="SK"]::before{background-position:center,center 35.087719%}
+.country-button[data-country="SI"]::before{background-position:center,center 36.842105%}
+.country-button[data-country="US"]::before{background-position:center,center 38.596491%}
+.country-button[data-country="EE"]::before{background-position:center,center 40.350877%}
+.country-button[data-country="FI"]::before{background-position:center,center 42.105263%}
+.country-button[data-country="FR"]::before{background-position:center,center 43.859649%}
+.country-button[data-country="GR"]::before{background-position:center,center 45.614035%}
+.country-button[data-country="GT"]::before{background-position:center,center 47.368421%}
+.country-button[data-country="HN"]::before{background-position:center,center 49.122807%}
+.country-button[data-country="HU"]::before{background-position:center,center 50.877193%}
+.country-button[data-country="IN"]::before{background-position:center,center 52.631579%}
+.country-button[data-country="IE"]::before{background-position:center,center 54.385965%}
+.country-button[data-country="IT"]::before{background-position:center,center 56.140351%}
+.country-button[data-country="JP"]::before{background-position:center,center 57.894737%}
+.country-button[data-country="LV"]::before{background-position:center,center 59.649123%}
+.country-button[data-country="LT"]::before{background-position:center,center 61.403509%}
+.country-button[data-country="LU"]::before{background-position:center,center 63.157895%}
+.country-button[data-country="MT"]::before{background-position:center,center 64.912281%}
+.country-button[data-country="MA"]::before{background-position:center,center 66.666667%}
+.country-button[data-country="MX"]::before{background-position:center,center 68.421053%}
+.country-button[data-country="NI"]::before{background-position:center,center 70.175439%}
+.country-button[data-country="NG"]::before{background-position:center,center 71.929825%}
+.country-button[data-country="NZ"]::before{background-position:center,center 73.684211%}
+.country-button[data-country="NL"]::before{background-position:center,center 75.438596%}
+.country-button[data-country="PA"]::before{background-position:center,center 77.192982%}
+.country-button[data-country="PY"]::before{background-position:center,center 78.947368%}
+.country-button[data-country="PE"]::before{background-position:center,center 80.701754%}
+.country-button[data-country="PL"]::before{background-position:center,center 82.456140%}
+.country-button[data-country="PT"]::before{background-position:center,center 84.210526%}
+.country-button[data-country="PR"]::before{background-position:center,center 85.964912%}
+.country-button[data-country="GB"]::before{background-position:center,center 87.719298%}
+.country-button[data-country="DO"]::before{background-position:center,center 89.473684%}
+.country-button[data-country="RO"]::before{background-position:center,center 91.228070%}
+.country-button[data-country="ZA"]::before{background-position:center,center 92.982456%}
+.country-button[data-country="SE"]::before{background-position:center,center 94.736842%}
+.country-button[data-country="EU"]::before{background-position:center,center 96.491228%}
+.country-button[data-country="UY"]::before{background-position:center,center 98.245614%}
+.country-button[data-country="VE"]::before{background-position:center,center 100.000000%}

@@ -15,7 +15,9 @@ const APPROVED_APP_SHA256 = "76918e22d34267715430d9b1e834f5d21dadf0f53d84f538acd
 const APPROVED_SEARCH_NORMALIZATION_SHA256 = "fd72d4f16cd3cef3a06751da774b1f2329abdd3474b5690110ae43036e71ac76";
 // Search 3.1 changes a previously pinned protected surface. Pin the reviewed
 // page and its new dependency, including against computed-property exfiltration.
-const APPROVED_SEARCH_PAGE_SHA256 = 'bf3b24cd997e811773e782e33a7e15ecc61ba6e8cce8c4cedabf967ab2fa16d5';
+// 2026-09-27: reviewed static country links into /recursos/#pais-XX. The form
+// continues processing submitted text only in the browser, with no new telemetry.
+const APPROVED_SEARCH_PAGE_SHA256 = 'f7229a5c8e9ba2a6e02ce8464d356ead5dfc50b4551319b7361313780e81de45';
 // 2026-09-27: reviewed ordinary guide matching after clause-level safety
 // routing. The dependency already belongs to the pinned local-only closure.
 const APPROVED_MULTI_NEED_RESOLVER_SHA256 = '291b600b21fc3a1f58d05e3b790b984c60c6fbdbe6c5c889a2242f9fca7dcf7d';
