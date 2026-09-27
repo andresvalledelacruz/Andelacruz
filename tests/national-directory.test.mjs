@@ -3,10 +3,9 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 
 const page = readFileSync('webs-amigas.html', 'utf8');
-const runtime = readFileSync('webs-amigas-country-filter.js', 'utf8');
 const directory = JSON.parse(readFileSync('data/help-directory.json','utf8'));
 
-test('national directory has dated verified sources and a country-first runtime without implied partnerships', () => {
+test('Spanish organizations directory is static, sourced and separate from country resources', () => {
   const records=directory.records;
   assert.equal(records.length,204);
   assert.equal(new Set(records.map(r=>r.id)).size,204);
@@ -23,17 +22,14 @@ test('national directory has dated verified sources and a country-first runtime 
     assert.ok(record.description.length<110);
   }
   assert.match(page, /no implica colaboración, patrocinio ni acuerdo/);
-  assert.ok(page.indexOf('href="/ayuda-urgente.html"') < page.indexOf('id="friends-groups"'));
-  assert.match(page,/id="country-buttons"/);
-  assert.match(page,/id="friends-groups"/);
-  assert.match(page,/src="\/webs-amigas-country-filter\.js\?v=20260927-2"/);
-  assert.match(page,/src="\/country-options\.js"/);
-  assert.match(runtime,/fetch\('\/data\/help-directory\.json'/);
-  assert.match(runtime,/renderCountry\('ES'\)/);
-  assert.match(runtime,/record\.country === code/);
+  assert.ok(page.indexOf('href="/ayuda-urgente.html"') < page.indexOf('data-organization="'));
+  assert.doesNotMatch(page,/id="country-buttons"|webs-amigas-country-filter|Webs amigas por país/);
   assert.ok(page.includes('href="/recursos/"'));
-  assert.match(runtime,/record\.kind === 'organization'/);
-  assert.equal((page.match(/<li><a href="https:\/\//g)||[]).length,50);
+  assert.equal((page.match(/data-organization=/g)||[]).length,50);
+  for(const record of records.filter(r=>r.kind==='organization')){
+    assert.ok(page.includes(`data-organization="${record.id}"`),record.id);
+    assert.ok(page.includes(`href="${record.url}"`),record.id);
+  }
   for(const record of records.filter(r=>r.kind==='resource'))assert.ok(!page.includes(`href="${record.url}"`),record.id);
   for (const [, href] of page.matchAll(/href="(\/[^"#]*)"/g)) {
     const pathname = href.split('?')[0];

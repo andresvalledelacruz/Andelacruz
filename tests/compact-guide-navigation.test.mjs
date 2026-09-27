@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
 const hubs=['violencia','ansiedad','duelo','soledad','salud','gestion-emocional','familia','rupturas','trabajo','dinero','trabajo-dinero'];
 const helpDirectory=JSON.parse(readFileSync('data/help-directory.json','utf8'));
-const friendsRuntime=readFileSync('webs-amigas-country-filter.js','utf8');
+const friendsPage=readFileSync('webs-amigas.html','utf8');
 test('topic guides offer native navigation choices before the long introduction',()=>{
   for(const hub of hubs){
     const html=readFileSync(`${hub}/index.html`,'utf8');
@@ -21,8 +21,7 @@ test('topic guides offer native navigation choices before the long introduction'
       if(fragment){
         if(pathname==='/webs-amigas.html'){
           assert.ok(helpDirectory.categories[fragment],url);
-          assert.ok(friendsRuntime.includes("id:anchor"),url);
-          assert.ok(friendsRuntime.includes('const anchor = category;'),url);
+          assert.ok(friendsPage.includes(`id="${fragment}"`),url);
         }else{
           assert.ok(readFileSync(file,'utf8').includes(`id="${fragment}"`),url);
         }

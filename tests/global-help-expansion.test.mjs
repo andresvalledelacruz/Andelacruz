@@ -14,19 +14,15 @@ test('directory is uniquely sourced and country-scoped; runtime alphabetizes it'
  for(const r of data.records){assert.ok(data.countries[r.country]);assert.ok(data.categories[r.category]);assert.match(r.language,/^(es|en|fr|pt|de)$/);if(r.kind==='resource'){assert.equal(r.verification.httpStatus,200);assert.ok(r.verification.title);}}
  assert.equal(data.records.find(r=>r.id==='anar').url,'https://www.anar.org/que-hacemos/telefono-chat-anar/');
  const page=read('webs-amigas.html','utf8');
- const runtime=read('webs-amigas-country-filter.js','utf8');
- assert.ok(page.includes('id="country-buttons"'));
- assert.ok(page.includes('id="friends-groups"'));
- assert.ok(page.includes('src="/webs-amigas-country-filter.js?v=20260927-2"'));
- assert.ok(runtime.includes("record.country === code && record.kind === 'organization'"));
+ assert.equal((page.match(/data-organization=/g)||[]).length,50);
+ assert.doesNotMatch(page,/id="country-buttons"|webs-amigas-country-filter|Webs amigas por país|países se muestran como pendientes/);
+ assert.ok(page.includes('href="/recursos/"'));
  assert.equal(data.records.filter(r=>r.kind==='organization').length,50);
  assert.equal(data.records.filter(r=>r.kind==='resource').length,154);
  const resources=read('recursos/index.html','utf8');
  for(const r of data.records.filter(r=>r.kind==='resource'))assert.ok(resources.includes(`href="${r.url}"`),r.id);
  for(const r of data.records.filter(r=>r.kind==='organization'))assert.ok(!resources.includes(`href="${r.url}"`),r.id);
- assert.ok(runtime.includes("renderCountry('ES')"));
- assert.ok(runtime.includes('normalizeRecords'));
- assert.ok(runtime.includes('localeCompare'));
+
 });
 test('localized equivalents have reciprocal hreflang, self canonicals, privacy and safety',()=>{
  for(const lang of ['es','en','fr','pt','de']){
