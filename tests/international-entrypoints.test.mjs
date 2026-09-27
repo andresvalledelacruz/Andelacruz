@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const data=JSON.parse(readFileSync('data/international-entrypoints.json','utf8'));
 const html=readFileSync('internacional.html','utf8');
-test('eight international destinations preserve their order and regional scope',()=>{
-  assert.deepEqual(data.countries.map(c=>c.code),['MX','AR','CO','CL','PT','FR','GB','DE']);
+test('eleven international destinations preserve their order and regional scope',()=>{
+  assert.deepEqual(data.countries.map(c=>c.code),['MX','AR','CO','CL','PT','FR','GB','DE','IE','IT','NL']);
   for(const c of data.countries){
     assert.ok(html.includes(`data-country="${c.code}" href="${c.url.replaceAll('&','&amp;')}"`));
     assert.ok(html.includes(`lang="${c.lang}"`));
@@ -17,7 +17,7 @@ test('eight international destinations preserve their order and regional scope',
 test('international help remains static, private and reachable without scripts',()=>{
   assert.doesNotMatch(html,/<form\b|<input\b|<iframe\b|<script(?! type="application\/ld\+json")/);
   assert.match(html,/name="referrer" content="no-referrer"/);
-  assert.equal((html.match(/data-country=/g)||[]).length,9);
+  assert.equal((html.match(/data-country=/g)||[]).length,12);
   assert.ok(readFileSync('recursos/index.html','utf8').includes('href="/internacional.html"'));
   assert.ok(readFileSync('sitemap.xml','utf8').includes('https://desgracias.es/internacional.html'));
 });

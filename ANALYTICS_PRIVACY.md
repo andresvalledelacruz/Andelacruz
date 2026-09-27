@@ -49,6 +49,8 @@ El informe local ofrece hoy, últimos siete o treinta días, historial completo,
 2. Guardar el contenido JSON de la celda `snapshot` fuera de este repositorio público.
 3. Ejecutar `node scripts/build-private-analytics-report.mjs /ruta/privada/exportacion.json /ruta/privada/visitas.html` y abrir el HTML generado. El generador rechaza destinos dentro del repositorio.
 
+Para consultar la procedencia agregada sin abrir el informe HTML, ejecutar `node scripts/inspect-private-acquisition.mjs /ruta/privada/exportacion.json 7` (o `30`). El resumen usa la misma exportación: separa referencias de hosts externos, navegación interna, referencias directas/no informadas y procedencia desconocida. Muestra páginas vistas, nunca personas o sesiones. La salida se imprime en la terminal; no copiarla al repositorio público.
+
 El HTML funciona sin red, claves ni almacenamiento del navegador. No publicar el JSON ni el HTML en GitHub Pages. Una página oculta mediante `noindex` no es un control de acceso. La consulta y el generador son reutilizables; los datos permanecen fuera del árbol desplegable. Un futuro panel en directo necesita acceso individual autorizado antes de exponer lecturas de la tabla.
 
 ### Pageviews por día

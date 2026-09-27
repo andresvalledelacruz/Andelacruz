@@ -31,7 +31,7 @@ test('static fallback matches catalog and keeps crisis help outside filtered lis
   assert.ok(html.indexOf('href="tel:024"') < html.indexOf('id="resource-directory"'));
   assert.ok(!/visitor-analytics|public-page-runtime/.test(html));
   assert.equal((html.match(/class="country-button(?: country-unavailable)?"/g)||[]).length,58);
-  assert.equal((html.match(/class="country-resource-group"/g)||[]).length,10);
+  assert.equal((html.match(/class="country-resource-group"/g)||[]).length,13);
   assert.ok(html.indexOf('data-country="ES"') < html.indexOf('data-country="DE"'));
   assert.ok(html.includes('src="/country-resource-directory.js"'));
   assert.ok(html.includes('background-image:url(/assets/country-flags.png)'));

@@ -9,7 +9,10 @@
     "FR": "Francia",
     "GB": "Reino Unido",
     "EU": "Unión Europea",
-    "DE": "Alemania"
+    "DE": "Alemania",
+    "IE": "Irlanda",
+    "IT": "Italia",
+    "NL": "Países Bajos"
   },
   "categories": {
     "humanitaria": "Acción humanitaria y educación",
@@ -3397,6 +3400,150 @@
         "checkedAt": "2026-09-27",
         "title": "Das Hilfetelefon – Beratung und Hilfe für Frauen",
         "discoveredAt": "https://www.hilfetelefon.de/"
+      }
+    },
+    {
+      "id": "ie-mental-crisis",
+      "category": "emocional",
+      "name": "HSE: ayuda urgente en una crisis de salud mental",
+      "description": "Emergencia: 112 o 999. La página indica otras opciones de apoyo en Irlanda.",
+      "country": "IE",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www2.hse.ie/mental-health/services-support/get-urgent-help/",
+      "sourceUrl": "https://www2.hse.ie/mental-health/services-support/get-urgent-help/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Get urgent help for a mental health crisis",
+        "discoveredAt": "https://www2.hse.ie/mental-health/services-support/get-urgent-help/"
+      }
+    },
+    {
+      "id": "ie-intreo",
+      "category": "empleo",
+      "name": "Intreo: apoyo para buscar trabajo",
+      "description": "Servicio público de empleo y orientación sobre ayudas a personas que buscan trabajo.",
+      "country": "IE",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://jobsireland.ie/en-US/IntreoServices-Jobseeker",
+      "sourceUrl": "https://jobsireland.ie/en-US/IntreoServices-Jobseeker",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Intreo Services for Jobseekers",
+        "discoveredAt": "https://jobsireland.ie/en-US/IntreoServices-Jobseeker"
+      }
+    },
+    {
+      "id": "ie-hap",
+      "category": "vivienda",
+      "name": "HAP: cómo solicitar ayuda para el alquiler",
+      "description": "Consulta el trámite y los requisitos de tu autoridad local antes de solicitar HAP.",
+      "country": "IE",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.hap.ie/tenants/howtoapply/",
+      "sourceUrl": "https://www.hap.ie/tenants/howtoapply/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "How to apply for HAP",
+        "discoveredAt": "https://www.hap.ie/tenants/howtoapply/"
+      }
+    },
+    {
+      "id": "it-emergency",
+      "category": "salud",
+      "name": "Italia: números oficiales de emergencia",
+      "description": "Para una emergencia en Italia, consulta el 112 y las indicaciones oficiales.",
+      "country": "IT",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.italia.it/en/italy/practical-information/emergency-and-assistance",
+      "sourceUrl": "https://www.italia.it/en/italy/practical-information/emergency-and-assistance",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Emergency numbers and assistance in Italy",
+        "discoveredAt": "https://www.italia.it/en/italy/practical-information/emergency-and-assistance"
+      }
+    },
+    {
+      "id": "it-naspi",
+      "category": "empleo",
+      "name": "INPS: prestación por desempleo NASpI",
+      "description": "Consulta quién puede solicitar la NASpI y cómo tramitarla en el INPS.",
+      "country": "IT",
+      "language": "it",
+      "kind": "resource",
+      "url": "https://www.inps.it/it/it/dettaglio-scheda.it.schede-servizio-strumento.schede-servizi.50593.naspi-indennit-mensile-di-disoccupazione.html",
+      "sourceUrl": "https://www.inps.it/it/it/dettaglio-scheda.it.schede-servizio-strumento.schede-servizi.50593.naspi-indennit-mensile-di-disoccupazione.html",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "NASpI: indennità mensile di disoccupazione",
+        "discoveredAt": "https://www.inps.it/it/it/dettaglio-scheda.it.schede-servizio-strumento.schede-servizi.50593.naspi-indennit-mensile-di-disoccupazione.html"
+      }
+    },
+    {
+      "id": "nl-emergency",
+      "category": "salud",
+      "name": "Países Bajos: emergencias 112",
+      "description": "El 112 atiende emergencias con peligro inmediato para la vida o delitos en curso.",
+      "country": "NL",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.government.nl/themes/justice-security-and-defence/emergency-number-112",
+      "sourceUrl": "https://www.government.nl/themes/justice-security-and-defence/emergency-number-112",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Emergency number 112",
+        "discoveredAt": "https://www.government.nl/themes/justice-security-and-defence/emergency-number-112"
+      }
+    },
+    {
+      "id": "nl-unemployment",
+      "category": "empleo",
+      "name": "Países Bajos: prestación por desempleo WW",
+      "description": "Información oficial sobre requisitos y solicitud de la prestación WW.",
+      "country": "NL",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.government.nl/themes/work/unemployment/unemployment-benefit-ww/claiming-unemployment-benefit-ww-uitkering",
+      "sourceUrl": "https://www.government.nl/themes/work/unemployment/unemployment-benefit-ww/claiming-unemployment-benefit-ww-uitkering",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Claiming unemployment benefit (WW-uitkering)",
+        "discoveredAt": "https://www.government.nl/themes/work/unemployment/unemployment-benefit-ww/claiming-unemployment-benefit-ww-uitkering"
+      }
+    },
+    {
+      "id": "nl-housing",
+      "category": "vivienda",
+      "name": "Países Bajos: alquiler y ayuda a la vivienda",
+      "description": "Información oficial sobre alquiler y posible ayuda económica según condiciones.",
+      "country": "NL",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.government.nl/themes/building-and-housing/housing/rented-housing",
+      "sourceUrl": "https://www.government.nl/themes/building-and-housing/housing/rented-housing",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Rented housing",
+        "discoveredAt": "https://www.government.nl/themes/building-and-housing/housing/rented-housing"
       }
     }
   ]
