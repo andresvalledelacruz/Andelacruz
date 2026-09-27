@@ -26,7 +26,7 @@ try{
   const context=await browser.newContext({viewport:{width,height:900}});
   const outbound=[];await context.route('**/*',r=>{if(!r.request().url().startsWith(origin)){outbound.push(r.request().url());return r.abort();}return r.continue();});
   const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  for(const lang of ['es','en','fr','pt']){
+  for(const lang of ['es','en','fr','pt','de']){
    await page.goto(`${origin}/ayuda/${lang}/`,{waitUntil:'networkidle'});
    assert.ok(await page.locator('#help-form').isVisible());
    await page.locator('#help-country').selectOption('MX');

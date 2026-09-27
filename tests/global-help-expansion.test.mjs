@@ -24,11 +24,11 @@ test('directory is uniquely sourced and country-scoped; runtime alphabetizes it'
  assert.ok(runtime.includes('localeCompare'));
 });
 test('localized equivalents have reciprocal hreflang, self canonicals, privacy and safety',()=>{
- for(const lang of ['es','en','fr','pt']){
+ for(const lang of ['es','en','fr','pt','de']){
   const html=read(`ayuda/${lang}/index.html`,'utf8');
   assert.ok(html.includes(`<html lang="${lang}">`));
   assert.ok(html.includes(`rel="canonical" href="https://desgracias.es/ayuda/${lang}/"`));
-  for(const alternate of ['es','en','fr','pt'])assert.ok(html.includes(`hreflang="${alternate}" href="https://desgracias.es/ayuda/${alternate}/"`));
+  for(const alternate of ['es','en','fr','pt','de'])assert.ok(html.includes(`hreflang="${alternate}" href="https://desgracias.es/ayuda/${alternate}/"`));
   assert.ok(html.includes('hreflang="x-default"'));
   assert.doesNotMatch(html,/hreflang="(?:en-UK|es-EU)"|visitor-analytics|adsbygoogle|<iframe/);
   assert.match(html,/name="referrer" content="no-referrer"/);
@@ -39,8 +39,8 @@ test('localized equivalents have reciprocal hreflang, self canonicals, privacy a
  const runtime=read('international-help-ui.js','utf8')+read('src/international-help.js','utf8');
  assert.doesNotMatch(runtime,/fetch\s*\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage|document\.cookie|navigator\.language|location\.(?:search|hash)/);
 });
-for(const [q,expected] of [['I lost my job','empleo'],['I cannot pay rent','vivienda'],['je cherche un emploi','empleo'],['nao consigo pagar o arrendamento','vivienda'],['no tengo chamba','empleo'],['no tengo laburo','empleo'],['no puedo pagar la renta','vivienda'],['me siento sola','emocional']])test(`localized vocabulary: ${q}`,()=>{const r=findHelpTopics(q);assert.ok(r.categories.includes(expected));assert.equal(r.raw_query_retained,false);assert.ok(!JSON.stringify(r).includes(q));});
-for(const q of ['I want to kill myself but need a job','I want to end my life','no quiero vivir','je veux en finir','nao quero viver','me pega mi pareja','no quiero matarme'])test(`keep official safety route available: ${q}`,()=>assert.equal(findHelpTopics(q).safety,true));
+for(const [q,expected] of [['I lost my job','empleo'],['I cannot pay rent','vivienda'],['je cherche un emploi','empleo'],['nao consigo pagar o arrendamento','vivienda'],['ich bin arbeitslos','empleo'],['ich kann die miete nicht zahlen','vivienda'],['ich bin einsam','emocional'],['no tengo chamba','empleo'],['no tengo laburo','empleo'],['no puedo pagar la renta','vivienda'],['me siento sola','emocional']])test(`localized vocabulary: ${q}`,()=>{const r=findHelpTopics(q);assert.ok(r.categories.includes(expected));assert.equal(r.raw_query_retained,false);assert.ok(!JSON.stringify(r).includes(q));});
+for(const q of ['I want to kill myself but need a job','I want to end my life','no quiero vivir','je veux en finir','nao quero viver','ich will nicht mehr leben','ich will mich umbringen','ich erlebe gewalt','me pega mi pareja','no quiero matarme'])test(`keep official safety route available: ${q}`,()=>assert.equal(findHelpTopics(q).safety,true));
 test('ambiguous terms need clarification; multiple needs remain multiple',()=>{
  assert.equal(findHelpTopics('I need something').needsClarification,true);
  assert.deepEqual(findHelpTopics('job and rent').categories,['empleo','vivienda']);

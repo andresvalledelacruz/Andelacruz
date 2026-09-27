@@ -11,7 +11,7 @@ test('coverage inventory separates explicit no-measurement contracts and critica
   assert.equal(report.missing, report.indexable_html - report.covered);
   assert.equal(report.covered, report.breakdown.covered);
 
-  for (const file of ['recursos/index.html', 'internacional.html', ...['es', 'en', 'fr', 'pt'].map(lang => `ayuda/${lang}/index.html`)]) {
+  for (const file of ['recursos/index.html', 'internacional.html', ...['es', 'en', 'fr', 'pt', 'de'].map(lang => `ayuda/${lang}/index.html`)]) {
     assert.equal(byFile.get(file)?.status, 'explicitly_unmeasured', file);
   }
   for (const route of await readCriticalRoutes()) {
