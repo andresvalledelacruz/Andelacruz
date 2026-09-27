@@ -159,6 +159,8 @@ jobs:
           assert 'https://desgracias.es/retirar.html' not in urls, 'Noindex withdrawal utility must not be in sitemap'
           assert 'https://desgracias.es/webs-amigas.html' in urls, 'Verified organization directory must be in sitemap'
           assert len(urls) == len(set(urls)), 'Duplicate URLs found in sitemap'
+          for route in ('ansiedad', 'salud', 'violencia'):
+              assert f'https://desgracias.es/{route}/' in urls, f'Indexable homepage category missing from sitemap: {route}'
 
           today = date.today()
           seen_titles = {}
