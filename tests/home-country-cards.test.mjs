@@ -20,5 +20,5 @@ test('home country links follow the single options source and reviewed coverage'
   assert.equal(card[1].includes('country-unavailable'),!covered.has(code),code);
  }
  assert.match(region,/opciones atenuadas aún no tienen enlaces revisados/);
- assert.ok(html.includes('/assets/country-card.css?v=20260927-6'));
+ assert.ok(html.includes('/assets/country-card.css?v=20260927-7'));
 });
