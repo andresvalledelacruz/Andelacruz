@@ -12,13 +12,11 @@ test('home country links follow the single options source and reviewed coverage'
  assert.ok(region);
  assert.ok(html.indexOf('<strong>Importante:</strong>')<html.indexOf('<!-- country-cards:start -->'));
  assert.ok(html.indexOf('<!-- country-cards:end -->')<html.indexOf('<section class="professionals'));
- assert.equal((region.match(/href="\/recursos\/#pais-[A-Z]{2}"/g)||[]).length,options.length);
+ assert.equal((region.match(/href="\/recursos\/#pais-[A-Z]{2}"/g)||[]).length,covered.size);
  for(const [code,name] of options){
-  assert.ok(region.includes(`data-country="${code}" href="/recursos/#pais-${code}"`),code);
-  assert.ok(region.includes(`aria-label="Ver recursos de ${name}"`),code);
-  const card=region.match(new RegExp(`<a class="([^"]+)" data-country="${code}"`));
-  assert.equal(card[1].includes('country-unavailable'),!covered.has(code),code);
+  assert.equal(region.includes(`data-country="${code}" href="/recursos/#pais-${code}"`),covered.has(code),code);
+  if(covered.has(code))assert.ok(region.includes(`aria-label="Ver recursos de ${name}"`),code);
  }
- assert.match(region,/opciones atenuadas aún no tienen enlaces revisados/);
+ assert.doesNotMatch(region,/country-unavailable|opciones atenuadas/);
  assert.ok(html.includes('/assets/country-card.css?v=20260927-7'));
 });

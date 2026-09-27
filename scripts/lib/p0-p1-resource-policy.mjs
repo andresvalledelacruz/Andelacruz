@@ -16,6 +16,10 @@ const INTERNATIONAL_AUTHORITY_HOSTS = new Set([
   'www2.hse.ie', 'jobsireland.ie', 'www.hap.ie', 'www.italia.it', 'www.inps.it', 'www.government.nl',
   '112.be', 'www.onem.be', 'www.gesundheit.gv.at', 'www.ams.at', 'www.oesterreich.gv.at',
   'guichet.public.lu', 'adem.public.lu',
+  'politi.dk', 'www.borger.dk', 'www.gov.pl', 'psz.praca.gov.pl',
+  'www.sosalarm.se', 'arbetsformedlingen.se',
+  'www.infrastructure.gov.au', 'my.gov.au', 'www.canada.ca', 'www.jobbank.gc.ca',
+  'www.usa.gov', 'www.gub.uy',
 ]);
 
 export const PUBLIC_AUTHORITY_BASE_DOMAINS = [

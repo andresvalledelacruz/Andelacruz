@@ -141,6 +141,76 @@
       "description": "La guía oficial presenta el 112 para incendios y emergencias médicas; consulta el alcance antes de llamar.",
       "url": "https://guichet.public.lu/en/citoyens/sante/services-urgence/appel-urgence.html",
       "source": "https://guichet.public.lu/en/citoyens/sante/services-urgence/appel-urgence.html"
+    },
+    {
+      "id": "dinamarca",
+      "name": "Dinamarca · Danmark",
+      "code": "DK",
+      "lang": "da-DK",
+      "service": "Alarm 112",
+      "description": "Ring 112 ved akut behov for hjælp fra politi, ambulance eller brandvæsen.",
+      "url": "https://politi.dk/om-politiet/kontakt-politiet/alarm-112",
+      "source": "https://politi.dk/om-politiet/kontakt-politiet/alarm-112"
+    },
+    {
+      "id": "polonia",
+      "name": "Polonia · Polska",
+      "code": "PL",
+      "lang": "pl-PL",
+      "service": "Numer alarmowy 112",
+      "description": "Numer alarmowy 112 działa w Polsce. Sprawdź oficjalne informacje o zgłoszeniach alarmowych.",
+      "url": "https://www.gov.pl/web/numer-alarmowy-112",
+      "source": "https://www.gov.pl/web/numer-alarmowy-112"
+    },
+    {
+      "id": "suecia",
+      "name": "Suecia · Sverige",
+      "code": "SE",
+      "lang": "sv-SE",
+      "service": "Viktiga telefonnummer",
+      "description": "Vid akut fara i Sverige, ring 112. SOS Alarm visar även andra viktiga nummer.",
+      "url": "https://www.sosalarm.se/112-och-andra-viktiga-nummer/viktiga-nummer/",
+      "source": "https://www.sosalarm.se/112-och-andra-viktiga-nummer/viktiga-nummer/"
+    },
+    {
+      "id": "australia",
+      "name": "Australia",
+      "code": "AU",
+      "lang": "en-AU",
+      "service": "Triple Zero (000)",
+      "description": "Call 000 for life-threatening emergencies. The government explains when to call and how to get help.",
+      "url": "https://www.infrastructure.gov.au/media-communications/phone/triple-zero",
+      "source": "https://www.infrastructure.gov.au/media-communications/phone/triple-zero"
+    },
+    {
+      "id": "canada",
+      "name": "Canadá · Canada",
+      "code": "CA",
+      "lang": "en-CA",
+      "service": "Mental health support: get help",
+      "description": "If you are in immediate danger, call 9-1-1. For suicide crisis support, call or text 9-8-8.",
+      "url": "https://www.canada.ca/en/public-health/services/mental-health-services/mental-health-get-help.html",
+      "source": "https://www.canada.ca/en/public-health/services/mental-health-services/mental-health-get-help.html"
+    },
+    {
+      "id": "estados-unidos",
+      "name": "Estados Unidos · United States",
+      "code": "US",
+      "lang": "en-US",
+      "service": "Emergency help in the United States",
+      "description": "If you are experiencing an emergency, dial 911. This is official USAGov guidance.",
+      "url": "https://www.usa.gov/report-crime",
+      "source": "https://www.usa.gov/report-crime"
+    },
+    {
+      "id": "uruguay",
+      "name": "Uruguay",
+      "code": "UY",
+      "lang": "es-UY",
+      "service": "Servicio de Emergencia 9-1-1",
+      "description": "El Ministerio del Interior explica el servicio 9-1-1 y cuándo usarlo para emergencias reales.",
+      "url": "https://www.gub.uy/ministerio-interior/comunicacion/noticias/servicio-emergencia-9-1-1-consta-tres-pilares-fundamentales-para-su",
+      "source": "https://www.gub.uy/ministerio-interior/comunicacion/noticias/servicio-emergencia-9-1-1-consta-tres-pilares-fundamentales-para-su"
     }
   ]
 }

@@ -6,6 +6,18 @@ Un apoyo corporativo identificado públicamente para contribuir al funcionamient
 
 No se publica tarifa, volumen de audiencia, proyección de ingresos, número de plazas ni promesa de impacto: no hay datos comprobados ni acuerdo que los respalde. La opción de reconocimiento público se revisaría y etiquetaría como «Apoyo institucional» fuera de rutas P0/P1 y de ayuda sensible, con ubicación, texto y duración pactados por escrito.
 
+## Paquete piloto para negociar
+
+| Campo | Propuesta a discutir | Evidencia que falta |
+|---|---|---|
+| Contraprestación | Mención «Apoyo institucional» solo en `/alianzas.html`, tras revisión. | Entidad aprobada, texto, marca y ubicación revisados. |
+| Plazo | Fecha de inicio y fin expresas. | Contrato y calendario acordados. |
+| Precio | Acordar caso por caso; no publicar tarifa sin estudio. | Costes, alcance y condiciones reales. |
+| Informe | Confirmación de publicación/retirada. Datos de audiencia solo agregados y verificados, si disponibles. | Medición comprobable; nunca búsquedas ni historias. |
+| Control | El patrocinador no edita recomendaciones ni compra verificación. | Cláusula de independencia aceptada. |
+
+El vínculo `mailto:` de la página incluye los campos que necesita la evaluación inicial. No recoge los datos en el sitio ni los remite a una red publicitaria.
+
 ## Preparación de un acuerdo real
 
 1. Revisar identidad de la entidad, titularidad del dominio, actividad y potenciales conflictos; rechazar financiadores cuya actividad o condiciones comprometan la confianza del usuario.

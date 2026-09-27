@@ -411,5 +411,26 @@
     "title": "Violencia, abuso y acoso: encuentra ayuda segura",
     "description": "Si alguien te está dañando, controlando, amenazando, acosando o ha cometido una agresión, prioriza seguridad y encuentra recursos adecuados en España.",
     "url": "/violencia/"
+  },
+  {
+    "id": "receta-electronica-otra-comunidad",
+    "category": "salud",
+    "title": "Recoger medicamentos en otra comunidad autónoma",
+    "description": "Comprueba en Sanidad cómo funciona la receta electrónica del SNS fuera de tu comunidad antes de ir a la farmacia.",
+    "url": "/receta-electronica-otra-comunidad/"
+  },
+  {
+    "id": "incapacidad-temporal-que-tramite",
+    "category": "trabajo",
+    "title": "Baja médica e incapacidad temporal: encontrar el trámite",
+    "description": "Localiza la información oficial de la Seguridad Social y prepara el trámite sin compartir datos de salud aquí.",
+    "url": "/incapacidad-temporal-que-tramite/"
+  },
+  {
+    "id": "reclamar-una-compra",
+    "category": "dinero",
+    "title": "Reclamar una compra: pasos y arbitraje de consumo",
+    "description": "Ordena la reclamación y comprueba en Consumo si el arbitraje sirve para tu caso.",
+    "url": "/reclamar-una-compra/"
   }
 ]

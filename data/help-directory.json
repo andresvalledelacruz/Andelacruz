@@ -15,7 +15,14 @@
     "NL": "Países Bajos",
     "BE": "Bélgica",
     "AT": "Austria",
-    "LU": "Luxemburgo"
+    "LU": "Luxemburgo",
+    "DK": "Dinamarca",
+    "PL": "Polonia",
+    "SE": "Suecia",
+    "AU": "Australia",
+    "CA": "Canadá",
+    "US": "Estados Unidos",
+    "UY": "Uruguay"
   },
   "categories": {
     "humanitaria": "Acción humanitaria y educación",
@@ -3691,6 +3698,258 @@
         "checkedAt": "2026-09-27",
         "title": "Rent subsidy",
         "discoveredAt": "https://guichet.public.lu/en/citoyens/logement/aides/aides-logement/subvention-loyer.html"
+      }
+    },
+    {
+      "id": "dk-emergency",
+      "category": "salud",
+      "name": "Politi: Alarm 112",
+      "description": "Información oficial sobre el 112 para situaciones que requieren asistencia inmediata en Dinamarca.",
+      "country": "DK",
+      "language": "da",
+      "kind": "resource",
+      "url": "https://politi.dk/om-politiet/kontakt-politiet/alarm-112",
+      "sourceUrl": "https://politi.dk/om-politiet/kontakt-politiet/alarm-112",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Alarm 112",
+        "discoveredAt": "https://politi.dk/om-politiet/kontakt-politiet/alarm-112"
+      }
+    },
+    {
+      "id": "dk-unemployment",
+      "category": "empleo",
+      "name": "Borger.dk: Meld dig ledig",
+      "description": "Guía para inscribirse como demandante de empleo. Las opciones dependen del municipio.",
+      "country": "DK",
+      "language": "da",
+      "kind": "resource",
+      "url": "https://www.borger.dk/arbejde-dagpenge-ferie/Arbejdsloeshed/meld-dig-ledig",
+      "sourceUrl": "https://www.borger.dk/arbejde-dagpenge-ferie/Arbejdsloeshed/meld-dig-ledig",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Meld dig ledig",
+        "discoveredAt": "https://www.borger.dk/arbejde-dagpenge-ferie/Arbejdsloeshed/meld-dig-ledig"
+      }
+    },
+    {
+      "id": "pl-emergency",
+      "category": "salud",
+      "name": "Numer alarmowy 112",
+      "description": "Portal oficial polaco sobre el 112 y su uso en situaciones de emergencia.",
+      "country": "PL",
+      "language": "pl",
+      "kind": "resource",
+      "url": "https://www.gov.pl/web/numer-alarmowy-112",
+      "sourceUrl": "https://www.gov.pl/web/numer-alarmowy-112",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Numer alarmowy 112",
+        "discoveredAt": "https://www.gov.pl/web/numer-alarmowy-112"
+      }
+    },
+    {
+      "id": "pl-unemployment",
+      "category": "empleo",
+      "name": "PSZ: documentos para inscribirse como desempleado",
+      "description": "Documentos para inscribirse como desempleado, según la oficina pública de empleo.",
+      "country": "PL",
+      "language": "pl",
+      "kind": "resource",
+      "url": "https://psz.praca.gov.pl/dla-bezrobotnych-i-poszukujacych-pracy/abc-bezrobotnego-i-poszukujacego-pracy/dokumenty-potrzebne-do-rejestracji-osoby-bezrobotnej",
+      "sourceUrl": "https://psz.praca.gov.pl/dla-bezrobotnych-i-poszukujacych-pracy/abc-bezrobotnego-i-poszukujacego-pracy/dokumenty-potrzebne-do-rejestracji-osoby-bezrobotnej",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Dokumenty potrzebne do rejestracji osoby bezrobotnej",
+        "discoveredAt": "https://psz.praca.gov.pl/dla-bezrobotnych-i-poszukujacych-pracy/abc-bezrobotnego-i-poszukujacego-pracy/dokumenty-potrzebne-do-rejestracji-osoby-bezrobotnej"
+      }
+    },
+    {
+      "id": "se-emergency",
+      "category": "salud",
+      "name": "SOS Alarm: viktiga telefonnummer",
+      "description": "Información de SOS Alarm sobre el 112 en Suecia y otros números según el tipo de ayuda.",
+      "country": "SE",
+      "language": "sv",
+      "kind": "resource",
+      "url": "https://www.sosalarm.se/112-och-andra-viktiga-nummer/viktiga-nummer/",
+      "sourceUrl": "https://www.sosalarm.se/112-och-andra-viktiga-nummer/viktiga-nummer/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Viktiga telefonnummer",
+        "discoveredAt": "https://www.sosalarm.se/112-och-andra-viktiga-nummer/viktiga-nummer/"
+      }
+    },
+    {
+      "id": "se-unemployment",
+      "category": "empleo",
+      "name": "Arbetsförmedlingen: Arbetslös – vad händer nu?",
+      "description": "La agencia pública explica cómo inscribirse al empezar el desempleo e informarse sobre prestaciones.",
+      "country": "SE",
+      "language": "sv",
+      "kind": "resource",
+      "url": "https://arbetsformedlingen.se/for-arbetssokande/arbetslos---vad-hander-nu",
+      "sourceUrl": "https://arbetsformedlingen.se/for-arbetssokande/arbetslos---vad-hander-nu",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Arbetslös - vad händer nu?",
+        "discoveredAt": "https://arbetsformedlingen.se/for-arbetssokande/arbetslos---vad-hander-nu"
+      }
+    },
+    {
+      "id": "au-emergency",
+      "category": "salud",
+      "name": "Triple Zero (000): Australian Government",
+      "description": "El Gobierno australiano explica cuándo llamar al 000 y cómo pedir policía, bomberos o ambulancia.",
+      "country": "AU",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.infrastructure.gov.au/media-communications/phone/triple-zero",
+      "sourceUrl": "https://www.infrastructure.gov.au/media-communications/phone/triple-zero",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Triple Zero",
+        "discoveredAt": "https://www.infrastructure.gov.au/media-communications/phone/triple-zero"
+      }
+    },
+    {
+      "id": "au-employment",
+      "category": "empleo",
+      "name": "myGov: Find and apply for jobs",
+      "description": "Orientación pública para buscar trabajo, usar Workforce Australia y conocer los requisitos de acceso.",
+      "country": "AU",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://my.gov.au/en/services/work/looking-for-work/find-and-apply-for-jobs",
+      "sourceUrl": "https://my.gov.au/en/services/work/looking-for-work/find-and-apply-for-jobs",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Find and apply for jobs",
+        "discoveredAt": "https://my.gov.au/en/services/work/looking-for-work/find-and-apply-for-jobs"
+      }
+    },
+    {
+      "id": "ca-urgent",
+      "category": "emocional",
+      "name": "Canada.ca: Mental health support",
+      "description": "El Gobierno canadiense indica 9-1-1 ante peligro inmediato y 9-8-8 para crisis suicida.",
+      "country": "CA",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.canada.ca/en/public-health/services/mental-health-services/mental-health-get-help.html",
+      "sourceUrl": "https://www.canada.ca/en/public-health/services/mental-health-services/mental-health-get-help.html",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Mental health support: get help",
+        "discoveredAt": "https://www.canada.ca/en/public-health/services/mental-health-services/mental-health-get-help.html"
+      }
+    },
+    {
+      "id": "ca-employment",
+      "category": "empleo",
+      "name": "Job Bank Canada",
+      "description": "Bolsa pública de empleo canadiense con ofertas, formación y orientación profesional.",
+      "country": "CA",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.jobbank.gc.ca/home",
+      "sourceUrl": "https://www.jobbank.gc.ca/home",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Job Bank",
+        "discoveredAt": "https://www.jobbank.gc.ca/home"
+      }
+    },
+    {
+      "id": "us-emergency",
+      "category": "salud",
+      "name": "USAGov: emergency help",
+      "description": "La guía federal indica llamar al 911 ante una emergencia en Estados Unidos.",
+      "country": "US",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.usa.gov/report-crime",
+      "sourceUrl": "https://www.usa.gov/report-crime",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Report a crime",
+        "discoveredAt": "https://www.usa.gov/report-crime"
+      }
+    },
+    {
+      "id": "us-employment",
+      "category": "empleo",
+      "name": "USAGov: how to find a job",
+      "description": "Guía federal para buscar empleo y localizar centros de empleo; la oferta varía por estado.",
+      "country": "US",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.usa.gov/job-help",
+      "sourceUrl": "https://www.usa.gov/job-help",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "How to find a job",
+        "discoveredAt": "https://www.usa.gov/job-help"
+      }
+    },
+    {
+      "id": "uy-emergency",
+      "category": "salud",
+      "name": "Ministerio del Interior: servicio 9-1-1",
+      "description": "El Ministerio del Interior explica el servicio 9-1-1 para emergencias en Uruguay.",
+      "country": "UY",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.gub.uy/ministerio-interior/comunicacion/noticias/servicio-emergencia-9-1-1-consta-tres-pilares-fundamentales-para-su",
+      "sourceUrl": "https://www.gub.uy/ministerio-interior/comunicacion/noticias/servicio-emergencia-9-1-1-consta-tres-pilares-fundamentales-para-su",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "El Servicio de Emergencia 9-1-1 consta de tres pilares fundamentales para su funcionamiento",
+        "discoveredAt": "https://www.gub.uy/ministerio-interior/comunicacion/noticias/servicio-emergencia-9-1-1-consta-tres-pilares-fundamentales-para-su"
+      }
+    },
+    {
+      "id": "uy-employment",
+      "category": "empleo",
+      "name": "MTSS: Centros Públicos de Empleo",
+      "description": "Directorio oficial de centros de empleo de Uruguay; consulta el centro y horario de tu zona.",
+      "country": "UY",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.gub.uy/ministerio-trabajo-seguridad-social/centros-publicos-empleo",
+      "sourceUrl": "https://www.gub.uy/ministerio-trabajo-seguridad-social/centros-publicos-empleo",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Centros públicos de empleo (CePE)",
+        "discoveredAt": "https://www.gub.uy/ministerio-trabajo-seguridad-social/centros-publicos-empleo"
       }
     }
   ]
