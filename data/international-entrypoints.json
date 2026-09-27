@@ -111,6 +111,36 @@
       "description": "Para situaciones de peligro inmediato en los Países Bajos, utiliza el 112 según el Gobierno neerlandés.",
       "url": "https://www.government.nl/themes/justice-security-and-defence/emergency-number-112",
       "source": "https://www.government.nl/themes/justice-security-and-defence/emergency-number-112"
+    },
+    {
+      "id": "belgica",
+      "name": "Bélgica · België · Belgique",
+      "code": "BE",
+      "lang": "en-BE",
+      "service": "112 Belgium: how to call",
+      "description": "La guía oficial indica cuándo llamar al 112 para asistencia urgente en Bélgica.",
+      "url": "https://112.be/en/how-call/how-call-112",
+      "source": "https://112.be/en/how-call/how-call-112"
+    },
+    {
+      "id": "austria",
+      "name": "Austria · Österreich",
+      "code": "AT",
+      "lang": "de-AT",
+      "service": "Notrufnummern in Österreich",
+      "description": "El portal sanitario oficial enumera el 112 y otros teléfonos según el tipo de emergencia.",
+      "url": "https://www.gesundheit.gv.at/service/notruf/notrufnummern.html",
+      "source": "https://www.gesundheit.gv.at/service/notruf/notrufnummern.html"
+    },
+    {
+      "id": "luxemburgo",
+      "name": "Luxemburgo · Luxembourg",
+      "code": "LU",
+      "lang": "en-LU",
+      "service": "Emergency number 112",
+      "description": "La guía oficial presenta el 112 para incendios y emergencias médicas; consulta el alcance antes de llamar.",
+      "url": "https://guichet.public.lu/en/citoyens/sante/services-urgence/appel-urgence.html",
+      "source": "https://guichet.public.lu/en/citoyens/sante/services-urgence/appel-urgence.html"
     }
   ]
 }

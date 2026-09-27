@@ -14,6 +14,8 @@ const INTERNATIONAL_AUTHORITY_HOSTS = new Set([
   'www.gov.pt', 'www.service-public.gouv.fr',
   'gesund.bund.de', 'www.arbeitsagentur.de', 'verwaltung.bund.de', 'www.hilfetelefon.de',
   'www2.hse.ie', 'jobsireland.ie', 'www.hap.ie', 'www.italia.it', 'www.inps.it', 'www.government.nl',
+  '112.be', 'www.onem.be', 'www.gesundheit.gv.at', 'www.ams.at', 'www.oesterreich.gv.at',
+  'guichet.public.lu', 'adem.public.lu',
 ]);
 
 export const PUBLIC_AUTHORITY_BASE_DOMAINS = [

@@ -18,7 +18,7 @@ test('directory is uniquely sourced and country-scoped; runtime alphabetizes it'
  assert.doesNotMatch(page,/id="country-buttons"|webs-amigas-country-filter|Webs amigas por país|países se muestran como pendientes/);
  assert.ok(page.includes('href="/recursos/"'));
  assert.equal(data.records.filter(r=>r.kind==='organization').length,50);
- assert.equal(data.records.filter(r=>r.kind==='resource').length,162);
+ assert.equal(data.records.filter(r=>r.kind==='resource').length,170);
  const resources=read('recursos/index.html','utf8');
  for(const r of data.records.filter(r=>r.kind==='resource'))assert.ok(resources.includes(`href="${r.url}"`),r.id);
  for(const r of data.records.filter(r=>r.kind==='organization'))assert.ok(!resources.includes(`href="${r.url}"`),r.id);
@@ -34,7 +34,7 @@ test('localized equivalents have reciprocal hreflang, self canonicals, privacy a
   assert.doesNotMatch(html,/hreflang="(?:en-UK|es-EU)"|visitor-analytics|adsbygoogle|<iframe/);
   assert.match(html,/name="referrer" content="no-referrer"/);
   assert.match(html,/<option value="">/);
-  assert.equal((html.match(/data-help-country=/g)||[]).length,13);
+  assert.equal((html.match(/data-help-country=/g)||[]).length,16);
   for(const [,href]of html.matchAll(/href="(\/[^"#]*)"/g))assert.ok(existsSync('.'+href+(href.endsWith('/')?'index.html':'')),href);
  }
  const runtime=read('international-help-ui.js','utf8')+read('src/international-help.js','utf8');
@@ -73,6 +73,22 @@ test('Ireland, Italy and the Netherlands have scoped official first links',()=>{
  for(const [code,{count,host}] of Object.entries(expected)){
   const records=data.records.filter(record=>record.country===code);
   assert.equal(records.length,count,code);
+  assert.ok(records.every(record=>record.kind==='resource'&&record.sourceUrl===record.url),code);
+  for(const language of ['es','en','fr','pt','de']){
+   const page=read(`ayuda/${language}/index.html`,'utf8');
+   const section=page.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
+   assert.ok(section,`${language}/${code}`);
+   assert.ok(section.includes(host),`${language}/${code}: urgent host`);
+   assert.equal((section.match(/data-topic=/g)||[]).length,count,`${language}/${code}: cards`);
+  }
+ }
+});
+test('Belgium, Austria and Luxembourg have distinct reviewed urgent and employment links',()=>{
+ const expected={BE:{count:2,host:'112.be'},AT:{count:3,host:'www.gesundheit.gv.at'},LU:{count:3,host:'guichet.public.lu'}};
+ for(const [code,{count,host}] of Object.entries(expected)){
+  const records=data.records.filter(record=>record.country===code);
+  assert.equal(records.length,count,code);
+  assert.ok(records.some(record=>record.category==='empleo'),code);
   assert.ok(records.every(record=>record.kind==='resource'&&record.sourceUrl===record.url),code);
   for(const language of ['es','en','fr','pt','de']){
    const page=read(`ayuda/${language}/index.html`,'utf8');
