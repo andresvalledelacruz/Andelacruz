@@ -12,6 +12,7 @@ const INTERNATIONAL_AUTHORITY_HOSTS = new Set([
   'lineadelavida.salud.gob.mx', 'www.gob.mx', 'www.argentina.gob.ar',
   'www.minsalud.gov.co', 'saludresponde.minsal.cl', 'www.minsal.cl',
   'www.gov.pt', 'www.service-public.gouv.fr',
+  'gesund.bund.de', 'www.arbeitsagentur.de', 'verwaltung.bund.de', 'www.hilfetelefon.de',
 ]);
 
 export const PUBLIC_AUTHORITY_BASE_DOMAINS = [

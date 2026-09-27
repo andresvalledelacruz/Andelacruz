@@ -17,7 +17,7 @@ Este inventario sirve como control conservador para separar contenido crítico d
 | `/dinero/tengo-deudas-y-no-se-por-donde-empezar/` | presión financiera intensa con bloque explícito de riesgo personal y decisiones patrimoniales de alto impacto | 112 + 024 + fuente oficial Sanidad |
 | `/violencia/` | puerta de entrada transversal a violencia, abuso y acoso con posibles situaciones de peligro inmediato | sin monetización; 112 visible y 016 con alcance específico |
 
-| `/internacional.html` | acceso a orientación y emergencias de siete países | sin scripts, sin monetización, fuentes y alcance territorial explícitos |
+| `/internacional.html` | acceso a orientación y emergencias de ocho países | sin scripts, sin monetización, fuentes y alcance territorial explícitos |
 
 | `/ayuda/es/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
 
@@ -26,7 +26,7 @@ Este inventario sirve como control conservador para separar contenido crítico d
 | `/ayuda/fr/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
 
 | `/ayuda/pt/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
-| `/ayuda/de/` | orientación internacional en alemán con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero; Alemania sin cobertura nacional verificada |
+| `/ayuda/de/` | orientación internacional en alemán con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero; Alemania con cobertura inicial limitada y fuentes oficiales verificadas |
 
 ## Regla de alta
 

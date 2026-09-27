@@ -13,7 +13,7 @@ export const nextSteps = [
   { title: 'No sé por dónde empezar', description: 'Encuentra una orientación si se mezclan varias preocupaciones.', url: '/buscar/' },
   { title: 'Necesito apoyo con trabajo o dinero', description: 'Elige entre empleo, deudas, gastos y vivienda.', url: '/trabajo-dinero/' },
   { title: 'Quiero contactar con una organización', description: 'Consulta organizaciones y sus canales oficiales de ayuda.', url: '/webs-amigas.html' },
-  { title: 'Busco ayuda fuera de España', description: 'Consulta los primeros contactos oficiales de otros siete países.', url: '/internacional.html' }
+  { title: 'Busco ayuda fuera de España', description: 'Consulta los primeros contactos oficiales de otros ocho países.', url: '/internacional.html' }
 ];
 const root = new URL('../', import.meta.url);
 const escape = value => value.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
