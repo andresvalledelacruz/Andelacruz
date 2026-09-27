@@ -119,7 +119,6 @@ jobs:
           robots = Path('robots.txt').read_text(encoding='utf-8')
           withdrawal = Path('retirar.html').read_text(encoding='utf-8')
           friends = Path('webs-amigas.html').read_text(encoding='utf-8')
-          friends_js_path = Path('webs-amigas-country-filter.js')
           country_options_path = Path('country-options.js')
           directory_path = Path('data/help-directory.json')
           hero_webp = Path('assets/manos-apoyo.webp')
@@ -214,17 +213,13 @@ jobs:
           assert 'name="robots" content="noindex,follow"' in withdrawal, 'Withdrawal page must stay noindex,follow'
           assert 'name="robots" content="index,follow' in friends, 'Organization directory must be indexable'
           assert 'no implica colaboración, patrocinio ni acuerdo' in friends, 'Directory must not imply partnerships'
-          assert 'id="country-buttons"' in friends, 'Country selector mount point missing'
-          assert 'id="friends-groups"' in friends, 'Dynamic resource directory mount point missing'
-          assert 'src="/webs-amigas-country-filter.js?v=20260927-2"' in friends, 'Country filter runtime is not loaded'
-          assert 'src="/country-options.js"' in friends, 'Country options are not loaded'
-          assert friends_js_path.exists(), 'Country filter runtime file is missing'
+          assert 'id="country-buttons"' not in friends, 'Webs Amigas must not include a country selector'
+          assert 'webs-amigas-country-filter.js' not in friends, 'Webs Amigas must list organizations without a country runtime'
+          assert friends.count('data-organization=') == 50, 'Spanish organizations must be available as 50 static cards'
+          assert 'href="/recursos/"' in friends, 'Country help must remain discoverable in Recursos'
           assert country_options_path.exists(), 'Country options file is missing'
           assert directory_path.exists(), 'Verified help directory data is missing'
 
-          friends_js = friends_js_path.read_text(encoding='utf-8')
-          assert "fetch('/data/help-directory.json'" in friends_js, 'Webs Amigas must render from the verified help directory'
-          assert "renderCountry('ES')" in friends_js, 'Spain must remain the default country'
           country_options = re.findall(r"\['[A-Z]{2}','[^']+','[^']+'\]", country_options_path.read_text(encoding='utf-8'))
           assert len(country_options) >= 50, f'Country selector must expose at least 50 countries, found {len(country_options)}'
 
@@ -236,6 +231,11 @@ jobs:
           assert len(records) == 204, f'Verified help directory must contain 204 records, found {len(records)}'
           assert sum(record.get('kind') == 'organization' for record in records) == 50, 'Webs Amigas must contain exactly 50 reviewed organizations'
           assert sum(record.get('kind') == 'resource' for record in records) == 154, 'Country resources must contain exactly 154 reviewed links'
+          for record in records:
+              if record.get('kind') == 'organization':
+                  assert record['country'] == 'ES', 'Webs Amigas currently lists Spain only'
+                  record_id = record['id']
+                  assert f'data-organization="{record_id}"' in friends, f'Missing Spanish organization: {record_id}'
 
           seen_ids = set()
           for record in records:
