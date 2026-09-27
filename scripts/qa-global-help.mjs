@@ -9,6 +9,20 @@ import {mkdir} from 'node:fs/promises';
 const root=path.resolve(fileURLToPath(new URL('../',import.meta.url)));
 const directory=JSON.parse(await readFile(path.join(root,'data/help-directory.json'),'utf8'));
 const countFor=(code,kind)=>directory.records.filter(record=>record.country===code && record.kind===kind).length;
+async function assertCountryNamesReadable(page){
+ const failures=await page.locator('.country-button[data-country]').evaluateAll(cards=>{
+  const canvas=document.createElement('canvas');const context=canvas.getContext('2d');
+  return cards.flatMap(card=>{
+   const label=card.querySelector('span:last-child') || card;
+   const style=getComputedStyle(label),box=getComputedStyle(card);
+   context.font=`${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+   const available=card.clientWidth-parseFloat(box.paddingLeft)-parseFloat(box.paddingRight)-2;
+   const longest=Math.max(...label.textContent.trim().split(/\s+/).map(word=>context.measureText(word).width));
+   return style.hyphens!=='none'||style.wordBreak!=='normal'||longest+1>available||card.scrollWidth>card.clientWidth+1||card.scrollHeight>card.clientHeight+1?[label.textContent.trim()]:[];
+  });
+ });
+ assert.deepEqual(failures,[],`Country names must remain whole and readable: ${failures.join(', ')}`);
+}
 const server=createServer(async(req,res)=>{try{
  const url=new URL(req.url,'http://127.0.0.1');
  const file=path.resolve(root,'.'+decodeURIComponent(url.pathname)+(url.pathname.endsWith('/')?'index.html':''));
@@ -56,6 +70,7 @@ try{
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   await page.screenshot({path:new URL(`directory-${width}.png`,out).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
   await page.goto(`${origin}/recursos/`,{waitUntil:'networkidle'});await page.locator('button[data-country="MX"]').click();
+  await assertCountryNamesReadable(page);
   assert.equal(await page.locator('.country-resource-group:not([hidden]) li').count(),countFor('MX','resource'));
   await page.locator('button[data-country="DE"]').click();
   assert.equal(await page.locator('.country-resource-group:not([hidden]) li').count(),countFor('DE','resource'));
@@ -64,6 +79,7 @@ try{
   assert.ok(await page.locator('.resource-branch[open] a').count()>1);
   await page.screenshot({path:new URL(`resources-${width}.png`,out).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
   await page.goto(`${origin}/buscar/`,{waitUntil:'networkidle'});
+  await assertCountryNamesReadable(page);
   await page.locator('#search-query').fill('quiero morir y tengo deudas y me han despedido');
   await page.locator('#search-form button').click();
   assert.equal(await page.locator('#search-query').inputValue(),'');
