@@ -16,6 +16,7 @@ Purpose: maintain an explicit provenance status for non-text assets published by
 |---|---|---|---|
 | `assets/manos-apoyo.png` | Site/OG visual asset | `PENDING_PROVENANCE` | Existing production asset. Do not infer ownership from repository presence. `Pendiente de Andrés`: confirm original source/authorship or licence/permission before classifying as verified. |
 | `assets/manos-apoyo.webp` | Optimized derivative of `manos-apoyo.png` | `PENDING_PROVENANCE` | Derivative inherits the provenance status of the source image. Resolve together with the PNG. |
+| `assets/country-flags.png` | Country selector flags (58 flags, two-times display resolution) | `MIT_VERIFIED` | Derived on 2026-09-27 from `flag-icons` version 7.3.2 SVG files, https://github.com/lipis/flag-icons. MIT terms and creator copyright are preserved in `assets/FLAG_ICONS_LICENSE.txt`. The flags are a single local image; the page makes no external image requests. |
 
 ## Rules
 

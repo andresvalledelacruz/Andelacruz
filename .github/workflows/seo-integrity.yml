@@ -120,6 +120,7 @@ jobs:
           withdrawal = Path('retirar.html').read_text(encoding='utf-8')
           friends = Path('webs-amigas.html').read_text(encoding='utf-8')
           friends_js_path = Path('webs-amigas-country-filter.js')
+          country_options_path = Path('country-options.js')
           directory_path = Path('data/help-directory.json')
           hero_webp = Path('assets/manos-apoyo.webp')
 
@@ -216,13 +217,15 @@ jobs:
           assert 'id="country-buttons"' in friends, 'Country selector mount point missing'
           assert 'id="friends-groups"' in friends, 'Dynamic resource directory mount point missing'
           assert 'src="/webs-amigas-country-filter.js"' in friends, 'Country filter runtime is not loaded'
+          assert 'src="/country-options.js"' in friends, 'Country options are not loaded'
           assert friends_js_path.exists(), 'Country filter runtime file is missing'
+          assert country_options_path.exists(), 'Country options file is missing'
           assert directory_path.exists(), 'Verified help directory data is missing'
 
           friends_js = friends_js_path.read_text(encoding='utf-8')
           assert "fetch('/data/help-directory.json'" in friends_js, 'Webs Amigas must render from the verified help directory'
           assert "renderCountry('ES')" in friends_js, 'Spain must remain the default country'
-          country_options = re.findall(r"\['[A-Z]{2}','[^']+','[^']+'\]", friends_js)
+          country_options = re.findall(r"\['[A-Z]{2}','[^']+','[^']+'\]", country_options_path.read_text(encoding='utf-8'))
           assert len(country_options) >= 50, f'Country selector must expose at least 50 countries, found {len(country_options)}'
 
           directory = json.loads(directory_path.read_text(encoding='utf-8'))
@@ -231,6 +234,8 @@ jobs:
           assert isinstance(directory.get('categories'), dict), 'Help directory categories must be an object'
           records = directory['records']
           assert len(records) == 204, f'Verified help directory must contain 204 records, found {len(records)}'
+          assert sum(record.get('kind') == 'organization' for record in records) == 50, 'Webs Amigas must contain exactly 50 reviewed organizations'
+          assert sum(record.get('kind') == 'resource' for record in records) == 154, 'Country resources must contain exactly 154 reviewed links'
 
           seen_ids = set()
           for record in records:
@@ -254,7 +259,7 @@ jobs:
           total = len(entries)
           print(f'SEO integrity checks passed for {total} sitemap URLs.')
           print(f'Validated {checked_internal_links} root-relative navigational links.')
-          print(f'Webs Amigas verified directory: {len(records)} records, {len(country_options)} country selector options.')
+          print(f'Help directory source: {len(records)} records (50 organizations, 154 country resources), {len(country_options)} country selector options.')
           print(f'Mandatory metadata coverage: JSON-LD {total}/{total}, OG site_name {total}/{total}, Twitter card {total}/{total}.')
           print(f'Hero WebP: {hero_bytes} bytes.')
           PY

@@ -23,14 +23,18 @@ test('national directory has dated verified sources and a country-first runtime 
     assert.ok(record.description.length<110);
   }
   assert.match(page, /no implica colaboración, patrocinio ni acuerdo/);
-  assert.ok(page.indexOf('href="tel:112"') < page.indexOf('id="friends-groups"'));
+  assert.ok(page.indexOf('href="/ayuda-urgente.html"') < page.indexOf('id="friends-groups"'));
   assert.match(page,/id="country-buttons"/);
   assert.match(page,/id="friends-groups"/);
   assert.match(page,/src="\/webs-amigas-country-filter\.js"/);
+  assert.match(page,/src="\/country-options\.js"/);
   assert.match(runtime,/fetch\('\/data\/help-directory\.json'/);
   assert.match(runtime,/renderCountry\('ES'\)/);
   assert.match(runtime,/record\.country === code/);
-  assert.ok(page.includes('href="/internacional.html"'));
+  assert.ok(page.includes('href="/recursos/"'));
+  assert.match(runtime,/record\.kind === 'organization'/);
+  assert.equal((page.match(/<li><a href="https:\/\//g)||[]).length,50);
+  for(const record of records.filter(r=>r.kind==='resource'))assert.ok(!page.includes(`href="${record.url}"`),record.id);
   for (const [, href] of page.matchAll(/href="(\/[^"#]*)"/g)) {
     assert.ok(existsSync(`.${href}${href.endsWith('/') ? 'index.html' : ''}`), href);
   }

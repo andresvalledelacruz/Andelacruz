@@ -18,6 +18,6 @@ test('international help remains static, private and reachable without scripts',
   assert.doesNotMatch(html,/<form\b|<input\b|<iframe\b|<script(?! type="application\/ld\+json")/);
   assert.match(html,/name="referrer" content="no-referrer"/);
   assert.equal((html.match(/data-country=/g)||[]).length,9);
-  assert.ok(readFileSync('webs-amigas.html','utf8').includes('href="/internacional.html"'));
+  assert.ok(readFileSync('recursos/index.html','utf8').includes('href="/internacional.html"'));
   assert.ok(readFileSync('sitemap.xml','utf8').includes('https://desgracias.es/internacional.html'));
 });

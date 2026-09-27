@@ -1,9 +1,7 @@
 (() => {
   'use strict';
 
-  const COUNTRY_OPTIONS = Object.freeze([
-    ['ES','España','🇪🇸'],['MX','México','🇲🇽'],['AR','Argentina','🇦🇷'],['CO','Colombia','🇨🇴'],['CL','Chile','🇨🇱'],['PE','Perú','🇵🇪'],['UY','Uruguay','🇺🇾'],['PY','Paraguay','🇵🇾'],['EC','Ecuador','🇪🇨'],['BO','Bolivia','🇧🇴'],['VE','Venezuela','🇻🇪'],['CR','Costa Rica','🇨🇷'],['PA','Panamá','🇵🇦'],['GT','Guatemala','🇬🇹'],['HN','Honduras','🇭🇳'],['SV','El Salvador','🇸🇻'],['NI','Nicaragua','🇳🇮'],['DO','República Dominicana','🇩🇴'],['PR','Puerto Rico','🇵🇷'],['CU','Cuba','🇨🇺'],['US','Estados Unidos','🇺🇸'],['CA','Canadá','🇨🇦'],['GB','Reino Unido','🇬🇧'],['IE','Irlanda','🇮🇪'],['FR','Francia','🇫🇷'],['PT','Portugal','🇵🇹'],['DE','Alemania','🇩🇪'],['IT','Italia','🇮🇹'],['BE','Bélgica','🇧🇪'],['NL','Países Bajos','🇳🇱'],['LU','Luxemburgo','🇱🇺'],['AT','Austria','🇦🇹'],['PL','Polonia','🇵🇱'],['SE','Suecia','🇸🇪'],['FI','Finlandia','🇫🇮'],['DK','Dinamarca','🇩🇰'],['GR','Grecia','🇬🇷'],['CZ','Chequia','🇨🇿'],['RO','Rumanía','🇷🇴'],['BG','Bulgaria','🇧🇬'],['HR','Croacia','🇭🇷'],['SK','Eslovaquia','🇸🇰'],['SI','Eslovenia','🇸🇮'],['HU','Hungría','🇭🇺'],['EE','Estonia','🇪🇪'],['LV','Letonia','🇱🇻'],['LT','Lituania','🇱🇹'],['MT','Malta','🇲🇹'],['CY','Chipre','🇨🇾'],['AU','Australia','🇦🇺'],['NZ','Nueva Zelanda','🇳🇿'],['IN','India','🇮🇳'],['JP','Japón','🇯🇵'],['KR','Corea del Sur','🇰🇷'],['ZA','Sudáfrica','🇿🇦'],['MA','Marruecos','🇲🇦'],['NG','Nigeria','🇳🇬'],['EU','Unión Europea','🇪🇺']
-  ]);
+  const COUNTRY_OPTIONS = window.DesgraciasCountryOptions;
 
   const picker = document.querySelector('#country-buttons');
   const status = document.querySelector('#country-status');
@@ -34,22 +32,25 @@
 
   function countryCounts() {
     const counts = new Map();
-    for (const record of directory.records) counts.set(record.country, (counts.get(record.country) || 0) + 1);
+    for (const record of directory.records.filter(record => record.kind === 'organization')) counts.set(record.country, (counts.get(record.country) || 0) + 1);
     return counts;
   }
 
   function buildCountryButtons() {
     const counts = countryCounts();
     picker.replaceChildren();
-    for (const [code,name,flag] of COUNTRY_OPTIONS) {
+    for (const [index, [code,name]] of COUNTRY_OPTIONS.entries()) {
       const count = counts.get(code) || 0;
-      const button = el('button', `${flag} ${name}`, {
+      const button = el('button', null, {
         type: 'button',
         class: `country-button${count ? '' : ' country-unavailable'}`,
         'data-country': code,
         'aria-pressed': String(code === selectedCountry)
       });
-      if (!count) button.title = 'Cobertura en ampliación: todavía no mostramos recursos sin verificar';
+      const flag = el('span', null, {class:'flag-image', 'aria-hidden':'true'});
+      flag.style.backgroundPosition = `0 -${index * 18}px`;
+      button.append(flag, el('span', name));
+      if (!count) button.title = 'Organizaciones pendientes de revisión para este país';
       picker.append(button);
     }
   }
@@ -57,27 +58,29 @@
   function renderCountry(code) {
     selectedCountry = code;
     const meta = byCode.get(code) || {code,name:code,flag:'🌐'};
-    const records = normalizeRecords(directory.records.filter((record) => record.country === code));
+    const records = normalizeRecords(directory.records.filter((record) => record.country === code && record.kind === 'organization'));
 
     for (const button of picker.querySelectorAll('button[data-country]')) {
       button.setAttribute('aria-pressed', String(button.dataset.country === code));
     }
 
-    if (selectedLabel) selectedLabel.textContent = `${meta.flag} ${meta.name}`;
+    if (selectedLabel) selectedLabel.textContent = meta.name;
     nav.replaceChildren();
     groupsHost.replaceChildren();
 
     if (!records.length) {
-      status.textContent = `${meta.flag} ${meta.name}: estamos ampliando y verificando recursos. No mostramos enlaces no comprobados.`;
+      status.textContent = `${meta.name}: aún no hay organizaciones revisadas en Webs Amigas.`;
       groupsHost.append(el('section', null, {class:'empty-country'}));
       groupsHost.lastElementChild.append(
-        el('h2', `Aún no hay recursos verificados para ${meta.name}`),
-        el('p', 'Estamos ampliando la cobertura. Mientras tanto, puedes volver a España o usar la ayuda internacional disponible sin que mostremos enlaces no verificados.')
+        el('h2', `Aún no hay webs amigas revisadas para ${meta.name}`),
+        el('p', 'Estamos ampliando las organizaciones. Los servicios y ayudas de cada país están en Recursos.')
       );
+      const link = el('a', 'Ver recursos por país', {href:`/recursos/#pais-${code}`});
+      groupsHost.lastElementChild.append(link);
       return;
     }
 
-    status.textContent = `${meta.flag} ${meta.name}: ${records.length} recursos verificados disponibles.`;
+    status.textContent = `${meta.name}: ${records.length} organizaciones revisadas disponibles.`;
     const grouped = new Map();
     for (const record of records) {
       if (!grouped.has(record.category)) grouped.set(record.category, []);
