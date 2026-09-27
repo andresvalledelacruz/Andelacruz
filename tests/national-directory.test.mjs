@@ -7,9 +7,9 @@ const directory = JSON.parse(readFileSync('data/help-directory.json','utf8'));
 
 test('Spanish organizations directory is static, sourced and separate from country resources', () => {
   const records=directory.records;
-  assert.equal(records.length,204);
-  assert.equal(new Set(records.map(r=>r.id)).size,204);
-  assert.equal(new Set(records.map(r=>r.url)).size,204);
+  assert.equal(records.length,212);
+  assert.equal(new Set(records.map(r=>r.id)).size,212);
+  assert.equal(new Set(records.map(r=>r.url)).size,212);
   for(const record of records){
     assert.ok(record.id);
     assert.ok(record.name);

@@ -81,6 +81,36 @@
       "description": "Bei unmittelbarer Gefahr: Notruf 112. Die offizielle Seite nennt Krisenberatung unter 116 123 (auf Deutsch).",
       "url": "https://gesund.bund.de/notfallnummern",
       "source": "https://gesund.bund.de/notfallnummern"
+    },
+    {
+      "id": "irlanda",
+      "name": "Irlanda · Ireland",
+      "code": "IE",
+      "lang": "en-IE",
+      "service": "HSE: ayuda urgente en crisis de salud mental",
+      "description": "Si existe peligro inmediato en Irlanda, llama al 112 o al 999. El HSE explica otras vías de atención.",
+      "url": "https://www2.hse.ie/mental-health/services-support/get-urgent-help/",
+      "source": "https://www2.hse.ie/mental-health/services-support/get-urgent-help/"
+    },
+    {
+      "id": "italia",
+      "name": "Italia · Italy",
+      "code": "IT",
+      "lang": "it-IT",
+      "service": "Emergenze in Italia",
+      "description": "Para emergencias en Italia, el 112 conecta con el servicio adecuado; consulta la fuente oficial.",
+      "url": "https://www.italia.it/en/italy/practical-information/emergency-and-assistance",
+      "source": "https://www.italia.it/en/italy/practical-information/emergency-and-assistance"
+    },
+    {
+      "id": "paises-bajos",
+      "name": "Países Bajos · Netherlands",
+      "code": "NL",
+      "lang": "en-NL",
+      "service": "Emergency number 112",
+      "description": "Para situaciones de peligro inmediato en los Países Bajos, utiliza el 112 según el Gobierno neerlandés.",
+      "url": "https://www.government.nl/themes/justice-security-and-defence/emergency-number-112",
+      "source": "https://www.government.nl/themes/justice-security-and-defence/emergency-number-112"
     }
   ]
 }
