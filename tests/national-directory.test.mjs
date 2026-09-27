@@ -26,7 +26,7 @@ test('national directory has dated verified sources and a country-first runtime 
   assert.ok(page.indexOf('href="/ayuda-urgente.html"') < page.indexOf('id="friends-groups"'));
   assert.match(page,/id="country-buttons"/);
   assert.match(page,/id="friends-groups"/);
-  assert.match(page,/src="\/webs-amigas-country-filter\.js"/);
+  assert.match(page,/src="\/webs-amigas-country-filter\.js\?v=20260927-2"/);
   assert.match(page,/src="\/country-options\.js"/);
   assert.match(runtime,/fetch\('\/data\/help-directory\.json'/);
   assert.match(runtime,/renderCountry\('ES'\)/);

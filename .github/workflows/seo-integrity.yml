@@ -216,7 +216,7 @@ jobs:
           assert 'no implica colaboración, patrocinio ni acuerdo' in friends, 'Directory must not imply partnerships'
           assert 'id="country-buttons"' in friends, 'Country selector mount point missing'
           assert 'id="friends-groups"' in friends, 'Dynamic resource directory mount point missing'
-          assert 'src="/webs-amigas-country-filter.js"' in friends, 'Country filter runtime is not loaded'
+          assert 'src="/webs-amigas-country-filter.js?v=20260927-2"' in friends, 'Country filter runtime is not loaded'
           assert 'src="/country-options.js"' in friends, 'Country options are not loaded'
           assert friends_js_path.exists(), 'Country filter runtime file is missing'
           assert country_options_path.exists(), 'Country options file is missing'
