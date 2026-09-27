@@ -13,6 +13,10 @@ const APPROVED_APP_SHA256 = "76918e22d34267715430d9b1e834f5d21dadf0f53d84f538acd
 // 2026-09-26: reviewed Search Help 3.0 lexical expansion. This file remains a
 // bounded, explicit token normalizer with no network, storage or raw-query retention.
 const APPROVED_SEARCH_NORMALIZATION_SHA256 = "fd72d4f16cd3cef3a06751da774b1f2329abdd3474b5690110ae43036e71ac76";
+// Search 3.1 changes a previously pinned protected surface. Pin the reviewed
+// page and its new dependency, including against computed-property exfiltration.
+const APPROVED_SEARCH_PAGE_SHA256 = 'bf3b24cd997e811773e782e33a7e15ecc61ba6e8cce8c4cedabf967ab2fa16d5';
+const APPROVED_MULTI_NEED_RESOLVER_SHA256 = '547a180f2e097b2c6fbd08321f18e909aeb31fbcf24e46b608669afe673763fc';
 const APPROVED_HOME_CLOSURE = [
   'app-core.js',
   'app.js',
@@ -22,10 +26,23 @@ const APPROVED_HOME_CLOSURE = [
   'story-example-library.js',
   'visitor-analytics.js',
 ].sort();
+const APPROVED_SEARCH_CLOSURE = [
+  'src/search-clarification.js',
+  'src/search-content-catalog.js',
+  'src/search-crisis-router.js',
+  'src/search-multi-need-resolver.js',
+  'src/search-normalization.js',
+  'src/suicide-context-classifier.js',
+].sort();
 const INTENTIONAL_V1_DRIFT = new Set([
   'pinned measurement file changed: app.js',
   'pinned measurement file changed: src/search-normalization.js',
   'homepage dependency set changed',
+  // 2026-09-26: /buscar/ adds the already-reviewed local multi-need resolver.
+  // V2 revalidates the exact protected closure below; all privacy sink failures
+  // from V1 remain fatal.
+  'pinned measurement file changed: buscar/index.html',
+  'protected surface dependency set changed: /buscar/',
 ]);
 
 export async function auditLaunchMeasurementSafety(options = {}) {
@@ -46,6 +63,16 @@ export async function auditLaunchMeasurementSafety(options = {}) {
     failures.push('pinned measurement file changed: src/search-normalization.js (v2 reviewed lexical hash mismatch)');
   }
 
+  for (const [file, expectedHash] of [
+    ['buscar/index.html', APPROVED_SEARCH_PAGE_SHA256],
+    ['src/search-multi-need-resolver.js', APPROVED_MULTI_NEED_RESOLVER_SHA256],
+  ]) {
+    const source = await readFile(path.join(rootReal, file));
+    if (createHash('sha256').update(source).digest('hex') !== expectedHash) {
+      failures.push(`pinned measurement file changed: ${file} (v2 reviewed Search 3.1 hash mismatch)`);
+    }
+  }
+
   const actualClosure = [...report.homepage_dependency_files].sort();
   if (JSON.stringify(actualClosure) !== JSON.stringify(APPROVED_HOME_CLOSURE)) {
     failures.push('homepage dependency set changed (v2 approved static-critical closure mismatch)');
@@ -53,6 +80,19 @@ export async function auditLaunchMeasurementSafety(options = {}) {
 
   for (const legacy of ['resource-links.js', 'search-home-entry.js', 'urgent-help-nav.js']) {
     if (actualClosure.includes(legacy)) failures.push(`legacy DOM injector re-entered homepage dependency graph: ${legacy}`);
+  }
+
+  const searchSurface = report.protected_surfaces.find((surface) => surface.route === '/buscar/');
+  if (!searchSurface) {
+    failures.push('protected /buscar/ surface missing from v2 report');
+  } else {
+    const searchFiles = [...searchSurface.files].sort();
+    if (JSON.stringify(searchFiles) !== JSON.stringify(APPROVED_SEARCH_CLOSURE)) {
+      failures.push('protected /buscar/ dependency set changed (v2 multi-need closure mismatch)');
+    }
+    if (searchSurface.failures.length) {
+      failures.push(...searchSurface.failures.map((failure) => `/buscar/ v2 protected-surface failure: ${failure}`));
+    }
   }
 
   const uniqueFailures = [...new Set(failures)].sort();
@@ -63,7 +103,10 @@ export async function auditLaunchMeasurementSafety(options = {}) {
     measurement_gate_version: 2,
     approved_app_sha256: APPROVED_APP_SHA256,
     approved_search_normalization_sha256: APPROVED_SEARCH_NORMALIZATION_SHA256,
+    approved_search_page_sha256: APPROVED_SEARCH_PAGE_SHA256,
+    approved_multi_need_resolver_sha256: APPROVED_MULTI_NEED_RESOLVER_SHA256,
     approved_home_closure: APPROVED_HOME_CLOSURE,
+    approved_search_closure: APPROVED_SEARCH_CLOSURE,
   };
 }
 

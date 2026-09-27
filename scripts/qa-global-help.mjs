@@ -67,6 +67,20 @@ try{
   await page.goto(`${origin}/recursos/`,{waitUntil:'networkidle'});await page.locator('.resource-branch summary').first().click();
   assert.ok(await page.locator('.resource-branch[open] a').count()>1);
   await page.screenshot({path:new URL(`resources-${width}.png`,out).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
+  await page.goto(`${origin}/buscar/`,{waitUntil:'networkidle'});
+  await page.locator('#search-query').fill('quiero morir y tengo deudas y me han despedido');
+  await page.locator('#search-form button').click();
+  assert.equal(await page.locator('#search-query').inputValue(),'');
+  assert.ok(await page.locator('#result.urgent').isVisible());
+  assert.match(await page.locator('#result').innerText(),/Empieza por lo más importante/);
+  assert.match(await page.locator('#result').innerText(),/Otras preocupaciones que también has mencionado/);
+  assert.equal(page.url(),`${origin}/buscar/`);
+  await page.locator('#search-query').fill('suicidio y tengo deudas');
+  await page.locator('#search-form button').click();
+  assert.match(await page.locator('#result').innerText(),/Si existe riesgo ahora/);
+  assert.ok(await page.locator('#result [role="group"][aria-label="Opciones para aclarar la situación"]').isVisible());
+  assert.ok(await page.locator('#result a[href="tel:024"]').count()>0);
+  assert.equal(page.url(),`${origin}/buscar/`);
   assert.equal(errors.length,0,errors.join('\n'));assert.equal(outbound.length,0,outbound.join('\n'));
   await context.close();console.log(`PASS global help ${width}px`);
  }
