@@ -78,9 +78,10 @@
       const summary = details.querySelector(':scope > summary');
       const list = details.querySelector(':scope > ul');
       if (!summary || !list) continue;
-      const title = summary.childNodes[0]?.textContent?.trim() || '';
-      const additions = ROUTE_EXPANSIONS[title];
-      if (!additions) continue;
+      const title = summary.querySelector('strong')?.textContent?.trim() || summary.childNodes[0]?.textContent?.trim() || '';
+      const expansionTitles = title === 'Trabajo y dinero' ? ['Trabajo', 'Dinero y deudas'] : [title];
+      const additions = expansionTitles.flatMap(name => ROUTE_EXPANSIONS[name] || []);
+      if (!additions.length) continue;
 
       const existing = new Set([...list.querySelectorAll('a')].map((a) => `${a.getAttribute('href')}|${a.textContent.trim()}`));
       for (const [href, label] of additions) {
@@ -93,8 +94,8 @@
         list.append(item);
       }
 
-      const badge = summary.querySelector('span');
-      if (badge) badge.textContent = `(${list.querySelectorAll(':scope > li').length} opciones)`;
+      const badge = summary.querySelector('.resource-branch-count') || summary.querySelector('span');
+      if (badge) badge.textContent = `Ver ${list.querySelectorAll(':scope > li').length} guías ↓`;
     }
 
     const nextSteps = [...document.querySelectorAll('.next-steps .cardlink')];

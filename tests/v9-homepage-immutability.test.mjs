@@ -14,10 +14,17 @@ test('la portada V9 permanece byte-a-byte intacta', () => {
   assert.equal(html.split(approvedFooter).length, 2, 'one exact language footer is required');
   assert.ok(html.includes(approvedFooter + '</footer>'), 'language coverage belongs at the end of the footer');
   const addedStylesheet = '  <link rel="stylesheet" href="/assets/country-card.css?v=20260927-7">\n';
+  // Andrés pidió el 27/09 acceso directo y visible para profesionales y alianzas.
+  const professionalEntry = '          <p><a href="/profesionales.html#solicitud">¿Eres profesional? Solicita evaluación de tu servicio →</a></p>\n';
+  const newTrustLinks = '<a href="/profesionales.html">Profesionales: participar</a><a href="/alianzas.html">Alianzas</a>';
+  const oldTrustLink = '<a href="#profesionales">Profesionales</a>';
   const countryBlock = /<!-- country-cards:start -->[\s\S]*?<!-- country-cards:end -->\n/;
   assert.equal(html.split(addedStylesheet).length, 2, 'one approved country card stylesheet is required');
   assert.match(html, countryBlock, 'the approved country card block is required');
-  const baseline = html.replace(approvedFooter, '').replace(addedStylesheet, '').replace(countryBlock, '');
+  assert.equal(html.split(professionalEntry).length, 2, 'one direct professional entry is required');
+  assert.equal(html.split(newTrustLinks).length, 2, 'one professional and alliance footer entry is required');
+  const baseline = html.replace(approvedFooter, '').replace(addedStylesheet, '').replace(countryBlock, '')
+    .replace(professionalEntry, '').replace(newTrustLinks, oldTrustLink).replace(/<\/html>\n$/, '</html>');
   const actual = execFileSync('git', ['hash-object', '--stdin'], { input: baseline, encoding: 'utf8' }).trim();
 
   assert.equal(

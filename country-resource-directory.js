@@ -34,5 +34,5 @@
     history.replaceState(null, '', `#pais-${button.dataset.country}`);
   });
   const code = /^#pais-([A-Z]{2})$/.exec(location.hash)?.[1] || 'ES';
-  showCountry(code);
+  showCountry(names.has(code) ? code : 'ES');
 })();

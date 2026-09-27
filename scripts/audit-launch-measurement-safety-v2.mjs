@@ -19,7 +19,10 @@ const APPROVED_SEARCH_NORMALIZATION_SHA256 = "fd72d4f16cd3cef3a06751da774b1f2329
 // continues processing submitted text only in the browser, with no new telemetry.
 // 2026-09-27: the country links now follow the search form; only their layout
 // and stylesheet version changed. The private query still stays in the browser.
-const APPROVED_SEARCH_PAGE_SHA256 = '712a896e0f38d6aa9e69df9b911a85a1b0fa40e20323443aeba5453396a7bc86';
+// 2026-09-27: country navigation now contains only destinations with reviewed
+// resources. Writing examples and plainer result text leave routing, network,
+// storage and raw-query behavior unchanged.
+const APPROVED_SEARCH_PAGE_SHA256 = 'ce52761731aeb1ddfda4810c4352a4176b288439dcce845da427db0b90e92c81';
 // 2026-09-27: reviewed ordinary guide matching after clause-level safety
 // routing. The dependency already belongs to the pinned local-only closure.
 const APPROVED_MULTI_NEED_RESOLVER_SHA256 = '291b600b21fc3a1f58d05e3b790b984c60c6fbdbe6c5c889a2242f9fca7dcf7d';

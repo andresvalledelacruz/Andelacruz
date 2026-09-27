@@ -11,14 +11,14 @@ test('directory is uniquely sourced and country-scoped; runtime alphabetizes it'
  assert.deepEqual([...expected].sort(),data.records.map(r=>r.id).sort());
  assert.equal(new Set(data.records.map(r=>r.id)).size,data.records.length);
  assert.equal(new Set(data.records.map(r=>r.url)).size,data.records.length);
- for(const r of data.records){assert.ok(data.countries[r.country]);assert.ok(data.categories[r.category]);assert.match(r.language,/^(es|en|fr|pt|de|it)$/);if(r.kind==='resource'){assert.equal(r.verification.httpStatus,200);assert.ok(r.verification.title);}}
+ for(const r of data.records){assert.ok(data.countries[r.country]);assert.ok(data.categories[r.category]);assert.match(r.language,/^(es|en|fr|pt|de|it|da|pl|sv)$/);if(r.kind==='resource'){assert.equal(r.verification.httpStatus,200);assert.ok(r.verification.title);}}
  assert.equal(data.records.find(r=>r.id==='anar').url,'https://www.anar.org/que-hacemos/telefono-chat-anar/');
  const page=read('webs-amigas.html','utf8');
  assert.equal((page.match(/data-organization=/g)||[]).length,50);
  assert.doesNotMatch(page,/id="country-buttons"|webs-amigas-country-filter|Webs amigas por país|países se muestran como pendientes/);
  assert.ok(page.includes('href="/recursos/"'));
  assert.equal(data.records.filter(r=>r.kind==='organization').length,50);
- assert.equal(data.records.filter(r=>r.kind==='resource').length,170);
+ assert.equal(data.records.filter(r=>r.kind==='resource').length,184);
  const resources=read('recursos/index.html','utf8');
  for(const r of data.records.filter(r=>r.kind==='resource'))assert.ok(resources.includes(`href="${r.url}"`),r.id);
  for(const r of data.records.filter(r=>r.kind==='organization'))assert.ok(!resources.includes(`href="${r.url}"`),r.id);
@@ -34,7 +34,10 @@ test('localized equivalents have reciprocal hreflang, self canonicals, privacy a
   assert.doesNotMatch(html,/hreflang="(?:en-UK|es-EU)"|visitor-analytics|adsbygoogle|<iframe/);
   assert.match(html,/name="referrer" content="no-referrer"/);
   assert.match(html,/<option value="">/);
-  assert.equal((html.match(/data-help-country=/g)||[]).length,16);
+  assert.equal((html.match(/data-help-country=/g)||[]).length,23);
+  const codes=[...html.matchAll(/<section data-help-country="([A-Z]{2})"/g)].map(match=>match[1]);
+  assert.equal(codes[0],'ES');
+  assert.deepEqual(codes.slice(1),[...codes.slice(1)].sort((a,b)=>data.countries[a].localeCompare(data.countries[b],'es',{sensitivity:'base'})));
   for(const [,href]of html.matchAll(/href="(\/[^"#]*)"/g))assert.ok(existsSync('.'+href+(href.endsWith('/')?'index.html':'')),href);
  }
  const runtime=read('international-help-ui.js','utf8')+read('src/international-help.js','utf8');
@@ -55,7 +58,7 @@ test('regional expressions never override the existing Spanish crisis router',()
 });
 test('resource tree exposes multiple native choices without JS or nested anchors',()=>{
  const html=read('recursos/index.html','utf8');const branches=[...html.matchAll(/<details class="resource-branch">([\s\S]*?)<\/details>/g)];
- assert.equal(branches.length,11);
+ assert.equal(branches.length,10);
  for(const [,body] of branches){assert.match(body,/<summary>/);assert.ok((body.match(/<a href=/g)||[]).length>=1);assert.doesNotMatch(body,/<a[^>]*>[^<]*<a/);}
 });
 
@@ -96,6 +99,39 @@ test('Belgium, Austria and Luxembourg have distinct reviewed urgent and employme
    assert.ok(section,`${language}/${code}`);
    assert.ok(section.includes(host),`${language}/${code}: urgent host`);
    assert.equal((section.match(/data-topic=/g)||[]).length,count,`${language}/${code}: cards`);
+  }
+ }
+});
+test('Denmark, Poland and Sweden have reviewed national emergency and employment links',()=>{
+ const expected={DK:{host:'politi.dk',language:'da'},PL:{host:'www.gov.pl',language:'pl'},SE:{host:'www.sosalarm.se',language:'sv'}};
+ for(const [code,{host,language}] of Object.entries(expected)){
+  const records=data.records.filter(record=>record.country===code);
+  assert.equal(records.length,2,code);
+  assert.deepEqual(new Set(records.map(record=>record.category)),new Set(['salud','empleo']));
+  assert.ok(records.every(record=>record.kind==='resource'&&record.language===language&&record.sourceUrl===record.url),code);
+  for(const pageLanguage of ['es','en','fr','pt','de']){
+   const page=read(`ayuda/${pageLanguage}/index.html`,'utf8');
+   const section=page.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
+   assert.ok(section,`${pageLanguage}/${code}`);
+   assert.ok(section.includes(host),`${pageLanguage}/${code}: urgent host`);
+   assert.equal((section.match(/data-topic=/g)||[]).length,2);
+   assert.match(section,/<span lang="es">/);
+  }
+ }
+});
+test('Australia, Canada, the US and Uruguay have scoped official urgent and employment links',()=>{
+ const expected={AU:'www.infrastructure.gov.au',CA:'www.canada.ca',US:'www.usa.gov',UY:'www.gub.uy'};
+ for(const [code,host] of Object.entries(expected)){
+  const records=data.records.filter(record=>record.country===code);
+  assert.equal(records.length,2,code);
+  assert.ok(records.some(record=>record.category==='empleo'));
+  assert.ok(records.every(record=>record.kind==='resource'&&record.sourceUrl===record.url));
+  for(const language of ['es','en','fr','pt','de']){
+   const html=read(`ayuda/${language}/index.html`,'utf8');
+   const section=html.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
+   assert.ok(section,`${language}/${code}`);
+   assert.ok(section.includes(host));
+   assert.equal((section.match(/data-topic=/g)||[]).length,2);
   }
  }
 });

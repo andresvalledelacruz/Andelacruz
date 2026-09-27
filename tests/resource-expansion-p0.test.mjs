@@ -4,12 +4,13 @@ import {readFileSync} from 'node:fs';
 
 const html = readFileSync('recursos/index.html', 'utf8');
 const runtime = readFileSync('resource-directory.js', 'utf8');
+const catalog = JSON.parse(readFileSync('recursos/catalog.json', 'utf8'));
 
 function staticCount(label) {
-  const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const match = html.match(new RegExp(`<summary>${escaped} <span>\\((\\d+) opciones\\)<\\/span><\\/summary>`));
-  assert.ok(match, `missing resource branch: ${label}`);
-  return Number(match[1]);
+  const ids = {'Soledad':'soledad','Ansiedad':'ansiedad','Gestión emocional':'gestion-emocional','Salud y enfermedad':'salud','Rupturas y relaciones':'rupturas','Familia':'familia','Dinero y deudas':'dinero'};
+  const visibleTitle = label === 'Dinero y deudas' ? 'Trabajo y dinero' : label;
+  assert.ok(html.includes(`<strong>${visibleTitle}</strong>`), `missing resource branch: ${label}`);
+  return catalog.filter(item => item.category === ids[label]).length;
 }
 
 function expansionCount(label) {

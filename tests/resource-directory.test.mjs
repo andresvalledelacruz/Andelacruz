@@ -2,10 +2,20 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 import { runInNewContext } from 'node:vm';
-import { renderDirectory, categories } from '../scripts/build-resource-directory.mjs';
+import { renderDirectory, categories, topicDoors } from '../scripts/build-resource-directory.mjs';
+import { verifiedCountries } from '../scripts/lib/verified-country-options.mjs';
 
 const records = JSON.parse(await readFile(new URL('../recursos/catalog.json', import.meta.url), 'utf8'));
 const html = await readFile(new URL('../recursos/index.html', import.meta.url), 'utf8');
+test('ten readable topic doors cover every published guide without overlap', () => {
+  assert.equal(topicDoors.length, 10);
+  const keys = topicDoors.flatMap(door => door.keys);
+  assert.deepEqual([...keys].sort(), categories.map(([id]) => id).sort());
+  assert.equal(new Set(keys).size, keys.length);
+  assert.equal((html.match(/class="resource-branch"/g) || []).length, 10);
+  assert.match(html, /resource-theme-cards\.css/);
+  for (const door of topicDoors) assert.ok(html.includes(`<strong>${door.title}</strong>`));
+});
 test('country choices put Spain first, then use Spanish alphabetical order and a shared flag sprite', async () => {
   const win={};runInNewContext(await readFile(new URL('../country-options.js',import.meta.url),'utf8'),{window:win});
   const names=Array.from(win.DesgraciasCountryOptions,([,name])=>name);
@@ -30,8 +40,9 @@ test('static fallback matches catalog and keeps crisis help outside filtered lis
   assert.ok(html.indexOf('href="tel:112"') < html.indexOf('id="resource-directory"'));
   assert.ok(html.indexOf('href="tel:024"') < html.indexOf('id="resource-directory"'));
   assert.ok(!/visitor-analytics|public-page-runtime/.test(html));
-  assert.equal((html.match(/class="country-button(?: country-unavailable)?"/g)||[]).length,58);
-  assert.equal((html.match(/class="country-resource-group"/g)||[]).length,16);
+  assert.equal((html.match(/class="country-button"/g)||[]).length,verifiedCountries.length);
+  assert.equal((html.match(/class="country-resource-group"/g)||[]).length,verifiedCountries.length);
+  assert.doesNotMatch(html,/class="country-button country-unavailable"/);
   assert.ok(html.indexOf('data-country="ES"') < html.indexOf('data-country="DE"'));
   assert.ok(html.includes('src="/country-resource-directory.js"'));
   assert.ok(html.includes('background-image:url(/assets/country-flags.png)'));
@@ -74,4 +85,20 @@ test('country selector shows only the selected resources and handles missing cov
   box.click({target:{closest:()=>buttons.find(b=>b.dataset.country==='JP')}});
   assert.equal(empty.hidden,false);
   assert.match(status.textContent,/sin enlaces revisados/);
+});
+test('obsolete country fragments fall back to Spain', async () => {
+  const buttons=[{dataset:{country:'ES'},setAttribute(){},querySelector(){return{textContent:'España'}}}];
+  const groups=[{dataset:{country:'ES'},hidden:false}];
+  const nodes={
+    'resource-country-buttons':{querySelectorAll:()=>buttons,addEventListener(){}},
+    'resource-country-groups':{querySelectorAll:()=>groups},
+    'resource-country-status':{textContent:''},
+    'country-resource-empty':{hidden:true}
+  };
+  runInNewContext(await readFile(new URL('../country-resource-directory.js',import.meta.url),'utf8'),{
+    document:{getElementById:id=>nodes[id],querySelectorAll:()=>Array(records.length).fill({})},
+    location:{hash:'#pais-JP'},history:{replaceState(){}}
+  });
+  assert.match(nodes['resource-country-status'].textContent,/España:/);
+  assert.equal(groups[0].hidden,false);
 });

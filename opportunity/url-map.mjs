@@ -12,6 +12,10 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/privacidad.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/aviso-legal.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/transparencia.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
+  '/receta-electronica-otra-comunidad/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
+  '/incapacidad-temporal-que-tramite/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
+  '/reclamar-una-compra/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
+  '/profesionales.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/contacto.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/alianzas.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/webs-amigas.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
@@ -79,7 +83,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/':{domain:'grief',needs:['support_grieving_person'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 72;
+export const EXPECTED_PRODUCTION_URL_COUNT = 76;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };

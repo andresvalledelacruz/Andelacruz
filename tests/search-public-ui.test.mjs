@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { verifiedCountries } from '../scripts/lib/verified-country-options.mjs';
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const searchPage = path.join(repoRoot, 'buscar', 'index.html');
@@ -10,6 +11,16 @@ const searchPage = path.join(repoRoot, 'buscar', 'index.html');
 async function html() {
   return readFile(searchPage, 'utf8');
 }
+
+test('country links show only destinations with reviewed resources', async () => {
+  const source = await html();
+  const region = source.match(/<nav class="country-buttons"[^>]*>([\s\S]*?)<\/nav>/)?.[1];
+  assert.ok(region);
+  const codes = [...region.matchAll(/class="country-button" data-country="([A-Z]{2})"/g)].map(match => match[1]);
+  assert.deepEqual(codes, verifiedCountries.map(country => country.code));
+  assert.doesNotMatch(region, /country-unavailable/);
+  for (const code of codes) assert.ok(source.includes(`href="/recursos/#pais-${code}"`));
+});
 
 test('public search page remains isolated from V9 and is not indexed before launch approval', async () => {
   const source = await html();
@@ -101,7 +112,7 @@ test('multiple needs are presented in priority order without automatic navigatio
   assert.match(source, /Empieza por lo más importante/i);
   assert.match(source, /Otras preocupaciones que también has mencionado/i);
   assert.match(source, /resolved\.secondary_needs/);
-  assert.match(source, /sin enviarte automáticamente a ninguna página/i);
+  assert.match(source, /No te llevamos automáticamente a ninguna página/i);
   assert.doesNotMatch(source, /window\.location|location\.href|location\.assign|location\.replace/);
 });
 
@@ -130,7 +141,8 @@ test('search form has explicit labeling and live result region', async () => {
   const source = await html();
   assert.match(source, /<label for="search-query">/i);
   assert.match(source, /id="search-query"/i);
-  assert.match(source, /aria-describedby="privacy-note"/i);
+  assert.match(source, /id="writing-help"[^>]*>Basta una o dos frases\./i);
+  assert.match(source, /aria-describedby="writing-help privacy-note"/i);
   assert.match(source, /aria-live="polite"/i);
   assert.match(source, /tabindex="-1"/i);
   assert.match(source, /role: 'group'/);
