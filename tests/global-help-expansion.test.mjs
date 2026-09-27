@@ -17,7 +17,7 @@ test('directory is uniquely sourced and country-scoped; runtime alphabetizes it'
  const runtime=read('webs-amigas-country-filter.js','utf8');
  assert.ok(page.includes('id="country-buttons"'));
  assert.ok(page.includes('id="friends-groups"'));
- assert.ok(page.includes('src="/webs-amigas-country-filter.js"'));
+ assert.ok(page.includes('src="/webs-amigas-country-filter.js?v=20260927-2"'));
  assert.ok(runtime.includes("record.country === code && record.kind === 'organization'"));
  assert.equal(data.records.filter(r=>r.kind==='organization').length,50);
  assert.equal(data.records.filter(r=>r.kind==='resource').length,154);
