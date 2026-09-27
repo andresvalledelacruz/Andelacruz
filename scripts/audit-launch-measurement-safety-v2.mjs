@@ -16,7 +16,9 @@ const APPROVED_SEARCH_NORMALIZATION_SHA256 = "fd72d4f16cd3cef3a06751da774b1f2329
 // Search 3.1 changes a previously pinned protected surface. Pin the reviewed
 // page and its new dependency, including against computed-property exfiltration.
 const APPROVED_SEARCH_PAGE_SHA256 = 'bf3b24cd997e811773e782e33a7e15ecc61ba6e8cce8c4cedabf967ab2fa16d5';
-const APPROVED_MULTI_NEED_RESOLVER_SHA256 = '547a180f2e097b2c6fbd08321f18e909aeb31fbcf24e46b608669afe673763fc';
+// 2026-09-27: reviewed ordinary guide matching after clause-level safety
+// routing. The dependency already belongs to the pinned local-only closure.
+const APPROVED_MULTI_NEED_RESOLVER_SHA256 = '291b600b21fc3a1f58d05e3b790b984c60c6fbdbe6c5c889a2242f9fca7dcf7d';
 const APPROVED_HOME_CLOSURE = [
   'app-core.js',
   'app.js',
