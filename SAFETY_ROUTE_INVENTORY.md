@@ -26,6 +26,7 @@ Este inventario sirve como control conservador para separar contenido crítico d
 | `/ayuda/fr/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
 
 | `/ayuda/pt/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
+| `/ayuda/de/` | orientación internacional en alemán con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero; Alemania sin cobertura nacional verificada |
 
 ## Regla de alta
 
