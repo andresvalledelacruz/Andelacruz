@@ -78,7 +78,7 @@ try{
   await page.locator('#search-query').fill('suicidio y tengo deudas');
   await page.locator('#search-form button').click();
   assert.match(await page.locator('#result').innerText(),/Si existe riesgo ahora/);
-  assert.match(await page.locator('#result').innerText(),/Opciones para aclarar la situación/);
+  assert.ok(await page.locator('#result [role="group"][aria-label="Opciones para aclarar la situación"]').isVisible());
   assert.ok(await page.locator('#result a[href="tel:024"]').count()>0);
   assert.equal(page.url(),`${origin}/buscar/`);
   assert.equal(errors.length,0,errors.join('\n'));assert.equal(outbound.length,0,outbound.join('\n'));
