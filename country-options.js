@@ -1,0 +1,7 @@
+(() => {
+  'use strict';
+  const options = Object.freeze([
+    ['ES','España','🇪🇸'],['MX','México','🇲🇽'],['AR','Argentina','🇦🇷'],['CO','Colombia','🇨🇴'],['CL','Chile','🇨🇱'],['PE','Perú','🇵🇪'],['UY','Uruguay','🇺🇾'],['PY','Paraguay','🇵🇾'],['EC','Ecuador','🇪🇨'],['BO','Bolivia','🇧🇴'],['VE','Venezuela','🇻🇪'],['CR','Costa Rica','🇨🇷'],['PA','Panamá','🇵🇦'],['GT','Guatemala','🇬🇹'],['HN','Honduras','🇭🇳'],['SV','El Salvador','🇸🇻'],['NI','Nicaragua','🇳🇮'],['DO','República Dominicana','🇩🇴'],['PR','Puerto Rico','🇵🇷'],['CU','Cuba','🇨🇺'],['US','Estados Unidos','🇺🇸'],['CA','Canadá','🇨🇦'],['GB','Reino Unido','🇬🇧'],['IE','Irlanda','🇮🇪'],['FR','Francia','🇫🇷'],['PT','Portugal','🇵🇹'],['DE','Alemania','🇩🇪'],['IT','Italia','🇮🇹'],['BE','Bélgica','🇧🇪'],['NL','Países Bajos','🇳🇱'],['LU','Luxemburgo','🇱🇺'],['AT','Austria','🇦🇹'],['PL','Polonia','🇵🇱'],['SE','Suecia','🇸🇪'],['FI','Finlandia','🇫🇮'],['DK','Dinamarca','🇩🇰'],['GR','Grecia','🇬🇷'],['CZ','Chequia','🇨🇿'],['RO','Rumanía','🇷🇴'],['BG','Bulgaria','🇧🇬'],['HR','Croacia','🇭🇷'],['SK','Eslovaquia','🇸🇰'],['SI','Eslovenia','🇸🇮'],['HU','Hungría','🇭🇺'],['EE','Estonia','🇪🇪'],['LV','Letonia','🇱🇻'],['LT','Lituania','🇱🇹'],['MT','Malta','🇲🇹'],['CY','Chipre','🇨🇾'],['AU','Australia','🇦🇺'],['NZ','Nueva Zelanda','🇳🇿'],['IN','India','🇮🇳'],['JP','Japón','🇯🇵'],['KR','Corea del Sur','🇰🇷'],['ZA','Sudáfrica','🇿🇦'],['MA','Marruecos','🇲🇦'],['NG','Nigeria','🇳🇬'],['EU','Unión Europea','🇪🇺']
+  ].sort((a,b) => a[0] === 'ES' ? -1 : b[0] === 'ES' ? 1 : a[1].localeCompare(b[1], 'es', {sensitivity:'base'})));
+  window.DesgraciasCountryOptions = options;
+})();

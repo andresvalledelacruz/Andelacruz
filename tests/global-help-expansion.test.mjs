@@ -18,7 +18,12 @@ test('directory is uniquely sourced and country-scoped; runtime alphabetizes it'
  assert.ok(page.includes('id="country-buttons"'));
  assert.ok(page.includes('id="friends-groups"'));
  assert.ok(page.includes('src="/webs-amigas-country-filter.js"'));
- assert.ok(runtime.includes("directory.records.filter((record) => record.country === code)"));
+ assert.ok(runtime.includes("record.country === code && record.kind === 'organization'"));
+ assert.equal(data.records.filter(r=>r.kind==='organization').length,50);
+ assert.equal(data.records.filter(r=>r.kind==='resource').length,154);
+ const resources=read('recursos/index.html','utf8');
+ for(const r of data.records.filter(r=>r.kind==='resource'))assert.ok(resources.includes(`href="${r.url}"`),r.id);
+ for(const r of data.records.filter(r=>r.kind==='organization'))assert.ok(!resources.includes(`href="${r.url}"`),r.id);
  assert.ok(runtime.includes("renderCountry('ES')"));
  assert.ok(runtime.includes('normalizeRecords'));
  assert.ok(runtime.includes('localeCompare'));
