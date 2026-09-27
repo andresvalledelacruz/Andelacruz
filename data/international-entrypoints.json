@@ -211,6 +211,286 @@
       "description": "El Ministerio del Interior explica el servicio 9-1-1 y cuándo usarlo para emergencias reales.",
       "url": "https://www.gub.uy/ministerio-interior/comunicacion/noticias/servicio-emergencia-9-1-1-consta-tres-pilares-fundamentales-para-su",
       "source": "https://www.gub.uy/ministerio-interior/comunicacion/noticias/servicio-emergencia-9-1-1-consta-tres-pilares-fundamentales-para-su"
+    },
+    {
+      "id": "finlandia",
+      "name": "Finlandia · Suomi",
+      "code": "FI",
+      "lang": "fi-FI",
+      "service": "Hätänumero 112",
+      "description": "Soita 112 kiireellisessä hätätilanteessa, kun tarvitset poliisin, ensihoidon tai pelastustoimen apua.",
+      "url": "https://112.fi/hatanumero112",
+      "source": "https://112.fi/hatanumero112"
+    },
+    {
+      "id": "nueva-zelanda",
+      "name": "Nueva Zelanda · New Zealand",
+      "code": "NZ",
+      "lang": "en-NZ",
+      "service": "111 emergency service",
+      "description": "Call 111 if you need emergency police, fire or ambulance assistance in New Zealand.",
+      "url": "https://www.govt.nz/browse/law-crime-and-justice/crimes-and-emergencies/111-emergency-service/",
+      "source": "https://www.govt.nz/browse/law-crime-and-justice/crimes-and-emergencies/111-emergency-service/"
+    },
+    {
+      "id": "chequia",
+      "name": "Chequia · Česko",
+      "code": "CZ",
+      "lang": "cs-CZ",
+      "service": "Tísňové volání",
+      "description": "Při tísni volejte 112. Portál veřejné správy uvádí také národní čísla pro hasiče, záchranku a policii.",
+      "url": "https://portal.gov.cz/sluzby-vs/tisnove-volani-S2824",
+      "source": "https://portal.gov.cz/sluzby-vs/tisnove-volani-S2824"
+    },
+    {
+      "id": "grecia",
+      "name": "Grecia · Ελλάδα",
+      "code": "GR",
+      "lang": "el-GR",
+      "service": "112",
+      "description": "Σε περίπτωση άμεσου κινδύνου στην Ελλάδα, καλέστε δωρεάν το 112.",
+      "url": "https://civilprotection.gov.gr/112",
+      "source": "https://civilprotection.gov.gr/112"
+    },
+    {
+      "id": "paraguay",
+      "name": "Paraguay",
+      "code": "PY",
+      "lang": "es-PY",
+      "service": "Sistema 911",
+      "description": "Ante una emergencia en Paraguay, llama al 911. La Policía Nacional lo identifica como número único de atención de emergencias.",
+      "url": "https://policianacional.gov.py/celebracion-del-dia-internacional-del-numero-unico-de-servicios-de-emergencias-y-acto-de-reconocimiento-y-gratitud-al-personal-del-sistema-911/",
+      "source": "https://policianacional.gov.py/celebracion-del-dia-internacional-del-numero-unico-de-servicios-de-emergencias-y-acto-de-reconocimiento-y-gratitud-al-personal-del-sistema-911/"
+    },
+    {
+      "id": "panama",
+      "name": "Panamá",
+      "code": "PA",
+      "lang": "es-PA",
+      "service": "Línea de emergencia 911",
+      "description": "En Panamá, SINAPROC indica que puedes llamar al 911 para emergencias durante las 24 horas.",
+      "url": "https://www.sinaproc.gob.pa/centro-de-operaciones-de-emergencia/",
+      "source": "https://www.sinaproc.gob.pa/centro-de-operaciones-de-emergencia/"
+    },
+    {
+      "id": "republica-dominicana",
+      "name": "República Dominicana",
+      "code": "DO",
+      "lang": "es-DO",
+      "service": "Sistema 9-1-1",
+      "description": "Si hay una emergencia en República Dominicana, llama al 911. El Ayuntamiento del Distrito Nacional identifica el sistema nacional.",
+      "url": "https://adn.gob.do/emergencia/",
+      "source": "https://adn.gob.do/emergencia/"
+    },
+    {
+      "id": "rumania",
+      "name": "Rumanía",
+      "code": "RO",
+      "lang": "ro-RO",
+      "service": "Serviciul de urgență 112",
+      "description": "În România, sunați la 112 pentru urgențe. Serviciul este gratuit și coordonează intervenția.",
+      "url": "https://serviciipublice.gov.ro/serviciu/serviciul-de-urgenta-112-asigurat-cetatenilor",
+      "source": "https://serviciipublice.gov.ro/serviciu/serviciul-de-urgenta-112-asigurat-cetatenilor"
+    },
+    {
+      "id": "hungria",
+      "name": "Hungría",
+      "code": "HU",
+      "lang": "hu-HU",
+      "service": "112-es segélyhívószám",
+      "description": "Magyarországon veszély esetén hívja a 112-es segélyhívószámot.",
+      "url": "https://www.police.hu/hu/112",
+      "source": "https://www.police.hu/hu/112"
+    },
+    {
+      "id": "croacia",
+      "name": "Croacia",
+      "code": "HR",
+      "lang": "hr-HR",
+      "service": "Broj 112",
+      "description": "U hitnom slučaju u Hrvatskoj nazovite 112 za pristup hitnim službama.",
+      "url": "https://civilna-zastita.gov.hr/broj112/81",
+      "source": "https://civilna-zastita.gov.hr/broj112/81"
+    },
+    {
+      "id": "eslovaquia",
+      "name": "Eslovaquia",
+      "code": "SK",
+      "lang": "sk-SK",
+      "service": "Tiesňové volanie 112",
+      "description": "Na Slovensku môžete v prípade núdze zavolať bezplatne na číslo 112.",
+      "url": "https://www.slovensko.sk/sk/zivotne-situacie/zivotna-situacia/_sluzby-poskytovane-prostrednic",
+      "source": "https://www.slovensko.sk/sk/zivotne-situacie/zivotna-situacia/_sluzby-poskytovane-prostrednic"
+    },
+    {
+      "id": "eslovenia",
+      "name": "Eslovenia",
+      "code": "SI",
+      "lang": "sl-SI",
+      "service": "Klic v sili 112",
+      "description": "V Sloveniji ob nujni nevarnosti pokličite 112.",
+      "url": "https://www.gov.si/teme/klic-v-sili/",
+      "source": "https://www.gov.si/teme/klic-v-sili/"
+    },
+    {
+      "id": "letonia",
+      "name": "Letonia",
+      "code": "LV",
+      "lang": "lv-LV",
+      "service": "Vienotais ārkārtas palīdzības numurs 112",
+      "description": "Latvijā ārkārtas situācijā zvaniet uz vienoto numuru 112.",
+      "url": "https://www.vugd.gov.lv/en/single-emergency-call-number-112-latvia",
+      "source": "https://www.vugd.gov.lv/en/single-emergency-call-number-112-latvia"
+    },
+    {
+      "id": "lituania",
+      "name": "Lituania",
+      "code": "LT",
+      "lang": "lt-LT",
+      "service": "Skubiosios pagalbos numeris 112",
+      "description": "Lietuvoje skubios pagalbos tarnyboms skambinkite numeriu 112.",
+      "url": "https://bpc.lrv.lt/lt/numeris-112/",
+      "source": "https://bpc.lrv.lt/lt/numeris-112/"
+    },
+    {
+      "id": "malta",
+      "name": "Malta",
+      "code": "MT",
+      "lang": "en-MT",
+      "service": "Emergency Services 112",
+      "description": "In Malta, call 112 for immediate police, fire or medical help.",
+      "url": "https://pulizija.gov.mt/en/emergency-services-112/",
+      "source": "https://pulizija.gov.mt/en/emergency-services-112/"
+    },
+    {
+      "id": "ecuador",
+      "name": "Ecuador",
+      "code": "EC",
+      "lang": "es-EC",
+      "service": "ECU-911",
+      "description": "En Ecuador, llama al ECU-911 ante una emergencia. La Policía Nacional indica el número 911.",
+      "url": "https://www.policia.gob.ec/unidad-nacional-de-policia-de-control-de-seguridad-privada-y-control-de-armas-letales-y-no-letales/",
+      "source": "https://www.policia.gob.ec/unidad-nacional-de-policia-de-control-de-seguridad-privada-y-control-de-armas-letales-y-no-letales/"
+    },
+    {
+      "id": "el-salvador",
+      "name": "El Salvador",
+      "code": "SV",
+      "lang": "es-SV",
+      "service": "Sistema 911 policial",
+      "description": "En El Salvador, llama al 911 cuando necesites intervención policial urgente. La Policía Nacional Civil atiende las 24 horas.",
+      "url": "https://www.pnc.gob.sv/servicios/sistema-911/",
+      "source": "https://www.pnc.gob.sv/servicios/sistema-911/"
+    },
+    {
+      "id": "india",
+      "name": "India",
+      "code": "IN",
+      "lang": "en-IN",
+      "service": "Emergency Response Support System 112",
+      "description": "For an emergency in India, call 112. The Ministry of Home Affairs describes it as a nationwide response system.",
+      "url": "https://www.mha.gov.in/en/commoncontent/emergency-response-support-system-erss",
+      "source": "https://www.mha.gov.in/en/commoncontent/emergency-response-support-system-erss"
+    },
+    {
+      "id": "japon",
+      "name": "Japón",
+      "code": "JP",
+      "lang": "ja-JP",
+      "service": "緊急電話 110・119",
+      "description": "日本では緊急時に警察は110、消防・救急は119に電話してください。",
+      "url": "https://www.japan.travel/en/plan/hotline/",
+      "source": "https://www.japan.travel/en/plan/hotline/"
+    },
+    {
+      "id": "sudafrica",
+      "name": "Sudáfrica",
+      "code": "ZA",
+      "lang": "en-ZA",
+      "service": "Emergency numbers by service",
+      "description": "South Africa uses different emergency numbers: police 10111, ambulance 10177 and 112 from a cell phone.",
+      "url": "https://www.westerncape.gov.za/health-wellness/know-who-you-can-call-emergency",
+      "source": "https://www.westerncape.gov.za/health-wellness/know-who-you-can-call-emergency"
+    },
+    {
+      "id": "guatemala",
+      "name": "Guatemala",
+      "code": "GT",
+      "lang": "es-GT",
+      "service": "CONRED: números de emergencia",
+      "description": "En Guatemala, CONRED atiende desastres en el 119; bomberos 122 o 123 y Policía Nacional Civil 110 o 120.",
+      "url": "https://conred.gob.gt/numeros-de-emergencia/",
+      "source": "https://conred.gob.gt/numeros-de-emergencia/"
+    },
+    {
+      "id": "estonia",
+      "name": "Estonia",
+      "code": "EE",
+      "lang": "et-EE",
+      "service": "Hädaabinumber 112",
+      "description": "Eestis helista hädaolukorras numbrile 112; Häirekeskus suunab politsei, kiirabi või päästjad.",
+      "url": "https://www.112.ee/en/emergency-phone-number-112",
+      "source": "https://www.112.ee/en/emergency-phone-number-112"
+    },
+    {
+      "id": "corea-del-sur",
+      "name": "Corea del Sur",
+      "code": "KR",
+      "lang": "ko-KR",
+      "service": "긴급신고 112·119",
+      "description": "한국에서는 긴급 상황에 112 또는 119로 신고하세요. 110은 일반 민원 상담 번호입니다.",
+      "url": "https://www.mois.go.kr/eng/sub/a03/bestPractices3/screen.do",
+      "source": "https://www.mois.go.kr/eng/sub/a03/bestPractices3/screen.do"
+    },
+    {
+      "id": "peru",
+      "name": "Perú",
+      "code": "PE",
+      "lang": "es-PE",
+      "service": "Línea 113 Salud",
+      "description": "La Línea 113, opción 5, ofrece orientación en salud mental.",
+      "url": "https://www.gob.pe/institucion/minsa/noticias/1332478-minsa-recuerda-que-la-linea-113-brinda-orientacion-y-apoyo-psicologico-gratuito-las-24-horas",
+      "source": "https://www.gob.pe/institucion/minsa/noticias/1332478-minsa-recuerda-que-la-linea-113-brinda-orientacion-y-apoyo-psicologico-gratuito-las-24-horas"
+    },
+    {
+      "id": "bulgaria",
+      "name": "Bulgaria",
+      "code": "BG",
+      "lang": "bg-BG",
+      "service": "Спешен телефон 112",
+      "description": "В България при спешна ситуация потърсете помощ на телефон 112.",
+      "url": "https://112.mvr.bg/",
+      "source": "https://112.mvr.bg/"
+    },
+    {
+      "id": "chipre",
+      "name": "Chipre",
+      "code": "CY",
+      "lang": "el-CY",
+      "service": "Επείγουσα βοήθεια 112",
+      "description": "Στην Κύπρο καλέστε το 112 σε περίπτωση έκτακτης ανάγκης.",
+      "url": "https://www.gov.cy/police/monades/limeniki-naytiki-astynomia-l-n-a/voitheia-pros-to-koino-epikoinonia/",
+      "source": "https://www.gov.cy/police/monades/limeniki-naytiki-astynomia-l-n-a/voitheia-pros-to-koino-epikoinonia/"
+    },
+    {
+      "id": "marruecos",
+      "name": "Marruecos",
+      "code": "MA",
+      "lang": "fr-MA",
+      "service": "Urgences médicales",
+      "description": "Le Ministère de la Santé publie les numéros des urgences et des hôpitaux par ville.",
+      "url": "https://www.sante.gov.ma/urgences/Pages/default.aspx",
+      "source": "https://www.sante.gov.ma/urgences/Pages/default.aspx"
+    },
+    {
+      "id": "nigeria",
+      "name": "Nigeria",
+      "code": "NG",
+      "lang": "en-NG",
+      "service": "Emergency Communications Centres 112",
+      "description": "For emergencies in Nigeria, the communications regulator directs callers to 112; coverage may vary.",
+      "url": "https://ncc.gov.ng/media-centre/press-releases/press-release-emergency-communications-centres-launch-ncc",
+      "source": "https://ncc.gov.ng/media-centre/press-releases/press-release-emergency-communications-centres-launch-ncc"
     }
   ]
 }

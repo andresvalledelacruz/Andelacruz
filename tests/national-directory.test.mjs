@@ -7,9 +7,16 @@ const directory = JSON.parse(readFileSync('data/help-directory.json','utf8'));
 
 test('Spanish organizations directory is static, sourced and separate from country resources', () => {
   const records=directory.records;
-  assert.equal(records.length,234);
-  assert.equal(new Set(records.map(r=>r.id)).size,234);
-  assert.equal(new Set(records.map(r=>r.url)).size,234);
+  assert.equal(records.length,290);
+  assert.equal(new Set(records.map(r=>r.id)).size,290);
+  assert.equal(new Set(records.map(r=>r.url)).size,290);
+  assert.equal(Object.keys(directory.countries).length - 1,50);
+  for(const country of ['PE','BG','CY','MA','NG']){
+    const local=records.filter(r=>r.country===country && r.kind==='resource');
+    assert.ok(local.some(r=>r.category==='empleo'),country);
+    assert.ok(local.some(r=>r.category==='emocional'||r.category==='salud'),country);
+    assert.ok(local.every(r=>r.verification?.checkedAt==='2026-09-27'),country);
+  }
   for(const record of records){
     assert.ok(record.id);
     assert.ok(record.name);
