@@ -3,15 +3,18 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { routeSearchQuery } from '../src/search-crisis-router.js';
 import { routeKnownContentQuery } from '../src/search-content-catalog.js';
+import { resolveMultipleNeeds } from '../src/search-multi-need-resolver.js';
 
 const ui = fs.readFileSync(new URL('../buscar/index.html', import.meta.url), 'utf8');
 
 test('public search invokes Safety router before ordinary content fallback', () => {
+  const multipleNeedsCall = ui.indexOf('resolveMultipleNeeds(submittedQuery)');
   const safetyCall = ui.indexOf('routeSearchQuery(submittedQuery)');
   const contentCall = ui.indexOf('routeKnownContentQuery(submittedQuery)');
-  assert.ok(safetyCall >= 0);
+  assert.ok(multipleNeedsCall >= 0);
+  assert.ok(safetyCall > multipleNeedsCall);
   assert.ok(contentCall > safetyCall);
-  assert.match(ui, /if \(!routed\.matched && !routed\.urgent_support\?\.available\)/);
+  assert.match(ui, /if \(!routed\.matched && !routed\.urgent_support\?\.available && !multipleNeeds\.needs_clarification\)/);
   assert.match(ui, /if \(contentRouted\.matched\) routed = contentRouted/);
 });
 
@@ -30,6 +33,16 @@ test('critical and urgent routing wins even when ordinary content also matches',
     assert.equal(ordinary.matched, false, query);
     assert.equal(ordinary.needs_safety_router, true, query);
   }
+});
+
+test('mixed ambiguous suicide wording retains optional urgent help during clarification', () => {
+  const query = 'suicidio y tengo deudas';
+  const safety = routeSearchQuery(query);
+  const multiple = resolveMultipleNeeds(query);
+  assert.equal(safety.urgent_support?.available, true);
+  assert.equal(multiple.needs_clarification, true);
+  assert.notEqual(multiple.primary_need?.safety_level, 'P0');
+  assert.match(ui, /urgent_support: routed\.urgent_support \?\? null/);
 });
 
 test('ordinary catalog expands previously unmatched useful searches', () => {

