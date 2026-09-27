@@ -11,7 +11,7 @@ test('directory is uniquely sourced and country-scoped; runtime alphabetizes it'
  assert.deepEqual([...expected].sort(),data.records.map(r=>r.id).sort());
  assert.equal(new Set(data.records.map(r=>r.id)).size,data.records.length);
  assert.equal(new Set(data.records.map(r=>r.url)).size,data.records.length);
- for(const r of data.records){assert.ok(data.countries[r.country]);assert.ok(data.categories[r.category]);assert.match(r.language,/^(es|en|fr|pt)$/);if(r.kind==='resource'){assert.equal(r.verification.httpStatus,200);assert.ok(r.verification.title);}}
+ for(const r of data.records){assert.ok(data.countries[r.country]);assert.ok(data.categories[r.category]);assert.match(r.language,/^(es|en|fr|pt|de)$/);if(r.kind==='resource'){assert.equal(r.verification.httpStatus,200);assert.ok(r.verification.title);}}
  assert.equal(data.records.find(r=>r.id==='anar').url,'https://www.anar.org/que-hacemos/telefono-chat-anar/');
  const page=read('webs-amigas.html','utf8');
  const runtime=read('webs-amigas-country-filter.js','utf8');
@@ -33,7 +33,7 @@ test('localized equivalents have reciprocal hreflang, self canonicals, privacy a
   assert.doesNotMatch(html,/hreflang="(?:en-UK|es-EU)"|visitor-analytics|adsbygoogle|<iframe/);
   assert.match(html,/name="referrer" content="no-referrer"/);
   assert.match(html,/<option value="">/);
-  assert.equal((html.match(/data-help-country=/g)||[]).length,9);
+  assert.equal((html.match(/data-help-country=/g)||[]).length,10);
   for(const [,href]of html.matchAll(/href="(\/[^"#]*)"/g))assert.ok(existsSync('.'+href+(href.endsWith('/')?'index.html':'')),href);
  }
  const runtime=read('international-help-ui.js','utf8')+read('src/international-help.js','utf8');
@@ -56,4 +56,14 @@ test('resource tree exposes multiple native choices without JS or nested anchors
  const html=read('recursos/index.html','utf8');const branches=[...html.matchAll(/<details class="resource-branch">([\s\S]*?)<\/details>/g)];
  assert.equal(branches.length,11);
  for(const [,body] of branches){assert.match(body,/<summary>/);assert.ok((body.match(/<a href=/g)||[]).length>=1);assert.doesNotMatch(body,/<a[^>]*>[^<]*<a/);}
+});
+
+test('German urgent link and initial categories are explicitly scoped',()=>{
+ const html=read('ayuda/de/index.html','utf8');
+ assert.match(html,/Deutschland · Germany/);
+ assert.match(html,/data-help-country="DE"[\s\S]*?https:\/\/gesund\.bund\.de\/notfallnummern/);
+ const de=data.records.filter(r=>r.country==='DE');
+ assert.deepEqual(new Set(de.map(r=>r.category)),new Set(['emocional','empleo','vivienda','igualdad']));
+ assert.equal(de.length,4);
+ assert.match(html,/keine vollständige Übersicht/);
 });

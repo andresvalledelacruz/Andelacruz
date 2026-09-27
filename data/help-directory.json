@@ -8,7 +8,8 @@
     "PT": "Portugal",
     "FR": "Francia",
     "GB": "Reino Unido",
-    "EU": "Unión Europea"
+    "EU": "Unión Europea",
+    "DE": "Alemania"
   },
   "categories": {
     "humanitaria": "Acción humanitaria y educación",
@@ -3324,6 +3325,78 @@
         "checkedAt": "2026-09-20T08:19:32.069Z",
         "title": "Repossessions, homelessness, emergency housing and evictions - GOV.UK",
         "discoveredAt": "https://www.gov.uk/browse/housing-local-services"
+      }
+    },
+    {
+      "id": "official-de-crisis",
+      "category": "emocional",
+      "name": "Notfallnummern und Telefonseelsorge (Beratung auf Deutsch)",
+      "description": "112 en emergencias; 116 123 para apoyo en crisis (atención en alemán), según la fuente oficial.",
+      "country": "DE",
+      "language": "de",
+      "kind": "resource",
+      "url": "https://gesund.bund.de/notfallnummern",
+      "sourceUrl": "https://gesund.bund.de/notfallnummern",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Gesundheitsversorgung Nummern für den Notfall",
+        "discoveredAt": "https://gesund.bund.de/notfallnummern"
+      }
+    },
+    {
+      "id": "official-de-employment",
+      "category": "empleo",
+      "name": "Bundesagentur für Arbeit: desempleo",
+      "description": "Información sobre inscripción como demandante, prestaciones y búsqueda de empleo.",
+      "country": "DE",
+      "language": "de",
+      "kind": "resource",
+      "url": "https://www.arbeitsagentur.de/arbeitslos-arbeit-finden/arbeitslosengeld",
+      "sourceUrl": "https://www.arbeitsagentur.de/arbeitslos-arbeit-finden/arbeitslosengeld",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Arbeitsuchend melden und Arbeitslosengeld erhalten",
+        "discoveredAt": "https://www.arbeitsagentur.de/arbeitslos-arbeit-finden/arbeitslosengeld"
+      }
+    },
+    {
+      "id": "official-de-housing",
+      "category": "vivienda",
+      "name": "Bundesportal: solicitar ayuda de vivienda",
+      "description": "Información sobre Wohngeld. Los requisitos y el trámite dependen de la región.",
+      "country": "DE",
+      "language": "de",
+      "kind": "resource",
+      "url": "https://verwaltung.bund.de/leistungsverzeichnis/de/leistung/99107023037000",
+      "sourceUrl": "https://verwaltung.bund.de/leistungsverzeichnis/de/leistung/99107023037000",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Wohngeld erstmalig oder neu beantragen",
+        "discoveredAt": "https://verwaltung.bund.de/leistungsverzeichnis/de/leistung/99107023037000"
+      }
+    },
+    {
+      "id": "official-de-violence-women",
+      "category": "igualdad",
+      "name": "Hilfetelefon: violencia contra las mujeres",
+      "description": "Asesoramiento para mujeres que sufren violencia; consulta también opciones para familiares y profesionales.",
+      "country": "DE",
+      "language": "de",
+      "kind": "resource",
+      "url": "https://www.hilfetelefon.de/",
+      "sourceUrl": "https://www.hilfetelefon.de/",
+      "reviewedAt": "2026-09-27",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-09-27",
+        "title": "Das Hilfetelefon – Beratung und Hilfe für Frauen",
+        "discoveredAt": "https://www.hilfetelefon.de/"
       }
     }
   ]

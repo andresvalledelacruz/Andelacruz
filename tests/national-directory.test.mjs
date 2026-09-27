@@ -8,9 +8,9 @@ const directory = JSON.parse(readFileSync('data/help-directory.json','utf8'));
 
 test('national directory has dated verified sources and a country-first runtime without implied partnerships', () => {
   const records=directory.records;
-  assert.equal(records.length,200);
-  assert.equal(new Set(records.map(r=>r.id)).size,200);
-  assert.equal(new Set(records.map(r=>r.url)).size,200);
+  assert.equal(records.length,204);
+  assert.equal(new Set(records.map(r=>r.id)).size,204);
+  assert.equal(new Set(records.map(r=>r.url)).size,204);
   for(const record of records){
     assert.ok(record.id);
     assert.ok(record.name);
@@ -19,7 +19,7 @@ test('national directory has dated verified sources and a country-first runtime 
     assert.ok(directory.countries[record.country]);
     assert.equal(new URL(record.url).protocol,'https:');
     assert.equal(record.sourceUrl,record.url);
-    assert.match(record.reviewedAt,/^2026-09-(18|20)$/);
+    assert.match(record.reviewedAt,/^2026-09-(18|20|27)$/);
     assert.ok(record.description.length<110);
   }
   assert.match(page, /no implica colaboración, patrocinio ni acuerdo/);

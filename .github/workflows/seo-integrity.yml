@@ -230,7 +230,7 @@ jobs:
           assert isinstance(directory.get('countries'), dict), 'Help directory countries must be an object'
           assert isinstance(directory.get('categories'), dict), 'Help directory categories must be an object'
           records = directory['records']
-          assert len(records) == 200, f'Verified help directory must contain 200 records, found {len(records)}'
+          assert len(records) == 204, f'Verified help directory must contain 204 records, found {len(records)}'
 
           seen_ids = set()
           for record in records:
