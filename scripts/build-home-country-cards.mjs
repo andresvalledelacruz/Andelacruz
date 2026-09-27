@@ -19,6 +19,6 @@ else{
  if(!html.includes(marker))throw new Error('Home Resources insertion point not found');
  html=html.replace(marker,`        </div>\n${block}\n      </div>\n    </section>\n\n    <section class="professionals section"`);
 }
-const css='  <link rel="stylesheet" href="/assets/country-card.css?v=20260927-5">\n';
+const css='  <link rel="stylesheet" href="/assets/country-card.css?v=20260927-6">\n';
 if(!html.includes(css))html=html.replace('  <link rel="stylesheet" href="styles.css">\n',`  <link rel="stylesheet" href="styles.css">\n${css}`);
 writeFileSync(path,html);
