@@ -30,8 +30,7 @@ test('Spanish organizations directory is static, sourced and separate from count
   }
   assert.match(page, /no implica colaboración, patrocinio ni acuerdo/);
   assert.ok(page.indexOf('href="/ayuda-urgente.html"') < page.indexOf('data-organization="'));
-  assert.match(page,/id="country-buttons"/);
- assert.match(page,/webs-amigas-country-filter\.js/);
+  assert.doesNotMatch(page,/id="country-buttons"|webs-amigas-country-filter|Webs amigas por país/);
   assert.ok(page.includes('href="/recursos/"'));
   assert.equal((page.match(/data-organization=/g)||[]).length,50);
   for(const record of records.filter(r=>r.kind==='organization')){

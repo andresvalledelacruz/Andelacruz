@@ -15,8 +15,7 @@ test('directory is uniquely sourced and country-scoped; runtime alphabetizes it'
  assert.equal(data.records.find(r=>r.id==='anar').url,'https://www.anar.org/que-hacemos/telefono-chat-anar/');
  const page=read('webs-amigas.html','utf8');
  assert.equal((page.match(/data-organization=/g)||[]).length,50);
- assert.match(page,/id="country-buttons"/);
- assert.match(page,/webs-amigas-country-filter\.js/);
+ assert.doesNotMatch(page,/id="country-buttons"|webs-amigas-country-filter|Webs amigas por país|países se muestran como pendientes/);
  assert.ok(page.includes('href="/recursos/"'));
  assert.equal(data.records.filter(r=>r.kind==='organization').length,50);
  assert.equal(data.records.filter(r=>r.kind==='resource').length,240);
