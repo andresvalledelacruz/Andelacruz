@@ -78,7 +78,7 @@ test('45 cada página indexable tiene exactamente un canonical', () => assert.ok
 test('46 canonical coincide con la URL declarada en sitemap', () => assert.ok(publicPages.every(x => x.html.includes(`href="${x.loc}"`) || x.html.includes(`href='${x.loc}'`))));
 test('47 cada página indexable declara el idioma correspondiente a su ruta', () => {
   for (const page of publicPages) {
-    const expected = new URL(page.loc).pathname.match(/^\/ayuda\/(en|fr|pt|de)\/$/)?.[1] || 'es';
+    const expected = new URL(page.loc).pathname.match(/^\/ayuda\/(en|fr|pt|de|ar)\/$/)?.[1] || 'es';
     assert.equal(page.html.match(/<html\b[^>]*lang=["']([^"']+)["']/i)?.[1], expected, page.loc);
   }
 });
