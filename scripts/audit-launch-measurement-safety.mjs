@@ -14,7 +14,7 @@ const APPROVED_HOME_EXTERNAL_MODULE = 'https://cdn.jsdelivr.net/npm/@supabase/su
 const PINNED_MEASUREMENT_FILES = new Map([
   // Reviewed 2026-09-20: pure multilingual topic matching and local UI, no network/storage.
   ['international-help-ui.js', '4c1e7bd5c5b5027939fbf76ac3fc921d67acd592469525461dbf41d57f4c6d84'],
-  ['src/international-help.js', '5db64db4ccecd13335696cb8fbe6fdb7bfe8c7dff5ea3f0e52b58b7efcc60c41'],
+  ['src/international-help.js', '01bd3e17226a15b159c4a08bd814828ba799b59d34033ca686c3eda80177efbe'],
   ['app.js', 'afac2737553d45aa9275b551c9ebb734ee5ead06b7cfbe8dec59b0a225420238'],
   ['public-page-runtime.js', 'a0654d52caf4b7fbb5c191a609a6336c8d25ff8814aadd7142afc811ca405845'],
   ['visitor-analytics.js', '3ca9ed490f749aea8f9728e0f762a26c42f4d390658954fbb13dd98b1cc99031'],
@@ -389,7 +389,7 @@ export async function auditLaunchMeasurementSafety({ root = DEFAULT_ROOT } = {})
     const result = await auditHtmlEntry({ root: rootReal, htmlFile, protectedSurface: true });
     surfaces.push({ route, ...result });
     failures.push(...result.failures);
-    const approved = route === '/buscar/' ? APPROVED_SEARCH_CLOSURE : /^\/ayuda\/(es|en|fr|pt|de)\/$/.test(route) ? ['international-help-ui.js', 'src/international-help.js'] : [];
+    const approved = route === '/buscar/' ? APPROVED_SEARCH_CLOSURE : /^\/ayuda\/(es|en|fr|pt|de|ar)\/$/.test(route) ? ['international-help-ui.js', 'src/international-help.js'] : [];
     if (JSON.stringify(result.files) !== JSON.stringify(approved)) failures.push(`protected surface dependency set changed: ${route}`);
     if (route !== '/buscar/') {
       const approvedInline = APPROVED_PROTECTED_INLINE.get(route) ?? [];

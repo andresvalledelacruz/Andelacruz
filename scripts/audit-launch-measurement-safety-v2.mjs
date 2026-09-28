@@ -23,7 +23,8 @@ const APPROVED_SEARCH_NORMALIZATION_SHA256 = "2677c62779a2b2c300ff48d1c2ce3dde35
 // 2026-09-27: country navigation now contains only destinations with reviewed
 // resources. Writing examples and plainer result text leave routing, network,
 // storage and raw-query behavior unchanged.
-const APPROVED_SEARCH_PAGE_SHA256 = 'a49933b344ccb8fe5c5a7768565d073eef79faf1b37a04b8479fc65bdea32ce0';
+// 2026-09-28: static Arabic access link only; no form or executable changes.
+const APPROVED_SEARCH_PAGE_SHA256 = '2f1068cbf0e36fef91c95578e34be58b965f7ed54590d98467947c80919eaafd';
 // 2026-09-27: reviewed ordinary guide matching after clause-level safety
 // routing. The dependency already belongs to the pinned local-only closure.
 const APPROVED_MULTI_NEED_RESOLVER_SHA256 = '291b600b21fc3a1f58d05e3b790b984c60c6fbdbe6c5c889a2242f9fca7dcf7d';

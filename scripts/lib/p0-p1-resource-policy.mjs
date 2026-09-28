@@ -38,7 +38,7 @@ const INTERNATIONAL_AUTHORITY_HOSTS = new Set([
 ]);
 
 export const PUBLIC_AUTHORITY_BASE_DOMAINS = [
-  'sanidad.gob.es',
+  'sanidad.gob.es', 'inclusion.gob.es',
   'guiasalud.es',
   'who.int',
   'juntadeandalucia.es',
