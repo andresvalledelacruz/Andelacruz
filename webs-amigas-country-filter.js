@@ -101,9 +101,11 @@
     if (!options.some((item) => item.code === 'ES')) options.unshift({ code: 'ES', name: 'España', flag: '🇪🇸' });
     options = [optionMeta('ES'), ...options.filter((item) => item.code !== 'ES').sort((a, b) => collator.compare(a.name, b.name))];
     buildCountryButtons();
+    picker.closest('.country-picker').hidden = false;
     renderCountry('ES');
   }).catch(() => {
     status.textContent = 'No hemos podido cargar el directorio ahora mismo. Puedes utilizar Buscar ayuda o volver a intentarlo más tarde.';
-    groupsHost.replaceChildren(el('a', 'Ir a Buscar ayuda', { href: '/buscar/' }));
+    // Keep the sourced Spanish HTML available when loading fails.
+    picker.closest('.country-picker').hidden = true;
   });
 })();
