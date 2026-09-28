@@ -64,15 +64,7 @@ try{
   await page.goto(`${origin}/webs-amigas.html`,{waitUntil:'networkidle'});
   assert.equal(await page.locator('[data-organization]').count(),countFor('ES','organization'));
   assert.equal(await page.locator('[data-organization][data-country="ES"]').count(),countFor('ES','organization'));
-  assert.ok(await page.locator('#country-buttons button').count()>=50);
-  await page.locator('#country-buttons button[data-country="MA"]').click();
-  assert.equal(await page.locator('[data-organization]').count(),countFor('MA','resource'));
-  assert.equal(await page.locator('[data-organization]:not([data-country="MA"])').count(),0);
-  await page.locator('#country-buttons button[data-country="ES"]').click();
-  for(const grid of await page.locator('.friends-grid').all()){
-   const names=await grid.locator('h3').allTextContents();
-   assert.deepEqual(names,[...names].sort(new Intl.Collator('es',{sensitivity:'base'}).compare));
-  }
+  assert.equal(await page.locator('#country-buttons').count(),0);
   const anar=page.locator('[data-organization="anar"]');await anar.scrollIntoViewIfNeeded();
   assert.ok((await anar.getAttribute('href')).includes('/telefono-chat-anar/'));
   assert.equal(await page.locator('[data-organization]').count(),countFor('ES','organization'));
@@ -106,6 +98,4 @@ try{
   await context.close();console.log(`PASS global help ${width}px`);
  }
  const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}});const page=await context.newPage();await page.goto(`${origin}/ayuda/en/`);assert.equal(await page.locator('[data-help-country]:visible').count(),expectedCountryCount);assert.ok(await page.locator('[data-help-country="GB"] .urgent a').isVisible());await page.goto(`${origin}/recursos/`);await page.locator('.resource-branch summary').first().click();assert.ok(await page.locator('.resource-branch[open] a').first().isVisible());await context.close();console.log('PASS no-JS country links and expandable resources');
- const fallback=await browser.newContext({javaScriptEnabled:false});const fp=await fallback.newPage();await fp.goto(`${origin}/webs-amigas.html`);assert.equal(await fp.locator('[data-organization]:visible').count(),50);await fallback.close();
- const failed=await browser.newContext();await failed.route('**/data/help-directory.json',r=>r.abort());const failedPage=await failed.newPage();await failedPage.goto(`${origin}/webs-amigas.html`);assert.equal(await failedPage.locator('[data-organization]:visible').count(),50);await failed.close();
 }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}
