@@ -12,7 +12,8 @@ const DEFAULT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), 
 const APPROVED_APP_SHA256 = "76918e22d34267715430d9b1e834f5d21dadf0f53d84f538acdecc4638209c7b";
 // 2026-09-26: reviewed Search Help 3.0 lexical expansion. This file remains a
 // bounded, explicit token normalizer with no network, storage or raw-query retention.
-const APPROVED_SEARCH_NORMALIZATION_SHA256 = "fd72d4f16cd3cef3a06751da774b1f2329abdd3474b5690110ae43036e71ac76";
+// 2026-09-28: reviewed PR 317 explicit lexical aliases; no I/O or retention.
+const APPROVED_SEARCH_NORMALIZATION_SHA256 = "2677c62779a2b2c300ff48d1c2ce3dde3525e0d93a47cad4d94b64e71e09d7c7";
 // Search 3.1 changes a previously pinned protected surface. Pin the reviewed
 // page and its new dependency, including against computed-property exfiltration.
 // 2026-09-27: reviewed static country links into /recursos/#pais-XX. The form

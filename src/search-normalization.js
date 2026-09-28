@@ -4,10 +4,12 @@
 const CORRECTIONS = Object.freeze({
   q: 'que', k: 'que', xq: 'porque', pq: 'porque', qiero: 'quiero', kiero: 'quiero',
 
-  // Trabajo / empleo
+  // Trabajo / empleo. Include common Spain and Latin-American colloquialisms,
+  // but normalize only unambiguous lexical variants (never intent by itself).
   travajo: 'trabajo', trabjo: 'trabajo', trbajo: 'trabajo', trabago: 'trabajo',
   trabajp: 'trabajo', trvajo: 'trabajo', curro: 'trabajo', currelo: 'trabajo',
   currar: 'trabajar', currando: 'trabajando', currela: 'trabajador',
+  laburo: 'trabajo', laburar: 'trabajar', chamba: 'trabajo', chambear: 'trabajar',
   despidido: 'despedido', despedio: 'despedido', despedidoo: 'despedido',
   echao: 'echado', hechado: 'echado',
 
@@ -41,7 +43,7 @@ const CORRECTIONS = Object.freeze({
   sucidio: 'suicidio', suisidio: 'suicidio', suizidio: 'suicidio', suicidioo: 'suicidio',
   sucidarse: 'suicidarse', suisidarse: 'suicidarse', suizidarse: 'suicidarse',
   sucido: 'suicido', suisido: 'suicido',
-  matarrme: 'matarme', morirr: 'morir',
+  matarrme: 'matarme', matarmeee: 'matarme', morirr: 'morir', morirmee: 'morirme',
   maltratto: 'maltrato', maltratta: 'maltrata', maltrto: 'maltrato',
   maltratao: 'maltratado', violensia: 'violencia', biolencia: 'violencia',
   agression: 'agresion', agrecion: 'agresion', agreison: 'agresion', agrecionsexual: 'agresionsexual'
