@@ -96,7 +96,7 @@
   ]).then(([data, countryModule]) => {
     if (!data || !Array.isArray(data.records) || !data.categories) throw new Error('Formato de directorio no válido');
     directory = data;
-    const rawOptions = countryModule.COUNTRY_OPTIONS || countryModule.default || [];
+    const rawOptions = countryModule.COUNTRY_OPTIONS || countryModule.default || window.DesgraciasCountryOptions || [];
     options = rawOptions.map((item) => Array.isArray(item) ? { code: item[0], name: item[1], flag: item[2] } : item).filter((item) => item && item.code && item.name);
     if (!options.some((item) => item.code === 'ES')) options.unshift({ code: 'ES', name: 'España', flag: '🇪🇸' });
     options = [optionMeta('ES'), ...options.filter((item) => item.code !== 'ES').sort((a, b) => collator.compare(a.name, b.name))];
