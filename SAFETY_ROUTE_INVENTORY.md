@@ -26,6 +26,7 @@ Este inventario sirve como control conservador para separar contenido crítico d
 | `/ayuda/fr/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
 
 | `/ayuda/pt/` | orientación internacional con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero |
+| `/ayuda/ar/` | orientación árabe para personas en España | sin monetización ni medición; RTL; idioma independiente del país; 112/024 de España; fuentes oficiales |
 | `/ayuda/de/` | orientación internacional en alemán con acceso urgente | sin monetización ni medición; país explícito; texto local y efímero; Alemania con cobertura inicial limitada y fuentes oficiales verificadas |
 
 ## Regla de alta

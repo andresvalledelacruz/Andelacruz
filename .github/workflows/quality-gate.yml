@@ -118,6 +118,9 @@ jobs:
       - name: Verify multilingual help and compact directory
         run: node scripts/qa-global-help.mjs
 
+      - name: Verify Arabic Spain access and crisis privacy
+        run: node scripts/qa-arabic-spain.mjs
+
       - name: Preserve multilingual visual evidence
         if: always()
         uses: actions/upload-artifact@v4

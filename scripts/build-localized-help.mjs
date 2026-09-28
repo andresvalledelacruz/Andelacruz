@@ -17,7 +17,7 @@ const languages={es:'Español',en:'English',fr:'Français',pt:'Português',de:'D
 for(const [lang,c] of Object.entries(copy)){
  const url=`https://desgracias.es/ayuda/${lang}/`;
  const alternate=Object.keys(copy).map(l=>`<link rel="alternate" hreflang="${l}" href="https://desgracias.es/ayuda/${l}/">`).join('\n')+'\n<link rel="alternate" hreflang="x-default" href="https://desgracias.es/ayuda/es/">';
- const langnav=Object.entries(languages).map(([l,label])=>`<a href="/ayuda/${l}/" lang="${l}" hreflang="${l}"${l===lang?' aria-current="page"':''}>${label}</a>`).join(' · ');
+ const langnav=Object.entries(languages).map(([l,label])=>`<a href="/ayuda/${l}/" lang="${l}" hreflang="${l}"${l===lang?' aria-current="page"':''}>${label}</a>`).join(' · ')+ ' · <a href="/ayuda/ar/" lang="ar" dir="rtl">العربية · المساعدة في إسبانيا</a>';
  const sections=Object.entries(names).map(([code,name])=>{
    const records=code==='ES'?esTopics.map(([category,url])=>({name:c.topics[category],category,url,language:'es',reviewedAt:'2026-09-20'})):directory.records.filter(r=>r.country===code);
    const urgent=code==='ES'?'/ayuda-urgente.html':code==='EU'?'https://europa.eu/youreurope/citizens/travel/security-and-emergencies/emergency/index_en.htm':entrypoints.countries.find(x=>x.code===code)?.source;

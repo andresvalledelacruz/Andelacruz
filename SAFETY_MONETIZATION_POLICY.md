@@ -34,6 +34,7 @@ El test `tests/p0-p1-noncommercial-invariant.test.mjs` protege actualmente las s
 - `/ayuda/fr/`;
 - `/ayuda/pt/`;
 - `/ayuda/de/`;
+- `/ayuda/ar/`;
 - `/internacional.html`.
 
 Las rutas de suicidio incluidas en este inventario conservan además una comprobación específica de acceso al 112, 024 y fuente oficial del Ministerio de Sanidad. La nueva puerta transversal de violencia queda igualmente fuera de monetización y mantiene acceso visible al 112 y el 016 únicamente con su alcance específico frente a la violencia contra las mujeres.

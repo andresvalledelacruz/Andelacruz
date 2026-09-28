@@ -3,6 +3,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/ayuda/en/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/ayuda/fr/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/ayuda/pt/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
+  '/ayuda/ar/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/ayuda/de/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   "/internacional.html":{domain:"core",needs:[],intents:[],opportunities:[],risk:"high",consent:"none",commercialPolicy:"off",defaultFlags:[]},
   '/recursos/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},

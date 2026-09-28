@@ -10,7 +10,11 @@ test('la portada V9 permanece byte-a-byte intacta', () => {
   // 2026-09-20: Andrés pidió explícitamente visibilidad de países e idiomas al final.
   // Preserve the previous approved baseline after removing only this fixed footer paragraph.
   const approvedFooter = '<p class="help-language-coverage">Orientación inicial por país: España, México, Argentina, Colombia, Chile, Portugal, Francia, Reino Unido y recursos de la UE. <a href="/ayuda/es/" lang="es">Español</a> · <a href="/ayuda/en/" lang="en">English</a> · <a href="/ayuda/fr/" lang="fr">Français</a> · <a href="/ayuda/pt/" lang="pt">Português</a>. Las guías completas siguen principalmente en español.</p>';
-  const html = readFileSync('index.html', 'utf8').replaceAll('\r\n', '\n');
+  // 2026-09-28: Andrés explicitly requested visible Arabic access for people in Spain.
+  const arabicEntry = "<p class=\"arabic-help-entry\" style=\"padding:12px 20px;margin:0;text-align:center\">🌐 <a href=\"/ayuda/ar/\" lang=\"ar\" dir=\"rtl\">العربية · المساعدة في إسبانيا</a> <span lang=\"es\">· Ayuda en España</span></p>\n";
+  const current = readFileSync('index.html', 'utf8').replaceAll('\r\n', '\n');
+  assert.equal(current.split(arabicEntry).length,2);
+  const html = current.replace('\n' + arabicEntry,'');
   assert.equal(html.split(approvedFooter).length, 2, 'one exact language footer is required');
   assert.ok(html.includes(approvedFooter + '</footer>'), 'language coverage belongs at the end of the footer');
   const addedStylesheet = '  <link rel="stylesheet" href="/assets/country-card.css?v=20260927-7">\n';

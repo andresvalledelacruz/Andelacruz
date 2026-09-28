@@ -1,5 +1,5 @@
 export const CRITICAL_PATH_HINTS = [
-  /(?:^|\/)ayuda\/(?:es|en|fr|pt)(?:\/|$)/i,
+  /(?:^|\/)ayuda\/(?:es|en|fr|pt|de|ar)(?:\/|$)/i,
   /suicid/i,
   /agresion-sexual/i,
   /maltrat/i,
