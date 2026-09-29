@@ -121,6 +121,9 @@ jobs:
       - name: Verify Arabic Spain access and crisis privacy
         run: node scripts/qa-arabic-spain.mjs
 
+      - name: Verify contextual resource cards with and without JavaScript
+        run: node scripts/qa-resource-context.mjs
+
       - name: Preserve multilingual visual evidence
         if: always()
         uses: actions/upload-artifact@v4
