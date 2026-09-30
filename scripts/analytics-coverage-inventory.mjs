@@ -1,9 +1,10 @@
 import { readdir, readFile, stat } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { isIndexable } from './lib/robots-indexability.mjs';
 import { readCriticalRoutes, routeToFile } from './lib/p0-p1-resource-policy.mjs';
 
-const root = new URL('..', import.meta.url).pathname;
+const root = fileURLToPath(new URL('..', import.meta.url));
 const ignoredDirs = new Set(['.git', 'node_modules', 'ops-api', 'supabase', 'tests', 'scripts', '.github']);
 const ignoredFiles = new Set(['404.html']);
 const runtimeMarker = '/public-page-runtime.js';
