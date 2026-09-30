@@ -124,6 +124,9 @@ jobs:
       - name: Verify contextual resource cards with and without JavaScript
         run: node scripts/qa-resource-context.mjs
 
+      - name: Verify professional hub and legacy contact links
+        run: node scripts/qa-professionals-hub.mjs
+
       - name: Preserve multilingual visual evidence
         if: always()
         uses: actions/upload-artifact@v4
