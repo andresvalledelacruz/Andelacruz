@@ -5,7 +5,7 @@ import { readFileSync, existsSync } from 'node:fs';
 const page = readFileSync('webs-amigas.html', 'utf8');
 const directory = JSON.parse(readFileSync('data/help-directory.json','utf8'));
 
-test('Spanish organizations directory is static, sourced and separate from country resources', () => {
+test('Webs Amigas 2.0 is sourced, Spain-first and country-filtered', () => {
   const records=directory.records;
   assert.equal(records.length,290);
   assert.equal(new Set(records.map(r=>r.id)).size,290);
@@ -30,14 +30,16 @@ test('Spanish organizations directory is static, sourced and separate from count
   }
   assert.match(page, /no implica colaboración, patrocinio ni acuerdo/);
   assert.ok(page.indexOf('href="/ayuda-urgente.html"') < page.indexOf('data-organization="'));
-  assert.doesNotMatch(page,/id="country-buttons"|webs-amigas-country-filter|Webs amigas por país/);
+  assert.match(page,/id="country-buttons"/);
+  assert.match(page,/España aparece por defecto/);
+  assert.match(page,/al elegir otro país solo verás la ayuda correspondiente a ese país/);
+  assert.match(page,/class="friends-card"/);
   assert.ok(page.includes('href="/recursos/"'));
   assert.equal((page.match(/data-organization=/g)||[]).length,50);
   for(const record of records.filter(r=>r.kind==='organization')){
     assert.ok(page.includes(`data-organization="${record.id}"`),record.id);
     assert.ok(page.includes(`href="${record.url}"`),record.id);
   }
-  for(const record of records.filter(r=>r.kind==='resource'))assert.ok(!page.includes(`href="${record.url}"`),record.id);
   for (const [, href] of page.matchAll(/href="(\/[^"#]*)"/g)) {
     const pathname = href.split('?')[0];
     assert.ok(existsSync(`.${pathname}${pathname.endsWith('/') ? 'index.html' : ''}`), href);
