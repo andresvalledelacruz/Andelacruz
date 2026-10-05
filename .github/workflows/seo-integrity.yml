@@ -130,6 +130,8 @@ jobs:
               assert record['id'] not in seen_ids; seen_ids.add(record['id']); assert record['category'] in directory['categories']; assert record['country'] in directory['countries']
               parsed_resource=urlparse(record['url']); assert parsed_resource.scheme=='https' and parsed_resource.netloc; reviewed=date.fromisoformat(record['reviewedAt']); assert reviewed<=today
           assert 'Sitemap: https://desgracias.es/sitemap.xml' in robots and 'Disallow: /\n' not in robots
+          for hub in ('ansiedad', 'salud', 'violencia'):
+              assert f'<loc>https://desgracias.es/{hub}/</loc>' in sitemap_text, f'Missing public hub: {hub}'
           total=len(entries); resource_count=sum(r.get('kind')=='resource' for r in records)
           print(f'SEO integrity checks passed for {total} sitemap URLs.'); print(f'Validated {checked_internal_links} root-relative navigational links.'); print(f'Help directory source: {len(records)} records (50 organizations, {resource_count} country resources), {len(country_options)} country selector options.'); print(f'Mandatory metadata coverage: JSON-LD {total}/{total}, OG site_name {total}/{total}, Twitter card {total}/{total}.'); print(f'Hero WebP: {hero_bytes} bytes.')
           PY
