@@ -28,6 +28,8 @@ test('la portada V9 permanece byte-a-byte intacta', () => {
   assert.equal(html.split(professionalEntry).length, 2, 'one direct professional entry is required');
   assert.equal(html.split(newTrustLinks).length, 2, 'one professional and alliance footer entry is required');
   const baseline = html.replace(approvedFooter, '').replace(addedStylesheet, '').replace(countryBlock, '')
+    // 2026-10-05: Andrés requests a visible Professionals hub; allow only this exact CTA change.
+    .replace('href="/profesionales.html">Acceder a Profesionales', 'href="/contacto.html#profesionales">Explorar opciones')
     .replace(professionalEntry, '').replace(newTrustLinks, oldTrustLink).replace(/<\/html>\n$/, '</html>');
   const actual = execFileSync('git', ['hash-object', '--stdin'], { input: baseline, encoding: 'utf8' }).trim();
 

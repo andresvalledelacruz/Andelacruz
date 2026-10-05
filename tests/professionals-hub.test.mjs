@@ -11,14 +11,14 @@ test('Contacto no duplica captación y conserva atención general y urgente', ()
   assert.ok(contact.includes('href="/ayuda-urgente.html"'));
   assert.ok(contact.includes('href="/profesionales.html"'));
 });
-test('Las cuatro rutas resuelven a secciones y se preservan los destinos de correo', () => {
+test('Las seis rutas resuelven a secciones y se preservan los destinos de correo', () => {
   const nav = hub.match(/<nav class="grid"[\s\S]*?<\/nav>/)[0];
-  assert.deepEqual([...nav.matchAll(/href="#([^"]+)"/g)].map(m=>m[1]), ['solicitud','colaboraciones','recursos','condiciones']);
-  for (const id of ['solicitud','colaboraciones','recursos','condiciones']) assert.equal(hub.split(`id="${id}"`).length-1,1);
+  assert.deepEqual([...nav.matchAll(/href="#([^"]+)"/g)].map(m=>m[1]), ['solicitud','colaboraciones','alianzas','recursos','condiciones','buscar-profesional']);
+  for (const id of ['solicitud','colaboraciones','alianzas','recursos','condiciones','buscar-profesional']) assert.equal(hub.split(`id="${id}"`).length-1,1);
   for (const subject of ['Solicitud%20profesional%20Desgracias.es','Sugerir%20un%20recurso','Propuesta%20de%20colaboraci%C3%B3n%20profesional']) assert.ok(hub.includes(subject));
   assert.ok(hub.includes('id="professional-application"'));
   assert.ok(hub.includes('href="/alianzas.html"'));
-  assert.match(hub,/crisis, suicidio, violencia, Buscar ayuda y los recursos sensibles quedan fuera/);
+  assert.match(hub,/crisis, suicidio, violencia, Buscar Ayuda y recursos sensibles quedan fuera/);
 });
 test('Los enlaces antiguos solo redirigen fragmentos conocidos, sin propagar datos', () => {
   for (const [hash,expected] of Object.entries({'#participar':'#participar','#profesionales':'#solicitud','#recursos':'#recursos','#colaboraciones':'#colaboraciones','#privacidad':null,'#general':null,'#https://example.org':null})) {
@@ -31,7 +31,7 @@ test('La solicitud valida antes de preparar un correo y no envía datos a la red
   const source=hub.match(/<script>\s*([\s\S]*?)<\/script>/)[1];
   let submit;
   const location={};
-  const document={getElementById(id){return id==='professional-application'?{addEventListener(type,fn){assert.equal(type,'submit');submit=fn;}}:{value:' Ejemplo & prueba '};}};
+  const document={getElementById(id){return id==='professional-application'?{addEventListener(type,fn){assert.equal(type,'submit');submit=fn;}}:id==='pro-commercial'?{checked:false}:{value:' Ejemplo & prueba '};}};
   vm.runInNewContext(source,{document,location});
   const event={preventDefault(){}};
   submit.call({reportValidity:()=>false},event);
@@ -41,8 +41,9 @@ test('La solicitud valida antes de preparar un correo y no envía datos a la red
   assert.equal(url.protocol,'mailto:');
   assert.equal(url.pathname,'info@desgracias.es');
   assert.equal(url.searchParams.get('subject'),'Solicitud profesional Desgracias.es');
-  assert.equal(url.searchParams.get('body').split('\n').length,6);
+  assert.equal(url.searchParams.get('body').split('\n').length,14);
   assert.ok(url.searchParams.get('body').includes('Nombre: Ejemplo & prueba'));
+  assert.ok(url.searchParams.get('body').includes('Interés comercial futuro: No'));
 });
 test('SEO y breadcrumbs reflejan la jerarquía y las visitas mantienen el runtime privado', () => {
   for (const file of ['contacto.html','profesionales.html','alianzas.html']) {
@@ -57,4 +58,15 @@ test('SEO y breadcrumbs reflejan la jerarquía y las visitas mantienen el runtim
     for (const m of html.matchAll(/href="#([^"]+)"/g)) assert.ok(html.includes(`id="${m[1]}"`));
   }
   assert.doesNotMatch(read('visitor-analytics.js'),/FormData|\.value|location\.hash|location\.search/);
+});
+
+test('El acceso público no promete un directorio y la portada apunta directamente al hub', () => {
+  const home = read('index.html');
+  assert.ok(home.includes('href="/profesionales.html">Acceder a Profesionales'));
+  assert.doesNotMatch(home, /href="\/contacto.html#profesionales"/);
+  assert.match(hub, /El directorio de profesionales todavía no está disponible/);
+  assert.match(hub, /No hay fichas públicas, buscador de profesionales/);
+  assert.match(hub, /El botón prepara un correo/);
+  assert.ok(hub.includes('<noscript>'));
+  assert.match(hub, /Cualquier futura ficha comercial o cobro/);
 });

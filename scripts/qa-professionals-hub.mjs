@@ -34,13 +34,13 @@ try {
     }
     await page.goto(origin+'/profesionales.html');
     const routes=page.locator('nav[aria-label="Participar en Profesionales"] a');
-    assert.equal(await routes.count(),4);
-    for(let i=0;i<4;i++) {
+    assert.equal(await routes.count(),6);
+    for(let i=0;i<6;i++) {
       await routes.nth(i).click();
       const hash=new URL(page.url()).hash;
       assert.ok(await page.locator(hash).isVisible());
     }
-    await page.locator('#colaboraciones a[href="/alianzas.html"]').click();
+    await page.locator('#alianzas a[href="/alianzas.html"]').click();
     await page.locator('a.back').click();
     assert.ok(page.url().endsWith('/profesionales.html#colaboraciones'));
     await page.goto(origin+'/contacto.html');
