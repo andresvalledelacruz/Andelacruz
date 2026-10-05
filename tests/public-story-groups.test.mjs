@@ -60,7 +60,9 @@ test('public groups expose critical situations, limit scrolling and allow every 
   const context = vm.createContext({ document, STORY_SECTION: '#historias' });
   vm.runInContext(source, context);
   context.installGroups(grid, library);
-  assert.deepEqual(filters.children.slice(0, 4).map(button => button.dataset.group), keys.slice(0, 4));
+  assert.equal(filters.children[0].dataset.group, 'crisis');
+  const labels=filters.children.slice(1).map(button=>button.textContent);
+  assert.deepEqual(labels, [...labels].sort((a,b)=>a.localeCompare(b,'es',{sensitivity:'base'})));
   assert.equal(grid.children.filter(card => !card.hidden).length, 6);
   grid.more.handlers.click();
   assert.equal(grid.children.filter(card => !card.hidden).length, 12);
@@ -69,12 +71,12 @@ test('public groups expose critical situations, limit scrolling and allow every 
   while (!grid.more.hidden) grid.more.handlers.click();
   assert.equal(grid.children.filter(card => !card.hidden).length, library.stories.length);
   assert.equal(grid.more.hidden, true);
-  for (const button of filters.children.slice(0, 10)) {
+  for (const button of filters.children.filter(button=>button.dataset.group !== 'all')) {
     button.handlers.click();
     assert.ok(grid.children.filter(card => !card.hidden).every(card => card.dataset.category === button.dataset.group));
     assert.equal(button.attributes['aria-pressed'], 'true');
     assert.ok(grid.children.some(card => !card.hidden));
   }
-  filters.children.at(-1).handlers.click();
+  filters.children.find(button=>button.dataset.group === 'all').handlers.click();
   assert.equal(grid.children.filter(card => !card.hidden).length, 6);
 });

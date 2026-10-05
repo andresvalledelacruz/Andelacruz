@@ -27,7 +27,7 @@ test('published suicide page offers personal crisis and suicide support before v
     assert.ok(html.indexOf(`href="tel:${phone}"`) < html.indexOf('<a class="privacy-bar"'));
   }
   assert.ok(html.includes('https://wa.me/3460000016'));
-  assert.equal(links.length, 6);
+  assert.ok(links.length >= 15);
 });
 
 test('actual card pages retain options and phones from the base and have deterministic static ranking', () => {

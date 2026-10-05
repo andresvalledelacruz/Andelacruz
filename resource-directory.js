@@ -83,9 +83,9 @@
       const additions = expansionTitles.flatMap(name => ROUTE_EXPANSIONS[name] || []);
       if (!additions.length) continue;
 
-      const existing = new Set([...list.querySelectorAll('a')].map((a) => `${a.getAttribute('href')}|${a.textContent.trim()}`));
+      const existing = new Set([...list.querySelectorAll('a')].map((a) => a.getAttribute('href')));
       for (const [href, label] of additions) {
-        if (existing.has(`${href}|${label}`)) continue;
+        if (existing.has(href)) continue;
         const item = document.createElement('li');
         const link = document.createElement('a');
         link.href = href;

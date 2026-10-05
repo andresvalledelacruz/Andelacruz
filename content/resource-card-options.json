@@ -1,0 +1,772 @@
+{
+  "ayuda-urgente.html": [
+    {
+      "url": "tel:024",
+      "title": "Estoy pensando en suicidarme o hacerme daño",
+      "description": "Contacta con el 024. Si hay peligro inmediato, llama al 112."
+    },
+    {
+      "url": "/me-preocupa-que-alguien-pueda-suicidarse/",
+      "title": "¿Te preocupa que alguien pueda suicidarse?",
+      "description": "Guía paso a paso para preguntar, acompañar y pedir ayuda sin cargar tú solo con la situación."
+    },
+    {
+      "url": "/alguien-cercano-ha-intentado-suicidarse/",
+      "title": "¿Alguien cercano ha intentado suicidarse?",
+      "description": "Guía para el alta, la continuidad de cuidados, nuevas señales de riesgo y el cuidado de quien acompaña."
+    },
+    {
+      "url": "/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/",
+      "title": "¿Has sufrido una agresión o violencia sexual?",
+      "description": "Guía sobre seguridad, atención sanitaria, denuncia y recursos públicos sin obligarte a decidirlo todo ahora."
+    },
+    {
+      "url": "/familia/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer/",
+      "title": "¿Crees que tu hijo sufre acoso escolar o ciberacoso?",
+      "description": "Guía para escuchar, proteger, activar el centro y pedir ayuda externa sin exigir pruebas perfectas."
+    },
+    {
+      "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/",
+      "title": "¿Tu pareja te controla, amenaza o te da miedo?",
+      "description": "Guía de seguridad, privacidad, 016 y recursos públicos sin obligarte a decidirlo todo hoy."
+    },
+    {
+      "url": "/me-preocupa-que-alguien-pueda-suicidarse/#orientacion-1",
+      "title": "Si existe peligro inmediato: seguridad primero",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/me-preocupa-que-alguien-pueda-suicidarse/#orientacion-2",
+      "title": "Sí puedes preguntarle directamente por el suicidio",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/me-preocupa-que-alguien-pueda-suicidarse/#orientacion-3",
+      "title": "Si te dice que está pensando en suicidarse",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/me-preocupa-que-alguien-pueda-suicidarse/#orientacion-4",
+      "title": "Si no lo ha dicho directamente, pero algo te preocupa",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/me-preocupa-que-alguien-pueda-suicidarse/#orientacion-5",
+      "title": "Lo que ayuda en la conversación",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/me-preocupa-que-alguien-pueda-suicidarse/#orientacion-7",
+      "title": "¿Y si dice que no quiere ayuda?",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/me-preocupa-que-alguien-pueda-suicidarse/#orientacion-8",
+      "title": "Si estás lejos o solo tienes contacto por teléfono o mensajes",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/me-preocupa-que-alguien-pueda-suicidarse/#orientacion-9",
+      "title": "Si la persona que te preocupa es menor de edad",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/alguien-cercano-ha-intentado-suicidarse/#orientacion-2",
+      "title": "Antes del alta: no te vayas con las preguntas importantes sin hacer",
+      "description": "Leer este apartado de la guía existente."
+    }
+  ],
+  "violencia/index.html": [
+    {
+      "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/",
+      "title": "Mi pareja me maltrata, controla o amenaza",
+      "description": "Una ruta específica para violencia en la pareja, con prioridad de seguridad."
+    },
+    {
+      "url": "/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/",
+      "title": "He sufrido una agresión sexual",
+      "description": "Pasos inmediatos y opciones de atención sin culparte ni obligarte a decidir todo ahora."
+    },
+    {
+      "url": "/familia/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer/",
+      "title": "Mi hijo/a sufre acoso escolar",
+      "description": "Cómo priorizar seguridad, documentación y coordinación con el centro y recursos adecuados."
+    },
+    {
+      "url": "/trabajo/mi-jefe-me-hace-la-vida-imposible/",
+      "title": "Estoy sufriendo hostigamiento o una situación grave en el trabajo",
+      "description": "Orientación para separar conflicto, presión laboral y conductas que pueden requerir apoyo especializado."
+    },
+    {
+      "url": "/webs-amigas.html#igualdad",
+      "title": "Quiero encontrar una organización de apoyo",
+      "description": "Consulta entidades y fuentes oficiales por tema, con información de acceso en su web."
+    },
+    {
+      "url": "/buscar/",
+      "title": "Lo que me pasa no encaja en estas opciones",
+      "description": "Describe lo mínimo necesario en el orientador privado; no incluyas nombres ni datos identificativos."
+    },
+    {
+      "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/#miedo",
+      "title": "«No sé si es maltrato. Solo sé que le tengo miedo»",
+      "description": "Consulta el apartado de esta guía de seguridad."
+    },
+    {
+      "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/#control",
+      "title": "Control no es lo mismo que cuidado",
+      "description": "Consulta el apartado de esta guía de seguridad."
+    },
+    {
+      "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/#agresion",
+      "title": "Si ya ha habido una agresión o amenazas",
+      "description": "Consulta el apartado de esta guía de seguridad."
+    },
+    {
+      "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/#denuncia",
+      "title": "No sé si quiero denunciar el maltrato de mi pareja",
+      "description": "Consulta el apartado de esta guía de seguridad."
+    },
+    {
+      "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/#hijos",
+      "title": "Si hay hijos o hijas",
+      "description": "Consulta el apartado de esta guía de seguridad."
+    },
+    {
+      "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/#dinero",
+      "title": "«No puedo irme porque dependo económicamente»",
+      "description": "Consulta el apartado de esta guía de seguridad."
+    },
+    {
+      "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/#ayudar",
+      "title": "Si te preocupa una amiga, familiar o compañera",
+      "description": "Consulta el apartado de esta guía de seguridad."
+    },
+    {
+      "url": "/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/#reciente",
+      "title": "Si ha ocurrido recientemente",
+      "description": "Consulta el apartado de esta guía de seguridad."
+    },
+    {
+      "url": "/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/#denuncia",
+      "title": "No sé si quiero denunciar una agresión sexual",
+      "description": "Consulta el apartado de esta guía de seguridad."
+    }
+  ],
+  "duelo/index.html": [
+    {
+      "url": "/duelo/mi-familiar-se-esta-muriendo-y-no-se-que-hacer/",
+      "title": "Mi familiar se está muriendo y no sé qué hacer",
+      "description": "La muerte todavía no ha ocurrido, pero necesito entender cómo acompañar, qué preguntar y cómo afrontar lo que puede venir."
+    },
+    {
+      "url": "/duelo/he-perdido-a-mi-bebe-durante-el-embarazo/",
+      "title": "He perdido a mi bebé durante el embarazo",
+      "description": "Además de la pérdida, estoy intentando sostener la culpa, las decisiones, mi cuerpo y un futuro que había empezado a imaginar."
+    },
+    {
+      "url": "/duelo/ha-muerto-por-suicidio-alguien-que-quiero/",
+      "title": "Ha muerto por suicidio alguien que quiero",
+      "description": "Además de la ausencia, hay culpa, preguntas, rabia o un «por qué» que no deja de volver. Quiero entender este duelo y encontrar ayuda fiable."
+    },
+    {
+      "url": "/duelo/ha-muerto-alguien-que-quiero-y-no-se-como-seguir/",
+      "title": "Ha muerto alguien que quiero y no sé cómo seguir",
+      "description": "Necesito saber qué hacer con las próximas horas o días y con todo lo que estoy sintiendo."
+    },
+    {
+      "url": "/duelo/la-muerte-fue-inesperada-o-traumatica/",
+      "title": "La muerte fue inesperada o traumática",
+      "description": "Además de la ausencia, sigo atrapado/a en cómo ocurrió."
+    },
+    {
+      "url": "/duelo/no-pude-despedirme/",
+      "title": "No pude despedirme",
+      "description": "Me pesa lo que no pude decir, hacer o vivir antes de la muerte."
+    },
+    {
+      "url": "/duelo/me-siento-culpable-desde-que-murio/",
+      "title": "Me siento culpable desde que murió",
+      "description": "No dejo de pensar que debería haber hecho, dicho o visto algo diferente."
+    },
+    {
+      "url": "/duelo/ha-muerto-mi-mascota-y-estoy-destrozado/",
+      "title": "Ha muerto mi mascota y estoy destrozado/a",
+      "description": "La casa, las rutinas y un vínculo muy importante han cambiado de golpe."
+    },
+    {
+      "url": "/duelo/han-pasado-meses-y-sigo-muy-mal/",
+      "title": "Han pasado meses y sigo muy mal",
+      "description": "No sé si lo que siento entra dentro del duelo o necesito más ayuda."
+    },
+    {
+      "url": "/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/",
+      "title": "Quiero ayudar a alguien que está de duelo",
+      "description": "No sé qué decir ni cómo acompañar sin presionar, minimizar o desaparecer después de los primeros días."
+    },
+    {
+      "url": "/webs-amigas.html#emocional",
+      "title": "Quiero encontrar una organización de apoyo",
+      "description": "Consulta entidades y fuentes oficiales por tema, con información de acceso en su web."
+    },
+    {
+      "url": "/soledad/no-tengo-con-quien-hablar/",
+      "title": "No tengo con quién hablar de esto",
+      "description": "Necesito poder contar lo que ha pasado sin tener que aparentar que estoy bien."
+    },
+    {
+      "url": "/duelo/#orientacion-1",
+      "title": "El duelo no es una enfermedad por defecto",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/duelo/#orientacion-2",
+      "title": "No necesitas pasar por “cinco etapas” en un orden concreto",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/duelo/#orientacion-3",
+      "title": "Lo que suele ayudar no es borrar la relación",
+      "description": "Leer este apartado de la guía existente."
+    }
+  ],
+  "ansiedad/index.html": [
+    {
+      "url": "/buscar/",
+      "title": "Estoy muy angustiado/a ahora mismo",
+      "description": "Describe lo mínimo necesario y el orientador privado intentará ayudarte a encontrar una ruta."
+    },
+    {
+      "url": "/webs-amigas.html#emocional",
+      "title": "Quiero encontrar una organización de apoyo",
+      "description": "Consulta entidades y fuentes oficiales por tema, con información de acceso en su web."
+    },
+    {
+      "url": "/trabajo/no-puedo-mas-en-el-trabajo/",
+      "title": "El trabajo me está desbordando",
+      "description": "Cuando la presión, la carga o el agotamiento están en el centro del problema."
+    },
+    {
+      "url": "/dinero/tengo-deudas-y-no-se-por-donde-empezar/",
+      "title": "El dinero me genera ansiedad",
+      "description": "Separar primero la fotografía financiera de la reacción emocional puede hacer el problema más manejable."
+    },
+    {
+      "url": "/rupturas/",
+      "title": "Estoy así desde una ruptura",
+      "description": "Cuando la pérdida de la relación, la incertidumbre o la rumiación mantienen la activación."
+    },
+    {
+      "url": "/soledad/",
+      "title": "La soledad está empeorándolo",
+      "description": "Si además falta alguien con quien hablar o sentirte acompañado/a."
+    },
+    {
+      "url": "/ansiedad/#orientacion-1",
+      "title": "Cuándo conviene pedir ayuda profesional",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/ansiedad/#orientacion-2",
+      "title": "Si ahora mismo quieres hacer una sola cosa",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/trabajo/tengo-miedo-de-equivocarme-en-el-trabajo/",
+      "title": "Tengo miedo de equivocarme en el trabajo: qué hacer",
+      "description": "Si trabajas con miedo constante a equivocarte, separa riesgo real, falta de claridad o apoyo, cultura punitiva, perfeccionismo y miedo anticipatorio. Qué revisar y qué hacer después."
+    },
+    {
+      "url": "/trabajo/no-consigo-desconectar-del-trabajo/",
+      "title": "No consigo desconectar del trabajo: qué revisar y qué hacer",
+      "description": "Si termina tu jornada pero el trabajo sigue en mensajes, tareas o en tu cabeza, distingue disponibilidad real, exceso de carga, hiperconexión y preocupación anticipatoria para decidir el siguiente paso."
+    },
+    {
+      "url": "/soledad/me-siento-solo-por-la-noche/",
+      "title": "Me siento solo por la noche: qué hacer esta noche",
+      "description": "Si la soledad pesa más por la noche, no necesitas resolver tu vida ahora. Un plan de 30 minutos para atravesar estas horas con más conexión y seguridad."
+    },
+    {
+      "url": "/familia/necesito-poner-limites-a-mi-familia/",
+      "title": "Cómo poner límites a tu familia sin sentirte culpable",
+      "description": "Si necesitas poner límites a tu familia, empieza por definir qué conducta quieres frenar, qué necesitas proteger y qué harás tú si vuelve a ocurrir. Con especial cuidado si hay dependencia, cuidados o riesgo."
+    },
+    {
+      "url": "/dinero/me-da-miedo-mirar-mi-cuenta/",
+      "title": "Me da miedo mirar mi cuenta: cómo empezar sin bloquearte",
+      "description": "Si evitas mirar el banco, abrir cartas o revisar cargos porque te angustia lo que puedas encontrar, empieza con una revisión corta y concreta. Pasos financieros y emocionales sin juicios."
+    },
+    {
+      "url": "/rupturas/no-puedo-dejar-de-pensar-en-mi-ex/",
+      "title": "No puedo dejar de pensar en mi ex: qué hacer",
+      "description": "Si no puedes dejar de pensar en tu ex, no necesitas obligarte a olvidarle hoy. Reduce los bucles, los disparadores y recupera espacio para tu vida diaria."
+    },
+    {
+      "url": "/duelo/me-siento-culpable-desde-que-murio/",
+      "title": "Me siento culpable desde que murió: cómo ordenar esa culpa",
+      "description": "Si desde que murió alguien importante piensas que deberías haber hecho algo distinto, separa hechos, responsabilidad real, información retrospectiva, vergüenza y cosas fuera de tu control."
+    }
+  ],
+  "gestion-emocional/index.html": [
+    {
+      "url": "/soledad/no-tengo-con-quien-hablar/",
+      "title": "Necesito hablar con alguien",
+      "description": "Lo que más pesa ahora es no tener con quién compartirlo."
+    },
+    {
+      "url": "/soledad/me-siento-solo-por-la-noche/",
+      "title": "Por la noche todo se hace más difícil",
+      "description": "Necesito atravesar unas horas concretas sin intentar resolver mi vida entera."
+    },
+    {
+      "url": "/webs-amigas.html#emocional",
+      "title": "Quiero encontrar una organización de apoyo",
+      "description": "Consulta entidades y fuentes oficiales por tema, con información de acceso en su web."
+    },
+    {
+      "url": "/rupturas/",
+      "title": "Esto viene de una ruptura o una relación",
+      "description": "Además de la emoción hay una relación que ha terminado o cambiado y necesito ordenar qué hacer."
+    },
+    {
+      "url": "/duelo/",
+      "title": "Esto viene de una pérdida o una muerte",
+      "description": "La emoción está ligada a una ausencia importante y necesito orientación específica para el duelo."
+    },
+    {
+      "url": "/familia/",
+      "title": "Esto viene de mi familia",
+      "description": "Hay distancia, conflicto, límites o convivencia que están sosteniendo el malestar."
+    },
+    {
+      "url": "/trabajo/",
+      "title": "Esto viene del trabajo",
+      "description": "El problema principal está en presión, miedo, agotamiento, conflicto o incertidumbre laboral."
+    },
+    {
+      "url": "/dinero/",
+      "title": "Esto viene del dinero",
+      "description": "La preocupación económica está ocupando casi todo el espacio mental y necesito ordenar lo práctico."
+    },
+    {
+      "url": "/gestion-emocional/#orientacion-1",
+      "title": "Una emoción puede darte información sin darte una orden",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/gestion-emocional/#orientacion-2",
+      "title": "Si todavía no sabes de dónde viene, prueba este orden",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/gestion-emocional/#orientacion-3",
+      "title": "Gestionar no es suprimir",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/gestion-emocional/#orientacion-4",
+      "title": "Cuando pensar más ya no está ayudando",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/gestion-emocional/#orientacion-5",
+      "title": "Evitar puede aliviar hoy y complicar mañana",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/gestion-emocional/#orientacion-6",
+      "title": "No todo se regula pensando",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/gestion-emocional/#orientacion-7",
+      "title": "Otra persona puede ayudarte a regular, no solo a “dar consejos”",
+      "description": "Leer este apartado de la guía existente."
+    }
+  ],
+  "soledad/index.html": [
+    {
+      "url": "/soledad/no-tengo-con-quien-hablar/",
+      "title": "No tengo con quién hablar",
+      "description": "Necesito poder contar algo o sentir que alguien me escucha."
+    },
+    {
+      "url": "/soledad/me-siento-solo/",
+      "title": "Me siento solo y no sé qué hacer",
+      "description": "Quiero empezar por algo concreto sin obligarme a estar bien de repente."
+    },
+    {
+      "url": "/soledad/me-siento-solo-aunque-tengo-gente/",
+      "title": "Tengo gente, pero me siento solo",
+      "description": "Puede faltar conexión, confianza o la sensación de poder ser tú mismo/a."
+    },
+    {
+      "url": "/soledad/no-tengo-amigos/",
+      "title": "No tengo amigos",
+      "description": "La necesidad puede ser construir vínculos nuevos, no solo “salir más”."
+    },
+    {
+      "url": "/soledad/me-siento-solo-por-la-noche/",
+      "title": "Lo peor llega por la noche",
+      "description": "Si el problema ahora es atravesar unas horas concretas, el objetivo cambia: hacerlas más llevaderas y seguras."
+    },
+    {
+      "url": "/webs-amigas.html#social",
+      "title": "Quiero encontrar una organización de apoyo",
+      "description": "Consulta entidades y fuentes oficiales por tema, con información de acceso en su web."
+    },
+    {
+      "url": "/rupturas/",
+      "title": "Me siento solo después de una ruptura",
+      "description": "Cuando además de una persona desaparecen rutinas, planes y parte de tu vida diaria."
+    },
+    {
+      "url": "/duelo/",
+      "title": "Me siento solo después de una muerte",
+      "description": "Cuando la ausencia de alguien importante cambia también tus rutinas, conversaciones y sensación de compañía."
+    },
+    {
+      "url": "/soledad/#orientacion-1",
+      "title": "Una pregunta más útil que “¿por qué estoy solo?”",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/soledad/#orientacion-2",
+      "title": "Estar acompañado no garantiza sentirse acompañado",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/soledad/#orientacion-3",
+      "title": "Si hoy quieres hacer una sola cosa",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/soledad/#orientacion-4",
+      "title": "Si no es solo soledad y ahora mismo hay riesgo",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/soledad/#orientacion-5",
+      "title": "Si lo que necesitas es ponerlo por escrito",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/rupturas/mi-pareja-me-ha-dejado/",
+      "title": "Mi pareja me ha dejado: qué hacer ahora",
+      "description": "Si tu pareja te ha dejado y no sabes qué hacer, ordena las primeras horas y días: qué atender, qué evitar, cómo manejar el impulso de contactar y cómo reorganizar tu vida sin decidirlo todo hoy."
+    },
+    {
+      "url": "/familia/mi-familia-no-me-habla/",
+      "title": "Mi familia no me habla: cómo ordenar el silencio",
+      "description": "Si tu familia ha dejado de hablarte, distingue pausa, ruptura, castigo o falta de respuesta. Decide si acercarte, esperar, poner límites o protegerte."
+    }
+  ],
+  "salud/index.html": [
+    {
+      "url": "/buscar/",
+      "title": "Me acaban de dar una noticia médica y estoy bloqueado/a",
+      "description": "Describe tu situación sin datos personales para encontrar una ruta de orientación."
+    },
+    {
+      "url": "/duelo/mi-familiar-se-esta-muriendo-y-no-se-que-hacer/",
+      "title": "Una persona cercana está al final de la vida",
+      "description": "Orientación para una situación especialmente delicada de duelo anticipado y cuidados."
+    },
+    {
+      "url": "/webs-amigas.html#salud",
+      "title": "Quiero encontrar una organización de apoyo",
+      "description": "Consulta entidades y fuentes oficiales por tema, con información de acceso en su web."
+    },
+    {
+      "url": "/ansiedad/",
+      "title": "La preocupación me está desbordando",
+      "description": "Si ahora mismo el problema principal es la ansiedad, el miedo o no poder pensar con claridad."
+    },
+    {
+      "url": "/familia/",
+      "title": "Esto está afectando a mi familia",
+      "description": "Cuando los cuidados, las decisiones o la convivencia están creando conflicto o agotamiento."
+    },
+    {
+      "url": "/trabajo-dinero/",
+      "title": "Me preocupa el trabajo o el dinero",
+      "description": "Si la enfermedad está cambiando ingresos, empleo, deudas o capacidad para llegar a fin de mes."
+    },
+    {
+      "url": "/receta-electronica-otra-comunidad/",
+      "title": "Recoger medicamentos en otra comunidad autónoma",
+      "description": "Comprueba en Sanidad cómo funciona la receta electrónica del SNS fuera de tu comunidad antes de ir a la farmacia."
+    },
+    {
+      "url": "/salud/#orientacion-1",
+      "title": "Una forma práctica de ordenar una situación médica",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/salud/#orientacion-2",
+      "title": "El impacto emocional también forma parte de lo que estás viviendo",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/incapacidad-temporal-que-tramite/",
+      "title": "Baja médica e incapacidad temporal: encontrar el trámite",
+      "description": "Localiza la información oficial de la Seguridad Social y prepara el trámite sin compartir datos de salud aquí."
+    },
+    {
+      "url": "/familia/un-familiar-tiene-una-adiccion-y-no-se-como-ayudarle/",
+      "title": "Un familiar tiene una adicción y no sé cómo ayudarle",
+      "description": "Si un familiar tiene un problema de adicción, encuentra un primer plan para hablar, poner límites, buscar apoyo público y actuar si existe una urgencia."
+    },
+    {
+      "url": "/gestion-emocional/",
+      "title": "Gestión emocional: qué hacer cuando te sientes desbordado",
+      "description": "Si una emoción o muchas cosas a la vez te están desbordando, baja un poco la intensidad, entiende qué está pasando y elige un siguiente paso pequeño y seguro."
+    },
+    {
+      "url": "/soledad/no-tengo-con-quien-hablar/",
+      "title": "No tengo con quién hablar: qué hacer ahora",
+      "description": "Si sientes que no tienes con quién hablar, distingue si necesitas desahogarte, sentirte escuchado, reconectar con alguien o pedir ayuda ahora mismo."
+    },
+    {
+      "url": "/soledad/me-siento-solo-aunque-tengo-gente/",
+      "title": "Me siento solo aunque tengo gente: qué puede faltar",
+      "description": "Puedes tener pareja, familia, amistades o compañeros y sentirte solo. Distingue si falta confianza, intimidad, reciprocidad, apoyo o pertenencia."
+    },
+    {
+      "url": "/familia/necesito-poner-limites-a-mi-familia/",
+      "title": "Cómo poner límites a tu familia sin sentirte culpable",
+      "description": "Si necesitas poner límites a tu familia, empieza por definir qué conducta quieres frenar, qué necesitas proteger y qué harás tú si vuelve a ocurrir. Con especial cuidado si hay dependencia, cuidados o riesgo."
+    }
+  ],
+  "trabajo-dinero/index.html": [
+    {
+      "url": "/trabajo/",
+      "title": "El problema empieza en el trabajo",
+      "description": "Sobrecarga, jefe o equipo difícil, miedo, agotamiento, mal ambiente o querer dejar el empleo."
+    },
+    {
+      "url": "/dinero/",
+      "title": "El problema empieza en el dinero",
+      "description": "No llego a fin de mes, tengo deudas, no sé qué pago priorizar o me preocupa la vivienda."
+    },
+    {
+      "url": "/trabajo/odio-mi-trabajo-pero-no-puedo-dejarlo/",
+      "title": "El dinero me impide dejar el trabajo",
+      "description": "Necesito el sueldo y quiero construir una salida sin saltar al vacío."
+    },
+    {
+      "url": "/dinero/no-llego-a-fin-de-mes/",
+      "title": "Tengo trabajo, pero aun así no llego",
+      "description": "Quiero saber si el problema es puntual, estructural o está provocado por deudas."
+    },
+    {
+      "url": "/webs-amigas.html#social",
+      "title": "Quiero encontrar una organización de apoyo",
+      "description": "Consulta entidades y fuentes oficiales por tema, con información de acceso en su web."
+    },
+    {
+      "url": "/trabajo/hago-entrevistas-pero-no-me-contratan/",
+      "title": "Hago entrevistas pero no me contratan: qué revisar",
+      "description": "Si consigues entrevistas pero no ofertas, revisa en qué fase caes, ejemplos, respuestas, salario, encaje y seguimiento antes de asumir que entrevistas mal."
+    },
+    {
+      "url": "/trabajo/me-han-despedido-y-no-se-que-hacer/",
+      "title": "Me han despedido y no sé qué hacer ahora",
+      "description": "Si te han despedido, separa documentación, plazos, prestación, dinero disponible y siguientes pasos sin convertir la pérdida del empleo en un juicio sobre tu valor personal."
+    },
+    {
+      "url": "/trabajo/mi-curriculum-no-funciona/",
+      "title": "Mi currículum no funciona: por qué no me llaman",
+      "description": "Si envías currículums y no te llaman, localiza dónde se rompe el proceso, adapta el CV sin mentir y protege tus datos frente a falsas ofertas."
+    },
+    {
+      "url": "/trabajo/mi-jefe-me-hace-la-vida-imposible/",
+      "title": "Mi jefe me hace la vida imposible: qué hacer",
+      "description": "Si sientes que tu jefe te hace la vida imposible, separa hechos, patrón, impacto y opciones. Cómo documentar lo que ocurre y elegir el canal adecuado sin asumir automáticamente que es acoso laboral."
+    },
+    {
+      "url": "/trabajo/necesito-formacion-para-encontrar-trabajo/",
+      "title": "¿Necesito formación para encontrar trabajo? Cómo decidirlo",
+      "description": "Antes de pagar un curso para encontrar trabajo, comprueba si la formación resuelve una carencia que aparece de verdad en las ofertas que buscas."
+    },
+    {
+      "url": "/trabajo/no-consigo-desconectar-del-trabajo/",
+      "title": "No consigo desconectar del trabajo: qué revisar y qué hacer",
+      "description": "Si termina tu jornada pero el trabajo sigue en mensajes, tareas o en tu cabeza, distingue disponibilidad real, exceso de carga, hiperconexión y preocupación anticipatoria para decidir el siguiente paso."
+    },
+    {
+      "url": "/trabajo/no-puedo-mas-en-el-trabajo/",
+      "title": "No puedo más en el trabajo: qué hacer hoy",
+      "description": "Si sientes que no puedes más en el trabajo, separa carga, control, conflicto, descanso y margen económico antes de decidir. Orientación práctica, preventiva y no diagnóstica."
+    },
+    {
+      "url": "/trabajo/quiero-encontrar-trabajo-cuanto-antes/",
+      "title": "Encontrar trabajo rápido: un plan realista",
+      "description": "Si necesitas encontrar trabajo cuanto antes, separa la urgencia económica de la búsqueda principal y sigue un plan práctico sin exponerte a fraudes."
+    },
+    {
+      "url": "/trabajo/tengo-miedo-de-equivocarme-en-el-trabajo/",
+      "title": "Tengo miedo de equivocarme en el trabajo: qué hacer",
+      "description": "Si trabajas con miedo constante a equivocarte, separa riesgo real, falta de claridad o apoyo, cultura punitiva, perfeccionismo y miedo anticipatorio. Qué revisar y qué hacer después."
+    },
+    {
+      "url": "/dinero/en-casa-discutimos-por-dinero/",
+      "title": "En casa discutimos por dinero: cómo ordenar el problema",
+      "description": "Si el dinero está generando discusiones en pareja o familia, separa el problema económico del conflicto relacional. Pasos para hablar, repartir cargas y detectar control económico."
+    }
+  ],
+  "rupturas/index.html": [
+    {
+      "url": "/rupturas/mi-pareja-me-ha-dejado/",
+      "title": "Mi pareja me ha dejado",
+      "description": "Qué hacer en las primeras horas y días cuando no sabes cómo reaccionar."
+    },
+    {
+      "url": "/rupturas/no-puedo-dejar-de-pensar-en-mi-ex/",
+      "title": "No puedo dejar de pensar en mi ex",
+      "description": "Cómo cortar comprobaciones y recuperar espacio mental sin obligarte a olvidar."
+    },
+    {
+      "url": "/rupturas/mi-ex-me-ha-bloqueado/",
+      "title": "Mi ex me ha bloqueado",
+      "description": "Qué sabemos realmente, qué conviene evitar y cómo respetar el límite."
+    },
+    {
+      "url": "/rupturas/tenemos-hijos-en-comun/",
+      "title": "Tenemos hijos en común",
+      "description": "Separa el dolor de pareja de la comunicación, los cuidados y las decisiones sobre los hijos."
+    },
+    {
+      "url": "/webs-amigas.html#emocional",
+      "title": "Quiero encontrar una organización de apoyo",
+      "description": "Consulta entidades y fuentes oficiales por tema, con información de acceso en su web."
+    },
+    {
+      "url": "/mi-pareja-me-maltrata-y-no-se-que-hacer/",
+      "title": "Mi pareja me controla, amenaza o me da miedo",
+      "description": "Cuando hay violencia o miedo, seguridad y ayuda especializada van antes que mediación o reconciliación."
+    },
+    {
+      "url": "/gestion-emocional/",
+      "title": "No consigo ordenar lo que siento",
+      "description": "Identifica lo que necesitas ahora y elige un siguiente paso pequeño y realista."
+    },
+    {
+      "url": "/soledad/",
+      "title": "Me siento solo/a después de la ruptura",
+      "description": "Reconoce qué conexión has perdido y cómo empezar a reconstruir apoyo."
+    },
+    {
+      "url": "/soledad/no-tengo-con-quien-hablar/",
+      "title": "No tengo con quién hablar",
+      "description": "Opciones concretas para encontrar escucha y no atravesar este momento en aislamiento."
+    },
+    {
+      "url": "/dinero/no-puedo-pagar-la-vivienda/",
+      "title": "La ruptura afecta a mi vivienda o mi dinero",
+      "description": "Ordena pagos, vivienda y decisiones urgentes antes de asumir nuevos compromisos."
+    },
+    {
+      "url": "/trabajo/no-puedo-mas-en-el-trabajo/",
+      "title": "La ruptura está afectando a mi trabajo",
+      "description": "Cómo proteger lo básico cuando concentrarte o rendir se ha vuelto difícil."
+    },
+    {
+      "url": "/rupturas/#orientacion-1",
+      "title": "Qué hacer después de una ruptura",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/rupturas/#orientacion-2",
+      "title": "Lo que sientes no tiene que seguir un calendario",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/rupturas/#orientacion-3",
+      "title": "Qué suele empeorar las primeras semanas",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/rupturas/#orientacion-4",
+      "title": "Si el dolor se ha convertido en peligro",
+      "description": "Leer este apartado de la guía existente."
+    }
+  ],
+  "familia/index.html": [
+    {
+      "url": "/familia/un-familiar-tiene-una-adiccion-y-no-se-como-ayudarle/",
+      "title": "Un familiar tiene una adicción y no sé cómo ayudarle",
+      "description": "Cómo hablar, buscar apoyo público, poner límites y distinguir cuándo la prioridad es la seguridad."
+    },
+    {
+      "url": "/familia/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer/",
+      "title": "Creo que mi hijo sufre acoso escolar",
+      "description": "Qué hacer si hay bullying o ciberacoso: escuchar, proteger, activar el centro y usar recursos oficiales."
+    },
+    {
+      "url": "/familia/mi-familia-no-me-habla/",
+      "title": "Mi familia no me habla",
+      "description": "Quiero saber si acercarme, esperar, poner un límite o dejar de perseguir una respuesta."
+    },
+    {
+      "url": "/familia/siento-que-mi-familia-no-me-quiere/",
+      "title": "Siento que mi familia no me quiere",
+      "description": "Cuando el problema no es una discusión concreta, sino sentir rechazo, indiferencia o no pertenecer."
+    },
+    {
+      "url": "/familia/necesito-poner-limites-a-mi-familia/",
+      "title": "Necesito poner límites a mi familia",
+      "description": "Quiero proteger mi espacio sin convertir cada límite en una guerra."
+    },
+    {
+      "url": "/familia/vivo-con-mi-familia-y-no-aguanto-mas/",
+      "title": "Vivo con mi familia y no aguanto más",
+      "description": "Cuando no puedes tomar distancia fácilmente porque compartís casa, gastos o cuidados."
+    },
+    {
+      "url": "/familia/mi-madre-o-mi-padre-no-me-habla/",
+      "title": "Mi madre o mi padre no me habla",
+      "description": "Cuando el silencio viene de una relación muy concreta y pesa de una forma distinta."
+    },
+    {
+      "url": "/webs-amigas.html#infancia",
+      "title": "Quiero encontrar una organización de apoyo",
+      "description": "Consulta entidades y fuentes oficiales por tema, con información de acceso en su web."
+    },
+    {
+      "url": "/soledad/no-tengo-con-quien-hablar/",
+      "title": "En mi familia no tengo con quién hablar",
+      "description": "A veces el problema no es estar solo, sino no sentirte escuchado dentro de casa."
+    },
+    {
+      "url": "/familia/#orientacion-1",
+      "title": "No todo distanciamiento familiar significa lo mismo",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/familia/#orientacion-2",
+      "title": "Tu objetivo puede no ser volver a estar como antes",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/familia/#orientacion-3",
+      "title": "Antes de actuar, separa tres cosas",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/familia/#orientacion-4",
+      "title": "¿Y si hablar directamente no funciona?",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/familia/#orientacion-5",
+      "title": "Si hay miedo, violencia o peligro, la prioridad cambia",
+      "description": "Leer este apartado de la guía existente."
+    },
+    {
+      "url": "/familia/#orientacion-6",
+      "title": "Si necesitas ordenar primero lo que ha pasado",
+      "description": "Leer este apartado de la guía existente."
+    }
+  ]
+}
