@@ -34,3 +34,12 @@ test('matchmaking is never a default intent on loneliness or breakup pages', () 
   const paths = Object.keys(URL_OPPORTUNITY_MAP).filter(p => p.startsWith('/soledad/') || p.startsWith('/rupturas/'));
   for (const path of paths) assert.equal(URL_OPPORTUNITY_MAP[path].intents.includes('MATCHMAKING'), false);
 });
+
+test('new public sensitive hubs remain commercially disabled', () => {
+  for (const route of ['/ansiedad/', '/salud/', '/violencia/']) {
+    const context = URL_OPPORTUNITY_MAP[route];
+    assert.equal(context.commercialPolicy, 'off');
+    assert.deepEqual(context.opportunities, []);
+    assert.deepEqual(context.intents, []);
+  }
+});
