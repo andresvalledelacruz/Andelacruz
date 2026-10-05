@@ -92,10 +92,11 @@
         link.textContent = label;
         item.append(link);
         list.append(item);
+        existing.add(href);
       }
 
       const badge = summary.querySelector('.resource-branch-count') || summary.querySelector('span');
-      if (badge) badge.textContent = `Ver ${list.querySelectorAll(':scope > li').length} guías ↓`;
+      if (badge) badge.textContent = `Ver ${list.querySelectorAll(':scope > li').length} opciones ↓`;
     }
 
     const nextSteps = [...document.querySelectorAll('.next-steps .cardlink')];
