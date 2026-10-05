@@ -22,8 +22,28 @@ try {
   for(const javaScriptEnabled of [false,true]) for(const width of [390,1440]) {
     const context=await browser.newContext({javaScriptEnabled,viewport:{width,height:900}});
     const page=await context.newPage();
+    // External fonts are not part of navigation QA; avoid network-dependent delays.
+    await page.route('https://fonts.googleapis.com/**', route=>route.abort());
+    await page.route('https://fonts.gstatic.com/**', route=>route.abort());
     const errors=[];
     page.on('pageerror',error=>errors.push(error.message));
+    await page.goto(origin+'/', {waitUntil:'networkidle'});
+    const homeOptions = page.locator('nav[aria-label="Opciones de Profesionales"] a');
+    assert.equal(await homeOptions.count(),6);
+    for(let i=0;i<6;i++) assert.ok(await homeOptions.nth(i).isVisible());
+    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'homepage width');
+    if(process.env.QA_SCREENSHOTS) {
+      await mkdir(process.env.QA_SCREENSHOTS,{recursive:true});
+      await page.locator('#profesionales').screenshot({path:path.join(process.env.QA_SCREENSHOTS,`portada-profesionales-${width}-${javaScriptEnabled}.png`)});
+    }
+    for(let i=0;i<6;i++) {
+      await page.goto(origin+'/');
+      await page.locator('nav[aria-label="Opciones de Profesionales"] a').nth(i).focus();
+      await page.locator('nav[aria-label="Opciones de Profesionales"] a').nth(i).press('Enter');
+      const target=new URL(page.url());
+      assert.equal(target.pathname,'/profesionales.html');
+      assert.ok(await page.locator(target.hash).isVisible());
+    }
     for(const file of ['contacto.html','profesionales.html','alianzas.html']) {
       const response=await page.goto(origin+'/'+file,{waitUntil:'networkidle'});
       assert.equal(response.status(),200);
