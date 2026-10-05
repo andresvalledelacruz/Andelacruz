@@ -1,6 +1,7 @@
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
+import {cardContexts} from './lib/resource-context.mjs';
 import { verifiedCountries } from './lib/verified-country-options.mjs';
 
 export const categories = [
@@ -41,9 +42,10 @@ export async function renderDirectory() {
     return `<section class="country-resource-group" data-country="${code}"><h3>${escape(name)} · ${links.length} enlaces revisados</h3><ul class="country-resource-list">${links.map(r=>`<li><a href="${escape(r.url)}" rel="noreferrer"><strong lang="${escape(r.language)}">${escape(r.name)}</strong><span lang="es">${escape(r.description)}</span><span>${escape(directory.categories[r.category])}</span><small>${escape(r.language.toUpperCase())} · revisión ${escape(r.reviewedAt)}</small></a></li>`).join('')}</ul></section>`;
   }).join('');
   const cards = records.map(r => `<li data-category="${escape(r.category)}"><a class="cardlink" href="${escape(r.url)}"><strong>${escape(r.title)}</strong><span>${escape(r.description)}</span></a></li>`).join('\n');
-  const tree = topicDoors.map(door => {
-    const options = records.filter(r => door.keys.includes(r.category)).sort((a,b)=>a.title.localeCompare(b.title,'es'));
-    return `<details class="resource-branch"><summary><strong>${escape(door.title)}</strong><span class="resource-branch-description">${escape(door.description)}</span><span class="resource-branch-count">Ver ${options.length} ${options.length === 1 ? 'guía' : 'guías'} ↓</span></summary><ul>${options.map(r=>`<li><a href="${escape(r.url)}">${escape(r.title)}</a></li>`).join('')}</ul></details>`;
+  const cardOptions = JSON.parse(await readFile(new URL('content/resource-card-options.json', root), 'utf8'));
+  const tree = topicDoors.map((door, index) => {
+    const options = cardOptions[Object.keys(cardContexts)[index]];
+    return `<details class="resource-branch"><summary><strong>${escape(door.title)}</strong><span class="resource-branch-description">${escape(door.description)}</span><span class="resource-branch-count">Ver ${options.length} opciones ↓</span></summary><ul>${options.map(r=>`<li><a href="${escape(r.url)}">${escape(r.title)}</a></li>`).join('')}</ul></details>`;
   }).join('\n');
   return `<!doctype html>
 <html lang="es"><head>

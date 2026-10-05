@@ -83,19 +83,20 @@
       const additions = expansionTitles.flatMap(name => ROUTE_EXPANSIONS[name] || []);
       if (!additions.length) continue;
 
-      const existing = new Set([...list.querySelectorAll('a')].map((a) => `${a.getAttribute('href')}|${a.textContent.trim()}`));
+      const existing = new Set([...list.querySelectorAll('a')].map((a) => a.getAttribute('href')));
       for (const [href, label] of additions) {
-        if (existing.has(`${href}|${label}`)) continue;
+        if (existing.has(href)) continue;
         const item = document.createElement('li');
         const link = document.createElement('a');
         link.href = href;
         link.textContent = label;
         item.append(link);
         list.append(item);
+        existing.add(href);
       }
 
       const badge = summary.querySelector('.resource-branch-count') || summary.querySelector('span');
-      if (badge) badge.textContent = `Ver ${list.querySelectorAll(':scope > li').length} guías ↓`;
+      if (badge) badge.textContent = `Ver ${list.querySelectorAll(':scope > li').length} opciones ↓`;
     }
 
     const nextSteps = [...document.querySelectorAll('.next-steps .cardlink')];

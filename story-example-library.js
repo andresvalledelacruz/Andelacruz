@@ -297,7 +297,7 @@
       ['duelo', 'Duelo y pérdidas'], ['soledad', 'Soledad'],
       ['pareja', 'Pareja y rupturas'], ['familia', 'Familia'],
       ['trabajo', 'Trabajo'], ['dinero', 'Dinero'], ['all', 'Todas']
-    ];
+    ].sort(([keyA, labelA], [keyB, labelB]) => keyA === 'crisis' ? -1 : keyB === 'crisis' ? 1 : labelA.localeCompare(labelB, 'es', {sensitivity: 'base'}));
     let selected = 'all';
     let limit = 6;
     const status = document.createElement('p');
