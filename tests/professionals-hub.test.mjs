@@ -62,7 +62,13 @@ test('SEO y breadcrumbs reflejan la jerarquía y las visitas mantienen el runtim
 
 test('El acceso público no promete un directorio y la portada apunta directamente al hub', () => {
   const home = read('index.html');
-  assert.ok(home.includes('href="/profesionales.html">Acceder a Profesionales'));
+  const panel = home.match(/<nav class="professionals-home-grid"[\s\S]*?<\/nav>/)[0];
+  assert.equal((panel.match(/<a href=/g) || []).length, 6);
+  for (const id of ['solicitud','colaboraciones','alianzas','recursos','condiciones','buscar-profesional']) {
+    assert.ok(panel.includes(`href="/profesionales.html#${id}"`));
+  }
+  assert.doesNotMatch(panel, /<details|hidden|display:none/);
+  assert.match(panel, /Directorio todavía no disponible/);
   assert.doesNotMatch(home, /href="\/contacto.html#profesionales"/);
   assert.match(hub, /El directorio de profesionales todavía no está disponible/);
   assert.match(hub, /No hay fichas públicas, buscador de profesionales/);
