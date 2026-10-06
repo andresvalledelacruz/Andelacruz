@@ -13,7 +13,7 @@ test('Contacto no duplica captación y conserva atención general y urgente', ()
 });
 test('Las seis rutas resuelven a secciones y se preservan los destinos de correo', () => {
   const nav = hub.match(/<nav class="grid"[\s\S]*?<\/nav>/)[0];
-  assert.deepEqual([...nav.matchAll(/href="#([^"]+)"/g)].map(m=>m[1]), ['solicitud','colaboraciones','alianzas','recursos','condiciones','buscar-profesional']);
+  assert.deepEqual([...nav.matchAll(/href="#([^"]+)"/g)].map(m=>m[1]), ['solicitud','colaboraciones','alianzas','recursos','condiciones']);
   for (const id of ['solicitud','colaboraciones','alianzas','recursos','condiciones','buscar-profesional']) assert.equal(hub.split(`id="${id}"`).length-1,1);
   for (const subject of ['Solicitud%20profesional%20Desgracias.es','Sugerir%20un%20recurso','Propuesta%20de%20colaboraci%C3%B3n%20profesional']) assert.ok(hub.includes(subject));
   assert.ok(hub.includes('id="professional-application"'));
@@ -63,8 +63,8 @@ test('SEO y breadcrumbs reflejan la jerarquía y las visitas mantienen el runtim
 test('El acceso público no promete un directorio y la portada apunta directamente al hub', () => {
   const home = read('index.html');
   const panel = home.match(/<nav class="professionals-home-grid"[\s\S]*?<\/nav>/)[0];
-  assert.equal((panel.match(/<a href=/g) || []).length, 6);
-  for (const id of ['solicitud','colaboraciones','alianzas','recursos','condiciones','buscar-profesional']) {
+  assert.equal((panel.match(/<a href=/g) || []).length, 5);
+  for (const id of ['solicitud','colaboraciones','alianzas','recursos','condiciones']) {
     assert.ok(panel.includes(`href="/profesionales.html#${id}"`));
   }
   assert.doesNotMatch(panel, /<details|hidden|display:none/);
@@ -75,4 +75,13 @@ test('El acceso público no promete un directorio y la portada apunta directamen
   assert.match(hub, /El botón prepara un correo/);
   assert.ok(hub.includes('<noscript>'));
   assert.match(hub, /Cualquier futura ficha comercial o cobro/);
+});
+
+test('El directorio ausente es informativo, sin enlace ni control simulado', () => {
+  for (const html of [hub,read('index.html')]) {
+    const card=html.match(/<div class="(?:card )?professional-unavailable">[\s\S]*?<\/div>/)[0];
+    assert.match(card,/Buscar profesional/);
+    assert.match(card,/Directorio todavía no disponible/);
+    assert.doesNotMatch(card,/<a|<button|tabindex|role="button"|onclick/);
+  }
 });
