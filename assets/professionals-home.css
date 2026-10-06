@@ -1,1 +1,13 @@
-.professionals-home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.professionals-home-grid a{display:flex;flex-direction:column;gap:6px;padding:20px;background:#fff;border:1px solid var(--line);border-radius:16px;min-height:100px;color:var(--ink);text-decoration:none;overflow-wrap:anywhere}.professionals-home-grid strong{color:var(--earth-deep)}.professionals-home-grid span{font-size:.86rem;line-height:1.5}.professionals-home-grid a:hover{border-color:var(--earth-deep)}.professionals-home-grid a:focus-visible{outline:3px solid var(--earth-deep);outline-offset:3px}@media(max-width:760px){.professionals .professional-panel{padding-right:0}.professionals-home-grid{grid-template-columns:1fr}.professionals-home-grid a{min-height:44px}}
+/* Professionals: full-width introduction and ordered six-card panel. */
+.professionals-layout{display:grid;gap:24px}
+.professionals .professional-panel{padding:0;max-width:74ch;text-align:left;word-spacing:normal;letter-spacing:normal}
+.professionals .professional-panel p{line-height:1.65;text-align:left;word-spacing:normal;letter-spacing:normal}
+.professionals-home-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:1fr;gap:16px}
+.professionals-home-grid>a,.professionals-home-grid>.professional-unavailable{display:flex;flex-direction:column;gap:10px;padding:24px;background:#fff;border:1px solid #d6c6b6;border-radius:16px;min-height:152px;color:#43392f;text-decoration:none;overflow-wrap:break-word;line-height:1.5}
+.professionals-home-grid strong{color:#71392d;font-size:1.05rem;line-height:1.35}
+.professionals-home-grid span{font-size:.95rem;line-height:1.5}
+.professionals-home-grid a:hover{border-color:#71392d;background:#fff7f2}
+.professionals-home-grid a:focus-visible{outline:3px solid #71392d;outline-offset:4px}
+.professionals-home-grid>.professional-unavailable{background:#f5eee6;border-style:dashed}
+@media(max-width:1023px){.professionals-home-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:599px){.professionals-home-grid{grid-template-columns:1fr;grid-auto-rows:auto}.professionals-home-grid>a,.professionals-home-grid>.professional-unavailable{min-height:128px;padding:20px}}
