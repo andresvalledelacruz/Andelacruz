@@ -9,7 +9,7 @@ const https = value => {
 
 // The registry contains public information only. Applications and review documents
 // belong in a private system, never in this deployable tree.
-export function publicProfiles(registry, asOf = new Date()) {
+function reviewedProfiles(registry, asOf = new Date()) {
   if (registry?.version !== 1 || !Array.isArray(registry.profiles)) return [];
   const now = asOf.getTime();
   if (!Number.isFinite(now)) return [];
@@ -26,8 +26,14 @@ export function publicProfiles(registry, asOf = new Date()) {
       review?.terms_verified === true && typeof review.reviewer_reference === 'string' && review.reviewer_reference.trim() &&
       Array.isArray(review.sources) && review.sources.length > 0 && review.sources.every(https) &&
       Number.isFinite(reviewed) && Number.isFinite(expires) && reviewed <= now && expires > now && expires > reviewed;
-  }).map(p => ({ id:p.id, ...Object.fromEntries(required.map(key => [key,p[key]])),
-    website:p.website, reviewed_at:p.review.reviewed_at, sources:[...p.review.sources] }));
+  });
+}
+
+const publicProjection = p => ({ id:p.id, ...Object.fromEntries(required.map(key => [key,p[key]])),
+  website:p.website, reviewed_at:p.review.reviewed_at, sources:[...p.review.sources] });
+
+export function publicProfiles(registry, asOf = new Date()) {
+  return reviewedProfiles(registry, asOf).map(publicProjection);
 }
 
 export function renderPublicProfile(profile) {
@@ -41,6 +47,7 @@ export function matchPublicProfessionals({registry, category, ...eligibility} = 
   if (!evaluateMonetizationEligibility(eligibility).allowed) return [];
   // Exact, reviewed categories only; never infer needs from free text or health data.
   if (!['employment','education'].includes(category)) return [];
-  const ids = new Set((registry?.profiles ?? []).filter(p => p?.categories?.includes(category)).map(p=>p.id));
-  return publicProfiles(registry).filter(p => ids.has(p.id));
+  return reviewedProfiles(registry).filter(p => Array.isArray(p.categories) &&
+    p.categories.length > 0 && p.categories.every(value => ['employment','education'].includes(value)) &&
+    p.categories.includes(category)).map(publicProjection);
 }

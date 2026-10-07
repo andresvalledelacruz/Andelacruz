@@ -34,3 +34,23 @@ test('Funnel distinguishes preparing mail from real delivery and ignores sensiti
     assert.ok(events.every(e=>Object.keys(e).sort().join(',')==='stage,surface,version'));
   }
 });
+
+const eligibleMatch = profiles => ({registry:{version:1,profiles},category:'education',route:'/training/',safety_level:'P3',critical_routes:['/violencia/'],prerequisites:{commercial_phase_authorized:true,insurance_risk_review_complete:true,legal_privacy_review_complete:true,consent_mechanism_ready:true,surface_approved:true}});
+
+test('Rejected duplicate cannot supply categories to a published profile',()=>{
+  const published=profile();published.categories=['employment'];
+  const rejected=profile();rejected.publication_authorized=false;
+  const input=eligibleMatch([published,rejected]);
+  assert.equal(publicProfiles(input.registry).length,1);
+  assert.deepEqual(matchPublicProfessionals(input),[]);
+  assert.equal(matchPublicProfessionals({...input,category:'employment'}).length,1);
+  assert.deepEqual(matchPublicProfessionals(eligibleMatch([rejected,published])),[]);
+});
+
+test('Matching rejects malformed category declarations without throwing',()=>{
+  for(const categories of ['education',{includes:true},null,['education','mental_health'],['education',null]]){
+    const p=profile();p.categories=categories;
+    assert.deepEqual(matchPublicProfessionals(eligibleMatch([p])),[]);
+  }
+  assert.equal(matchPublicProfessionals(eligibleMatch([profile()])).length,1);
+});
