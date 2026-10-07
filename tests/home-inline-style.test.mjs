@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';
+test('homepage inline style matches the locked source with no blocking duplicate',()=>{const home=fs.readFileSync('index.html','utf8');const blocks=[...home.matchAll(/<style data-home-source="styles\.css">\n([\s\S]*?)\n<\/style>/g)];assert.equal(blocks.length,1);assert.equal(blocks[0][1],fs.readFileSync('styles.css','utf8'));assert.doesNotMatch(home,/<link[^>]*href="styles\.css"/);assert.ok(Buffer.byteLength(home)<128*1024);});

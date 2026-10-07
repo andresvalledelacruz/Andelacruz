@@ -1,0 +1,2 @@
+import fs from 'node:fs';
+const css=fs.readFileSync('styles.css','utf8');const path='index.html';const home=fs.readFileSync(path,'utf8');const pattern=/<style data-home-source="styles\.css">[\s\S]*?<\/style>/;if(!pattern.test(home))throw new Error('Missing generated homepage style');if(css.includes('</style'))throw new Error('Unsafe style delimiter');fs.writeFileSync(path,home.replace(pattern,()=>'<style data-home-source="styles.css">\n'+css+'\n</style>'));
