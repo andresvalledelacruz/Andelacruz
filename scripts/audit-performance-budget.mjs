@@ -78,7 +78,7 @@ export function auditPerformance(root = ROOT) {
   if (!/href=["']\/assets\/manos-apoyo\.webp["'][^>]*fetchpriority=["']high["']/i.test(homepage)) {
     errors.push('homepage: el hero WebP debe mantenerse precargado con fetchpriority="high"');
   }
-  if (!/srcset=["']assets\/manos-apoyo\.webp["'][^>]*type=["']image\/webp["']/i.test(homepage)) {
+  if (!/<source\b[^>]*srcset=["'][^"']*\/manos-apoyo\.webp(?: 1000w)?["'][^>]*type=["']image\/webp["']/i.test(homepage)) {
     errors.push('homepage: falta fuente WebP del hero en <picture>');
   }
   if (!/<img\b[^>]*\bwidth=["']\d+["'][^>]*\bheight=["']\d+["'][^>]*\bfetchpriority=["']high["']/i.test(homepage)) {
