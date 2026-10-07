@@ -1,0 +1,48 @@
+{
+  "retrieved": "2026-10-07",
+  "cssSource": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Montserrat:wght@400;500;600;700&display=swap",
+  "files": [
+    {
+      "path": "assets/fonts/libre-baskerville-8f7537ce3a6c.woff2",
+      "url": "https://fonts.gstatic.com/s/librebaskerville/v24/kmKnZrc3Hgbbcjq75U4uslyuy4kn0qNXaxMICA.woff2",
+      "sha256": "8f7537ce3a6c1c0d0e93a9530432df13953312d378713a059e9a6cf0d0cde8b9",
+      "bytes": 35468
+    },
+    {
+      "path": "assets/fonts/libre-baskerville-22219fb90e3b.woff2",
+      "url": "https://fonts.gstatic.com/s/librebaskerville/v24/kmKnZrc3Hgbbcjq75U4uslyuy4kn0qNZaxM.woff2",
+      "sha256": "22219fb90e3b9bd28debd1825fe8d9a0154a0e31f8b3fa601ac1a0a5aa5e6d1b",
+      "bytes": 33872
+    },
+    {
+      "path": "assets/fonts/montserrat-0f7f5f2fbb4e.woff2",
+      "url": "https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WRhyzbi.woff2",
+      "sha256": "0f7f5f2fbb4eae126790fe6f01659ab3ee0806e8038a941908e893020569f51a",
+      "bytes": 26368
+    },
+    {
+      "path": "assets/fonts/montserrat-a187b077090f.woff2",
+      "url": "https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459W1hyzbi.woff2",
+      "sha256": "a187b077090fe8ae3fd2d7496aabbeae604819c718a282e0afc92df72b450766",
+      "bytes": 23828
+    },
+    {
+      "path": "assets/fonts/montserrat-26b2403f995e.woff2",
+      "url": "https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459WZhyzbi.woff2",
+      "sha256": "26b2403f995ed65fb49037a6498c074d3ec3c36031a69fc368c4c2180e2c01fa",
+      "bytes": 12928
+    },
+    {
+      "path": "assets/fonts/montserrat-54d9a78b7ff6.woff2",
+      "url": "https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459Wdhyzbi.woff2",
+      "sha256": "54d9a78b7ff60b689ad9f3017ffac8547b5d871afec733f6c1c3ae36577ee504",
+      "bytes": 70688
+    },
+    {
+      "path": "assets/fonts/montserrat-06b16db7a969.woff2",
+      "url": "https://fonts.gstatic.com/s/montserrat/v31/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2",
+      "sha256": "06b16db7a969135d48d38c49183be7fb88d4452e2a3011957c7851941f4e4879",
+      "bytes": 37956
+    }
+  ]
+}
