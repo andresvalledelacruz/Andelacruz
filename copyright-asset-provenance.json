@@ -12,6 +12,18 @@
       "source": "assets/manos-apoyo.png",
       "rights_basis": null,
       "notes": "Optimized derivative; inherits the source asset provenance state."
+    },
+    "assets/manos-apoyo-480.webp": {
+      "status": "PENDING_PROVENANCE",
+      "source": "assets/manos-apoyo.webp",
+      "rights_basis": null,
+      "notes": "Responsive derivative of the existing production asset; source provenance remains pending."
+    },
+    "assets/manos-apoyo-768.webp": {
+      "status": "PENDING_PROVENANCE",
+      "source": "assets/manos-apoyo.webp",
+      "rights_basis": null,
+      "notes": "Responsive derivative of the existing production asset; source provenance remains pending."
     }
   }
 }
