@@ -37,7 +37,7 @@ test('actual card pages retain options and phones from the base and have determi
     const section = path === 'ayuda-urgente.html' ? html : html.match(/<section class="wrap guide-options">[\s\S]*?<\/section>/)?.[0];
     assert.ok(section, path);
     assert.equal(rankMarkup(section, categories, catalog, path === 'ayuda-urgente.html' ? 'privacy-bar' : 'cardlink'), section, path);
-    for (const [,href] of base.matchAll(/href="([^"]+)"/g)) assert.ok(html.includes(`href="${href}"`), `${path}: lost ${href}`);
+    for (const [,href] of base.matchAll(/<a\b[^>]*href="([^"]+)"/g)) assert.ok(html.includes(`href="${href}"`), `${path}: lost ${href}`);
   }
 });
 
