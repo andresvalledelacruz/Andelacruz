@@ -49,10 +49,14 @@ jobs:
                   self.jsonld_count = 0
                   self.og_site_name = False
                   self.twitter_card = False
+                  self.hero_preloads = []
+                  self.hero_sources = []
 
               def handle_starttag(self, tag, attrs):
                   attrs = {k.lower(): (v or '') for k, v in attrs}
                   tag = tag.lower()
+                  if tag == 'link' and attrs.get('as') == 'image' and attrs.get('href') == '/assets/manos-apoyo.webp': self.hero_preloads.append(attrs)
+                  if tag == 'source' and attrs.get('type') == 'image/webp': self.hero_sources.append(attrs)
                   if tag == 'html': self.lang = attrs.get('lang')
                   elif tag == 'title': self.in_title = True
                   elif tag == 'meta':
@@ -89,8 +93,18 @@ jobs:
 
           index=Path('index.html').read_text(encoding='utf-8'); sitemap_text=Path('sitemap.xml').read_text(encoding='utf-8'); robots=Path('robots.txt').read_text(encoding='utf-8'); withdrawal=Path('retirar.html').read_text(encoding='utf-8'); friends=Path('webs-amigas.html').read_text(encoding='utf-8')
           country_options_path=Path('country-options.js'); directory_path=Path('data/help-directory.json'); hero_webp=Path('assets/manos-apoyo.webp')
-          required_home=['<html lang="es">','<link rel="canonical" href="https://desgracias.es/"','name="robots" content="index,follow,max-image-preview:large','property="og:site_name" content="Desgracias.es"','property="og:image" content="https://desgracias.es/assets/manos-apoyo.png"','name="twitter:card" content="summary_large_image"','type="application/ld+json"','href="/assets/manos-apoyo.webp" type="image/webp" fetchpriority="high"','srcset="assets/manos-apoyo.webp" type="image/webp"','width="1342" height="1172" fetchpriority="high"']
+          required_home=['<html lang="es">','<link rel="canonical" href="https://desgracias.es/"','name="robots" content="index,follow,max-image-preview:large','property="og:site_name" content="Desgracias.es"','property="og:image" content="https://desgracias.es/assets/manos-apoyo.png"','name="twitter:card" content="summary_large_image"','type="application/ld+json"','width="1342" height="1172" fetchpriority="high"']
           missing_home=[item for item in required_home if item not in index]; assert not missing_home, f'Missing homepage SEO/performance signals: {missing_home}'
+          hero_parser=PageParser(); hero_parser.feed(index)
+          assert len(hero_parser.hero_preloads)==1 and len(hero_parser.hero_sources)==1
+          preload=hero_parser.hero_preloads[0]; source=hero_parser.hero_sources[0]
+          assert preload.get('fetchpriority')=='high' and preload.get('type')=='image/webp'
+          assert preload.get('imagesrcset')==source.get('srcset') and preload.get('imagesizes')==source.get('sizes') and source.get('sizes')
+          expected_hero=['/assets/manos-apoyo-480.webp 480w','/assets/manos-apoyo-768.webp 768w','/assets/manos-apoyo.webp 1000w']
+          assert [item.strip() for item in source['srcset'].split(',')]==expected_hero
+          for candidate in expected_hero:
+              asset=Path(candidate.split()[0].lstrip('/')); data=asset.read_bytes(); assert data[:4]==b'RIFF' and data[8:12]==b'WEBP'
+          assert Path('assets/manos-apoyo-480.webp').stat().st_size<40000 and Path('assets/manos-apoyo-768.webp').stat().st_size<70000
           assert hero_webp.exists(); hero_bytes=hero_webp.stat().st_size; assert 10_000 <= hero_bytes <= 100_000
           root=ET.fromstring(sitemap_text); ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}; entries=[]
           for node in root.findall('s:url',ns):
