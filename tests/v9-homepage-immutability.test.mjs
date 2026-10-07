@@ -17,6 +17,9 @@ test('la portada V9 permanece byte-a-byte intacta', () => {
   // 2026-10-05: Andrés requests Crisis and suicide first, then alphabetical story filters.
   const previousStoryFilters = "          <div class=\"story-filters\" aria-label=\"Filtrar historias\">\n            <button class=\"filter active\" data-filter=\"all\">Todas</button>\n            <button class=\"filter\" data-filter=\"pareja\">Pareja</button>\n            <button class=\"filter\" data-filter=\"familia\">Familia</button>\n            <button class=\"filter\" data-filter=\"trabajo\">Trabajo</button>\n          </div>";
   const current = readFileSync('index.html', 'utf8').replaceAll('\r\n', '\n')
+    // 2026-10-07: reviewed local copies of the same fonts; preserve the visual/editorial baseline.
+    .replace("  <link rel=\"preload\" href=\"/assets/fonts/libre-baskerville-22219fb90e3b.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n  <link rel=\"preload\" href=\"/assets/fonts/montserrat-06b16db7a969.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n  <link rel=\"stylesheet\" href=\"/assets/home-fonts.css?v=20261007\">", "  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n  <link href=\"https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&amp;family=Montserrat:wght@400;500;600;700&amp;display=swap\" rel=\"stylesheet\">")
+    .replace('"dateModified": "2026-10-07"', '"dateModified": "2026-09-15"')
     .replace(/          <div class="story-filters"[\s\S]*?<\/div>/, previousStoryFilters)
     .replace('  <link rel="stylesheet" href="/assets/professionals-home.css?v=20261005">\n', '')
     .replace(/    <!-- professionals-inline:start -->[\s\S]*?    <!-- professionals-inline:end -->\n\n/, previousProfessionals);

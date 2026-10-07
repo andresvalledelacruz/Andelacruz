@@ -35,7 +35,10 @@ test('la portada usa datos estructurados WebSite + WebPage sin SearchAction fict
   assert.match(home, /"@graph"/);
   assert.match(home, /"@type": "WebSite"/);
   assert.match(home, /"@type": "WebPage"/);
-  assert.match(home, /"dateModified": "2026-09-15"/);
+  const modified = JSON.parse(home.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1])['@graph'].find(item => item['@type'] === 'WebPage').dateModified;
+  assert.match(modified, /^\d{4}-\d{2}-\d{2}$/);
+  const homeEntry = sitemap.match(/<url>\s*<loc>https:\/\/desgracias\.es\/<\/loc>([\s\S]*?)<\/url>/)[1];
+  assert.ok(homeEntry.includes('<lastmod>' + modified + '</lastmod>'));
   assert.doesNotMatch(home, /SearchAction/);
 });
 
