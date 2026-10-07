@@ -12,7 +12,7 @@ function cleanText(value, max = 120) {
 function cleanRoute(value) {
   const route = String(value ?? '').trim();
   if (!/^\/[A-Za-z0-9_./-]*$/.test(route) || route.includes('..') || route.length > 240) return null;
-  return route || '/';
+  return route === '/' || route.endsWith('/') || route.endsWith('.html') ? route : route + '/';
 }
 
 function cleanCurrency(value) {
@@ -36,7 +36,7 @@ function inspectKeys(value, path = '') {
   return errors;
 }
 
-export function sanitizeCommercialEvent(input = {}, { source = 'client', critical_routes = [] } = {}) {
+export function sanitizeCommercialEvent(input = {}, { source = 'client', critical_routes = null } = {}) {
   const errors = inspectKeys(input);
   const event = cleanText(input.event, 64);
   const allowedEvents = source === 'server' ? new Set([...CLIENT_EVENTS, ...SERVER_EVENTS]) : CLIENT_EVENTS;
@@ -44,7 +44,9 @@ export function sanitizeCommercialEvent(input = {}, { source = 'client', critica
 
   const route = cleanRoute(input.route);
   if (!route) errors.push('route_invalid');
-  const critical = new Set((Array.isArray(critical_routes) ? critical_routes : []).map(cleanRoute).filter(Boolean));
+  const normalizedCritical = Array.isArray(critical_routes) ? critical_routes.map(cleanRoute) : [];
+  if (!normalizedCritical.length || normalizedCritical.some(route => !route)) errors.push('critical_inventory_unavailable');
+  const critical = new Set(normalizedCritical.filter(Boolean));
   if (route && critical.has(route)) errors.push('critical_route_forbidden');
 
   const surface_id = cleanText(input.surface_id, 100);
@@ -69,7 +71,7 @@ export function sanitizeCommercialEvent(input = {}, { source = 'client', critica
   if (SERVER_EVENTS.has(event)) {
     if (source !== 'server') errors.push('server_event_from_client_forbidden');
     if (event === 'commercial_revenue_booked' || event === 'commercial_sale_confirmed') {
-      const amount = Number(input.value_minor_units);
+      const amount = input.value_minor_units;
       const currency = cleanCurrency(input.currency);
       if (!Number.isSafeInteger(amount) || amount < 0 || amount > 1_000_000_000) errors.push('value_minor_units_invalid');
       if (!currency) errors.push('currency_invalid');

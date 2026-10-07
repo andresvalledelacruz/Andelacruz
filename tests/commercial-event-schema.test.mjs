@@ -89,3 +89,32 @@ test('capabilities explicitly prohibit sensitive commercial profiling', () => {
   assert.equal(caps.client_revenue_allowed, false);
   assert.equal(caps.critical_routes_allowed, false);
 });
+
+test('missing or malformed Safety inventory denies all commercial events', () => {
+  const input={...base,event:'commercial_offer_view'};
+  for(const options of [{},{critical_routes:[]},{critical_routes:null},{critical_routes:'/'},{critical_routes:['invalid']},{critical_routes:['/violencia/','invalid']}]){
+    const result=sanitizeCommercialEvent(input,options);
+    assert.equal(result.valid,false);
+    assert.ok(result.errors.includes('critical_inventory_unavailable'));
+  }
+});
+
+test('critical directory routes cannot bypass Safety by omitting a trailing slash', () => {
+  for(const route of criticalRoutes.filter(route=>route.endsWith('/') && route!='/')){
+    const result=sanitizeCommercialEvent({...base,route:route.slice(0,-1),event:'commercial_offer_view'},{critical_routes:criticalRoutes});
+    assert.equal(result.valid,false,route);
+    assert.ok(result.errors.includes('critical_route_forbidden'),route);
+  }
+});
+
+test('missing, coerced or nonnumeric revenue cannot become a measured zero', () => {
+  for(const event of ['commercial_sale_confirmed','commercial_revenue_booked']){
+    for(const value_minor_units of [undefined,null,'',false,true,'1250',[],{}]){
+      const result=sanitizeCommercialEvent({...base,event,value_minor_units,currency:'EUR'},{source:'server',critical_routes:criticalRoutes});
+      assert.equal(result.valid,false);
+      assert.ok(result.errors.includes('value_minor_units_invalid'));
+      assert.equal(result.payload,null);
+    }
+    assert.equal(sanitizeCommercialEvent({...base,event,value_minor_units:0,currency:'EUR'},{source:'server',critical_routes:criticalRoutes}).valid,true);
+  }
+});
