@@ -1,0 +1,5 @@
+/* Draft preview only; no changes to the approved homepage or hub panel. */
+#professional-preview{scroll-margin-top:24px}
+#professional-preview dt{font-weight:700;margin-top:12px}
+#professional-preview dd{margin-inline-start:0;overflow-wrap:anywhere}
+#professional-preview:focus-visible{outline:3px solid currentColor;outline-offset:3px}
