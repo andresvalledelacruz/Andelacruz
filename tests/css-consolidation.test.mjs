@@ -16,9 +16,12 @@ const LEGACY_ONLY_CLASSES = new Set([
   '.safety-consent'
 ]);
 
-test('producción carga una única hoja CSS y no conserva la cascada de @import', () => {
+test('la portada aplica una única copia del CSS consolidado sin @import', () => {
   assert.doesNotMatch(bundle, /@import\s/i);
-  assert.equal((home.match(/<link\b[^>]*rel="stylesheet"[^>]*href="styles\.css"/g) || []).length, 1);
+  const inline = [...home.matchAll(/<style data-home-source="styles\.css">\r?\n([\s\S]*?)\r?\n<\/style>/g)];
+  assert.equal(inline.length, 1);
+  assert.equal(inline[0][1].replaceAll('\r\n', '\n'), bundle.replaceAll('\r\n', '\n'));
+  assert.doesNotMatch(home, /<link\b[^>]*rel="stylesheet"[^>]*href="styles\.css"/);
   for (let index = 1; index <= 7; index += 1) assert.doesNotMatch(home, new RegExp(`styles-${index}\\.css`));
 });
 
