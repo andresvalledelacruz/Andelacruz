@@ -123,3 +123,25 @@ test('capabilities pin deny-by-default behavior', () => {
   assert.equal(caps.requires_explicit_surface_approval, true);
   assert.equal(caps.activation_side_effects, false);
 });
+
+
+test('ambiguous and noncanonical route spellings cannot bypass the commercial gate', () => {
+  for (const route of ["/./violencia/","/trabajo/./formacion/","//violencia/","/trabajo//formacion/","/trabajo/for\tmacion/","/trabajo/for\nmacion/","/trabajo/formacion;param/","/trabajo/formacion:extra/"]) {
+    const result=evaluateMonetizationEligibility({route,safety_level:'P3',critical_routes:['/violencia/'],prerequisites:allGreen});
+    assert.equal(result.allowed,false,JSON.stringify(route));
+    assert.equal(result.reason,'invalid_route',JSON.stringify(route));
+  }
+  const result=evaluateMonetizationEligibility({route:'/trabajo/formacion',safety_level:'P3',critical_routes:['/violencia/'],prerequisites:allGreen});
+  assert.equal(result.allowed,true);
+  assert.equal(result.route,'/trabajo/formacion/');
+});
+
+test('noncanonical and sparse Safety inventories are unavailable rather than partially trusted', () => {
+  for(const critical_routes of [['/violencia/', '/./crisis/'], ['/violencia/', ,]]) {
+    const result=evaluateMonetizationEligibility({route:'/trabajo/formacion',safety_level:'P3',critical_routes,prerequisites:allGreen});
+    assert.equal(result.allowed,false);
+    assert.equal(result.reason,'critical_inventory_unavailable');
+  }
+  const markdown='## P0/P1 — monetización denegada por construcción\n| `/violencia/` | P0 |\n| `/./crisis/` | P0 |';
+  assert.deepEqual(parseCriticalSafetyRoutes(markdown),[]);
+});

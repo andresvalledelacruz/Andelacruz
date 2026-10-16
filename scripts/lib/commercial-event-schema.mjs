@@ -1,3 +1,5 @@
+import { normalizeMonetizationRoute } from './monetization-eligibility.mjs';
+
 const CLIENT_EVENTS = new Set(['commercial_offer_view', 'commercial_offer_click']);
 const SERVER_EVENTS = new Set(['commercial_lead_confirmed', 'commercial_sale_confirmed', 'commercial_revenue_booked']);
 const ALLOWED_MODELS = new Set(['education_partner', 'qualified_lead', 'display_ads', 'other_reviewed']);
@@ -7,12 +9,6 @@ function cleanText(value, max = 120) {
   const text = String(value ?? '').trim();
   if (!text || text.length > max || /[<>\r\n]/.test(text)) return null;
   return text;
-}
-
-function cleanRoute(value) {
-  const route = String(value ?? '').trim();
-  if (!/^\/[A-Za-z0-9_./-]*$/.test(route) || route.includes('..') || route.length > 240) return null;
-  return route === '/' || route.endsWith('/') || route.endsWith('.html') ? route : route + '/';
 }
 
 function cleanCurrency(value) {
@@ -42,12 +38,12 @@ export function sanitizeCommercialEvent(input = {}, { source = 'client', critica
   const allowedEvents = source === 'server' ? new Set([...CLIENT_EVENTS, ...SERVER_EVENTS]) : CLIENT_EVENTS;
   if (!event || !allowedEvents.has(event)) errors.push('event_not_allowed_for_source');
 
-  const route = cleanRoute(input.route);
+  const route = normalizeMonetizationRoute(input.route);
   if (!route) errors.push('route_invalid');
-  const normalizedCritical = Array.isArray(critical_routes) ? critical_routes.map(cleanRoute) : [];
+  const normalizedCritical = Array.isArray(critical_routes) ? Array.from(critical_routes, normalizeMonetizationRoute) : [];
   if (!normalizedCritical.length || normalizedCritical.some(route => !route)) errors.push('critical_inventory_unavailable');
   const critical = new Set(normalizedCritical.filter(Boolean));
-  if (route && critical.has(route)) errors.push('critical_route_forbidden');
+  if (route && (critical.has(route) || [...critical].some(criticalRoute => criticalRoute.endsWith('/') && route.startsWith(criticalRoute)))) errors.push('critical_route_forbidden');
 
   const surface_id = cleanText(input.surface_id, 100);
   const partner_id = cleanText(input.partner_id, 100);

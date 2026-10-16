@@ -118,3 +118,33 @@ test('missing, coerced or nonnumeric revenue cannot become a measured zero', () 
     assert.equal(sanitizeCommercialEvent({...base,event,value_minor_units:0,currency:'EUR'},{source:'server',critical_routes:criticalRoutes}).valid,true);
   }
 });
+
+
+test('commercial events inherit critical directory exclusions for client and server', () => {
+  for(const source of ['client','server']) for(const route of ['/violencia/recursos','/violencia/recursos/guia.html']) {
+    const result=sanitizeCommercialEvent({...base,route,event:'commercial_offer_view'},{source,critical_routes:['/violencia/']});
+    assert.equal(result.valid,false,source+' '+route);
+    assert.ok(result.errors.includes('critical_route_forbidden'));
+  }
+  const result=sanitizeCommercialEvent({...base,route:'/violencia-editorial',event:'commercial_offer_view'},{critical_routes:['/violencia/']});
+  assert.equal(result.valid,true);
+  assert.equal(result.payload.route,'/violencia-editorial/');
+});
+
+test('commercial events reject ambiguous or noncanonical paths before recording', () => {
+  for(const route of ["/./violencia/","/trabajo/./formacion/","//violencia/","/trabajo//formacion/","/trabajo/for\tmacion/","/trabajo/for\nmacion/","/trabajo/formacion;param/","/trabajo/formacion:extra/"]) {
+    const result=sanitizeCommercialEvent({...base,route,event:'commercial_offer_view'},{critical_routes:['/violencia/']});
+    assert.equal(result.valid,false,JSON.stringify(route));
+    assert.ok(result.errors.includes('route_invalid'),JSON.stringify(route));
+    assert.equal(result.payload,null);
+  }
+});
+
+test('events reject noncanonical and sparse Safety inventories without throwing', () => {
+  for(const critical_routes of [['/violencia/', '/./crisis/'], ['/violencia/', ,]]) {
+    const result=sanitizeCommercialEvent({...base,event:'commercial_offer_view'},{critical_routes});
+    assert.equal(result.valid,false);
+    assert.ok(result.errors.includes('critical_inventory_unavailable'));
+    assert.equal(result.payload,null);
+  }
+});
