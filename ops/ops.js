@@ -215,7 +215,29 @@ async function loadAuthoritativeBrief(item) {
   }
 }
 
+function renderBusinessMetrics(report) {
+  const seo = report?.impressions;
+  const clicks = report?.clicks;
+  const validSeo = seo?.status === 'REGISTRADO' && clicks?.status === 'REGISTRADO' && Number.isSafeInteger(seo.value) && Number.isSafeInteger(clicks.value) && clicks.value >= 0 && seo.value >= clicks.value;
+  document.querySelector('#businessSeo').textContent = validSeo ? `${new Intl.NumberFormat('es-ES').format(seo.value)} / ${new Intl.NumberFormat('es-ES').format(clicks.value)}` : 'BLOQUEADO';
+  document.querySelector('#businessSeoCoverage').textContent = validSeo ? `Search Console Web · ${seo.period.from} a ${seo.period.to} · exportado ${formatDate(seo.exported_at)} · actualización manual, período independiente de páginas vistas` : 'Sin exportación verificada de Search Console';
+  const metric = report?.pageviews;
+  const valid = metric?.status === 'REGISTRADO' && Number.isSafeInteger(metric.value) && metric.value >= 0;
+  document.querySelector('#businessPageviews').textContent = valid ? new Intl.NumberFormat('es-ES').format(metric.value) : 'BLOQUEADO';
+  document.querySelector('#businessCoverage').textContent = valid ? `Cobertura parcial · ${metric.days_with_data}/7 días con registros` : 'Sin registros verificables disponibles';
+  document.querySelector('#businessWindow').textContent = report?.window
+    ? `${report.window.from} a ${report.window.to_exclusive} (fin excluido), UTC · ${formatDate(report.generated_at)}`
+    : 'No se pudo consultar la fuente de métricas';
+}
+
+async function loadBusinessMetrics() {
+  renderBusinessMetrics(null);
+  try { renderBusinessMetrics(await api('/ops/business-metrics')); }
+  catch { renderBusinessMetrics(null); }
+}
+
 async function loadConsole() {
+  const metricsRequest = loadBusinessMetrics();
   refreshButton.disabled = true;
   try {
     const [summary, pending] = await Promise.all([
@@ -250,6 +272,7 @@ async function loadConsole() {
     document.querySelector('#lastRefresh').textContent = 'No se pudo actualizar';
     queueList.replaceChildren(messageNode('No se pudo cargar la cola. Revisa la API interna de staging.'));
   } finally {
+    await metricsRequest;
     refreshButton.disabled = false;
   }
 }
