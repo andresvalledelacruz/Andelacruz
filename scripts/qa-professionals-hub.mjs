@@ -5,6 +5,17 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 const {chromium}=createRequire(import.meta.url)(process.env.PLAYWRIGHT_MODULE || 'playwright');
 const root=process.cwd();
+// URL commit can precede parsing the destination document on a remote origin.
+// Resolve the expected link before activation and wait for both navigation and DOM.
+async function followLink(page, link, keyboard=false) {
+  const destination=new URL(await link.getAttribute('href'),page.url());
+  await Promise.all([
+    page.waitForURL(destination.href,{waitUntil:'domcontentloaded'}),
+    keyboard?link.press('Enter'):link.click()
+  ]);
+  if(destination.hash) await page.locator(destination.hash).waitFor({state:'visible'});
+  return destination;
+}
 const server=createServer(async(req,res)=>{
   try {
     const pathname=new URL(req.url,'http://localhost').pathname;
@@ -39,10 +50,8 @@ try {
     for(let i=0;i<5;i++) {
       await page.goto(origin+'/');
       await page.locator('nav[aria-label="Opciones de Profesionales"] a').nth(i).focus();
-      await page.locator('nav[aria-label="Opciones de Profesionales"] a').nth(i).press('Enter');
-      const target=new URL(page.url());
+      const target=await followLink(page,page.locator('nav[aria-label="Opciones de Profesionales"] a').nth(i),true);
       assert.equal(target.pathname,'/profesionales.html');
-      assert.ok(await page.locator(target.hash).isVisible());
     }
     for(const file of ['contacto.html','profesionales.html','alianzas.html']) {
       const response=await page.goto(origin+'/'+file,{waitUntil:'networkidle'});
@@ -78,8 +87,7 @@ try {
         await links.nth(i).focus();
         assert.ok(await links.nth(i).evaluate(n=>n===document.activeElement),'keyboard focus');
         assert.equal(await links.nth(i).evaluate(n=>getComputedStyle(n).outlineStyle),'solid');
-        await links.nth(i).press('Enter');
-        assert.ok(await page.locator(new URL(page.url()).hash).isVisible(),'keyboard destination');
+        await followLink(page,links.nth(i),true);
         await page.goto(origin+file);
       }
       if(process.env.QA_SCREENSHOTS) {
@@ -91,12 +99,10 @@ try {
     const routes=page.locator('nav[aria-label="Participar en Profesionales"] a');
     assert.equal(await routes.count(),5);
     for(let i=0;i<5;i++) {
-      await routes.nth(i).click();
-      const hash=new URL(page.url()).hash;
-      assert.ok(await page.locator(hash).isVisible());
+      await followLink(page,routes.nth(i));
     }
-    await page.locator('#alianzas a[href="/alianzas.html"]').click();
-    await page.locator('a.back').click();
+    await followLink(page,page.locator('#alianzas a[href="/alianzas.html"]'));
+    await followLink(page,page.locator('a.back'));
     assert.ok(page.url().endsWith('/profesionales.html#colaboraciones'));
     await page.goto(origin+'/contacto.html');
     assert.equal(await page.locator('#recursos,#profesionales,#participar,#colaboraciones').count(),0);
