@@ -216,6 +216,10 @@ async function loadAuthoritativeBrief(item) {
 }
 
 function renderBusinessMetrics(report) {
+  const affiliate = report?.adtraction;
+  const validAffiliate = affiliate?.status === 'REGISTRADO' && affiliate.currency === 'EUR' && Number.isSafeInteger(affiliate.commission_minor) && affiliate.commission_minor >= 0 && Number.isSafeInteger(affiliate.unique_clicks) && affiliate.unique_clicks >= 0 && Number.isSafeInteger(affiliate.conversions) && affiliate.conversions >= 0;
+  document.querySelector('#businessAdtraction').textContent = validAffiliate ? new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR' }).format(affiliate.commission_minor / 100) : 'BLOQUEADO';
+  document.querySelector('#businessAdtractionCoverage').textContent = validAffiliate ? `desgracias.es · España · ${affiliate.period.from} a ${affiliate.period.to} · ${affiliate.unique_clicks} clics únicos / ${affiliate.conversions} conversiones aprobadas o pendientes · observado ${formatDate(affiliate.observed_at)} · actualización manual; no acredita pagos ni ingresos globales` : 'Sin exportación verificada de Adtraction';
   const seo = report?.impressions;
   const clicks = report?.clicks;
   const validSeo = seo?.status === 'REGISTRADO' && clicks?.status === 'REGISTRADO' && Number.isSafeInteger(seo.value) && Number.isSafeInteger(clicks.value) && clicks.value >= 0 && seo.value >= clicks.value;

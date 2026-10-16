@@ -32,6 +32,12 @@ Solicitudes profesionales, leads, conversiones e ingresos permanecen `null / BLO
 
 ## Puesta en servicio pendiente
 
+### Snapshot privado de Adtraction
+
+`OPS_ADTRACTION_SNAPSHOT` apunta a un archivo privado fuera del árbol público. Se usa el mismo lector acotado a 16 KiB que para Search Console. Debe contener `source: adtraction_authenticated_export`, `channel_url: https://desgracias.es`, `market: ES`, `currency: EUR`, `period: {from,to}` (días completos, fecha final inclusiva anterior a hoy), `observed_at` en UTC, `conversion_statuses: [approved,pending]` y enteros no negativos `clicks`, `unique_clicks`, `conversions`, `commission_minor` (céntimos). Los clics únicos no pueden superar los clics. Fechas futuras, tipo incorrecto, otra moneda/canal o fuente ausente quedan bloqueados.
+
+El endpoint proyecta únicamente esos agregados permitidos en `adtraction`; no publica correos, credenciales ni campos adicionales. El panel identifica canal, país, periodo, estados y actualización manual. La comisión de una red no sustituye `revenue` ni `conversions` globales: ambos siguen bloqueados hasta disponer de fuentes y conciliación completas. No acredita cobro, no acepta contratos y no activa campañas. Un archivo ausente/ilegible/inválido o un fallo de refresco limpia cualquier cifra anterior. Los datos reales de cuenta/exportación nunca se añaden al repositorio público.
+
 Estos cambios no acreditan un despliegue. Para operar hay que desplegar la API Ops de staging autorizada, configurar sus secretos existentes y la conexión de solo lectura, montar el archivo privado opcional y verificar el endpoint y panel con acceso autorizado. Deben comprobarse las fuentes reales y la procedencia de cada dato; no basta que el proceso arranque. Habilitarlo en producción requiere un diseño de identidad y permisos aprobado, conservando los controles actuales hasta entonces.
 
 Pruebas locales: `node --test tests/ops-business-metrics.test.mjs` cubre agregados, fallos, validación de exportación, presentación y HTTP real (401, 200 sin base de datos con métricas bloqueadas y 404 en producción).
