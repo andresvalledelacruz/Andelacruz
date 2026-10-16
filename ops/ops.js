@@ -240,28 +240,45 @@ async function loadConsole() {
   const metricsRequest = loadBusinessMetrics();
   refreshButton.disabled = true;
   try {
-    const [summary, pending] = await Promise.all([
+    const [summaryResult, pendingResult] = await Promise.allSettled([
       api('/ops/summary'),
       api('/ops/moderation/pending?limit=25')
     ]);
 
-    document.querySelector('#metricModeration').textContent = queueLength(summary.queues?.moderation);
-    document.querySelector('#metricSafety').textContent = queueLength(summary.queues?.safety);
-    document.querySelector('#metricTasks').textContent = queueLength(summary.queues?.internal_tasks);
-    document.querySelector('#metricApi').textContent = 'OK';
-    const triage = pending.triage_summary || {};
-    const triageText = Number(triage.P0 || 0) + Number(triage.P1 || 0) > 0
-      ? ` · ${Number(triage.P0 || 0) + Number(triage.P1 || 0)} prioridad crítica`
-      : '';
-    document.querySelector('#lastRefresh').textContent = `Actualizado ${new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(new Date())}${triageText}`;
+    if ([summaryResult, pendingResult].some(result => result.status === 'rejected' && result.reason?.status === 401)) {
+      logout('El token ya no es válido. Vuelve a introducirlo.');
+      return;
+    }
+    if (summaryResult.status === 'fulfilled') {
+      const summary = summaryResult.value;
+      document.querySelector('#metricModeration').textContent = queueLength(summary.queues?.moderation);
+      document.querySelector('#metricSafety').textContent = queueLength(summary.queues?.safety);
+      document.querySelector('#metricTasks').textContent = queueLength(summary.queues?.internal_tasks);
+      document.querySelector('#metricApi').textContent = 'OK';
+      document.querySelector('#lastRefresh').textContent = `Actualizado ${new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(new Date())}`;
+    } else {
+      for (const id of ['#metricModeration', '#metricSafety', '#metricTasks']) document.querySelector(id).textContent = '—';
+      document.querySelector('#metricApi').textContent = 'ERROR';
+      document.querySelector('#lastRefresh').textContent = 'No se pudo actualizar el resumen operativo';
+    }
 
-    queueItems = Array.isArray(pending.items) ? pending.items : [];
-    renderQueue();
+    if (pendingResult.status === 'fulfilled') {
+      const pending = pendingResult.value;
+      queueItems = Array.isArray(pending.items) ? pending.items : [];
+      renderQueue();
 
-    if (selectedItem) {
-      const stillThere = queueItems.find((item) => item.message_id === selectedItem.message_id);
-      if (stillThere) selectItem(stillThere);
-      else clearReview();
+      if (selectedItem) {
+        const stillThere = queueItems.find((item) => item.message_id === selectedItem.message_id);
+        if (stillThere) selectItem(stillThere);
+        else clearReview();
+      }
+    } else {
+      queueItems = [];
+      queueCount.textContent = '—';
+      clearReview();
+      queueList.replaceChildren(messageNode(pendingResult.reason?.status === 403
+        ? 'Acceso restringido a moderación. Se requiere una identidad personal autorizada y MFA. Las métricas disponibles se muestran de forma independiente.'
+        : 'No se pudo cargar la cola de moderación. Vuelve a actualizar o revisa el servicio.'));
     }
   } catch (error) {
     if (error.status === 401) {
