@@ -35,3 +35,9 @@ Solicitudes profesionales, leads, conversiones e ingresos permanecen `null / BLO
 Estos cambios no acreditan un despliegue. Para operar hay que desplegar la API Ops de staging autorizada, configurar sus secretos existentes y la conexión de solo lectura, montar el archivo privado opcional y verificar el endpoint y panel con acceso autorizado. Deben comprobarse las fuentes reales y la procedencia de cada dato; no basta que el proceso arranque. Habilitarlo en producción requiere un diseño de identidad y permisos aprobado, conservando los controles actuales hasta entonces.
 
 Pruebas locales: `node --test tests/ops-business-metrics.test.mjs` cubre agregados, fallos, validación de exportación, presentación y HTTP real (401, 200 sin base de datos con métricas bloqueadas y 404 en producción).
+
+### Comprobar la versión desplegada sin enviar credenciales
+
+El auditor `node scripts/audit-ops-readiness.mjs` usa `OPS_BASE_URL`. Con `OPS_REQUIRE_BUSINESS_METRICS=1` exige también que `/ops/business-metrics` responda 401 al acceso anónimo, con no-store y noindex. Un 404 revela que esa ruta no está desplegada; un 200 anónimo también es un fallo. La comprobación no envía token y devuelve `data_verified:false`: detectar la ruta autenticada no acredita acceso a sus datos.
+
+Para un servicio que necesita arrancar en frío, puede establecerse `OPS_AUDIT_TIMEOUT_MS=55000` antes de ejecutar el auditor. Una espera agotada no identifica por sí sola un servicio caído. Tras comprobar liveness/readiness y versión, sigue siendo necesaria una lectura autenticada contra las fuentes reales. No introducir credenciales en la URL base.
