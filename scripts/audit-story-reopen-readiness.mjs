@@ -18,6 +18,11 @@ export function auditStoryReopenReadiness({ root = ROOT } = {}) {
   if (!trackedSubmitStory) {
     blockers.push('submit-story no está versionada dentro de supabase/functions/submit-story');
   }
+  const submitSource = trackedSubmitStory && fs.existsSync(path.join(submitStoryDir, 'index.ts'))
+    ? fs.readFileSync(path.join(submitStoryDir, 'index.ts'), 'utf8') : '';
+  if (/const\s+STORY_SUBMISSIONS_PAUSED\s*=\s*true\s*;/.test(submitSource)) {
+    blockers.push('la recepción de historias permanece pausada explícitamente en el servidor');
+  }
   if (/const\s+SUPABASE_(?:URL|PUBLISHABLE_KEY)\s*=/.test(app)) {
     blockers.push('la configuración pública de Supabase sigue embebida en app-core.js y debe centralizarse antes de reabrir');
   }
