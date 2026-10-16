@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
 import { auditOpsReadiness, normalizeBaseUrl } from '../scripts/audit-ops-readiness.mjs';
 
 function headers(values = {}) {
@@ -104,4 +105,34 @@ test('rejects a non-staging environment even if endpoint returns 200', async () 
     auditOpsReadiness({ baseUrl: 'https://ops.example.test', fetchImpl }),
     /environment must be staging/
   );
+});
+
+test('CLI executes on native paths and cannot silently succeed without configuration', () => {
+  const result = spawnSync(process.execPath, ['scripts/audit-ops-readiness.mjs'], {
+    cwd: new URL('..', import.meta.url),
+    env: { ...process.env, OPS_BASE_URL: '' }, encoding: 'utf8'
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /OPS_BASE_URL is required/);
+});
+
+test('base URL never accepts credentials that could leak into an audit report', () => {
+  assert.throws(() => normalizeBaseUrl('https://owner:private@ops.example.test/'), /credentials/);
+});
+
+test('optional metrics deployment probe distinguishes old code from an authenticated route', async () => {
+  for (const status of [401, 404, 200, 503]) {
+    const fetchImpl = async url => {
+      const secure = { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' };
+      if (url.endsWith('/health')) return response({ status:'ok', service:'desgracias-ops-api', environment:'staging', timestamp:'2026-10-16T00:00:00Z' }, { headers:secure });
+      if (url.endsWith('/ready')) return response({ status:'ready', database:'ok', ops_auth:'configured' }, { headers:secure });
+      assert.ok(url.endsWith('/ops/business-metrics'));
+      return response({ error:'unauthorized' }, { status, headers:secure });
+    };
+    const check = auditOpsReadiness({ baseUrl:'https://ops.example.test', fetchImpl, requireBusinessMetrics:true });
+    if (status === 401) {
+      const report = await check;
+      assert.deepEqual(report.business_metrics, { route_available:true, unauthenticated_status:401, data_verified:false });
+    } else await assert.rejects(check, /business-metrics/);
+  }
 });
