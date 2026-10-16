@@ -50,11 +50,12 @@ export function evaluateMonetizationEligibility({
   if (!Array.isArray(critical_routes)) {
     return Object.freeze({ allowed:false, reason:'critical_inventory_unavailable', route:pathname, monetization_enabled:false });
   }
-  const critical = new Set(critical_routes.map(normalizeRoute).filter(Boolean));
-  if (critical.size === 0) {
+  const normalizedCritical = critical_routes.map(normalizeRoute);
+  const critical = new Set(normalizedCritical);
+  if (critical.size === 0 || normalizedCritical.some(route => route === null)) {
     return Object.freeze({ allowed:false, reason:'critical_inventory_unavailable', route:pathname, monetization_enabled:false });
   }
-  if (critical.has(pathname)) {
+  if (critical.has(pathname) || [...critical].some(route => route.endsWith('/') && pathname.startsWith(route))) {
     return Object.freeze({ allowed:false, reason:'safety_surface', route:pathname, monetization_enabled:false });
   }
 
