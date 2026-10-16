@@ -1,4 +1,6 @@
 export const URL_OPPORTUNITY_MAP = Object.freeze({
+  '/ayuda-urgente.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:['official_resources_first','no_commercial_crisis_cta','safety_override']},
+  '/cookies.html':{domain:'core',needs:[],intents:[],opportunities:[],risk:'none',consent:'none',commercialPolicy:'off',defaultFlags:[]},
   '/ansiedad/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:['official_resources_first','no_commercial_crisis_cta']},
   '/salud/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:['official_resources_first','no_commercial_crisis_cta']},
   '/violencia/':{domain:'core',needs:[],intents:[],opportunities:[],risk:'high',consent:'none',commercialPolicy:'off',defaultFlags:['official_resources_first','no_commercial_crisis_cta']},
@@ -87,7 +89,7 @@ export const URL_OPPORTUNITY_MAP = Object.freeze({
   '/duelo/quiero-ayudar-a-alguien-que-esta-de-duelo/':{domain:'grief',needs:['support_grieving_person'],intents:[],opportunities:['PSYCHOLOGY'],risk:'medium',consent:'before_lead',commercialPolicy:'contextual',defaultFlags:[]}
 });
 
-export const EXPECTED_PRODUCTION_URL_COUNT = 80;
+export const EXPECTED_PRODUCTION_URL_COUNT = 82;
 
 export function getOpportunityContext(pathname) {
   return URL_OPPORTUNITY_MAP[pathname] || { domain:'unknown', needs:[], intents:[], opportunities:[], risk:'unknown', consent:'none', commercialPolicy:'off', defaultFlags:[] };

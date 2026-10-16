@@ -10,6 +10,17 @@ const hubs = ['/ansiedad/', '/salud/', '/violencia/'];
 const localFile = pathname => `.${pathname}${pathname.endsWith('/') ? 'index.html' : ''}`;
 const attributes = tag => Object.fromEntries([...tag.matchAll(/([\w:-]+)\s*=\s*["']([^"']*)["']/g)].map(match => [match[1].toLowerCase(), match[2]]));
 
+test('urgent help and cookie transparency are included in sitemap discovery', () => {
+  for (const route of ['/ayuda-urgente.html', '/cookies.html']) {
+    assert.equal(urls.filter(url => url === origin + route).length, 1, route);
+    const html = readFileSync(localFile(route), 'utf8');
+    const schema = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map(match => JSON.parse(match[1]));
+    assert.ok(schema.length > 0, `${route}: structured data missing`);
+    assert.match(html, /property="og:site_name" content="Desgracias.es"/);
+    assert.match(html, /name="twitter:card" content="summary(?:_large_image)?"/);
+  }
+});
+
 test('each sitemap URL resolves to one indexable local page with a self canonical', () => {
   assert.ok(urls.length > 0);
   assert.equal(new Set(urls).size, urls.length, 'duplicate sitemap URL');
