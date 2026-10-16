@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
+import { readBusinessMetrics, loadSearchConsoleSnapshot } from './ops-business-metrics.js';
 import { evaluateExecutiveDecision } from './executive-decision-engine.js';
 import { registerPrivacySafeHttpObservability } from './fastify-privacy-safe-observability.js';
 import { buildModerationTriage, sortModerationItems, moderationTriageSummary } from './moderation-triage.js';
@@ -517,6 +518,12 @@ app.get('/public/nadie-solo', async (request, reply) => {
     app.log.error({ err: error }, 'nadie solo staging feed unavailable');
     return reply.code(503).send({ error: 'nadie_solo_unavailable' });
   }
+});
+
+app.get('/ops/business-metrics', { preHandler: requireOpsCapability('GET', '/ops/business-metrics') }, async (_request, reply) => {
+  reply.header('Cache-Control', 'no-store');
+  const searchConsoleSnapshot = await loadSearchConsoleSnapshot(process.env.OPS_SEARCH_CONSOLE_SNAPSHOT);
+  return readBusinessMetrics(pool, new Date(), { searchConsoleSnapshot });
 });
 
 app.get('/ops/summary', { preHandler: requireOpsCapability('GET', '/ops/summary') }, async (_request, reply) => {
