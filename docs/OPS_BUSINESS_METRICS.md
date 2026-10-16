@@ -32,6 +32,12 @@ Solicitudes profesionales, leads, conversiones e ingresos permanecen `null / BLO
 
 ## Puesta en servicio pendiente
 
+### Snapshot privado de Awin
+
+`OPS_AWIN_SNAPSHOT` apunta a otro archivo privado, leído con el mismo límite de 16 KiB. Exige `source: awin_authenticated_export`, `account_name: Desgracias.es`, `market: ES`, `currency: EUR`, `timezone: Europe-Paris` (etiqueta del informe), periodo de días completos `period: {from,to}`, `observed_at` UTC y `conversion_statuses: [pending,confirmed,bonus]`. Los contadores `impressions`, `clicks`, `sales` y `commission_minor` deben ser enteros seguros no negativos; la comisión se expresa en céntimos.
+
+Se proyectan únicamente esos campos permitidos en `awin`, con actualización manual y periodo propio. La tarjeta distingue la suma de comisión pendiente, confirmada y bonos de los pagos y de los ingresos globales. No añade cookies, identificadores o enlaces de afiliación. No transforma fuentes ausentes en cero ni sustituye conversiones/ingresos globales. Los CSV reales y datos de cuenta quedan fuera de Git. Verificar siempre los filtros, fechas y unidades de la exportación; no usar totales del día en curso como días completos.
+
 ### Snapshot privado de Adtraction
 
 `OPS_ADTRACTION_SNAPSHOT` apunta a un archivo privado fuera del árbol público. Se usa el mismo lector acotado a 16 KiB que para Search Console. Debe contener `source: adtraction_authenticated_export`, `channel_url: https://desgracias.es`, `market: ES`, `currency: EUR`, `period: {from,to}` (días completos, fecha final inclusiva anterior a hoy), `observed_at` en UTC, `conversion_statuses: [approved,pending]` y enteros no negativos `clicks`, `unique_clicks`, `conversions`, `commission_minor` (céntimos). Los clics únicos no pueden superar los clics. Fechas futuras, tipo incorrecto, otra moneda/canal o fuente ausente quedan bloqueados.

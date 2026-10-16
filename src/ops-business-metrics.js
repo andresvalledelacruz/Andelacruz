@@ -10,6 +10,7 @@ export async function loadSearchConsoleSnapshot(path) {
 }
 
 export const loadAdtractionSnapshot = loadSearchConsoleSnapshot;
+export const loadAwinSnapshot = loadSearchConsoleSnapshot;
 
 export function validateSearchConsoleSnapshot(snapshot, now = new Date()) {
   const dateOnly = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
@@ -37,7 +38,20 @@ export function validateAdtractionSnapshot(snapshot, now = new Date()) {
 }
 
 // Only aggregate counters leave the database; no paths, stories or contact data.
-export async function readBusinessMetrics(pool, now = new Date(), { searchConsoleSnapshot, adtractionSnapshot } = {}) {
+export function validateAwinSnapshot(snapshot, now = new Date()) {
+  try {
+    if (snapshot?.source !== 'awin_authenticated_export' || snapshot.account_name !== 'Desgracias.es' || snapshot.market !== 'ES' || snapshot.currency !== 'EUR' || snapshot.timezone !== 'Europe-Paris') return null;
+    const { from, to } = snapshot.period || {};
+    const validDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
+    if (!validDate(from) || !validDate(to) || from > to || to >= now.toISOString().slice(0, 10)) return null;
+    if (typeof snapshot.observed_at !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/.test(snapshot.observed_at) || !validDate(snapshot.observed_at.slice(0,10)) || !Number.isFinite(Date.parse(snapshot.observed_at)) || Date.parse(snapshot.observed_at) > now.getTime() || snapshot.observed_at.slice(0,10) < to) return null;
+    if (!Array.isArray(snapshot.conversion_statuses) || snapshot.conversion_statuses.length !== 3 || snapshot.conversion_statuses[0] !== 'pending' || snapshot.conversion_statuses[1] !== 'confirmed' || snapshot.conversion_statuses[2] !== 'bonus') return null;
+    if (!['impressions','clicks','sales','commission_minor'].every(key => Number.isSafeInteger(snapshot[key]) && snapshot[key] >= 0)) return null;
+    return {status:'REGISTRADO',source:snapshot.source,account:'Desgracias.es',market:'ES',currency:'EUR',timezone:'Europe-Paris',period:{from,to},observed_at:snapshot.observed_at,refresh:'manual',conversion_statuses:['pending','confirmed','bonus'],impressions:snapshot.impressions,clicks:snapshot.clicks,sales:snapshot.sales,commission_minor:snapshot.commission_minor};
+  } catch { return null; }
+}
+
+export async function readBusinessMetrics(pool, now = new Date(), { searchConsoleSnapshot, adtractionSnapshot, awinSnapshot } = {}) {
   const end = new Date(now);
   end.setUTCHours(0, 0, 0, 0);
   const start = new Date(end);
@@ -55,7 +69,8 @@ export async function readBusinessMetrics(pool, now = new Date(), { searchConsol
     leads: blocked('professional_leads_source_not_verified'),
     conversions: blocked('conversion_source_not_verified'),
     revenue: blocked('revenue_source_not_verified'),
-    adtraction: blocked('adtraction_snapshot_not_verified')
+    adtraction: blocked('adtraction_snapshot_not_verified'),
+    awin: blocked('awin_snapshot_not_verified')
   };
   const seo = validateSearchConsoleSnapshot(searchConsoleSnapshot, now);
   if (seo) {
@@ -63,6 +78,8 @@ export async function readBusinessMetrics(pool, now = new Date(), { searchConsol
   }
   const adtraction = validateAdtractionSnapshot(adtractionSnapshot, now);
   if (adtraction) report.adtraction = adtraction;
+  const awin = validateAwinSnapshot(awinSnapshot, now);
+  if (awin) report.awin = awin;
   if (!pool) return report;
   try {
     const { rows } = await pool.query(

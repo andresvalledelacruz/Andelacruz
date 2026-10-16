@@ -216,6 +216,10 @@ async function loadAuthoritativeBrief(item) {
 }
 
 function renderBusinessMetrics(report) {
+  const awin = report?.awin;
+  const validAwin = awin?.status === 'REGISTRADO' && awin.currency === 'EUR' && Number.isSafeInteger(awin.commission_minor) && awin.commission_minor >= 0 && Number.isSafeInteger(awin.clicks) && awin.clicks >= 0 && Number.isSafeInteger(awin.sales) && awin.sales >= 0;
+  document.querySelector('#businessAwin').textContent = validAwin ? new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(awin.commission_minor / 100) : 'BLOQUEADO';
+  document.querySelector('#businessAwinCoverage').textContent = validAwin ? `Desgracias.es · España · ${awin.period.from} a ${awin.period.to} · zona del informe: Europe-Paris · ${awin.clicks} clics / ${awin.sales} ventas · pendiente + confirmada + bonos · observado ${formatDate(awin.observed_at)} · actualización manual; no acredita pagos ni ingresos globales` : 'Sin exportación verificada de Awin';
   const affiliate = report?.adtraction;
   const validAffiliate = affiliate?.status === 'REGISTRADO' && affiliate.currency === 'EUR' && Number.isSafeInteger(affiliate.commission_minor) && affiliate.commission_minor >= 0 && Number.isSafeInteger(affiliate.unique_clicks) && affiliate.unique_clicks >= 0 && Number.isSafeInteger(affiliate.conversions) && affiliate.conversions >= 0;
   document.querySelector('#businessAdtraction').textContent = validAffiliate ? new Intl.NumberFormat('es-ES', { style:'currency', currency:'EUR' }).format(affiliate.commission_minor / 100) : 'BLOQUEADO';

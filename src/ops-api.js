@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
-import { readBusinessMetrics, loadSearchConsoleSnapshot, loadAdtractionSnapshot } from './ops-business-metrics.js';
+import { readBusinessMetrics, loadSearchConsoleSnapshot, loadAdtractionSnapshot, loadAwinSnapshot } from './ops-business-metrics.js';
 import { evaluateExecutiveDecision } from './executive-decision-engine.js';
 import { registerPrivacySafeHttpObservability } from './fastify-privacy-safe-observability.js';
 import { buildModerationTriage, sortModerationItems, moderationTriageSummary } from './moderation-triage.js';
@@ -524,7 +524,8 @@ app.get('/ops/business-metrics', { preHandler: requireOpsCapability('GET', '/ops
   reply.header('Cache-Control', 'no-store');
   const searchConsoleSnapshot = await loadSearchConsoleSnapshot(process.env.OPS_SEARCH_CONSOLE_SNAPSHOT);
   const adtractionSnapshot = await loadAdtractionSnapshot(process.env.OPS_ADTRACTION_SNAPSHOT);
-  return readBusinessMetrics(pool, new Date(), { searchConsoleSnapshot, adtractionSnapshot });
+  const awinSnapshot = await loadAwinSnapshot(process.env.OPS_AWIN_SNAPSHOT);
+  return readBusinessMetrics(pool, new Date(), { searchConsoleSnapshot, adtractionSnapshot, awinSnapshot });
 });
 
 app.get('/ops/summary', { preHandler: requireOpsCapability('GET', '/ops/summary') }, async (_request, reply) => {
