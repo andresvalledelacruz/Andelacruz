@@ -9,6 +9,8 @@ export async function loadSearchConsoleSnapshot(path) {
   } catch { return null; }
 }
 
+export const loadAdtractionSnapshot = loadSearchConsoleSnapshot;
+
 export function validateSearchConsoleSnapshot(snapshot, now = new Date()) {
   const dateOnly = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
   try {
@@ -21,8 +23,21 @@ export function validateSearchConsoleSnapshot(snapshot, now = new Date()) {
   } catch { return null; }
 }
 
+export function validateAdtractionSnapshot(snapshot, now = new Date()) {
+  try {
+    if (snapshot?.source !== 'adtraction_authenticated_export' || snapshot.channel_url !== 'https://desgracias.es' || snapshot.market !== 'ES' || snapshot.currency !== 'EUR') return null;
+    const { from, to } = snapshot.period || {};
+    const validDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value;
+    if (!validDate(from) || !validDate(to) || from > to || to >= now.toISOString().slice(0, 10)) return null;
+    if (typeof snapshot.observed_at !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/.test(snapshot.observed_at) || !validDate(snapshot.observed_at.slice(0,10)) || !Number.isFinite(Date.parse(snapshot.observed_at)) || Date.parse(snapshot.observed_at) > now.getTime() || snapshot.observed_at.slice(0,10) < to) return null;
+    if (!Array.isArray(snapshot.conversion_statuses) || snapshot.conversion_statuses.length !== 2 || snapshot.conversion_statuses[0] !== 'approved' || snapshot.conversion_statuses[1] !== 'pending') return null;
+    if (!['clicks','unique_clicks','conversions','commission_minor'].every(key => Number.isSafeInteger(snapshot[key]) && snapshot[key] >= 0) || snapshot.unique_clicks > snapshot.clicks) return null;
+    return { status:'REGISTRADO', source:snapshot.source, period:{from,to}, observed_at:snapshot.observed_at, refresh:'manual', market:'ES', channel:'desgracias.es', currency:'EUR', conversion_statuses:['approved','pending'], clicks:snapshot.clicks, unique_clicks:snapshot.unique_clicks, conversions:snapshot.conversions, commission_minor:snapshot.commission_minor };
+  } catch { return null; }
+}
+
 // Only aggregate counters leave the database; no paths, stories or contact data.
-export async function readBusinessMetrics(pool, now = new Date(), { searchConsoleSnapshot } = {}) {
+export async function readBusinessMetrics(pool, now = new Date(), { searchConsoleSnapshot, adtractionSnapshot } = {}) {
   const end = new Date(now);
   end.setUTCHours(0, 0, 0, 0);
   const start = new Date(end);
@@ -39,12 +54,15 @@ export async function readBusinessMetrics(pool, now = new Date(), { searchConsol
     requests: blocked('professional_requests_source_not_verified'),
     leads: blocked('professional_leads_source_not_verified'),
     conversions: blocked('conversion_source_not_verified'),
-    revenue: blocked('revenue_source_not_verified')
+    revenue: blocked('revenue_source_not_verified'),
+    adtraction: blocked('adtraction_snapshot_not_verified')
   };
   const seo = validateSearchConsoleSnapshot(searchConsoleSnapshot, now);
   if (seo) {
     for (const key of ['impressions', 'clicks']) report[key] = { value: seo[key], status: 'REGISTRADO', source: 'google_search_console', period: seo.period, exported_at: seo.exported_at, refresh: 'manual' };
   }
+  const adtraction = validateAdtractionSnapshot(adtractionSnapshot, now);
+  if (adtraction) report.adtraction = adtraction;
   if (!pool) return report;
   try {
     const { rows } = await pool.query(
