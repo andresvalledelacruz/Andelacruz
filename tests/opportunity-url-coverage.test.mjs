@@ -36,10 +36,11 @@ test('matchmaking is never a default intent on loneliness or breakup pages', () 
 });
 
 test('new public sensitive hubs remain commercially disabled', () => {
-  for (const route of ['/ansiedad/', '/salud/', '/violencia/']) {
+  for (const route of ['/ansiedad/', '/salud/', '/violencia/', '/ayuda-urgente.html', '/cookies.html']) {
     const context = URL_OPPORTUNITY_MAP[route];
     assert.equal(context.commercialPolicy, 'off');
     assert.deepEqual(context.opportunities, []);
     assert.deepEqual(context.intents, []);
+    assert.equal(context.consent, 'none');
   }
 });
