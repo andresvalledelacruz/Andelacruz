@@ -6,9 +6,11 @@ const REQUIRED_PREREQUISITES = Object.freeze([
   'surface_approved'
 ]);
 
-function normalizeRoute(route) {
-  const value = String(route ?? '').trim();
-  if (!value.startsWith('/') || value.includes('?') || value.includes('#') || value.includes('..') || value.includes('%') || value.includes('\\') || value.length > 240) return null;
+export function normalizeMonetizationRoute(route) {
+  if (typeof route !== 'string') return null;
+  const value = route.trim();
+  // Reject spellings a URL parser could reinterpret before consulting Safety.
+  if (!/^\/[A-Za-z0-9_./-]*$/.test(value) || value.includes('//') || value.includes('..') || value.split('/').includes('.') || value.length > 240) return null;
   if (value === '/') return '/';
   if (value.endsWith('.html')) return value;
   return value.endsWith('/') ? value : value + '/';
@@ -19,9 +21,10 @@ export function parseCriticalSafetyRoutes(markdown = '') {
   const routes = [];
   for (const line of section.split('\n')) {
     const match = line.match(/^\|\s*`(\/[^\`]+)`\s*\|/);
-    if (match) routes.push(normalizeRoute(match[1]));
+    if (match) routes.push(normalizeMonetizationRoute(match[1]));
   }
-  return Object.freeze([...new Set(routes.filter(Boolean))]);
+  if (routes.some(route => route === null)) return Object.freeze([]);
+  return Object.freeze([...new Set(routes)]);
 }
 
 export function evaluateMonetizationEligibility({
@@ -30,7 +33,7 @@ export function evaluateMonetizationEligibility({
   critical_routes = null,
   prerequisites = {}
 } = {}) {
-  const pathname = normalizeRoute(route);
+  const pathname = normalizeMonetizationRoute(route);
   const safetyLevel = String(safety_level ?? 'UNKNOWN').toUpperCase();
 
   if (!pathname) {
@@ -50,7 +53,7 @@ export function evaluateMonetizationEligibility({
   if (!Array.isArray(critical_routes)) {
     return Object.freeze({ allowed:false, reason:'critical_inventory_unavailable', route:pathname, monetization_enabled:false });
   }
-  const normalizedCritical = critical_routes.map(normalizeRoute);
+  const normalizedCritical = Array.from(critical_routes, normalizeMonetizationRoute);
   const critical = new Set(normalizedCritical);
   if (critical.size === 0 || normalizedCritical.some(route => route === null)) {
     return Object.freeze({ allowed:false, reason:'critical_inventory_unavailable', route:pathname, monetization_enabled:false });
