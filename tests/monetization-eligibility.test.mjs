@@ -58,7 +58,7 @@ test('unknown safety classification fails closed before commercial evaluation', 
 });
 
 test('P2/P3 fail closed if the canonical critical inventory is unavailable or empty', () => {
-  for (const critical_routes of [null, [], ['bad route']]) {
+  for (const critical_routes of [null, [], ['bad route'], ['/ayuda-urgente.html', 'bad route']]) {
     const result = evaluateMonetizationEligibility({
       route:'/trabajo/necesito-formacion-para-encontrar-trabajo/',
       safety_level:'P3',
@@ -69,6 +69,15 @@ test('P2/P3 fail closed if the canonical critical inventory is unavailable or em
     assert.equal(result.reason, 'critical_inventory_unavailable');
     assert.equal(result.monetization_enabled, false);
   }
+});
+
+test('sensitive directory exclusions also protect descendants without excluding sibling routes', () => {
+  for (const route of ['/violencia/recursos/', '/violencia/recursos/guia.html']) {
+    const result = evaluateMonetizationEligibility({route, safety_level:'P3', critical_routes:['/violencia/'], prerequisites:allGreen});
+    assert.equal(result.allowed, false);
+    assert.equal(result.reason, 'safety_surface');
+  }
+  assert.equal(evaluateMonetizationEligibility({route:'/violencia-editorial/', safety_level:'P3', critical_routes:['/violencia/'], prerequisites:allGreen}).allowed, true);
 });
 
 test('P2/P3 still fail closed until every prerequisite and surface approval is explicit', () => {
