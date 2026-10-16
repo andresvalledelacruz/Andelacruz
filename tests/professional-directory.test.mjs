@@ -54,3 +54,16 @@ test('Matching rejects malformed category declarations without throwing',()=>{
   }
   assert.equal(matchPublicProfessionals(eligibleMatch([profile()])).length,1);
 });
+
+test('Publication rejects absent or non-text identifiers and sparse evidence',()=>{
+  for(const mutate of [p=>delete p.id,p=>p.id=123,p=>p.review.sources=Array(1)]){
+    const p=profile();mutate(p);
+    assert.deepEqual(publicProfiles(registry(p)),[]);
+    assert.throws(()=>renderPublicProfile(p));
+  }
+});
+
+test('Matching rejects sparse category declarations',()=>{
+  const p=profile();p.categories=['education',,];
+  assert.deepEqual(matchPublicProfessionals(eligibleMatch([p])),[]);
+});
