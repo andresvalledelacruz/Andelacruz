@@ -2,6 +2,10 @@
 
 `GET /ops/business-metrics` forma parte de la API Ops existente. Solo funciona en `NODE_ENV=staging`: devuelve 404 en producción. Reutiliza la capacidad RBAC `ops.summary.read`; sin autenticación devuelve 401 cuando el token de staging está configurado. Una API sin token configurado devuelve 503. Las respuestas llevan `Cache-Control: no-store` y exclusión de indexación.
 
+## Lectura acotada de archivos privados
+
+Los tres lectores (Search Console, Adtraction y Awin) comparten un límite de 16.384 bytes de UTF-8. La lectura reserva como máximo 16.385 bytes, uno adicional para detectar exceso, y rechaza archivos no regulares, UTF-8 inválido y JSON malformado. El archivo se cierra también cuando se rechaza. El límite se aplica en bytes antes de analizar JSON, no en caracteres después de cargar el archivo completo. Un archivo ausente o rechazado mantiene las métricas bloqueadas, sin suponer cero.
+
 ## Páginas vistas
 
 La conexión privada `DATABASE_URL` existente necesita permiso de lectura sobre `public.pageview_daily_analytics`. El endpoint no crea tablas, no modifica permisos y solo consulta agregados de `pageviews` y días con registros. No conceder acceso público a la tabla para habilitar el panel.

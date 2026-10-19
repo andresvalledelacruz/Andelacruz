@@ -1,12 +1,26 @@
-import { readFile } from 'node:fs/promises';
+import { open } from 'node:fs/promises';
+
+const MAX_SNAPSHOT_BYTES = 16 * 1024;
 
 export async function loadSearchConsoleSnapshot(path) {
   if (!path) return null;
+  let handle;
   try {
-    const content = await readFile(path, 'utf8');
-    if (content.length > 16384) return null;
+    handle = await open(path, 'r');
+    if (!(await handle.stat()).isFile()) return null;
+    // Read at most one byte beyond the limit, even if the file grows after stat.
+    const buffer = Buffer.alloc(MAX_SNAPSHOT_BYTES + 1);
+    let total = 0;
+    while (total < buffer.length) {
+      const { bytesRead } = await handle.read(buffer, total, buffer.length - total, null);
+      if (bytesRead === 0) break;
+      total += bytesRead;
+    }
+    if (total > MAX_SNAPSHOT_BYTES) return null;
+    const content = new TextDecoder('utf-8', { fatal: true }).decode(buffer.subarray(0, total));
     return JSON.parse(content);
   } catch { return null; }
+  finally { if (handle) await handle.close().catch(() => {}); }
 }
 
 export const loadAdtractionSnapshot = loadSearchConsoleSnapshot;
