@@ -20,7 +20,7 @@ Propiedad sc-domain:desgracias.es. Informe Indexación, última actualización 1
 24 indexadas; 60 sin indexar = 57 descubiertas sin indexar + 2 con redirección + 1 alternativa canónica.
 «Rastreada: actualmente sin indexar»: validación Correcto, 0 páginas.
 Estas cifras corresponden a todas las páginas conocidas, no al denominador del sitemap.
-No se han diagnosticado las redirecciones o la alternativa como errores: requieren revisar sus URLs/destinos.
+Detalle revisado en Search Console: las dos redirecciones son http://desgracias.es/ y https://www.desgracias.es/; la alternativa canónica es https://desgracias.es/index.html. Son variantes de portada, no páginas editoriales omitidas. El gate Origin del SHA verificado certifica TLS/redirecciones/origen V9. No solicitar indexación de variantes duplicadas ni eliminar la canonical de portada.
 
 Inspección individual /alianzas.html: no está en Google; sin sitemap de referencia detectado por esa inspección.
 Sitemaps autenticado: https://desgracias.es/sitemap.xml figura Correcto, 82 páginas descubiertas, última lectura 18/10/2026 y envío 07/10/2026. No requiere reenviarlo para reparar un error inexistente.
@@ -37,7 +37,7 @@ No añadir cuentas, exportaciones, tokens, correos privados ni cifras reales al 
 
 ## Pendientes ejecutables y criterio de cierre
 1. Código d298dac: siete checks completados SUCCESS (Engineering, SEO, Origin, Pages build/deploy/report y Cloudflare). Repetir certificación sobre cualquier SHA final posterior.
-2. Search Console: resolver CAPTCHA de Alianzas, confirmar aceptación; revisar sitemap registrado y URLs concretas con redirección/canonical.
+2. Search Console: resolver CAPTCHA de Alianzas, confirmar aceptación; sitemap registrado Correcto y variantes de portada ya identificadas; priorizar la cola real de descubrimiento.
 3. Métricas privadas: sesión autorizada Ops y exportaciones reales; verificar periodo, origen, moneda y unidades. No inferir cero por ausencia.
 4. Piloto: proveedor/titular reales, evidencia de revisión y condiciones; solo entonces implementar activación y recepción privada de solicitudes.
 5. AdSense/ads.txt/CMP: no inventar publisher ID; cuenta apta, mecanismo y revisión aplicables antes de activar etiquetas.
