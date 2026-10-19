@@ -27,23 +27,47 @@ test('Los enlaces antiguos solo redirigen fragmentos conocidos, sin propagar dat
     assert.deepEqual(calls, expected ? ['/profesionales.html'+expected] : []);
   }
 });
-test('La solicitud valida antes de preparar un correo y no envía datos a la red', () => {
-  const source=hub.match(/<script>\s*([\s\S]*?)<\/script>/)[1];
-  let submit;
-  const location={};
-  const document={getElementById(id){return id==='professional-application'?{addEventListener(type,fn){assert.equal(type,'submit');submit=fn;}}:id==='pro-commercial'?{checked:false}:{value:' Ejemplo & prueba '};}};
-  vm.runInNewContext(source,{document,location});
-  const event={preventDefault(){}};
-  submit.call({reportValidity:()=>false},event);
-  assert.equal(location.href,undefined);
-  submit.call({reportValidity:()=>true},event);
-  const url=new URL(location.href);
-  assert.equal(url.protocol,'mailto:');
-  assert.equal(url.pathname,'info@desgracias.es');
-  assert.equal(url.searchParams.get('subject'),'Solicitud profesional Desgracias.es');
-  assert.equal(url.searchParams.get('body').split('\n').length,14);
-  assert.ok(url.searchParams.get('body').includes('Nombre: Ejemplo & prueba'));
-  assert.ok(url.searchParams.get('body').includes('Interés comercial futuro: No'));
+test('La solicitud prepara un correo legible y un borrador recuperable sin enviarlo', () => {
+  const source = read('professional-application-mail.js');
+  assert.ok(hub.includes('src="/professional-application-mail.js" defer'));
+  const handlers = {};
+  let valid = false;
+  let focused = false;
+  const form = { reportValidity: () => valid, addEventListener(type, fn) { handlers[type] = fn; } };
+  const draft = { hidden: true };
+  const body = { value: '', focus() { focused = true; } };
+  const button = { hidden: true, addEventListener(type, fn) { handlers.copy = fn; } };
+  const nodes = { 'professional-application': form, 'professional-mail-copy': button,
+    'professional-mail-draft': draft, 'professional-mail-body': body, 'pro-commercial': { checked: false } };
+  const location = { pathname: '/profesionales.html' };
+  vm.runInNewContext(source, { window: { location }, document: { getElementById(id) { return nodes[id] || { value: ' Ejemplo & prueba ' }; } } });
+  assert.equal(button.hidden, false);
+  handlers.copy();
+  handlers.submit({ preventDefault() {} });
+  assert.equal(location.href, undefined);
+  assert.equal(draft.hidden, true);
+  valid = true;
+  handlers.copy();
+  assert.equal(location.href, undefined, 'copy fallback never opens or sends mail');
+  assert.equal(focused, true);
+  assert.equal(draft.hidden, false);
+  assert.equal(body.value.split('\r\n').length, 14);
+  assert.ok(body.value.includes('Correo: Ejemplo & prueba'));
+  handlers.submit({ preventDefault() {} });
+  const url = new URL(location.href);
+  assert.equal(url.protocol, 'mailto:');
+  assert.equal(url.pathname, 'info@desgracias.es');
+  assert.equal(url.searchParams.get('subject'), 'Solicitud profesional Desgracias.es');
+  assert.equal(url.searchParams.get('body'), body.value);
+  assert.ok(url.href.includes('%0D%0A'));
+  assert.ok(body.value.includes('Interés comercial futuro: No'));
+  nodes['pro-commercial'].checked = true;
+  handlers.copy();
+  assert.ok(body.value.includes('Interés comercial futuro: Sí'));
+  handlers.input();
+  assert.equal(body.value, '');
+  assert.equal(draft.hidden, true, 'edits invalidate a stale prepared draft');
+  assert.doesNotMatch(source, /fetch\(|XMLHttpRequest|localStorage|sessionStorage|navigator\.clipboard/);
 });
 test('SEO y breadcrumbs reflejan la jerarquía y las visitas mantienen el runtime privado', () => {
   for (const file of ['contacto.html','profesionales.html','alianzas.html']) {

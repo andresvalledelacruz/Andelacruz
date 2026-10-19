@@ -3,3 +3,5 @@
 #professional-preview dt{font-weight:700;margin-top:12px}
 #professional-preview dd{margin-inline-start:0;overflow-wrap:anywhere}
 #professional-preview:focus-visible{outline:3px solid currentColor;outline-offset:3px}
+
+#professional-mail-body{box-sizing:border-box;width:100%;max-width:100%;overflow-wrap:anywhere}
