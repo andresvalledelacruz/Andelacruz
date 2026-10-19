@@ -112,6 +112,33 @@ try {
         await page.waitForURL('**/profesionales.html#'+next);
       }
     }
+    await page.goto(origin+'/profesionales.html');
+    if (javaScriptEnabled) {
+      const copy = page.locator('#professional-mail-copy');
+      await copy.click();
+      assert.equal(await page.locator('#professional-mail-draft').isVisible(), false, 'invalid form cannot prepare a draft');
+      for (const id of ['pro-name','pro-specialties','pro-audience','pro-description','pro-area','pro-languages','pro-price']) {
+        await page.locator('#'+id).fill('Ejemplo de prueba');
+      }
+      await page.locator('#pro-website').fill('https://example.org/');
+      await page.locator('#pro-contact').fill('qa@example.org');
+      await page.locator('#pro-field').selectOption({label:'Formación'});
+      await page.locator('#pro-mode').selectOption({label:'Online'});
+      await page.locator('#pro-truth').check();
+      await copy.click();
+      const draft = page.locator('#professional-mail-body');
+      assert.equal(await page.locator('#professional-mail-draft').isVisible(), true);
+      assert.ok(await draft.evaluate(n=>n===document.activeElement));
+      assert.match(await draft.inputValue(), /Correo: qa@example.org/);
+      assert.match(await draft.inputValue(), /Interés comercial futuro: No/);
+      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1), 'draft fits mobile viewport');
+      await page.locator('#pro-name').fill('Dato corregido');
+      assert.equal(await page.locator('#professional-mail-draft').isVisible(), false);
+      assert.equal(await draft.inputValue(), '');
+    } else {
+      assert.equal(await page.locator('#professional-mail-copy').isVisible(), false);
+      assert.equal(await page.locator('#solicitud noscript a').isVisible(), true);
+    }
     assert.deepEqual(errors,[]);
     if(process.env.QA_SCREENSHOTS) {
       await mkdir(process.env.QA_SCREENSHOTS,{recursive:true});
