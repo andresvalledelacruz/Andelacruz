@@ -21,7 +21,7 @@ export function commercialReadiness({directory, partners, surfaces, adsText = ''
     measurement_note: 'Null means not measured. Mail prepared is not a received application or lead.',
     blockers: [
       ...(eligible.length ? [] : [{id:'profiles',status:'BLOCKED',next:'Provide real profiles, human review evidence and publication authorization.'}]),
-      {id:'private_intake',status:'BLOCKED',next:'Implement and validate private intake, restricted access, retention and privacy responsibilities before activation.'},
+      {id:'private_intake',status:'BLOCKED',next:'Private intake code is prepared but disabled. Verify nominal reviewer access, scheduled erasure, privacy responsibilities and the real form integration before activation; see docs/PROFESSIONAL_PRIVATE_INTAKE.md.'},
       {id:'commercial_terms',status:'BLOCKED',next:'Owner must approve offer, billing conditions and fees; verification cannot be bought.'},
       ...['Awin','Adtraction','financeAds'].map(network => ({id:network,status:'BLOCKED',next:'Account/program approval and tracking/privacy evidence are not established by the public registry.'})),
       {id:'AdSense',status:'BLOCKED',ads_txt_google_declaration_present:adsDeclared,next:'Prove domain approval, authentic publisher identity, certified CMP and route allowlist before ads.'}

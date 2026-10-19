@@ -1,5 +1,14 @@
 # MON-002 checkpoint — 7 October 2026
 
+## Seguimiento del 19 de octubre
+
+El código de recepción transaccional, revisión privada y medición de solicitudes
+recibidas está preparado en [el circuito privado](PROFESSIONAL_PRIVATE_INTAKE.md).
+Permanece desactivado: falta verificar acceso nominal del revisor, borrado
+programado, responsabilidades de privacidad e integración real del formulario.
+No confundir esta preparación con un directorio activo, leads o ingresos.
+El checkpoint histórico que sigue conserva su fecha original.
+
 The public 3×2 panel and Contacto destinations are preserved. The directory stays empty: no invented identity, verification, recommendation, conversion or income.
 
 ## Implemented foundation
