@@ -65,7 +65,7 @@ export function validateAwinSnapshot(snapshot, now = new Date()) {
   } catch { return null; }
 }
 
-export async function readBusinessMetrics(pool, now = new Date(), { searchConsoleSnapshot, adtractionSnapshot, awinSnapshot } = {}) {
+export async function readBusinessMetrics(pool, now = new Date(), { searchConsoleSnapshot, adtractionSnapshot, awinSnapshot, professionalIntakeEnabled = false } = {}) {
   const end = new Date(now);
   end.setUTCHours(0, 0, 0, 0);
   const start = new Date(end);
@@ -95,6 +95,18 @@ export async function readBusinessMetrics(pool, now = new Date(), { searchConsol
   const awin = validateAwinSnapshot(awinSnapshot, now);
   if (awin) report.awin = awin;
   if (!pool) return report;
+  if (professionalIntakeEnabled === true) {
+    try {
+      const { rows } = await pool.query(`select count(*)::text as received_applications
+        from private.professional_applications where synthetic = false
+        and received_at >= $1::date and received_at < $2::date`, [report.window.from, report.window.to_exclusive]);
+      const count = rows[0]?.received_applications;
+      if (typeof count !== 'string' || !/^\d+$/.test(count) || !Number.isSafeInteger(Number(count))) throw new Error('invalid_aggregate');
+      report.requests = {value:Number(count),status:'REGISTRADO',source:'private.professional_applications',
+        definition:'received_professional_applications_not_leads',synthetic_excluded:true,
+        limitation:'Solo solicitudes conservadas dentro de su plazo de retención; no es un acumulado histórico.'};
+    } catch { report.requests = blocked('professional_intake_source_unavailable'); }
+  }
   try {
     const { rows } = await pool.query(
       `select sum(pageviews)::text as pageviews, count(distinct day)::int as days_with_data

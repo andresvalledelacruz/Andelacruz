@@ -5,6 +5,8 @@ import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
+import { listProfessionalApplications, reviewProfessionalApplication, professionalIntakeConfiguration } from './professional-intake.js';
+import { handleProfessionalApplication } from './professional-intake-http.js';
 import { readBusinessMetrics, loadSearchConsoleSnapshot, loadAdtractionSnapshot, loadAwinSnapshot } from './ops-business-metrics.js';
 import { evaluateExecutiveDecision } from './executive-decision-engine.js';
 import { registerPrivacySafeHttpObservability } from './fastify-privacy-safe-observability.js';
@@ -521,12 +523,32 @@ app.get('/public/nadie-solo', async (request, reply) => {
   }
 });
 
+app.options('/public/professional-applications', async (request, reply) => {
+  if (!allowPublicOriginOrDeny(request, reply)) return;
+  return reply.code(204).send();
+});
+
+app.post('/public/professional-applications', { bodyLimit: 8 * 1024 }, async (request, reply) => {
+  return handleProfessionalApplication(request, reply, {pool,environment,allowPublicOriginOrDeny});
+});
+
+app.get('/ops/professionals/applications', { preHandler: requireOpsCapability('GET', '/ops/professionals/applications') }, async (request, reply) => {
+  try { return await listProfessionalApplications(pool, request.opsAuthorization?.principal); }
+  catch (error) { return reply.code(error.status || 503).send({error:error.code || 'professional_intake_unavailable'}); }
+});
+
+app.post('/ops/professionals/:applicationId/review', { preHandler: requireOpsCapability('POST', '/ops/professionals/:applicationId/review') }, async (request, reply) => {
+  try { return await reviewProfessionalApplication(pool, request.params.applicationId, request.body, request.opsAuthorization?.principal); }
+  catch (error) { return reply.code(error.status || 503).send({error:error.code || 'professional_review_unavailable'}); }
+});
+
 app.get('/ops/business-metrics', { preHandler: requireOpsCapability('GET', '/ops/business-metrics') }, async (_request, reply) => {
   reply.header('Cache-Control', 'no-store');
   const searchConsoleSnapshot = await loadSearchConsoleSnapshot(process.env.OPS_SEARCH_CONSOLE_SNAPSHOT);
   const adtractionSnapshot = await loadAdtractionSnapshot(process.env.OPS_ADTRACTION_SNAPSHOT);
   const awinSnapshot = await loadAwinSnapshot(process.env.OPS_AWIN_SNAPSHOT);
-  return readBusinessMetrics(pool, new Date(), { searchConsoleSnapshot, adtractionSnapshot, awinSnapshot });
+  return readBusinessMetrics(pool, new Date(), { searchConsoleSnapshot, adtractionSnapshot, awinSnapshot,
+    professionalIntakeEnabled:professionalIntakeConfiguration().enabled });
 });
 
 app.get('/ops/summary', { preHandler: requireOpsCapability('GET', '/ops/summary') }, async (_request, reply) => {

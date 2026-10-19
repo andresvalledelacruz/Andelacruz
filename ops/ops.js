@@ -216,6 +216,13 @@ async function loadAuthoritativeBrief(item) {
 }
 
 function renderBusinessMetrics(report) {
+  const requests = report?.requests;
+  const validRequests = requests?.status === 'REGISTRADO' && requests.definition === 'received_professional_applications_not_leads' &&
+    requests.synthetic_excluded === true && Number.isSafeInteger(requests.value) && requests.value >= 0;
+  document.querySelector('#businessRequests').textContent = validRequests ? new Intl.NumberFormat('es-ES').format(requests.value) : 'BLOQUEADO';
+  document.querySelector('#businessRequestsCoverage').textContent = validRequests
+    ? 'Solo solicitudes recibidas y conservadas en el periodo · pruebas excluidas · no son leads ni ventas; cobertura limitada por la retención'
+    : 'Sin recepción privada activa y verificable';
   const awin = report?.awin;
   const validAwin = awin?.status === 'REGISTRADO' && awin.currency === 'EUR' && Number.isSafeInteger(awin.commission_minor) && awin.commission_minor >= 0 && Number.isSafeInteger(awin.clicks) && awin.clicks >= 0 && Number.isSafeInteger(awin.sales) && awin.sales >= 0;
   document.querySelector('#businessAwin').textContent = validAwin ? new Intl.NumberFormat('es-ES',{style:'currency',currency:'EUR'}).format(awin.commission_minor / 100) : 'BLOQUEADO';
