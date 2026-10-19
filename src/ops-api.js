@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import { privacySafeFastifyOptions } from './privacy-safe-fastify-options.js';
 import crypto from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
@@ -18,7 +19,7 @@ import {
 } from './story-update-moderation.js';
 
 const { Pool } = pg;
-const app = Fastify({ logger: true, bodyLimit: 16 * 1024 });
+const app = Fastify(privacySafeFastifyOptions({ bodyLimit: 16 * 1024 }));
 registerPrivacySafeHttpObservability(app, { service: 'desgracias-ops-api' });
 
 const port = Number(process.env.OPS_PORT || process.env.PORT || 10001);
