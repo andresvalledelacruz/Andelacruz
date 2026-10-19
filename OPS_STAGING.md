@@ -82,3 +82,18 @@ Hasta que esa integración esté implementada y probada, no debe reactivarse lec
 ## Estado
 
 Código preparado en modo fail-closed para datos y decisiones de moderación. La activación real de lectura/decisión requiere configurar identidad de staff + AAL2 y validar el flujo completo en staging. Además, `desgracias-api-staging` debe tener configurado manualmente `STORY_AUTHOR_UPDATE_PEPPER`; `render.yaml` lo declara como `sync: false` para impedir que un valor secreto entre en el repositorio.
+
+## Runtime y fuente de configuración
+
+El backend de Ops debe usar Node 24, la misma versión principal que CI. El rango
+`24.x` de `package.json` impide que Render elija otra versión principal al publicar.
+No se configura `NODE_VERSION` con una versión distinta en Dashboard.
+
+El bloque de Ops en `render.yaml` conserva `production-v9`, instalación con
+`npm ci --ignore-scripts --no-audit --no-fund` y health check `/health`.
+Los servicios existentes se configuran desde Dashboard: un cambio de este YAML
+no prueba que una configuración remota haya cambiado. Al aplicar estos valores,
+comprobar el build command real, el SHA desplegado, la versión de Node en logs y
+la respuesta de `/health`. Si se gestiona mediante Blueprint en el futuro, este
+bloque será la referencia para no restaurar valores diferentes por sincronización.
+El gate de GitHub ejecuta la auditoría de vulnerabilidades antes de fusionar.
