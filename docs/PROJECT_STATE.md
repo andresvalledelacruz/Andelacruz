@@ -1,6 +1,10 @@
 # Desgracias.es · Estado Maestro del Proyecto
 
-Última revisión: 2026-09-07
+Última reconciliación: 2026-10-19
+
+> **Estado operativo vigente: 19/10/2026.** La revisión de septiembre que sigue es histórica. Consultar primero [el checkpoint de ejecución](EXECUTION_CHECKPOINT_2026-10-19.md) y [P0_EXECUTION_STATUS.md](../P0_EXECUTION_STATUS.md). No usar los pendientes históricos como prueba del estado actual. La referencia de código de esta revisión es production-v9@d298dac6712c9c6c655e0f6fc91ebc7586f5ed01 (PR #355).
+
+Revisión histórica preservada: 2026-09-07
 
 Este documento es la **fuente única de verdad operativa** para retomar Desgracias.es desde otro chat, otra sesión o por otro miembro del equipo. Antes de continuar trabajo importante, revisar este archivo y contrastar cualquier afirmación de “ya está en producción” con el estado real de staging/servicios.
 
