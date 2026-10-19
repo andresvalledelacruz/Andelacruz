@@ -1,65 +1,24 @@
 # P0 Execution Status — Desgracias.es
 
-Última actualización: 2026-09-26
+Última reconciliación: 2026-10-19.
+Referencia: production-v9@d298dac6712c9c6c655e0f6fc91ebc7586f5ed01.
+Detalle y evidencia: [checkpoint vigente](docs/EXECUTION_CHECKPOINT_2026-10-19.md).
 
-## Objetivo actual
-Ejecutar con prioridad: Webs Amigas 2.0, Resources EXPAND, Buscar Ayuda 3.0, analítica completa, internacionalización y monetización segura.
+| Frente | Estado comprobado | Pendiente real |
+|---|---|---|
+| SEO técnico | Sitemap publicado de 82 URLs, incluidos Ansiedad/Salud/Violencia; PR obsoletos #318/#323/#326 cerrados | Certificación final y revisión concreta de exclusiones |
+| Google | Profesionales y formación indexadas en inspección individual | 57 descubiertas sin indexar en informe actualizado al 12/10; Alianzas detenida por reCAPTCHA al solicitar indexación |
+| Métricas Awin | #355 integrado; Render marca despliegue correcto | Snapshot privado real y lectura autenticada; no acredita ingresos |
+| Adtraction/Search Console en Ops | Soporte en código; configuración privada existente observada | Verificar contenido y periodo con acceso autorizado |
+| Profesionales | Página y borrador de solicitud publicados | Proveedor real, contrato/revisión, recepción privada y fichas aprobadas |
+| Monetización | Partners vacío; activación global deshabilitada | Evidencia comercial, legal/privacidad y consentimiento aplicables |
+| Webs Amigas | Versión España con tarjetas estáticas exigida por gate SEO actual | No restaurar selector internacional antiguo; selección por país en Recursos/Buscar Ayuda |
+| Buscar Ayuda | Código público y suites de normalización, dialectos y multinecesidad presentes | Nuevas ampliaciones con evidencia y regresiones Safety |
+| Internacional | Entradas es/en/fr/pt/de/ar presentes | Verificación país por país; selector no equivale a cobertura |
+| Analítica | Contadores agregados y adaptadores privados preparados | Datos reales autenticados; no deducir usuarios, sesiones o ingresos |
 
-## Estado
-
-### Webs Amigas 2.0
-- [x] Rama creada: `improve/webs-amigas-country-filter-p0`
-- [x] Componente inicial de selector/filtrado por país creado
-- [x] Integrar componente en `webs-amigas.html`
-- [x] España por defecto en vista inicial
-- [x] Selector visible con 50+ países de todos los continentes
-- [x] Mostrar solo recursos del país seleccionado
-- [x] Ocultar metadatos repetitivos de país/idioma/fecha en tarjetas
-- [x] Rediseño de tarjetas compactas
-- [x] Orden A-Z por categoría y organización
-- [x] Estado claro para países sin cobertura verificada
-- [ ] Pruebas de accesibilidad/móvil
-- [ ] Checks CI/SEO
-- [ ] Merge a `production-v9`
-- [ ] Verificación visual en producción
-
-Notas:
-- El render usa `/data/help-directory.json` como fuente única de recursos verificados.
-- No se inventa cobertura: los países sin registros muestran estado “en ampliación”.
-- Se ha añadido `visitor-analytics.js` a Webs Amigas para cubrir esta página en analítica privacy-first.
-
-### Resources EXPAND
-- [ ] Llevar categorías generales deficitarias a >=10 situaciones útiles cuando tenga sentido
-- [ ] No inflar categorías Safety con opciones redundantes
-- [ ] Prioridad: Ansiedad, Gestión emocional, Salud/enfermedad, Rupturas, Soledad
-
-### Buscar Ayuda 3.0
-- [x] Base actual con coloquialismos y variantes regionales confirmada
-- [ ] Más errores ortográficos y escritura fonética
-- [ ] Más dialectos/coloquialismos regionales
-- [ ] Expresiones indirectas y frases incompletas
-- [ ] Cobertura multilingüe priorizada
-- [ ] Safety-first antes del routing ordinario
-
-### Analítica
-- [x] Pageviews agregados privacy-first confirmados
-- [x] Webs Amigas incorporada a `visitor-analytics.js`
-- [ ] Cobertura en todas las páginas públicas
-- [ ] Panel privado operativo y fácilmente consultable
-- [ ] Integración de métricas SEO/traffic para priorización
-
-### Internacionalización
-- [x] Arquitectura visible 50+ países
-- [ ] Recursos verificados país por país
-- [ ] Prioridad: España -> México -> inglés/UK -> Francia -> resto UE -> otros continentes
-- [x] No prometer cobertura donde aún no exista
-
-### Monetización
-- [ ] CMP/consentimiento donde corresponda
-- [ ] AdSense/ads.txt cuando estén disponibles los datos de cuenta
-- [ ] Afiliación/leads solo en rutas aptas
-- [ ] Métricas RPM/CTR/revenue por página/categoría/país
-- [ ] Mantener exclusión total en P0/P1 sensibles
-
-## Regla de estado
-PENDIENTE -> EN EJECUCIÓN -> VERIFICADO -> HECHO. Nada se marca HECHO sin evidencia de producción.
+## Reglas
+PENDIENTE → EN EJECUCIÓN → VERIFICADO → HECHO. Nada se marca HECHO sin evidencia de entorno.
+Código integrado, despliegue y operación con datos reales son estados distintos.
+No hay anuncios, leads ni captación comercial en P0/P1 o Buscar Ayuda.
+HOLD humanos: #1, #83, #110, #111, #117, #147 y evidencia real #245/#250. Continuar trabajo independiente sin falsear su cierre.
