@@ -23,6 +23,7 @@ Estas cifras corresponden a todas las páginas conocidas, no al denominador del 
 No se han diagnosticado las redirecciones o la alternativa como errores: requieren revisar sus URLs/destinos.
 
 Inspección individual /alianzas.html: no está en Google; sin sitemap de referencia detectado por esa inspección.
+Sitemaps autenticado: https://desgracias.es/sitemap.xml figura Correcto, 82 páginas descubiertas, última lectura 18/10/2026 y envío 07/10/2026. No requiere reenviarlo para reparar un error inexistente.
 Solicitud de indexación iniciada, pero apareció reCAPTCHA. **NO consta solicitud aceptada**. Pendiente intervención humana en Search Console; no eludir ni resolver automáticamente el CAPTCHA.
 No pulsar validaciones masivas como sustituto de corregir causas verificadas.
 
@@ -35,7 +36,7 @@ No constaba archivo ni variable de snapshot Awin en la pantalla de configuració
 No añadir cuentas, exportaciones, tokens, correos privados ni cifras reales al repositorio público.
 
 ## Pendientes ejecutables y criterio de cierre
-1. Finalizar certificación sobre el SHA final: Engineering, SEO, Origin, Pages y Cloudflare, sin rebajar checks.
+1. Código d298dac: siete checks completados SUCCESS (Engineering, SEO, Origin, Pages build/deploy/report y Cloudflare). Repetir certificación sobre cualquier SHA final posterior.
 2. Search Console: resolver CAPTCHA de Alianzas, confirmar aceptación; revisar sitemap registrado y URLs concretas con redirección/canonical.
 3. Métricas privadas: sesión autorizada Ops y exportaciones reales; verificar periodo, origen, moneda y unidades. No inferir cero por ausencia.
 4. Piloto: proveedor/titular reales, evidencia de revisión y condiciones; solo entonces implementar activación y recepción privada de solicitudes.
