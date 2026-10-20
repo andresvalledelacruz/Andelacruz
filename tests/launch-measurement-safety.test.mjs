@@ -145,3 +145,11 @@ test('Safety route inventory is exact, unique and path-safe', async () => {
   await expectHold(async (root) => mutate(root, 'SAFETY_ROUTE_INVENTORY.md', (source) => source.replace(/^(\| `\/ayuda-urgente\.html`.*)$/m, '$1\n$1')), /duplicate routes|route sets differ/);
   await expectHold(async (root) => mutate(root, 'SAFETY_ROUTE_INVENTORY.md', (source) => source.replace('`/ayuda-urgente.html`', '`/../outside.html`')), /route sets differ|invalid Safety route/);
 });
+
+
+test('international help stays pinned and cannot transmit queries through either dependency', async () => {
+  for (const file of ['international-help-ui.js', 'src/international-help.js']) {
+    await expectHold(async (root) => mutate(root, file, (source) => `${source}\n// unexpected drift\n`), /pinned measurement file changed/);
+    await expectHold(async (root) => mutate(root, file, (source) => `${source}\nnavigator.sendBeacon('/collect', 'sensitive');\n`), /forbidden network request/);
+  }
+});
