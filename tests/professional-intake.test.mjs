@@ -9,6 +9,7 @@ import Fastify from 'fastify';
 import { handleProfessionalApplication } from '../src/professional-intake-http.js';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
+import { createHash } from 'node:crypto';
 
 const requestId = '11111111-1111-4111-8111-111111111111';
 const receiptId = '22222222-2222-4222-8222-222222222222';
@@ -76,6 +77,31 @@ test('shared submission budget and conflicting retries fail without inserting a 
   }
 });
 
+test('an expired request ID returns a conflict instead of attempting a duplicate insert', async () => {
+  const pool=database(sql=>{
+    if(sql.includes('insert into')) throw Object.assign(new Error('duplicate request_id'),{code:'23505'});
+    if(sql.includes('count(*)')) return {rows:[{received:0}]};
+    return {rows:sql.includes('payload_digest') && !sql.includes('and expires_at >')?
+      [{receipt_id:receiptId,payload_digest:'expired',expires_at:now.toISOString()}]:[]};
+  });
+  await assert.rejects(receiveProfessionalApplication(pool,input,{configuration,now}),
+    {status:409,code:'request_expired'});
+  assert.equal(pool.calls.some(c=>c.sql.includes('insert into')),false);
+  assert.deepEqual(pool.calls.slice(-2).map(c=>c.sql),['rollback','release']);
+  const lookup=pool.calls.find(c=>c.sql.includes('payload_digest'));
+  assert.doesNotMatch(lookup.sql,/and expires_at >/);
+});
+
+test('an unexpired identical retry returns the original receipt without consuming capacity', async () => {
+  const digest=createHash('sha256').update(JSON.stringify(validateProfessionalApplication(input).payload)).digest('hex');
+  const pool=database(sql=>({rows:sql.includes('payload_digest')?
+    [{receipt_id:receiptId,payload_digest:digest,expires_at:new Date(now.getTime()+1000)}]:[]}));
+  assert.deepEqual(await receiveProfessionalApplication(pool,input,{configuration,now}),
+    {receipt_id:receiptId,status:'received_pending_review'});
+  assert.equal(pool.calls.some(c=>/count\(\*\)|insert into/.test(c.sql)),false);
+  assert.deepEqual(pool.calls.slice(-2).map(c=>c.sql),['commit','release']);
+});
+
 test('named admin and MFA are required; shared staging token cannot read or review professional applications', async () => {
   for (const p of [null,{...principal,transitional:true},{...principal,transitional:undefined},{...principal,aal:'aal1'},
     {...principal,role:'analyst'},{...principal,subject:'legacy:staging-ops-token'}]) {
@@ -133,6 +159,21 @@ test('Fastify intake respects origin denial, disabled state, payload limit and t
     assert.equal(response.statusCode,202);
     assert.equal(response.json().status,'received_pending_review');
     assert.doesNotMatch(response.body,/synthetic@|email|description/);
+  } finally {await app.close();}
+});
+
+test('HTTP preserves the expired retry conflict without returning a receipt or personal data', async () => {
+  const pool=database(sql=>({rows:sql.includes('payload_digest')?
+    [{receipt_id:receiptId,payload_digest:'expired',expires_at:'2020-01-01T00:00:00Z'}]:[]}));
+  const app=Fastify({logger:false});
+  app.post('/public/professional-applications',(request,reply)=>handleProfessionalApplication(request,reply,{
+    pool,environment:'staging',configuration,allowPublicOriginOrDeny:()=>true
+  }));
+  try {
+    const response=await app.inject({method:'POST',url:'/public/professional-applications',payload:input});
+    assert.equal(response.statusCode,409);
+    assert.deepEqual(response.json(),{error:'request_expired'});
+    assert.equal(pool.calls.some(c=>c.sql.includes('insert into')),false);
   } finally {await app.close();}
 });
 
