@@ -67,7 +67,10 @@ async function checkScenario({ mode, width }) {
       assert.ok(await page.locator('a[href="tel:112"]').count());
       assert.ok(await page.locator('a[href="tel:024"]').count());
       await page.goto(origin, { waitUntil: 'networkidle' });
-      await page.locator('[data-search-entry="hero"]').click();
+      // Exercise the native no-JS link through its keyboard path. At 320px the
+      // sticky header may overlap the pointer target after Playwright scrolls it.
+      await page.locator('[data-search-entry="hero"]').focus();
+      await page.keyboard.press('Enter');
       await page.waitForURL(`${origin}/buscar/`);
       assert.ok(await page.locator('main').isVisible());
       console.log(`PASS ${mode} ${width}px: urgent, search, ten resources, privacy, keyboard and layout`);
