@@ -5,7 +5,9 @@ import { readFile } from 'node:fs/promises';
 const source = await readFile(new URL('../src/ops-api.js', import.meta.url), 'utf8');
 
 test('ops-api routes are wired through the RBAC authorization bridge', () => {
-  assert.match(source, /buildOpsAuthorizationContext/);
+  assert.match(source, /await resolveOpsRequestAuthorization/);
+  assert.match(source, /configuration: opsIdentity, pool/);
+  assert.match(source, /environment !== 'staging'/);
   assert.match(source, /requireOpsCapability/);
   assert.doesNotMatch(source, /preHandler:\s*requireOps\b/);
 });

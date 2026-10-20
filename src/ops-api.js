@@ -11,7 +11,8 @@ import { readBusinessMetrics, loadSearchConsoleSnapshot, loadAdtractionSnapshot,
 import { evaluateExecutiveDecision } from './executive-decision-engine.js';
 import { registerPrivacySafeHttpObservability } from './fastify-privacy-safe-observability.js';
 import { buildModerationTriage, sortModerationItems, moderationTriageSummary } from './moderation-triage.js';
-import { buildOpsAuthorizationContext, authorizeOpsPrincipal } from './ops-authz.js';
+import { authorizeOpsPrincipal } from './ops-authz.js';
+import { opsIdentityConfiguration, resolveOpsRequestAuthorization } from './ops-supabase-identity.js';
 import {
   buildStoryUpdateDecisionTask,
   candidateStatusForDecision,
@@ -28,6 +29,7 @@ const port = Number(process.env.OPS_PORT || process.env.PORT || 10001);
 const host = '0.0.0.0';
 const environment = process.env.NODE_ENV || 'staging';
 const opsToken = process.env.STAGING_OPS_TOKEN || '';
+const opsIdentity = opsIdentityConfiguration();
 const queueNames = ['moderation', 'safety', 'internal_tasks'];
 const here = dirname(fileURLToPath(import.meta.url));
 const opsDir = resolve(here, '../ops');
@@ -60,11 +62,12 @@ const publicInteractionsByIp = new Map();
 function requireOpsCapability(method, route) {
   return async function requireOpsCapabilityHandler(request, reply) {
     if (environment !== 'staging') return reply.code(404).send({ error: 'not_found' });
-    if (!opsToken) return reply.code(503).send({ error: 'ops_not_configured' });
+    if (!opsToken && !opsIdentity) return reply.code(503).send({ error: 'ops_not_configured' });
 
-    const authorization = buildOpsAuthorizationContext({
+    const authorization = await resolveOpsRequestAuthorization({
       authorization: request.headers.authorization,
       configuredToken: opsToken,
+      environment, configuration: opsIdentity, pool,
       method,
       route
     });
