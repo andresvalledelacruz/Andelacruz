@@ -66,7 +66,9 @@ export async function supabaseOpsPrincipal({ authorization, configuration, pool,
 
 export async function resolveOpsRequestAuthorization(options = {}) {
   const legacy = buildOpsAuthorizationContext(options);
-  if (legacy.principal || legacy.reason === 'unmapped_route') return legacy;
+  if (legacy.reason === 'unmapped_route') return legacy;
+  if (options.environment !== 'staging') return { allowed: false, reason: 'unauthenticated', principal: null, capability: legacy.capability };
+  if (legacy.principal) return legacy;
   const principal = await supabaseOpsPrincipal(options);
   const capability = capabilityForOpsRoute(options.method, options.route);
   return { ...authorizeOpsPrincipal({ principal, capability, safetyLevel: options.safetyLevel }), principal, capability };

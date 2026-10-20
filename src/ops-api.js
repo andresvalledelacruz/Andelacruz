@@ -27,7 +27,7 @@ registerPrivacySafeHttpObservability(app, { service: 'desgracias-ops-api' });
 
 const port = Number(process.env.OPS_PORT || process.env.PORT || 10001);
 const host = '0.0.0.0';
-const environment = process.env.NODE_ENV || 'staging';
+const environment = process.env.NODE_ENV || 'unknown';
 const opsToken = process.env.STAGING_OPS_TOKEN || '';
 const opsIdentity = opsIdentityConfiguration();
 const queueNames = ['moderation', 'safety', 'internal_tasks'];

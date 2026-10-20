@@ -71,3 +71,10 @@ test('route resolution preserves legacy restrictions, requires nominal MFA for a
  const unknown=await resolveOpsRequestAuthorization({...request,route:'/ops/unknown'});assert.equal(unknown.reason,'unmapped_route');assert.equal(f.calls.http.length,1);
  const disabled=await resolveOpsRequestAuthorization({...request,configuration:null});assert.equal(disabled.allowed,false);
 });
+
+test('missing, unknown and production environments cannot enable nominal or shared staging identity',async()=>{
+ for(const environment of [undefined,'unknown','production','']) {
+  const f=fixture();const decision=await resolveOpsRequestAuthorization({...f,environment,method:'GET',route:'/ops/professionals/applications'});
+  assert.equal(decision.allowed,false);assert.equal(f.calls.http.length,0);assert.equal(f.calls.sql.length,0);
+ }
+});
