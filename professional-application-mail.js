@@ -10,8 +10,9 @@
     ['Nombre', 'pro-name'], ['Profesión', 'pro-field'],
     ['Colegio o registro', 'pro-register'], ['Web', 'pro-website'],
     ['Áreas o especialidades', 'pro-specialties'], ['A quién atiende', 'pro-audience'],
-    ['Descripción', 'pro-description'], ['Zona', 'pro-area'], ['Modalidad', 'pro-mode'],
-    ['Idiomas', 'pro-languages'], ['Precio orientativo', 'pro-price'],
+    ['Descripción', 'pro-description'], ['País de establecimiento', 'pro-country'],
+    ['Ciudad o región', 'pro-area'], ['Países de prestación declarados', 'pro-service-countries'],
+    ['Modalidad', 'pro-mode'], ['Idiomas', 'pro-languages'], ['Precio orientativo', 'pro-price'],
     ['Correo', 'pro-contact'], ['Teléfono', 'pro-phone']
   ];
   const prepare = () => {
