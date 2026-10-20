@@ -1,0 +1,112 @@
+{
+  "es": {
+    "title": "Elige un punto de partida",
+    "note": "Selecciona primero el país donde necesitas ayuda. El idioma de esta página no garantiza atención en ese idioma. Estas opciones filtran los recursos disponibles; no son una evaluación clínica.",
+    "unavailable": "No hay recursos de este tema publicados para el país elegido. Esto no significa que no existan servicios: se muestran las demás opciones del país y su enlace de ayuda urgente.",
+    "choices": [
+      [
+        "empleo",
+        "Trabajo y prestaciones",
+        "trabajo · desempleo · formación"
+      ],
+      [
+        "vivienda",
+        "Vivienda y alquiler",
+        "alquiler · arriendo · renta"
+      ],
+      [
+        "emocional",
+        "Apoyo emocional",
+        "soledad · ansiedad · apoyo"
+      ]
+    ]
+  },
+  "en": {
+    "title": "Choose a starting point",
+    "note": "First choose the country where you need help. The language of this page does not guarantee support in that language. These options filter available resources; they are not a clinical assessment.",
+    "unavailable": "No resources for this topic are listed for the selected country. This does not mean services do not exist: the other country resources and its urgent help link are shown.",
+    "choices": [
+      [
+        "empleo",
+        "Work and benefits",
+        "job search · unemployment · training"
+      ],
+      [
+        "vivienda",
+        "Housing and rent",
+        "rent · eviction · homelessness"
+      ],
+      [
+        "emocional",
+        "Emotional support",
+        "loneliness · anxiety · support"
+      ]
+    ]
+  },
+  "fr": {
+    "title": "Choisissez un point de départ",
+    "note": "Choisissez d’abord le pays où vous avez besoin d’aide. La langue de cette page ne garantit pas un accueil dans cette langue. Ces options filtrent les ressources disponibles ; elles ne constituent pas une évaluation clinique.",
+    "unavailable": "Aucune ressource sur ce sujet n’est répertoriée pour le pays choisi. Cela ne signifie pas que les services n’existent pas : les autres ressources du pays et son lien d’aide urgente restent affichés.",
+    "choices": [
+      [
+        "empleo",
+        "Travail et allocations",
+        "emploi · chômage · formation"
+      ],
+      [
+        "vivienda",
+        "Logement et loyer",
+        "loyer · expulsion · hébergement"
+      ],
+      [
+        "emocional",
+        "Soutien émotionnel",
+        "solitude · anxiété · soutien"
+      ]
+    ]
+  },
+  "pt": {
+    "title": "Escolha um ponto de partida",
+    "note": "Escolha primeiro o país onde precisa de ajuda. O idioma desta página não garante atendimento nesse idioma. Estas opções filtram os recursos disponíveis; não são uma avaliação clínica.",
+    "unavailable": "Não há recursos deste tema publicados para o país escolhido. Isso não significa que não existam serviços: são mostradas as outras opções do país e a ligação de ajuda urgente.",
+    "choices": [
+      [
+        "empleo",
+        "Trabalho e prestações",
+        "emprego · desemprego · formação"
+      ],
+      [
+        "vivienda",
+        "Habitação e renda",
+        "renda · arrendamento · despejo"
+      ],
+      [
+        "emocional",
+        "Apoio emocional",
+        "solidão · ansiedade · apoio"
+      ]
+    ]
+  },
+  "de": {
+    "title": "Wählen Sie einen Ausgangspunkt",
+    "note": "Wählen Sie zuerst das Land, in dem Sie Hilfe benötigen. Die Sprache dieser Seite garantiert keine Beratung in dieser Sprache. Diese Optionen filtern die vorhandenen Angebote; sie sind keine klinische Einschätzung.",
+    "unavailable": "Für das gewählte Land sind zu diesem Thema keine Angebote verzeichnet. Das bedeutet nicht, dass es keine Hilfsangebote gibt: Die übrigen Angebote des Landes und der Link zur dringenden Hilfe werden angezeigt.",
+    "choices": [
+      [
+        "empleo",
+        "Arbeit und Sozialleistungen",
+        "Arbeitssuche · Arbeitslosengeld · Weiterbildung"
+      ],
+      [
+        "vivienda",
+        "Wohnen und Miete",
+        "Mietschulden · Wohngeld · Wohnungslosigkeit"
+      ],
+      [
+        "emocional",
+        "Psychische Unterstützung",
+        "Einsamkeit · Angst · Beratung"
+      ]
+    ]
+  }
+}

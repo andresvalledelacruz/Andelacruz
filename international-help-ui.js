@@ -17,10 +17,14 @@ function show(categories=[]){
       if(!group.hidden&&!card.hidden)visible++;
     }
   }
-  status.textContent=visible?`${messages.results}: ${visible}. ${messages.limit}`:messages.empty;
+  status.textContent=visible?`${messages.results}: ${visible}. ${messages.limit}`:(messages.unavailable||messages.empty);
   if(!visible){for(const group of groups)if(!group.hidden)for(const card of group.querySelectorAll('[data-topic]'))card.hidden=false;}
 }
 form.hidden=false;
+for(const button of form.querySelectorAll('[data-help-topic]'))button.addEventListener('click',()=>{
+  clear();topic.value=button.dataset.helpTopic;show([topic.value]);
+  if(country.value)status.focus();
+});
 country.addEventListener('change',()=>{clear();topic.value='';show();});
 topic.addEventListener('change',()=>{clear();show(topic.value?[topic.value]:[]);});
 form.addEventListener('submit',event=>{

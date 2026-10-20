@@ -3,3 +3,5 @@
 [dir="rtl"] .urgent{border-left:0;border-inline-start:4px solid #8a4939}[dir="rtl"] nav{display:flex;flex-wrap:wrap;gap:12px}[dir="rtl"] .urgent a{display:inline-block;min-height:44px;padding:4px}bdi{unicode-bidi:isolate}
 
 .spain-flag{display:inline-block;width:24px;height:18px;background:url(/assets/country-flags.png) 0 0/24px 1044px;vertical-align:middle}
+
+.help-shortcuts{border:0;margin:20px 0;padding:0;min-width:0}.help-shortcuts legend{font-weight:700}.help-shortcuts .cards{grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr))}.help-shortcuts button{text-align:start;background:#fff;color:#40372f;overflow-wrap:anywhere}.help-shortcuts button span{display:block;margin-top:6px;font-size:.85rem}.help-shortcuts button:hover{background:#f4e8d8}
