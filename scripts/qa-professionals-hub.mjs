@@ -117,7 +117,7 @@ try {
       const copy = page.locator('#professional-mail-copy');
       await copy.click();
       assert.equal(await page.locator('#professional-mail-draft').isVisible(), false, 'invalid form cannot prepare a draft');
-      for (const id of ['pro-name','pro-specialties','pro-audience','pro-description','pro-area','pro-languages','pro-price']) {
+      for (const id of ['pro-name','pro-specialties','pro-audience','pro-description','pro-country','pro-area','pro-service-countries','pro-languages','pro-price']) {
         await page.locator('#'+id).fill('Ejemplo de prueba');
       }
       await page.locator('#pro-website').fill('https://example.org/');
