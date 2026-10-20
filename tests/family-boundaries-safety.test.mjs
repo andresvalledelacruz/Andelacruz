@@ -28,3 +28,36 @@ test('la página conserva canonical y límites profesionales', () => {
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/familia\/necesito-poner-limites-a-mi-familia\/"/);
   assert.match(html, /no sustituyen apoyo psicológico, social, jurídico ni de emergencia/i);
 });
+
+
+test('distingue petición, acuerdo, límite y castigo sin presentar control como autocuidado', () => {
+  assert.match(html, /Petición, acuerdo, límite y castigo no son equivalentes/i);
+  assert.match(html, /no se vuelve saludable por llamarlo “límite”/i);
+  assert.match(html, /hecho, necesidad, respuesta y revisión/i);
+});
+
+test('incorpora privacidad digital y una salida segura ante control tecnológico', () => {
+  assert.match(html, /Límites digitales dentro de la familia/i);
+  assert.match(html, /dispositivo seguro/i);
+  assert.match(html, /Agencia Española de Protección de Datos|AEPD/i);
+});
+
+test('sustituye la captación de historias por navegación privada hacia contenido existente', () => {
+  assert.doesNotMatch(html, /Contar mi historia/i);
+  assert.doesNotMatch(html, /href="\/\#inicio"/i);
+  assert.match(html, /href="\/buscar\/"/i);
+  assert.match(html, /No incluyas nombres, direcciones, documentos ni datos de terceras personas/i);
+});
+
+test('deriva dependencias prácticas a atención social primaria sin prometer prestaciones', () => {
+  assert.match(html, /servicios sociales de atención primaria se prestan desde los municipios/i);
+  assert.match(html, /dependen del territorio y de la valoración correspondiente/i);
+  assert.match(html, /dsca\.gob\.es\/es\/derechos-sociales\/servicios-sociales/i);
+});
+
+test('fecha editorial y sitemap se mantienen alineados', async () => {
+  const sitemap = await readFile(new URL('../sitemap.xml', import.meta.url), 'utf8');
+  assert.match(html, /"dateModified":"2026-10-20"/);
+  assert.match(html, /Actualizado el 20 de octubre de 2026/);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/necesito-poner-limites-a-mi-familia\/<\/loc><lastmod>2026-10-20<\/lastmod>/);
+});
