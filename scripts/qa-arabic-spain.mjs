@@ -35,11 +35,15 @@ try{
   }
   for(const query of ['بغيت نموت وعندي ديون','مابغيتش نعيش','كلام غير واضح']){
    await page.locator('#help-query').fill(query);await page.locator('button[type=submit]').click();
-   assert.equal(await page.locator('li[data-topic]:visible').count(),4);
+   assert.equal(await page.locator('li[data-topic]:visible').count(),5);
    assert.ok(await page.locator('a[href="tel:024"]').isVisible());
    assert.equal(page.url(),`${origin}/ayuda/ar/`);
   }
   assert.equal(await page.locator('a[href^="tel:"]').count(),2);
+  for(const [topic,count] of [['social',1],['vivienda',1],['emocional',2]]){
+   await page.locator(`[data-help-topic="${topic}"]`).click();
+   assert.equal(await page.locator('li[data-topic]:visible').count(),count);
+  }
   assert.equal(await page.evaluate(()=>localStorage.length+sessionStorage.length),0);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   assert.deepEqual(errors,[]);assert.deepEqual(requests,[]);
@@ -49,6 +53,6 @@ try{
  const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}});
  const page=await context.newPage();await page.goto(`${origin}/ayuda/ar/`);
  assert.ok(await page.locator('a[href="tel:112"]').isVisible());assert.ok(await page.locator('a[href="tel:024"]').isVisible());
- assert.equal(await page.locator('li[data-topic]:visible').count(),4);
+ assert.equal(await page.locator('li[data-topic]:visible').count(),5);
  await context.close();console.log('PASS Arabic no-JS access');
 }finally{await browser.close();await new Promise(r=>server.close(r));}
