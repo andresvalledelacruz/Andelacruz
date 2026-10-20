@@ -232,3 +232,37 @@ test('recent countries keep sourced urgent and employment services explicit',()=
  assert.match(international,/10111, ambulance 10177 and 112 from a cell phone/);
  assert.match(international,/policía es 110|policía 110|警察は110/);
 });
+
+for(const [query,category] of [
+ ['Ich suche Weiterbildung','empleo'],['Arbeitslosengeld beantragen','empleo'],
+ ['Arbeitssuche ohne Erfahrung','empleo'],['Ich habe Mietschulden','vivienda'],
+ ['Wohngeld beantragen','vivienda'],['Wohnungslosigkeit','vivienda'],
+ ['Ich suche Psychotherapie','emocional'],['Panik','emocional'],
+ ['Schuldnerberatung','consumo'],['je cherche une formation','empleo'],
+ ['hébergement','vivienda'],['je suis anxieux','emocional'],
+ ['surendettement','consumo'],['preciso de formação','empleo'],['endividamento','consumo']
+])test(`additional international topic: ${query}`,()=>{
+ const result=findHelpTopics(query);
+ assert.deepEqual(result.categories,[category]);
+ assert.equal(result.raw_query_retained,false);
+ assert.ok(!JSON.stringify(result).includes(query));
+});
+test('vocabulary remains word bounded and urgent context survives practical needs',()=>{
+ assert.deepEqual(findHelpTopics('Wohnungslosigkeitsstatistik').categories,[]);
+ assert.deepEqual(findHelpTopics('renda').categories,[],'income versus rent requires context');
+ for(const query of ['Ich will nicht mehr leben und habe Mietschulden','je veux en finir et surendettement','بغيت نموت Arbeitslosengeld']){
+  assert.equal(findHelpTopics(query).safety,true);
+ }
+});
+test('quick topic cards are localized, country dependent and not automatic language routing',()=>{
+ const copy=JSON.parse(read('data/help-wayfinding.json','utf8'));
+ for(const lang of ['es','en','fr','pt','de']){
+  const html=read(`ayuda/${lang}/index.html`,'utf8');
+  assert.equal((html.match(/data-help-topic=/g)||[]).length,3);
+  for(const [topic] of copy[lang].choices)assert.ok(html.includes(`type="button" data-help-topic="${topic}"`));
+  const messages=JSON.parse(html.match(/<template id="help-messages">(.*?)<\/template>/s)[1]);
+  assert.equal(messages.unavailable,copy[lang].unavailable);
+  assert.notEqual(messages.unavailable,messages.empty);
+  assert.match(html,/<form id="help-form" hidden/);
+ }
+});
