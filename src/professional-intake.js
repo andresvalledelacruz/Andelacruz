@@ -58,9 +58,12 @@ export async function receiveProfessionalApplication(pool, input, {
     // Shared database budget, including all service instances. No IP, cookie or
     // persistent visitor identifier is collected for rate limiting.
     await client.query("select pg_advisory_xact_lock(hashtext('professional_intake_budget_v1'))");
-    const prior = await client.query(`select receipt_id, payload_digest from private.professional_applications
-      where request_id = $1::uuid and expires_at > $2::timestamptz`, [application.requestId, now.toISOString()]);
+    const prior = await client.query(`select receipt_id, payload_digest, expires_at from private.professional_applications
+      where request_id = $1::uuid`, [application.requestId]);
     if (prior.rows[0]) {
+      // The unique request ID remains reserved until retention cleanup removes
+      // the row. Do not retry an insert or disclose the expired receipt.
+      if (new Date(prior.rows[0].expires_at).getTime() <= now.getTime()) throw error(409, 'request_expired');
       if (prior.rows[0].payload_digest !== digest) throw error(409, 'request_conflict');
       await client.query('commit');
       return { receipt_id:prior.rows[0].receipt_id, status:'received_pending_review' };

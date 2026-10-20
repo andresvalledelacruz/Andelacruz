@@ -37,6 +37,9 @@ producción. La conexión de un formulario real necesita su revisión de privaci
 La respuesta 202 incluye únicamente `receipt_id` y `received_pending_review`, y
 solo se entrega después de confirmar la transacción. Un reintento con el mismo
 UUID y contenido devuelve el mismo recibo; otro contenido produce conflicto.
+Si el identificador sigue almacenado pero ha caducado, responde 409
+`request_expired`, sin devolver el recibo ni intentar otra inserción. Una nueva
+solicitud requiere un UUID nuevo; el reintento no renueva la retención.
 Un bloqueo compartido en base de datos limita la capacidad a 100 solicitudes en
 24 horas; no usa IP, cookies ni identificadores de visitante. Esto limita el daño,
 pero no sustituye una revisión de abuso antes de abrir recepción pública.
