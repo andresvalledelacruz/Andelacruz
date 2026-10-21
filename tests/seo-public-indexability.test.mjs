@@ -69,7 +69,7 @@ for (const pathname of hubs) {
 }
 
 test('localized equivalent help pages keep reciprocal hreflang and self canonicals', () => {
-  const languages = ['es', 'en', 'fr', 'pt', 'de'];
+  const languages = ['es', 'en', 'fr', 'pt', 'de', 'it'];
   for (const language of languages) {
     const html = readFileSync(`ayuda/${language}/index.html`, 'utf8');
     const alternates = [...html.matchAll(/<link\b[^>]*>/gi)].map(match => attributes(match[0])).filter(tag => tag.rel === 'alternate');

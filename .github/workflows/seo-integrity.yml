@@ -114,7 +114,7 @@ jobs:
           for url,lastmod in entries:
               file_path=route_to_file(url); assert file_path.exists() and file_path.is_file(); assert lastmod; lm_date=date.fromisoformat(lastmod); assert lm_date<=today
               html=file_path.read_text(encoding='utf-8'); parser=PageParser(); parser.feed(html)
-              expected_lang={'/ayuda/en/':'en','/ayuda/fr/':'fr','/ayuda/pt/':'pt','/ayuda/de/':'de','/ayuda/ar/':'ar'}.get(urlparse(url).path,'es'); assert parser.lang==expected_lang
+              expected_lang={'/ayuda/en/':'en','/ayuda/fr/':'fr','/ayuda/pt/':'pt','/ayuda/de/':'de','/ayuda/ar/':'ar','/ayuda/it/':'it'}.get(urlparse(url).path,'es'); assert parser.lang==expected_lang
               assert parser.title and 15<=len(parser.title)<=90; assert parser.title not in seen_titles; seen_titles[parser.title]=url
               descriptions=parser.meta_content('description'); assert len(descriptions)==1 and descriptions[0] and 40<=len(descriptions[0])<=220
               robots_meta=parser.meta_content('robots'); assert len(robots_meta)==1; robot_tokens={x.strip().lower() for x in robots_meta[0].split(',')}; assert 'index' in robot_tokens and 'noindex' not in robot_tokens

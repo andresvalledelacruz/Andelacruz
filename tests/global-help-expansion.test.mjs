@@ -18,18 +18,18 @@ test('directory is uniquely sourced and country-scoped; runtime alphabetizes it'
  assert.doesNotMatch(page,/id="country-buttons"|webs-amigas-country-filter|Webs amigas por país|países se muestran como pendientes/);
  assert.ok(page.includes('href="/recursos/"'));
  assert.equal(data.records.filter(r=>r.kind==='organization').length,50);
- assert.equal(data.records.filter(r=>r.kind==='resource').length,240);
+ assert.equal(data.records.filter(r=>r.kind==='resource').length,245);
  const resources=read('recursos/index.html','utf8');
  for(const r of data.records.filter(r=>r.kind==='resource'))assert.ok(resources.includes(`href="${r.url.replaceAll('&','&amp;')}"`),r.id);
  for(const r of data.records.filter(r=>r.kind==='organization'))assert.ok(!resources.includes(`href="${r.url.replaceAll('&','&amp;')}"`),r.id);
 
 });
 test('localized equivalents have reciprocal hreflang, self canonicals, privacy and safety',()=>{
- for(const lang of ['es','en','fr','pt','de']){
+ for(const lang of ['es','en','fr','pt','de','it']){
   const html=read(`ayuda/${lang}/index.html`,'utf8');
   assert.ok(html.includes(`<html lang="${lang}">`));
   assert.ok(html.includes(`rel="canonical" href="https://desgracias.es/ayuda/${lang}/"`));
-  for(const alternate of ['es','en','fr','pt','de'])assert.ok(html.includes(`hreflang="${alternate}" href="https://desgracias.es/ayuda/${alternate}/"`));
+  for(const alternate of ['es','en','fr','pt','de','it'])assert.ok(html.includes(`hreflang="${alternate}" href="https://desgracias.es/ayuda/${alternate}/"`));
   assert.ok(html.includes('hreflang="x-default"'));
   assert.doesNotMatch(html,/hreflang="(?:en-UK|es-EU)"|visitor-analytics|adsbygoogle|<iframe/);
   assert.match(html,/name="referrer" content="no-referrer"/);
@@ -77,7 +77,7 @@ test('Ireland, Italy and the Netherlands have scoped official first links',()=>{
   const records=data.records.filter(record=>record.country===code);
   assert.equal(records.length,count,code);
   assert.ok(records.every(record=>record.kind==='resource'&&record.sourceUrl===record.url),code);
-  for(const language of ['es','en','fr','pt','de']){
+  for(const language of ['es','en','fr','pt','de','it']){
    const page=read(`ayuda/${language}/index.html`,'utf8');
    const section=page.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
    assert.ok(section,`${language}/${code}`);
@@ -93,7 +93,7 @@ test('Belgium, Austria and Luxembourg have distinct reviewed urgent and employme
   assert.equal(records.length,count,code);
   assert.ok(records.some(record=>record.category==='empleo'),code);
   assert.ok(records.every(record=>record.kind==='resource'&&record.sourceUrl===record.url),code);
-  for(const language of ['es','en','fr','pt','de']){
+  for(const language of ['es','en','fr','pt','de','it']){
    const page=read(`ayuda/${language}/index.html`,'utf8');
    const section=page.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
    assert.ok(section,`${language}/${code}`);
@@ -109,7 +109,7 @@ test('Denmark, Poland and Sweden have reviewed national emergency and employment
   assert.equal(records.length,2,code);
   assert.deepEqual(new Set(records.map(record=>record.category)),new Set(['salud','empleo']));
   assert.ok(records.every(record=>record.kind==='resource'&&record.language===language&&record.sourceUrl===record.url),code);
-  for(const pageLanguage of ['es','en','fr','pt','de']){
+  for(const pageLanguage of ['es','en','fr','pt','de','it']){
    const page=read(`ayuda/${pageLanguage}/index.html`,'utf8');
    const section=page.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
    assert.ok(section,`${pageLanguage}/${code}`);
@@ -126,7 +126,7 @@ test('Australia, Canada, the US and Uruguay have scoped official urgent and empl
   assert.equal(records.length,2,code);
   assert.ok(records.some(record=>record.category==='empleo'));
   assert.ok(records.every(record=>record.kind==='resource'&&record.sourceUrl===record.url));
-  for(const language of ['es','en','fr','pt','de']){
+  for(const language of ['es','en','fr','pt','de','it']){
    const html=read(`ayuda/${language}/index.html`,'utf8');
    const section=html.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
    assert.ok(section,`${language}/${code}`);
@@ -141,7 +141,7 @@ test('Finland, New Zealand, Czechia and Greece have reviewed local emergency and
   const records=data.records.filter(record=>record.country===code);
   assert.equal(records.length,2,code);
   assert.ok(records.some(record=>record.category==='empleo'));
-  for(const language of ['es','en','fr','pt','de']){
+  for(const language of ['es','en','fr','pt','de','it']){
    const html=read(`ayuda/${language}/index.html`,'utf8');
    const section=html.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
    assert.ok(section,`${language}/${code}`);
@@ -158,7 +158,7 @@ test('Paraguay and Panama link to reviewed emergency and employment services',()
   assert.deepEqual(new Set(records.map(r=>r.category)),new Set(['salud','empleo']));
   assert.deepEqual(records.map(r=>new URL(r.url).hostname),hosts);
   assert.ok(records.every(r=>r.language==='es'&&r.verification.httpStatus===200));
-  for(const lang of ['es','en','fr','pt','de']){
+  for(const lang of ['es','en','fr','pt','de','it']){
    const html=read(`ayuda/${lang}/index.html`,'utf8');
    const section=html.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
    assert.ok(section,`${lang}/${code}`);
@@ -173,7 +173,7 @@ test('five further countries have official urgent and employment links',()=>{
   const records=data.records.filter(r=>r.country===code);
   assert.deepEqual(new Set(records.map(r=>r.category)),new Set(['salud','empleo']));
   assert.deepEqual(records.map(r=>new URL(r.url).hostname),hosts);
-  for(const lang of ['es','en','fr','pt','de']){
+  for(const lang of ['es','en','fr','pt','de','it']){
    const html=read(`ayuda/${lang}/index.html`,'utf8');
    const section=html.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
    assert.ok(section,`${lang}/${code}`);
@@ -189,7 +189,7 @@ test('Slovenia Latvia and Lithuania have local emergency and employment routes',
   const records=data.records.filter(r=>r.country===code);
   assert.deepEqual(new Set(records.map(r=>r.category)),new Set(['salud','empleo']));
   assert.deepEqual(records.map(r=>new URL(r.url).hostname),hosts);
-  for(const lang of ['es','en','fr','pt','de']){
+  for(const lang of ['es','en','fr','pt','de','it']){
    const html=read(`ayuda/${lang}/index.html`,'utf8');
    const section=html.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
    assert.ok(section,`${lang}/${code}`);
@@ -205,7 +205,7 @@ test('Malta and Ecuador have accessible official emergency and employment links'
   const records=data.records.filter(r=>r.country===code);
   assert.deepEqual(new Set(records.map(r=>r.category)),new Set(['salud','empleo']));
   assert.deepEqual(records.map(r=>new URL(r.url).hostname),hosts);
-  for(const lang of ['es','en','fr','pt','de']){
+  for(const lang of ['es','en','fr','pt','de','it']){
    const html=read(`ayuda/${lang}/index.html`,'utf8');
    const section=html.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
    assert.ok(section,`${lang}/${code}`);
@@ -221,7 +221,7 @@ test('recent countries keep sourced urgent and employment services explicit',()=
   const records=data.records.filter(r=>r.country===code);
   assert.deepEqual(new Set(records.map(r=>r.category)),new Set(['salud','empleo']));
   assert.deepEqual(records.map(r=>new URL(r.url).hostname),hosts);
-  for(const lang of ['es','en','fr','pt','de']){
+  for(const lang of ['es','en','fr','pt','de','it']){
    const html=read(`ayuda/${lang}/index.html`,'utf8');
    const section=html.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
    assert.ok(section,`${lang}/${code}`);
@@ -256,7 +256,7 @@ test('vocabulary remains word bounded and urgent context survives practical need
 });
 test('quick topic cards are localized, country dependent and not automatic language routing',()=>{
  const copy=JSON.parse(read('data/help-wayfinding.json','utf8'));
- for(const lang of ['es','en','fr','pt','de']){
+ for(const lang of ['es','en','fr','pt','de','it']){
   const html=read(`ayuda/${lang}/index.html`,'utf8');
   assert.equal((html.match(/data-help-topic=/g)||[]).length,6);
   for(const [topic] of copy[lang].choices)assert.ok(html.includes(`type="button" data-help-topic="${topic}"`));
@@ -265,4 +265,16 @@ test('quick topic cards are localized, country dependent and not automatic langu
   assert.notEqual(messages.unavailable,messages.empty);
   assert.match(html,/<form id="help-form" hidden/);
  }
+});
+
+test('Italian help offers country and topic navigation without unsupported free-text search',()=>{
+ const page=read('ayuda/it/index.html','utf8');
+ assert.match(page,/<textarea hidden id="help-query"/);
+ assert.match(page,/<button type="submit" hidden>/);
+ assert.match(page,/ricerca libera in italiano non è ancora disponibile/);
+ assert.match(page,/non garantisce assistenza in italiano/);
+ assert.equal((page.match(/data-help-topic=/g)||[]).length,6);
+ assert.match(page,/<strong lang="en">nidirect: benefits calculator for Northern Ireland/);
+ assert.match(page,/Irlanda del Norte/);
+ assert.match(page,/No es una ayuda automática/);
 });

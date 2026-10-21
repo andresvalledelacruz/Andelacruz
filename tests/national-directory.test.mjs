@@ -7,9 +7,9 @@ const directory = JSON.parse(readFileSync('data/help-directory.json','utf8'));
 
 test('Spanish organizations directory is static, sourced and separate from country resources', () => {
   const records=directory.records;
-  assert.equal(records.length,290);
-  assert.equal(new Set(records.map(r=>r.id)).size,290);
-  assert.equal(new Set(records.map(r=>r.url)).size,290);
+  assert.equal(records.length,295);
+  assert.equal(new Set(records.map(r=>r.id)).size,295);
+  assert.equal(new Set(records.map(r=>r.url)).size,295);
   assert.equal(Object.keys(directory.countries).length - 1,50);
   for(const country of ['PE','BG','CY','MA','NG']){
     const local=records.filter(r=>r.country===country && r.kind==='resource');
@@ -25,7 +25,7 @@ test('Spanish organizations directory is static, sourced and separate from count
     assert.ok(directory.countries[record.country]);
     assert.equal(new URL(record.url).protocol,'https:');
     assert.equal(record.sourceUrl,record.url);
-    assert.match(record.reviewedAt,/^2026-09-(18|20|27)$/);
+    assert.match(record.reviewedAt,/^(2026-09-(18|20|27)|2026-10-21)$/);
     assert.ok(record.description.length<110);
   }
   assert.match(page, /no implica colaboración, patrocinio ni acuerdo/);

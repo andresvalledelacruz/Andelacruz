@@ -392,7 +392,7 @@ export async function auditLaunchMeasurementSafety({ root = DEFAULT_ROOT } = {})
     const result = await auditHtmlEntry({ root: rootReal, htmlFile, protectedSurface: true });
     surfaces.push({ route, ...result });
     failures.push(...result.failures);
-    const approved = route === '/buscar/' ? APPROVED_SEARCH_CLOSURE : /^\/ayuda\/(es|en|fr|pt|de|ar)\/$/.test(route) ? ['international-help-ui.js', 'src/international-help.js'] : [];
+    const approved = route === '/buscar/' ? APPROVED_SEARCH_CLOSURE : /^\/ayuda\/(es|en|fr|pt|de|ar|it)\/$/.test(route) ? ['international-help-ui.js', 'src/international-help.js'] : [];
     if (JSON.stringify(result.files) !== JSON.stringify(approved)) failures.push(`protected surface dependency set changed: ${route}`);
     if (route !== '/buscar/') {
       const approvedInline = APPROVED_PROTECTED_INLINE.get(route) ?? [];
