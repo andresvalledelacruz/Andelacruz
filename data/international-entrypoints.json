@@ -491,6 +491,39 @@
       "description": "For emergencies in Nigeria, the communications regulator directs callers to 112; coverage may vary.",
       "url": "https://ncc.gov.ng/media-centre/press-releases/press-release-emergency-communications-centres-launch-ncc",
       "source": "https://ncc.gov.ng/media-centre/press-releases/press-release-emergency-communications-centres-launch-ncc"
+    },
+    {
+      "id": "bolivia",
+      "name": "Bolivia",
+      "code": "BO",
+      "lang": "es-BO",
+      "service": "Contactos de emergencia y consulares",
+      "description": "La Embajada de España recoge contactos de emergencia de Bolivia; comprueba el tipo de servicio y la localidad.",
+      "url": "https://www.exteriores.gob.es/Embajadas/lapaz/es/ViajarA/Paginas/Recomendaciones-de-viaje.aspx",
+      "source": "https://www.exteriores.gob.es/Embajadas/lapaz/es/ViajarA/Paginas/Recomendaciones-de-viaje.aspx",
+      "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "honduras",
+      "name": "Honduras",
+      "code": "HN",
+      "lang": "es-HN",
+      "service": "Contactos de emergencia y consulares",
+      "description": "La Embajada de España publica contactos locales y consulares para Honduras. La asistencia consular tiene un alcance distinto de las emergencias locales.",
+      "url": "https://www.exteriores.gob.es/Embajadas/tegucigalpa/es/ViajarA/Paginas/Recomendaciones-de-viaje.aspx",
+      "source": "https://www.exteriores.gob.es/Embajadas/tegucigalpa/es/ViajarA/Paginas/Recomendaciones-de-viaje.aspx",
+      "reviewedAt": "2026-10-21"
+    },
+    {
+      "id": "costa-rica",
+      "name": "Costa Rica",
+      "code": "CR",
+      "lang": "en-CR",
+      "service": "Emergency contacts · Costa Rican Tourism Board",
+      "description": "El Instituto Costarricense de Turismo identifica el 9-1-1 como número de emergencia.",
+      "url": "https://www.visitcostarica.com/more/important-numbers",
+      "source": "https://www.visitcostarica.com/more/important-numbers",
+      "reviewedAt": "2026-10-21"
     }
   ]
 }
