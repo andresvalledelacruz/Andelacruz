@@ -18,6 +18,21 @@
         "emocional",
         "Apoyo emocional",
         "soledad · ansiedad · apoyo"
+      ],
+      [
+        "social",
+        "Necesidades básicas y apoyo social",
+        "alimentación · orientación · servicios sociales"
+      ],
+      [
+        "consumo",
+        "Consumo y derechos financieros",
+        "compras · reclamaciones · derechos"
+      ],
+      [
+        "refugio",
+        "Migración y refugio",
+        "trámites · residencia · protección"
       ]
     ]
   },
@@ -40,6 +55,21 @@
         "emocional",
         "Emotional support",
         "loneliness · anxiety · support"
+      ],
+      [
+        "social",
+        "Basic needs and social support",
+        "food · guidance · social services"
+      ],
+      [
+        "consumo",
+        "Consumer and financial rights",
+        "purchases · complaints · rights"
+      ],
+      [
+        "refugio",
+        "Migration and asylum",
+        "procedures · residence · protection"
       ]
     ]
   },
@@ -62,6 +92,21 @@
         "emocional",
         "Soutien émotionnel",
         "solitude · anxiété · soutien"
+      ],
+      [
+        "social",
+        "Besoins essentiels et aide sociale",
+        "alimentation · orientation · services sociaux"
+      ],
+      [
+        "consumo",
+        "Droits des consommateurs et finances",
+        "achats · réclamations · droits"
+      ],
+      [
+        "refugio",
+        "Migration et asile",
+        "démarches · séjour · protection"
       ]
     ]
   },
@@ -84,6 +129,21 @@
         "emocional",
         "Apoio emocional",
         "solidão · ansiedade · apoio"
+      ],
+      [
+        "social",
+        "Necessidades básicas e apoio social",
+        "alimentação · orientação · serviços sociais"
+      ],
+      [
+        "consumo",
+        "Direitos do consumidor e finanças",
+        "compras · reclamações · direitos"
+      ],
+      [
+        "refugio",
+        "Migração e asilo",
+        "procedimentos · residência · proteção"
       ]
     ]
   },
@@ -106,6 +166,21 @@
         "emocional",
         "Psychische Unterstützung",
         "Einsamkeit · Angst · Beratung"
+      ],
+      [
+        "social",
+        "Grundbedarf und soziale Unterstützung",
+        "Lebensmittel · Orientierung · Sozialdienste"
+      ],
+      [
+        "consumo",
+        "Verbraucherrechte und Finanzen",
+        "Einkäufe · Beschwerden · Rechte"
+      ],
+      [
+        "refugio",
+        "Migration und Asyl",
+        "Verfahren · Aufenthalt · Schutz"
       ]
     ]
   },
@@ -114,9 +189,21 @@
     "note": "هذه الموارد للأشخاص الموجودين في إسبانيا. اللغة العربية لا تضمن توفر الخدمة بالعربية. هذه الأزرار ترشّح الموارد المنشورة ولا تقيّم حالتك طبياً أو نفسياً.",
     "unavailable": "لا توجد في هذه الصفحة موارد منشورة لهذا الموضوع في إسبانيا. هذا لا يعني عدم وجود خدمات؛ ستظهر الموارد الأخرى وأرقام المساعدة العاجلة.",
     "choices": [
-      ["social", "الاحتياجات الأساسية", "الطعام · المساعدة الإنسانية · الدعم الاجتماعي"],
-      ["vivienda", "السكن والإيواء", "الكراء · الإيواء · فقدان السكن"],
-      ["emocional", "الدعم النفسي والمشاعر", "القلق · الوحدة · طلب الرعاية"]
+      [
+        "social",
+        "الاحتياجات الأساسية",
+        "الطعام · المساعدة الإنسانية · الدعم الاجتماعي"
+      ],
+      [
+        "vivienda",
+        "السكن والإيواء",
+        "الكراء · الإيواء · فقدان السكن"
+      ],
+      [
+        "emocional",
+        "الدعم النفسي والمشاعر",
+        "القلق · الوحدة · طلب الرعاية"
+      ]
     ]
   }
 }
