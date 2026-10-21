@@ -14,11 +14,25 @@ test('Arabic is RTL with explicit Spain scope, official sources and isolated tel
  assert.match(page,/ليست ترجمة كاملة بالدارجة/);
  assert.match(page,/لا نضمن توفر مترجم/);
  assert.match(page,/href="\/ayuda\/fr\/"/);
+ assert.doesNotMatch(page,/<option value="">[^<]*<\/option value=/);
+ assert.equal((page.match(/data-help-topic=/g)||[]).length,3);
+ assert.match(page,/AP-SaludMental\.htm/);
+ assert.match(page,/ليست خطاً عاماً لكل مشكلة نفسية/);
+ const messages=JSON.parse(page.match(/<template id="help-messages">(.*?)<\/template>/s)[1]);
+ assert.notEqual(messages.unavailable,messages.empty);
 });
-for(const [q,category] of [['بغيت الخدمة','empleo'],['ما عنديش باش نخلص الكرا','vivienda'],['بغيت نعرف على الوراق','refugio'],['خاصني الماكلة','social'],['أحتاج مساعدة','social'],['أَنَا بُوحْدِي','emocional']])test(`Arabic and Darija topic: ${q}`,()=>{
+for(const [q,category] of [['بغيت الخدمة','empleo'],['ما عنديش باش نخلص الكرا','vivienda'],['أحتاج مأوى','vivienda'],['بغيت نعرف على الوراق','refugio'],['خاصني الماكلة','social'],['أحتاج مساعدة','social'],['أَنَا بُوحْدِي','emocional'],['أشعر بالوحدة','emocional'],['لدي اكتئاب','emocional']])test(`Arabic and Darija topic: ${q}`,()=>{
  const result=findHelpTopics(q);assert.ok(result.categories.includes(category));assert.equal(result.raw_query_retained,false);assert.ok(!JSON.stringify(result).includes(q));
 });
 for(const q of ['بغيت نموت','مابغيتش نعيش','بغيت نقتل راسي','لا أريد الانتحار','راجلي كيضربني','أفكر في الانتحار وعندي ديون'])test(`Arabic safety access: ${q}`,()=>assert.equal(findHelpTopics(q).safety,true));
+for(const q of ['قال صديقي بغيت نموت','في الماضي قلت لا أريد الانتحار','ما معنى كلمة انتحار؟'])test(`Arabic quoted, past or third-party safety access remains available: ${q}`,()=>assert.equal(findHelpTopics(q).safety,true));
+test('Arabic wayfinding copy is complete and explicitly scoped to Spain',()=>{
+ const copy=JSON.parse(read('data/help-wayfinding.json','utf8')).ar;
+ assert.equal(copy.choices.length,3);
+ assert.deepEqual(copy.choices.map(([topic])=>topic),['social','vivienda','emocional']);
+ assert.match(copy.note,/إسبانيا/);
+ assert.equal(copy.unavailable,JSON.parse(page.match(/<template id="help-messages">(.*?)<\/template>/s)[1]).unavailable);
+});
 test('unrecognized Arabic asks for clarification without collecting text',()=>{
  assert.equal(findHelpTopics('كلام غير واضح').needsClarification,true);
  assert.equal(normalizeHelpText('إِقَامَة'),'اقامة');

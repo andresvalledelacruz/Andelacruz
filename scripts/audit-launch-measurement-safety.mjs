@@ -17,7 +17,7 @@ const PINNED_MEASUREMENT_FILES = new Map([
   // stays within selected country, and has no network/storage/URL-state APIs.
   // Pin exact reviewed bytes; transitive privacy-sink checks remain mandatory.
   ['international-help-ui.js', 'a0523ddd046bc8221c4da9e29d3f9df90f90535ab25c78b4da9231daef4f2bfd'],
-  ['src/international-help.js', '30f4f05ceb9b26e9683d5b6d91df2e56af4f6d90e3fcab67fc6614b24a567ec0'],
+  ['src/international-help.js', 'fcf2f6886be0eca3bad296ffa3180c1ff98d167e303dda375fb0ed7a62ed55aa'],
   ['app.js', 'afac2737553d45aa9275b551c9ebb734ee5ead06b7cfbe8dec59b0a225420238'],
   ['public-page-runtime.js', 'a0654d52caf4b7fbb5c191a609a6336c8d25ff8814aadd7142afc811ca405845'],
   ['visitor-analytics.js', '3ca9ed490f749aea8f9728e0f762a26c42f4d390658954fbb13dd98b1cc99031'],
