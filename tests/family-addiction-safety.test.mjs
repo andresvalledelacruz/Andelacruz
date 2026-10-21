@@ -40,18 +40,48 @@ test('public help, boundaries and family safety remain explicit', () => {
   assert.match(html, /Una adicción no justifica amenazas, agresiones ni control coercitivo/i);
 });
 
+test('the guide distinguishes situations and turns concern into bounded actions', () => {
+  assert.match(html, /alcohol u otras drogas, medicamentos, juego con dinero u otra conducta/i);
+  assert.match(html, /Separa lo que viste de lo que te contaron y de lo que estás interpretando/i);
+  assert.match(html, /hecho observable/i);
+  assert.match(html, /impacto/i);
+  assert.match(html, /petición/i);
+  assert.match(html, /límite propio/i);
+  assert.match(html, /una vez por semana/i);
+});
+
+test('financial and gambling guidance protects without impersonation', () => {
+  assert.match(html, /alquiler o hipoteca, suministros, alimentación, cuidados y cuentas conjuntas/i);
+  assert.match(html, /No entres en cuentas ajenas, no suplantes a la persona/i);
+  assert.match(html, /Registro General de Interdicciones de Acceso al Juego/i);
+  assert.match(html, /trámite de la propia persona/i);
+  assert.match(html, /no sustituye la valoración ni el apoyo profesional/i);
+});
+
+test('consultation preparation and provider limits are transparent', () => {
+  assert.match(html, /cinco apartados/i);
+  assert.match(html, /atiende a familiares aunque la persona preocupante no haya iniciado tratamiento/i);
+  assert.match(html, /Esta guía prioriza la red pública y no certifica centros ni profesionales privados/i);
+  assert.match(html, /No consta revisión individual de esta página por un profesional externo/i);
+  assert.match(html, /dateModified/i);
+  assert.match(html, /2026-10-21/i);
+});
+
 test('medical and suicide emergencies bridge to official emergency routes', () => {
   assert.match(html, /inconsciente, respira con dificultad, convulsiona/i);
   assert.match(html, /112/i);
   assert.match(html, /024/i);
+  assert.match(html, /no la dejes sola/i);
+  assert.match(html, /ni provoques el vómito/i);
   assert.match(html, /me-preocupa-que-alguien-pueda-suicidarse/i);
 });
 
 test('route remains non-commercial and discoverable', () => {
   assert.doesNotMatch(html, /class=['\"]cta['\"]/i);
   assert.doesNotMatch(html, /href=['\"]\/#inicio['\"]/i);
+  assert.doesNotMatch(html, /awin|adtraction|financeads|adsbygoogle|affiliate|afiliad/i);
   assert.match(familyHub, /un-familiar-tiene-una-adiccion-y-no-se-como-ayudarle/i);
-  assert.match(sitemap, /https:\/\/desgracias\.es\/familia\/un-familiar-tiene-una-adiccion-y-no-se-como-ayudarle\//i);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/un-familiar-tiene-una-adiccion-y-no-se-como-ayudarle\/<\/loc><lastmod>2026-10-21<\/lastmod>/i);
   for (const anchor of html.matchAll(/<a\s+[^>]*href=['\"]https?:\/\/[^'\"]+['\"][^>]*>/gi)) {
     assert.match(anchor[0], /rel=['\"]noopener noreferrer['\"]/i, `Unsafe external link: ${anchor[0]}`);
   }
