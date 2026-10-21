@@ -29,5 +29,5 @@ test('professional sitemap date agrees with the actual published funnel update',
   const date=xml.match(/<loc>https:\/\/desgracias.es\/profesionales.html<\/loc><lastmod>([^<]+)<\/lastmod>/)[1];
   const html=fs.readFileSync('profesionales.html','utf8');
   const page=[...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].map(m=>JSON.parse(m[1])).find(s=>s['@type']==='WebPage');
-  assert.equal(date,page.dateModified);assert.equal(date,'2026-10-20');
+  assert.equal(date,page.dateModified);assert.equal(date,'2026-10-21');
 });
