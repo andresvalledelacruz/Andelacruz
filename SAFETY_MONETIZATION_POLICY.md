@@ -34,6 +34,7 @@ El test `tests/p0-p1-noncommercial-invariant.test.mjs` protege actualmente las s
 - `/ayuda/fr/`;
 - `/ayuda/pt/`;
 - `/ayuda/de/`;
+- `/ayuda/it/`;
 - `/ayuda/ar/`;
 - `/internacional.html`.
 

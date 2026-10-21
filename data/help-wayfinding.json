@@ -205,5 +205,42 @@
         "القلق · الوحدة · طلب الرعاية"
       ]
     ]
+  },
+  "it": {
+    "title": "Scegli un punto di partenza",
+    "note": "Seleziona prima il paese. La lingua della pagina non garantisce assistenza in italiano. I pulsanti filtrano soltanto le risorse pubblicate; non valutano la tua situazione clinica.",
+    "unavailable": "Non sono pubblicate risorse su questo argomento per il paese selezionato. Questo non significa che non esistano servizi: restano visibili le altre risorse del paese e il collegamento urgente.",
+    "choices": [
+      [
+        "empleo",
+        "Lavoro e prestazioni",
+        "ricerca di lavoro · disoccupazione · formazione"
+      ],
+      [
+        "vivienda",
+        "Alloggio e affitto",
+        "affitto · sfratto · alloggio"
+      ],
+      [
+        "emocional",
+        "Sostegno emotivo",
+        "solitudine · ansia · sostegno"
+      ],
+      [
+        "social",
+        "Bisogni essenziali e sostegno sociale",
+        "alimentazione · orientamento · servizi sociali"
+      ],
+      [
+        "consumo",
+        "Diritti dei consumatori e finanze",
+        "acquisti · reclami · diritti"
+      ],
+      [
+        "refugio",
+        "Migrazione e asilo",
+        "pratiche · soggiorno · protezione"
+      ]
+    ]
   }
 }

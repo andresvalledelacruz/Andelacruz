@@ -74,6 +74,28 @@ try{
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
    if(lang==='en')await page.screenshot({path:new URL(`english-${width}.png`,out).pathname.replace(/^\/([A-Za-z]:)/,'$1'),fullPage:false});
   }
+  await page.goto(`${origin}/ayuda/it/`,{waitUntil:'networkidle'});
+  assert.equal(await page.locator('html').getAttribute('lang'),'it');
+  assert.equal(await page.locator('#help-query').isVisible(),false);
+  assert.equal(await page.locator('#help-form button[type="submit"]').isVisible(),false);
+  await page.locator('#help-country').selectOption('GB');
+  await page.locator('[data-help-topic="social"]').click();
+  assert.equal(await page.locator('[data-help-country="GB"] li:not([hidden])').count(),2);
+  assert.ok(await page.locator('[data-help-country="GB"] a[href="https://www.nidirect.gov.uk/services/benefits-calculator"]').isVisible());
+  assert.equal(await page.locator('[data-help-country]:not([hidden])').count(),1);
+  await page.locator('#help-country').selectOption('IT');
+  await page.locator('[data-help-topic="social"]').click();
+  const italianMessages=await page.locator('#help-messages').evaluate(el=>JSON.parse(el.content.textContent));
+  assert.equal(await page.locator('#help-status').innerText(),italianMessages.unavailable);
+  assert.equal(await page.locator('[data-help-country="IT"] li:not([hidden])').count(),countFor('IT','resource'));
+  assert.ok(await page.locator('[data-help-country="IT"] .urgent a').isVisible());
+  assert.equal(await page.locator('[data-help-country="GB"]').isVisible(),false);
+  await page.locator('#help-country').selectOption('FR');
+  await page.locator('[data-help-topic="vivienda"]').click();
+  assert.ok(await page.locator('[data-help-country="FR"] a[href="https://www.service-public.gouv.fr/particuliers/vosdroits/F1334"]').isVisible());
+  assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+  assert.equal(await page.evaluate(()=>localStorage.length+sessionStorage.length),0);
+  await page.screenshot({path:new URL(`italian-${width}.png`,out).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
   await page.goto(`${origin}/webs-amigas.html`,{waitUntil:'networkidle'});
   assert.equal(await page.locator('[data-organization]').count(),countFor('ES','organization'));
   assert.equal(await page.locator('[data-organization][data-country="ES"]').count(),countFor('ES','organization'));
@@ -110,5 +132,5 @@ try{
   assert.equal(errors.length,0,errors.join('\n'));assert.equal(outbound.length,0,outbound.join('\n'));
   await context.close();console.log(`PASS global help ${width}px`);
  }
- const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}});const page=await context.newPage();await page.goto(`${origin}/ayuda/en/`);assert.equal(await page.locator('[data-help-country]:visible').count(),expectedCountryCount);assert.ok(await page.locator('[data-help-country="GB"] .urgent a').isVisible());await page.goto(`${origin}/recursos/`);await page.locator('.resource-branch summary').first().click();assert.ok(await page.locator('.resource-branch[open] a').first().isVisible());await context.close();console.log('PASS no-JS country links and expandable resources');
+ const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:900}});const page=await context.newPage();await page.goto(`${origin}/ayuda/en/`);assert.equal(await page.locator('[data-help-country]:visible').count(),expectedCountryCount);assert.ok(await page.locator('[data-help-country="GB"] .urgent a').isVisible());await page.goto(`${origin}/ayuda/it/`);assert.equal(await page.locator('[data-help-country]:visible').count(),expectedCountryCount);assert.ok(await page.locator('[data-help-country="IT"] .urgent a').isVisible());await page.goto(`${origin}/recursos/`);await page.locator('.resource-branch summary').first().click();assert.ok(await page.locator('.resource-branch[open] a').first().isVisible());await context.close();console.log('PASS no-JS country links and expandable resources');
 }finally{await browser.close();await new Promise(resolve=>server.close(resolve));}

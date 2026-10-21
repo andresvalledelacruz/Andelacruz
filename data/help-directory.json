@@ -4987,6 +4987,96 @@
         "title": "NELEX - Federal Ministry of Labour and Employment",
         "discoveredAt": "https://nelex.gov.ng/"
       }
+    },
+    {
+      "id": "fr-fsl-housing",
+      "category": "vivienda",
+      "name": "Fonds de solidarité pour le logement (FSL)",
+      "description": "Préstamo o subvención para gastos de vivienda; condiciones del departamento. No es una ayuda automática.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1334",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1334",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "Quelle aide apporte le Fonds de solidarité pour le logement (FSL) ? | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/F1334"
+      }
+    },
+    {
+      "id": "fr-rent-difficulties",
+      "category": "vivienda",
+      "name": "Difficultés pour payer le loyer : démarches et aides",
+      "description": "Pasos ante dificultades de alquiler; distingue vivienda privada y social. Comprueba requisitos.",
+      "country": "FR",
+      "language": "fr",
+      "kind": "resource",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F38531",
+      "sourceUrl": "https://www.service-public.gouv.fr/particuliers/vosdroits/F38531",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "Vous n'arrivez plus à payer votre loyer : aides financières | Service Public",
+        "discoveredAt": "https://www.service-public.gouv.fr/particuliers/vosdroits/F38531"
+      }
+    },
+    {
+      "id": "gb-benefits-estimate",
+      "category": "social",
+      "name": "GOV.UK: benefits calculators",
+      "description": "Calculadoras independientes enlazadas por GOV.UK: estimaciones sujetas a límites, no concesiones.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/benefits-calculators",
+      "sourceUrl": "https://www.gov.uk/benefits-calculators",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "Benefits calculators - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/benefits-calculators"
+      }
+    },
+    {
+      "id": "gb-housing-universal-credit",
+      "category": "vivienda",
+      "name": "GOV.UK: housing costs and Universal Credit",
+      "description": "Vivienda y Universal Credit: requisitos y diferencias territoriales. Puede no cubrir todo el alquiler.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.gov.uk/housing-and-universal-credit",
+      "sourceUrl": "https://www.gov.uk/housing-and-universal-credit",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "Housing costs and Universal Credit: What you can get - GOV.UK",
+        "discoveredAt": "https://www.gov.uk/housing-and-universal-credit"
+      }
+    },
+    {
+      "id": "gb-ni-benefits-estimate",
+      "category": "social",
+      "name": "nidirect: benefits calculator for Northern Ireland",
+      "description": "Para Irlanda del Norte: estimación de prestaciones; no confirma derechos ni sustituye una solicitud.",
+      "country": "GB",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.nidirect.gov.uk/services/benefits-calculator",
+      "sourceUrl": "https://www.nidirect.gov.uk/services/benefits-calculator",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "Benefits Calculator | nidirect",
+        "discoveredAt": "https://www.nidirect.gov.uk/services/benefits-calculator"
+      }
     }
   ]
 }
