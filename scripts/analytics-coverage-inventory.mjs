@@ -14,7 +14,7 @@ const directMarker = '/visitor-analytics.js';
 const explicitlyUnmeasured = new Set([
   'internacional.html',
   'recursos/index.html',
-  ...['es', 'en', 'fr', 'pt', 'de', 'ar'].map(lang => `ayuda/${lang}/index.html`),
+  ...['es', 'en', 'fr', 'pt', 'de', 'ar', 'it'].map(lang => `ayuda/${lang}/index.html`),
 ]);
 
 async function walk(dir, out = []) {
