@@ -258,7 +258,7 @@ test('quick topic cards are localized, country dependent and not automatic langu
  const copy=JSON.parse(read('data/help-wayfinding.json','utf8'));
  for(const lang of ['es','en','fr','pt','de']){
   const html=read(`ayuda/${lang}/index.html`,'utf8');
-  assert.equal((html.match(/data-help-topic=/g)||[]).length,3);
+  assert.equal((html.match(/data-help-topic=/g)||[]).length,6);
   for(const [topic] of copy[lang].choices)assert.ok(html.includes(`type="button" data-help-topic="${topic}"`));
   const messages=JSON.parse(html.match(/<template id="help-messages">(.*?)<\/template>/s)[1]);
   assert.equal(messages.unavailable,copy[lang].unavailable);
