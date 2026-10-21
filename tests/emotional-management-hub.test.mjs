@@ -40,7 +40,7 @@ test('el hub ofrece decisiones, apoyo psicológico verificable y seguimiento aco
 test('el hub sustituye la captación de relatos y conserva el firewall comercial', () => {
   assert.match(html, /Buscar ayuda por situación/i);
   assert.doesNotMatch(html, /Contar mi historia/i);
-  assert.doesNotMatch(html, /href="\/#inicio"/i);
+  assert.match(html, /<a href="\/#inicio">Inicio<\/a>/i);
   assert.doesNotMatch(html, /afiliad|publicidad|patrocin|data-ad|utm_/i);
 });
 
