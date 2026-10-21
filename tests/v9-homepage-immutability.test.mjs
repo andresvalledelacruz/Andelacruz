@@ -24,7 +24,8 @@ test('la portada V9 permanece byte-a-byte intacta', () => {
     .replace("<source srcset=\"/assets/manos-apoyo-480.webp 480w, /assets/manos-apoyo-768.webp 768w, /assets/manos-apoyo.webp 1000w\" sizes=\"(max-width: 760px) calc(100vw - 28px), (max-width: 1080px) calc((100vw - 50px) / 2), (max-width: 1220px) calc((100vw - 40px) * .47 - 24px), 531px\" type=\"image/webp\">", "<source srcset=\"assets/manos-apoyo.webp\" type=\"image/webp\">")
     // 2026-10-07: reviewed local copies of the same fonts; preserve the visual/editorial baseline.
     .replace("  <link rel=\"preload\" href=\"/assets/fonts/libre-baskerville-22219fb90e3b.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n  <link rel=\"preload\" href=\"/assets/fonts/montserrat-06b16db7a969.woff2\" as=\"font\" type=\"font/woff2\" crossorigin>\n  <link rel=\"stylesheet\" href=\"/assets/home-fonts.css?v=20261007\">", "  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n  <link href=\"https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&amp;family=Montserrat:wght@400;500;600;700&amp;display=swap\" rel=\"stylesheet\">")
-    .replace('"dateModified": "2026-10-07"', '"dateModified": "2026-09-15"')
+    // 2026-10-21: authorized country expansion; exact metadata date only.
+    .replace('"dateModified": "2026-10-21"', '"dateModified": "2026-09-15"')
     .replace(/          <div class="story-filters"[\s\S]*?<\/div>/, previousStoryFilters)
     .replace('  <link rel="stylesheet" href="/assets/professionals-home.css?v=20261005">\n', '')
     .replace(/    <!-- professionals-inline:start -->[\s\S]*?    <!-- professionals-inline:end -->\n\n/, previousProfessionals);

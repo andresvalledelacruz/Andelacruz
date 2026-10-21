@@ -10,6 +10,24 @@ const root=path.resolve(fileURLToPath(new URL('../',import.meta.url)));
 const directory=JSON.parse(await readFile(path.join(root,'data/help-directory.json'),'utf8'));
 const expectedCountryCount = new Set(directory.records.filter(record => record.kind === 'resource').map(record => record.country)).size + 1;
 const countFor=(code,kind)=>directory.records.filter(record=>record.country===code && record.kind===kind).length;
+async function assertLatinAmericanCoverage(page){
+ for(const [code,count,employment] of [['BO',2,1],['HN',3,2],['CR',1,0]]){
+  await page.locator('#help-country').selectOption(code);
+  assert.equal(await page.locator('[data-help-country]:not([hidden])').count(),1);
+  assert.equal(await page.locator(`[data-help-country="${code}"] li:not([hidden])`).count(),count);
+  assert.ok(await page.locator(`[data-help-country="${code}"] .urgent a`).isVisible());
+  await page.locator('[data-help-topic="empleo"]').click();
+  assert.equal(await page.locator(`[data-help-country="${code}"] li:not([hidden])`).count(),employment||count);
+  if(!employment){
+   const copy=await page.locator('#help-messages').evaluate(el=>JSON.parse(el.content.textContent));
+   assert.equal(await page.locator('#help-status').innerText(),copy.unavailable);
+  }
+  await page.locator('[data-help-topic="emocional"]').click();
+  assert.equal(await page.locator('[data-help-country]:not([hidden])').getAttribute('data-help-country'),code);
+  assert.equal(await page.locator(`[data-help-country="${code}"] li:not([hidden])`).count(),count);
+  assert.ok(await page.locator(`[data-help-country="${code}"] .urgent a`).isVisible());
+ }
+}
 async function assertCountryNamesReadable(page){
  const failures=await page.locator('.country-button[data-country]').evaluateAll(cards=>{
   const canvas=document.createElement('canvas');const context=canvas.getContext('2d');
@@ -72,6 +90,7 @@ try{
    assert.ok(await page.locator('[data-help-country="MA"] .urgent a').isVisible());
    assert.equal(page.url(),`${origin}/ayuda/${lang}/`);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+   await assertLatinAmericanCoverage(page);
    if(lang==='en')await page.screenshot({path:new URL(`english-${width}.png`,out).pathname.replace(/^\/([A-Za-z]:)/,'$1'),fullPage:false});
   }
   await page.goto(`${origin}/ayuda/it/`,{waitUntil:'networkidle'});
@@ -96,6 +115,7 @@ try{
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   assert.equal(await page.evaluate(()=>localStorage.length+sessionStorage.length),0);
   await page.screenshot({path:new URL(`italian-${width}.png`,out).pathname.replace(/^\/([A-Za-z]:)/,'$1')});
+  await assertLatinAmericanCoverage(page);
   await page.goto(`${origin}/webs-amigas.html`,{waitUntil:'networkidle'});
   assert.equal(await page.locator('[data-organization]').count(),countFor('ES','organization'));
   assert.equal(await page.locator('[data-organization][data-country="ES"]').count(),countFor('ES','organization'));

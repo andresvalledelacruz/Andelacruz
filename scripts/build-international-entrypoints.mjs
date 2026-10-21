@@ -3,7 +3,7 @@ const data=JSON.parse(readFileSync('data/international-entrypoints.json','utf8')
 const countries=[...data.countries].sort((a,b)=>a.name.localeCompare(b.name,'es',{sensitivity:'base'}));
 const esc=s=>s.replaceAll('&','&amp;').replaceAll('"','&quot;').replaceAll('<','&lt;').replaceAll('>','&gt;');
 const cards=countries.map(c=>`<a class="country-card" id="${c.id}" data-country="${c.code}" href="${esc(c.url)}" rel="noopener noreferrer"><h2>${esc(c.name)}</h2><div lang="${c.lang}"><strong>${esc(c.service)}</strong><p>${esc(c.description)}</p></div><span class="official">${new URL(c.url).hostname} →</span></a>`).join('\n');
-const sources=countries.map(c=>`<li><a href="${esc(c.source)}" rel="noopener noreferrer">${esc(c.name)}: fuente oficial</a></li>`).join('\n');
+const sources=countries.map(c=>`<li><a href="${esc(c.source)}" rel="noopener noreferrer">${esc(c.name)}: fuente oficial · revisión ${c.reviewedAt??data.reviewedAt}</a></li>`).join('\n');
 const coverage=['España',...countries.map(c=>c.name),'recursos de la UE'].join(', ');
 writeFileSync('internacional.html',`<!doctype html>
 <html lang="es"><head>
@@ -23,5 +23,5 @@ body{background:#fff9f2;color:#40372f}.country-wrap{max-width:1120px;margin:auto
 <div class="country-grid"><a class="country-card" data-country="ES" href="/ayuda-urgente.html"><h2>España</h2><strong>Ayuda urgente y orientación</strong><p>Recursos de España según la situación que estás viviendo.</p><span class="official">Consultar ayuda en España →</span></a>
 ${cards}</div>
 <p class="country-note">Directorio inicial: España y ${countries.length} países con primeros accesos oficiales. Las fichas llevan a servicios oficiales externos y no implican colaboración, patrocinio ni acuerdo. Todavía no ofrecemos versiones nacionales completas. Los teléfonos y condiciones dependen del país y pueden no funcionar desde el extranjero. En Reino Unido, comprueba el servicio de tu nación: la vía NHS 111 indicada corresponde a Inglaterra.</p>
-<details><summary>Fuentes y alcance de esta primera selección</summary><p>Fuentes oficiales consultadas el ${data.reviewedAt}. Cada servicio explica su cobertura, requisitos y vías de contacto. No recogemos consultas ni relatos en esta página.</p><ul>${sources}</ul><p>Próxima ampliación: orientación laboral, económica y social, con revisión local antes de publicar.</p></details>
+<details><summary>Fuentes y alcance de esta primera selección</summary><p>Selección inicial de fuentes consultada el ${data.reviewedAt}; las ampliaciones indican su propia fecha junto a cada fuente. Cada servicio explica su cobertura, requisitos y vías de contacto. No recogemos consultas ni relatos en esta página.</p><ul>${sources}</ul><p>Próxima ampliación: orientación laboral, económica y social, con revisión local antes de publicar.</p></details>
 </main><footer class="country-wrap"><a href="/privacidad.html">Privacidad</a> · <a href="/">Volver al inicio</a></footer></body></html>\n`);

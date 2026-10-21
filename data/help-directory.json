@@ -50,7 +50,10 @@
     "BG": "Bulgaria",
     "CY": "Chipre",
     "MA": "Marruecos",
-    "NG": "Nigeria"
+    "NG": "Nigeria",
+    "BO": "Bolivia",
+    "HN": "Honduras",
+    "CR": "Costa Rica"
   },
   "categories": {
     "humanitaria": "Acción humanitaria y educación",
@@ -5076,6 +5079,114 @@
         "checkedAt": "2026-10-21",
         "title": "Benefits Calculator | nidirect",
         "discoveredAt": "https://www.nidirect.gov.uk/services/benefits-calculator"
+      }
+    },
+    {
+      "id": "bo-emergency-contacts",
+      "category": "salud",
+      "name": "Bolivia: contactos de emergencia y consulares",
+      "description": "Contactos locales y consulares publicados por la Embajada de España; comprueba el servicio y la zona.",
+      "country": "BO",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.exteriores.gob.es/Embajadas/lapaz/es/ViajarA/Paginas/Recomendaciones-de-viaje.aspx",
+      "sourceUrl": "https://www.exteriores.gob.es/Embajadas/lapaz/es/ViajarA/Paginas/Recomendaciones-de-viaje.aspx",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "Recomendaciones de viaje",
+        "discoveredAt": "https://www.exteriores.gob.es/Embajadas/lapaz/es/ViajarA/Paginas/Recomendaciones-de-viaje.aspx"
+      }
+    },
+    {
+      "id": "bo-labour-offices",
+      "category": "empleo",
+      "name": "Ministerio de Trabajo de Bolivia: oficinas por departamento",
+      "description": "Direcciones y contactos de oficinas laborales. Consulta la oficina competente; no es una bolsa de vacantes.",
+      "country": "BO",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://mintrabajo.gob.bo/index.php/lista-direcciones-page/",
+      "sourceUrl": "https://mintrabajo.gob.bo/index.php/lista-direcciones-page/",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "MTEPS",
+        "discoveredAt": "https://mintrabajo.gob.bo/index.php/lista-direcciones-page/"
+      }
+    },
+    {
+      "id": "hn-emergency-contacts",
+      "category": "salud",
+      "name": "Honduras: contactos de emergencia y consulares",
+      "description": "Guía de la Embajada de España con contactos locales y consulares. Distingue emergencia y asistencia consular.",
+      "country": "HN",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.exteriores.gob.es/Embajadas/tegucigalpa/es/ViajarA/Paginas/Recomendaciones-de-viaje.aspx",
+      "sourceUrl": "https://www.exteriores.gob.es/Embajadas/tegucigalpa/es/ViajarA/Paginas/Recomendaciones-de-viaje.aspx",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "Recomendaciones de viaje",
+        "discoveredAt": "https://www.exteriores.gob.es/Embajadas/tegucigalpa/es/ViajarA/Paginas/Recomendaciones-de-viaje.aspx"
+      }
+    },
+    {
+      "id": "hn-employment-service",
+      "category": "empleo",
+      "name": "SENAEH: Servicio Nacional de Empleo de Honduras",
+      "description": "Acceso al servicio nacional de empleo y sus opciones de orientación. Consulta requisitos y disponibilidad.",
+      "country": "HN",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.trabajo.gob.hn/inicio-senaeh/",
+      "sourceUrl": "https://www.trabajo.gob.hn/inicio-senaeh/",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "Inicio SENAEH - Secretaría de Trabajo y Seguridad Social",
+        "discoveredAt": "https://www.trabajo.gob.hn/inicio-senaeh/"
+      }
+    },
+    {
+      "id": "hn-employment-guidance",
+      "category": "empleo",
+      "name": "Honduras: servicios de la Dirección General de Empleo",
+      "description": "Información sobre intermediación y orientación laboral. No implica contratación ni una vacante disponible.",
+      "country": "HN",
+      "language": "es",
+      "kind": "resource",
+      "url": "https://www.trabajo.gob.hn/inicio/organizacion/direcciones-generales/direccion-general-de-empleo/servicios-dge/",
+      "sourceUrl": "https://www.trabajo.gob.hn/inicio/organizacion/direcciones-generales/direccion-general-de-empleo/servicios-dge/",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "Servicios de la Dirección General de Empleo - Secretaría de Trabajo y Seguridad Social",
+        "discoveredAt": "https://www.trabajo.gob.hn/inicio/organizacion/direcciones-generales/direccion-general-de-empleo/servicios-dge/"
+      }
+    },
+    {
+      "id": "cr-emergency-contacts",
+      "category": "salud",
+      "name": "Costa Rica: contactos de emergencia del Instituto de Turismo",
+      "description": "El Instituto Costarricense de Turismo publica el 9-1-1 para emergencias y otros contactos oficiales.",
+      "country": "CR",
+      "language": "en",
+      "kind": "resource",
+      "url": "https://www.visitcostarica.com/more/important-numbers",
+      "sourceUrl": "https://www.visitcostarica.com/more/important-numbers",
+      "reviewedAt": "2026-10-21",
+      "verification": {
+        "httpStatus": 200,
+        "checkedAt": "2026-10-21",
+        "title": "Important Phone Numbers - Visit Costa Rica",
+        "discoveredAt": "https://www.visitcostarica.com/more/important-numbers"
       }
     }
   ]

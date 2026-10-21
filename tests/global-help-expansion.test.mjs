@@ -18,7 +18,7 @@ test('directory is uniquely sourced and country-scoped; runtime alphabetizes it'
  assert.doesNotMatch(page,/id="country-buttons"|webs-amigas-country-filter|Webs amigas por país|países se muestran como pendientes/);
  assert.ok(page.includes('href="/recursos/"'));
  assert.equal(data.records.filter(r=>r.kind==='organization').length,50);
- assert.equal(data.records.filter(r=>r.kind==='resource').length,245);
+ assert.equal(data.records.filter(r=>r.kind==='resource').length,251);
  const resources=read('recursos/index.html','utf8');
  for(const r of data.records.filter(r=>r.kind==='resource'))assert.ok(resources.includes(`href="${r.url.replaceAll('&','&amp;')}"`),r.id);
  for(const r of data.records.filter(r=>r.kind==='organization'))assert.ok(!resources.includes(`href="${r.url.replaceAll('&','&amp;')}"`),r.id);
@@ -34,7 +34,7 @@ test('localized equivalents have reciprocal hreflang, self canonicals, privacy a
   assert.doesNotMatch(html,/hreflang="(?:en-UK|es-EU)"|visitor-analytics|adsbygoogle|<iframe/);
   assert.match(html,/name="referrer" content="no-referrer"/);
   assert.match(html,/<option value="">/);
-  assert.equal((html.match(/data-help-country=/g)||[]).length,51);
+  assert.equal((html.match(/data-help-country=/g)||[]).length,54);
   const codes=[...html.matchAll(/<section data-help-country="([A-Z]{2})"/g)].map(match=>match[1]);
   assert.equal(codes[0],'ES');
   assert.deepEqual(codes.slice(1),[...codes.slice(1)].sort((a,b)=>data.countries[a].localeCompare(data.countries[b],'es',{sensitivity:'base'})));
@@ -277,4 +277,24 @@ test('Italian help offers country and topic navigation without unsupported free-
  assert.match(page,/<strong lang="en">nidirect: benefits calculator for Northern Ireland/);
  assert.match(page,/Irlanda del Norte/);
  assert.match(page,/No es una ayuda automática/);
+});
+
+test('new Latin American coverage is country scoped and distinguishes consular, labour and emergency help',()=>{
+ const expected={BO:{count:2,employment:1,urgent:'www.exteriores.gob.es'},HN:{count:3,employment:2,urgent:'www.exteriores.gob.es'},CR:{count:1,employment:0,urgent:'www.visitcostarica.com'}};
+ for(const [code,{count,employment,urgent}] of Object.entries(expected)){
+  const records=data.records.filter(r=>r.country===code);
+  assert.equal(records.length,count,code);
+  assert.equal(records.filter(r=>r.category==='empleo').length,employment,code);
+  assert.ok(records.every(r=>r.reviewedAt==='2026-10-21'&&r.verification.httpStatus===200),code);
+  assert.equal(new URL(records.find(r=>r.category==='salud').sourceUrl).hostname,urgent);
+  for(const lang of ['es','en','fr','pt','de','it']){
+   const html=read(`ayuda/${lang}/index.html`,'utf8');
+   const section=html.match(new RegExp(`<section data-help-country="${code}"[\\s\\S]*?<\\/section>`))?.[0];
+   assert.ok(section,`${lang}/${code}`);
+   assert.equal((section.match(/data-topic=/g)||[]).length,count);
+   assert.ok(section.includes(urgent));
+  }
+ }
+ assert.match(data.records.find(r=>r.id==='bo-labour-offices').description,/no es una bolsa de vacantes/);
+ assert.match(data.records.find(r=>r.id==='hn-emergency-contacts').description,/Distingue emergencia y asistencia consular/);
 });

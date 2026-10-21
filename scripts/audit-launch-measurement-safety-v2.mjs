@@ -24,7 +24,9 @@ const APPROVED_SEARCH_NORMALIZATION_SHA256 = "2677c62779a2b2c300ff48d1c2ce3dde35
 // resources. Writing examples and plainer result text leave routing, network,
 // storage and raw-query behavior unchanged.
 // 2026-09-28: static Arabic access link only; no form or executable changes.
-const APPROVED_SEARCH_PAGE_SHA256 = '2f1068cbf0e36fef91c95578e34be58b965f7ed54590d98467947c80919eaafd';
+// 2026-10-21: three reviewed static country anchors (BO, CR, HN) only.
+// No form, executable, network, storage or query processing changes.
+const APPROVED_SEARCH_PAGE_SHA256 = '27373902f6eeffea0f878c1ad9a56fc5fd6953487f1a3d241ddf162996b02650';
 // 2026-09-27: reviewed ordinary guide matching after clause-level safety
 // routing. The dependency already belongs to the pinned local-only closure.
 const APPROVED_MULTI_NEED_RESOLVER_SHA256 = '291b600b21fc3a1f58d05e3b790b984c60c6fbdbe6c5c889a2242f9fca7dcf7d';
