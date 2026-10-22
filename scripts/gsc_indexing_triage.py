@@ -35,6 +35,17 @@ def field_map(fields):
             for key, options in ALIASES.items()}
 
 
+def category(row, field):
+    """Return a scalar aggregate label without reading DictReader overflow cells."""
+    if not field:
+        return "Not supplied"
+    value = row.get(field)
+    if value is None:
+        return "Not supplied"
+    label = " ".join(str(value).split())
+    return label or "Not supplied"
+
+
 def triage(source, expected=None):
     with open(source, newline="", encoding="utf-8-sig") as stream:
         reader = csv.DictReader(stream)
@@ -62,8 +73,8 @@ def triage(source, expected=None):
             duplicates += 1
             continue
         seen.add(normalized)
-        reasons[(row.get(mapping["reason"]) or "Not supplied").strip()] += 1 if mapping["reason"] else 1
-        statuses[(row.get(mapping["status"]) or "Not supplied").strip()] += 1 if mapping["status"] else 1
+        reasons[category(row, mapping["reason"])] += 1
+        statuses[category(row, mapping["status"])] += 1
     return {
         "source": "user-provided authenticated GSC CSV; not independently verified",
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -91,6 +102,8 @@ def main():
     parser.add_argument("--output", type=pathlib.Path, required=True)
     parser.add_argument("--expected", type=int)
     args = parser.parse_args()
+    if args.expected is not None and args.expected < 0:
+        parser.error("Expected count must be zero or greater")
     if args.csv.resolve() == args.output.resolve():
         parser.error("Output must not overwrite the source CSV")
     try:
