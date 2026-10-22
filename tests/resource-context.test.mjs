@@ -37,7 +37,19 @@ test('actual card pages retain options and phones from the base and have determi
     const section = path === 'ayuda-urgente.html' ? html : html.match(/<section class="wrap guide-options">[\s\S]*?<\/section>/)?.[0];
     assert.ok(section, path);
     assert.equal(rankMarkup(section, categories, catalog, path === 'ayuda-urgente.html' ? 'privacy-bar' : 'cardlink'), section, path);
-    for (const [,href] of base.matchAll(/<a\b[^>]*href="([^"]+)"/g)) assert.ok(html.includes(`href="${href}"`), `${path}: lost ${href}`);
+    for (const [,href] of base.matchAll(/<a\b[^>]*href="([^"]+)"/g)) {
+      // Editorial sources may be replaced with newer primary references; this
+      // invariant protects navigation choices and phone routes, not citations.
+      if (/^https?:\/\//.test(href)) continue;
+      // The old family CTA sent people to a generic story-capture form. The
+      // editorial replacement is intentionally private, task-oriented search.
+      if (path === 'familia/index.html' && href === '/#inicio') {
+        assert.ok(!html.includes('href="/#inicio"'), `${path}: legacy capture CTA restored`);
+        assert.ok(html.includes('href="/buscar/"'), `${path}: private search replacement lost`);
+        continue;
+      }
+      assert.ok(html.includes(`href="${href}"`), `${path}: lost ${href}`);
+    }
   }
 });
 
