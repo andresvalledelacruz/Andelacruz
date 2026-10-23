@@ -15,6 +15,7 @@ Este inventario sirve como control conservador para separar contenido crítico d
 | `/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/` | violencia sexual | sin monetización |
 | `/duelo/ha-muerto-por-suicidio-alguien-que-quiero/` | posvención con bloque explícito de ideación suicida del lector | 112 + 024 + fuente oficial Sanidad |
 | `/dinero/tengo-deudas-y-no-se-por-donde-empezar/` | presión financiera intensa con bloque explícito de riesgo personal y decisiones patrimoniales de alto impacto | 112 + 024 + fuente oficial Sanidad |
+| `/dinero/necesito-dinero-urgente/` | urgencia económica con posibles necesidades básicas, fraude, violencia o crisis personal | 112 + 024 + fuente oficial Sanidad; sin monetización ni captación |
 | `/violencia/` | puerta de entrada transversal a violencia, abuso y acoso con posibles situaciones de peligro inmediato | sin monetización; 112 visible y 016 con alcance específico |
 
 | `/internacional.html` | acceso a orientación y emergencias de cuarenta y nueve países | sin scripts, sin monetización, fuentes y alcance territorial explícitos |
