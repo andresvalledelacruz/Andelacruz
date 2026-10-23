@@ -18,6 +18,7 @@ Este inventario sirve como control conservador para separar contenido crítico d
 | `/dinero/necesito-dinero-urgente/` | urgencia económica con posibles necesidades básicas, fraude, violencia o crisis personal | 112 + 024 + fuente oficial Sanidad; sin monetización ni captación |
 | `/dinero/no-puedo-pagar-la-vivienda/` | riesgo habitacional con posibles procedimientos, violencia económica o crisis personal | 112 + 024 + fuente oficial Sanidad; sin monetización ni captación |
 | `/dinero/me-da-miedo-mirar-mi-cuenta/` | evitación financiera con posible fraude, control económico o crisis personal | 112 + 024 + fuente oficial Sanidad; sin monetización ni captación |
+| `/dinero/en-casa-discutimos-por-dinero/` | conflicto económico doméstico con posible control, violencia o crisis personal | 112 + 024 + 016 con alcance específico; fuente oficial Sanidad; sin monetización ni captación |
 | `/violencia/` | puerta de entrada transversal a violencia, abuso y acoso con posibles situaciones de peligro inmediato | sin monetización; 112 visible y 016 con alcance específico |
 
 | `/internacional.html` | acceso a orientación y emergencias de cuarenta y nueve países | sin scripts, sin monetización, fuentes y alcance territorial explícitos |
