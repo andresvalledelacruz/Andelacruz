@@ -43,6 +43,8 @@ const INTERNATIONAL_AUTHORITY_HOSTS = new Set([
 
 export const PUBLIC_AUTHORITY_BASE_DOMAINS = [
   'sanidad.gob.es', 'inclusion.gob.es',
+  // Centro Europeo del Consumidor en España, Ministerio de Consumo; revisado 2026-10-23.
+  'consumo.gob.es',
   'guiasalud.es',
   'who.int',
   'juntadeandalucia.es',
