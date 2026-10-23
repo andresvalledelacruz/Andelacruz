@@ -27,7 +27,7 @@ El test `tests/p0-p1-noncommercial-invariant.test.mjs` protege actualmente las s
 - `/mi-pareja-me-maltrata-y-no-se-que-hacer/`;
 - `/he-sufrido-una-agresion-sexual-y-no-se-que-hacer/`;
 - `/duelo/ha-muerto-por-suicidio-alguien-que-quiero/`;
-- `/dinero/tengo-deudas-y-no-se-por-donde-empezar/`;
+- `/dinero/tengo-deudas-y-no-se-por-donde-empezar/`;\n- `/dinero/necesito-dinero-urgente/`;
 - `/violencia/`;
 - `/ayuda/es/`;
 - `/ayuda/en/`;
