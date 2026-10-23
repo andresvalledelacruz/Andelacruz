@@ -30,6 +30,7 @@ El test `tests/p0-p1-noncommercial-invariant.test.mjs` protege actualmente las s
 - `/dinero/tengo-deudas-y-no-se-por-donde-empezar/`;
 - `/dinero/necesito-dinero-urgente/`;
 - `/dinero/no-puedo-pagar-la-vivienda/`;
+- `/dinero/me-da-miedo-mirar-mi-cuenta/`;
 - `/violencia/`;
 - `/ayuda/es/`;
 - `/ayuda/en/`;
