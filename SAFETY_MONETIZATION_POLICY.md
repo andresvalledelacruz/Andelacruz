@@ -29,6 +29,7 @@ El test `tests/p0-p1-noncommercial-invariant.test.mjs` protege actualmente las s
 - `/duelo/ha-muerto-por-suicidio-alguien-que-quiero/`;
 - `/dinero/tengo-deudas-y-no-se-por-donde-empezar/`;
 - `/dinero/necesito-dinero-urgente/`;
+- `/dinero/no-puedo-pagar-la-vivienda/`;
 - `/violencia/`;
 - `/ayuda/es/`;
 - `/ayuda/en/`;
