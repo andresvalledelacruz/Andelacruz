@@ -43,10 +43,10 @@ test('la ruta mantiene firewall comercial, límites YMYL y carril de crisis', ()
 
 test('canonical, fecha editorial y lastmod permanecen sincronizados', () => {
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/dinero\/tengo-deudas-y-no-se-por-donde-empezar\/"/);
-  assert.match(html, /Actualizado el 24 de octubre de 2026/i);
-  assert.match(html, /"dateModified":"2026-10-24"/);
-  assert.match(html, /article:modified_time" content="2026-10-24"/);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/dinero\/tengo-deudas-y-no-se-por-donde-empezar\/<\/loc><lastmod>2026-10-24<\/lastmod>/);
+  assert.match(html, /Actualizado el 23 de octubre de 2026/i);
+  assert.match(html, /"dateModified":"2026-10-23"/);
+  assert.match(html, /article:modified_time" content="2026-10-23"/);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/dinero\/tengo-deudas-y-no-se-por-donde-empezar\/<\/loc><lastmod>2026-10-23<\/lastmod>/);
 });
 
 test('la guía diferencia el problema financiero antes de recomendar una vía', () => {
