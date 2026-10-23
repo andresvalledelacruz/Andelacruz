@@ -33,6 +33,6 @@ test('country expansion preserves verification and commercial boundaries', () =>
 
 test('professional metadata and sitemap reflect the editorial update', () => {
   assert.match(html, /"dateModified":"2026-10-22"/i);
-  assert.match(html, /Contenido editorial actualizado el 21 de octubre de 2026/i);
+  assert.match(html, /Contenido editorial actualizado el 22 de octubre de 2026/i);
   assert.match(sitemap, /profesionales\.html<\/loc><lastmod>2026-10-22<\/lastmod>/i);
 });
