@@ -31,7 +31,8 @@ test('protege privacidad, crisis y ausencia de captación o comercio', () => {
   assert.match(html, /href="tel:112"/);
   assert.match(html, /href="tel:024"/);
   assert.match(html, /sanidad\.gob\.es\/linea024/i);
-  assert.doesNotMatch(html, /Contar mi historia|Cuéntanos tu historia|<form\b|public-page-runtime|adsbygoogle|awin|adtraction|financeads|solicita presupuesto|contrata ahora/i);
+  assert.match(html, /<script src="\/public-page-runtime\\.js" async><\/script>/);
+  assert.doesNotMatch(html, /Contar mi historia|Cuéntanos tu historia|<form\b|adsbygoogle|awin|adtraction|financeads|solicita presupuesto|contrata ahora/i);
 });
 
 test('cita fuentes públicas y declara límites', () => {

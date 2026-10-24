@@ -32,7 +32,6 @@ El test `tests/p0-p1-noncommercial-invariant.test.mjs` protege actualmente las s
 - `/dinero/no-puedo-pagar-la-vivienda/`;
 - `/dinero/me-da-miedo-mirar-mi-cuenta/`;
 - `/dinero/en-casa-discutimos-por-dinero/`;
-- `/trabajo-dinero/`;
 - `/violencia/`;
 - `/ayuda/es/`;
 - `/ayuda/en/`;
