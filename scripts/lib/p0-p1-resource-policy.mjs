@@ -68,6 +68,9 @@ export const PUBLIC_AUTHORITY_BASE_DOMAINS = [
 ];
 
 export const REVIEWED_NON_GOVERNMENT_HOSTS = new Set([
+  // Fundación ANAR: línea nacional gratuita y confidencial para infancia y
+  // adolescencia, revisada 2026-10-24 para la ruta P0/P1 de violencia.
+  'www.anar.org',
   // Finanzas para Todos — web de referencia del Plan de Educación Financiera,
   // iniciativa de CNMV, Banco de España y Ministerio de Economía. Revisado 2026-09-01.
   'finanzasparatodos.es',
