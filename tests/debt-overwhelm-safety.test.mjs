@@ -62,7 +62,7 @@ test('la guía exige escenarios sostenibles y compara opciones más allá de la 
   assert.match(html, /Mantener el calendario actual/i);
   assert.match(html, /Negociar fecha, carencia o plazo/i);
   assert.match(html, /Consolidar o refinanciar/i);
-  assert.match(html, /avalanza/i);
+  assert.match(html, /avalancha/i);
   assert.match(html, /bola de nieve/i);
   assert.match(html, /no reglas jurídicas/i);
 });
