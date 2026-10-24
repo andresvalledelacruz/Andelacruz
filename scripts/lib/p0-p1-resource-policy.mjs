@@ -43,6 +43,8 @@ const INTERNATIONAL_AUTHORITY_HOSTS = new Set([
 
 export const PUBLIC_AUTHORITY_BASE_DOMAINS = [
   'sanidad.gob.es', 'inclusion.gob.es',
+  // Spanish public labour, prevention and social-security sources; reviewed 2026-10-24.
+  'insst.es', 'sepe.es', 'seg-social.es',
   // Centro Europeo del Consumidor en España, Ministerio de Consumo; revisado 2026-10-23.
   'consumo.gob.es',
   // Instituto Nacional de Ciberseguridad, entidad pública estatal; revisado 2026-10-23.
