@@ -43,7 +43,7 @@ test('actual card pages retain options and phones from the base and have determi
       if (/^https?:\/\//.test(href)) continue;
       // The old family CTA sent people to a generic story-capture form. The
       // editorial replacement is intentionally private, task-oriented search.
-      if ((path === 'familia/index.html' || path === 'trabajo-dinero/index.html') && href === '/#inicio') {
+      if ((path === 'familia/index.html' || path === 'trabajo-dinero/index.html' || path === 'rupturas/index.html') && href === '/#inicio') {
         assert.ok(!html.includes('href="/#inicio"'), `${path}: legacy capture CTA restored`);
         assert.ok(html.includes('href="/buscar/"'), `${path}: private search replacement lost`);
         continue;
