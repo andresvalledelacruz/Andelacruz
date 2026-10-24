@@ -49,6 +49,8 @@ export const PUBLIC_AUTHORITY_BASE_DOMAINS = [
   'incibe.es',
   // Punto de Acceso General de la Administración; revisado 2026-10-23.
   'administracion.gob.es',
+  // Servicio Público de Justicia; revisado 2026-10-24.
+  'administraciondejusticia.gob.es',
   'guiasalud.es',
   'who.int',
   'juntadeandalucia.es',
