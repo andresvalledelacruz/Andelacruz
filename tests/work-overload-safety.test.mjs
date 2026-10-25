@@ -22,21 +22,43 @@ test('burnout se presenta con frontera no diagnóstica y fuente OMS', () => {
 });
 
 test('la guía prioriza causas organizativas y no prescribe dimisión impulsiva', () => {
-  assert.match(html, /medidas sobre la organización y las condiciones de trabajo deben tener prioridad/i);
-  assert.match(html, /no estás ante un peligro inmediato/i);
-  assert.match(html, /No firmes algo que no entiendes/i);
-  assert.match(html, /orientación preventiva, sindical, laboral o jurídica/i);
+  assert.match(html, /medidas organizativas y colectivas frente a depender únicamente de actuaciones individuales/i);
+  assert.match(html, /no sustituye corregir una exposición mantenida/i);
+  assert.match(html, /Responsable u organización/i);
+  assert.match(html, /Servicio de prevención/i);
+});
+
+test('la guía distingue salud, prevención e incapacidad temporal', () => {
+  assert.match(html, /Salud, prevención e incapacidad temporal son circuitos relacionados, no idénticos/i);
+  assert.match(html, /Solo el circuito competente puede emitir la baja, confirmación o alta/i);
+  assert.match(html, /no decide una baja médica/i);
+  assert.match(html, /prestaciones\.seg-social\.es\/prestaciones-enfermedades-accidentes\/incapacidad-temporal\.html/i);
+});
+
+test('la guía propone documentación mínima, petición comprobable y canales distintos', () => {
+  assert.match(html, /Expediente mínimo sin convertirte en investigador/i);
+  assert.match(html, /No entres en cuentas ajenas/i);
+  assert.match(html, /Una comunicación al buzón y una denuncia formal no son necesariamente lo mismo/i);
+  assert.match(html, /Convierte «no puedo más» en una petición comprobable/i);
+});
+
+test('la salida laboral evita equivalencias y decisiones sin información', () => {
+  assert.match(html, /Salir puede ser adecuado/i);
+  assert.match(html, /no son equivalentes/i);
+  assert.match(html, /Consulta antes de firmar/i);
+  assert.match(html, /puede afectar plazos, prestación y reclamaciones/i);
 });
 
 test('el carril crítico conserva 112 y 024 y explicita límites del servicio', () => {
   assert.match(html, /tel:112/);
   assert.match(html, /tel:024/);
   assert.match(html, /pensando en hacerte daño/i);
-  assert.match(html, /no somos un servicio de emergencias ni ofrecemos supervisión continua/i);
+  assert.match(html, /no es un servicio de emergencias ni ofrece supervisión continua/i);
 });
 
 test('canonical, fecha editorial y lastmod permanecen sincronizados', () => {
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/trabajo\/no-puedo-mas-en-el-trabajo\/"/);
-  assert.match(html, /Actualizado el 1 de septiembre de 2026/i);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/trabajo\/no-puedo-mas-en-el-trabajo\/<\/loc><lastmod>2026-09-01<\/lastmod>/);
+  assert.match(html, /Fuentes oficiales revisadas el 25 de octubre de 2026/i);
+  assert.match(html, /"dateModified":"2026-10-25"/);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/trabajo\/no-puedo-mas-en-el-trabajo\/<\/loc><lastmod>2026-10-25<\/lastmod>/);
 });
