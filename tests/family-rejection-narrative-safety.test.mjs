@@ -8,6 +8,14 @@ const sitemapPath = new URL('../sitemap.xml', import.meta.url);
 const page = await readFile(pagePath, 'utf8');
 const sitemap = await readFile(sitemapPath, 'utf8');
 
+test('ofrece un mapa de 48 horas con precedencia de seguridad y dependencia', () => {
+  assert.match(page, /Mapa de decisión para las próximas 48 horas/i);
+  assert.match(page, /no empieces por convencer a tu familia/i);
+  assert.match(page, /Elige una persona y una escena/i);
+  assert.match(page, /Calcula tu dependencia antes del límite/i);
+  assert.match(page, /cambio observable/i);
+});
+
 test('separa sentimiento, conductas y veredicto sobre el afecto', () => {
   assert.match(page, /Lo que sientes importa, pero no necesitas convertirlo inmediatamente en un veredicto/i);
   assert.match(page, /no podemos saber exactamente qué sienten/i);
@@ -52,8 +60,13 @@ test('declara fuentes, canonical, privacidad y revisión editorial', () => {
   assert.match(page, /anar\.org\/que-hacemos\/telefono-chat-anar/i);
   assert.match(page, /violenciagenero\.igualdad\.gob\.es/i);
   assert.match(page, /sanidad\.gob\.es\/linea024/i);
-  assert.match(page, /evitando nombres, direcciones, teléfonos, capturas, centros de estudio/i);
+  assert.match(page, /No introduzcas nombres, direcciones, teléfonos, documentos, capturas, centros de estudio ni datos de terceras personas/i);
+  assert.match(page, /href="\/buscar\/"/i);
+  assert.doesNotMatch(page, /href="\/#inicio"|Contar mi historia/i);
   assert.match(page, /<link rel="canonical" href="https:\/\/desgracias\.es\/familia\/siento-que-mi-familia-no-me-quiere\/"\s*\/?>/i);
-  assert.match(page, /Actualizado el 2 de septiembre de 2026/i);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/siento-que-mi-familia-no-me-quiere\/<\/loc><lastmod>2026-09-02<\/lastmod>/);
+  assert.match(page, /Actualizado el 26 de octubre de 2026/i);
+  assert.match(page, /"dateModified":"2026-10-26"/i);
+  assert.match(page, /href="\/assets\/fonts\/fonts\.css"/i);
+  assert.doesNotMatch(page, /fonts\.googleapis\.com/i);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/siento-que-mi-familia-no-me-quiere\/<\/loc><lastmod>2026-10-26<\/lastmod>/);
 });
