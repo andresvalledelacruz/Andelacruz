@@ -19,6 +19,23 @@ test('work exit guide provides a decision log, financial scenarios and exit thre
   assert.match(html, /evita guardar tu único registro en un dispositivo o cuenta de trabajo/i);
 });
 
+test('work exit guide turns the first 72 hours into reversible, privacy-preserving steps', () => {
+  for (const signal of ['plan de 72 horas', 'En 24 horas', 'En 48 horas', 'En 72 horas', 'treinta días']) {
+    assert.match(html, new RegExp(signal, 'i'), signal);
+  }
+  assert.match(html, /No copies bases de datos, secretos empresariales ni datos personales/i);
+  assert.match(html, /evita comunicar una decisión irreversible/i);
+});
+
+test('work exit guide compares offers and separates non-equivalent exit routes', () => {
+  for (const signal of ['Vínculo y fechas', 'Dinero neto y costes', 'Tiempo real', 'Riesgo de transición']) {
+    assert.match(html, new RegExp(signal, 'i'), signal);
+  }
+  assert.match(html, /Una salida no se reduce a “seguir” o “dimitir”/i);
+  assert.match(html, /ni están disponibles en todos los casos/i);
+  assert.match(html, /cuentas y dispositivos personales/i);
+});
+
 test('work exit guide distinguishes resignation from legal and prevention routes', () => {
   assert.match(html, /una baja voluntaria no da acceso inmediato/i);
   assert.match(html, /Una dimisión ordinaria no es lo mismo que solicitar judicialmente la extinción/i);
@@ -33,11 +50,13 @@ test('work exit guide keeps sensitive help non-commercial and avoids unsupported
   assert.match(html, /No consta revisión individual por un profesional externo/i);
   assert.doesNotMatch(html, /href="\/#inicio"/i);
   assert.doesNotMatch(html, /adsbygoogle|affiliate|visitor-analytics|contratación garantizada/i);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
+  assert.match(html, /<script src="\/public-page-runtime\.js"><\/script>/i);
 });
 
 test('work exit guide metadata and sitemap share the real modification date', () => {
   assert.match(html, /"@type":"WebPage"/);
-  assert.match(html, /"dateModified":"2026-10-20"/);
+  assert.match(html, /"dateModified":"2026-10-26"/);
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/trabajo\/odio-mi-trabajo-pero-no-puedo-dejarlo\/"/);
-  assert.match(sitemap, /odio-mi-trabajo-pero-no-puedo-dejarlo\/<\/loc><lastmod>2026-10-20<\/lastmod>/);
+  assert.match(sitemap, /odio-mi-trabajo-pero-no-puedo-dejarlo\/<\/loc><lastmod>2026-10-26<\/lastmod>/);
 });
