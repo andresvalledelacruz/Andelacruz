@@ -17,6 +17,21 @@ test('distingue tipos de silencio sin inventar intención ni culpabilidad', () =
   assert.match(page, /No puedes saber la intención únicamente por la ausencia de respuesta/i);
 });
 
+test('ofrece un mapa de 72 horas sin eludir límites de contacto', () => {
+  assert.match(page, /Mapa de decisión para las próximas 72 horas/i);
+  assert.match(page, /no uses cuentas alternativas, terceras personas ni menores/i);
+  assert.match(page, /Separa vínculo y logística/i);
+  assert.match(page, /como máximo un mensaje con un objetivo concreto/i);
+  assert.match(page, /cambios comprobables/i);
+});
+
+test('separa asuntos prácticos y remite los jurídicos a orientación competente', () => {
+  assert.match(page, /Si hay asuntos prácticos que no pueden esperar/i);
+  assert.match(page, /canal menos invasivo/i);
+  assert.match(page, /acceso legítimo/i);
+  assert.match(page, /no determina derechos, obligaciones ni el canal jurídico adecuado/i);
+});
+
 test('separa hechos, interpretaciones y pérdida ambigua', () => {
   assert.match(page, /lo que sé/i);
   assert.match(page, /lo que estoy interpretando/i);
@@ -44,7 +59,10 @@ test('mantiene protección de crisis, violencia y privacidad', () => {
   assert.match(page, /href="tel:016"/i);
   assert.match(page, /href="tel:024"/i);
   assert.match(page, /Desgracias\.es no es un servicio de emergencias/i);
-  assert.match(page, /sin nombres, direcciones, teléfonos, capturas ni otros datos identificativos/i);
+  assert.match(page, /No introduzcas nombres, direcciones, teléfonos, documentos, capturas, mensajes completos ni datos de terceras personas/i);
+  assert.match(page, /href="\/buscar\/"/i);
+  assert.doesNotMatch(page, /href="\/#inicio"/i);
+  assert.doesNotMatch(page, /Contar mi historia/i);
 });
 
 test('declara límites de evidencia, fuentes, canonical y revisión', () => {
@@ -55,6 +73,9 @@ test('declara límites de evidencia, fuentes, canonical y revisión', () => {
   assert.match(page, /violenciagenero\.igualdad\.gob\.es/i);
   assert.match(page, /sanidad\.gob\.es\/linea024/i);
   assert.match(page, /<link rel="canonical" href="https:\/\/desgracias\.es\/familia\/mi-familia-no-me-habla\/"\s*\/?>/i);
-  assert.match(page, /Actualizado el 2 de septiembre de 2026/i);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/mi-familia-no-me-habla\/<\/loc><lastmod>2026-09-02<\/lastmod>/);
+  assert.match(page, /Actualizado el 26 de octubre de 2026/i);
+  assert.match(page, /"dateModified":"2026-10-26"/i);
+  assert.match(page, /href="\/assets\/fonts\/fonts\.css"/i);
+  assert.doesNotMatch(page, /fonts\.googleapis\.com/i);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/mi-familia-no-me-habla\/<\/loc><lastmod>2026-10-26<\/lastmod>/);
 });
