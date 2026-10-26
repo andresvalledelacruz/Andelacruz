@@ -63,7 +63,10 @@ test("protege evidencia, fuentes, canonical, sitemap y firewall comercial", () =
   assert.match(html, /https:\/\/pmc\.ncbi\.nlm\.nih\.gov\/articles\/PMC12504279\//);
   assert.match(html, /https:\/\/violenciagenero\.igualdad\.gob\.es\/informacion-3\/recursos\/telefono016\//);
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/familia\/mi-madre-o-mi-padre-no-me-habla\//);
-  assert.match(text, /actualizado el 2 de septiembre de 2026/);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/mi-madre-o-mi-padre-no-me-habla\/<\/loc><lastmod>2026-09-02<\/lastmod>/);
+  assert.match(text, /actualizado el 26 de octubre de 2026/);
+  assert.match(html, /"dateModified":"2026-10-26"/);
+  assert.match(html, /href="\/assets\/fonts\/fonts\.css"/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com/);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/mi-madre-o-mi-padre-no-me-habla\/<\/loc><lastmod>2026-10-26<\/lastmod>/);
   assert.doesNotMatch(html, /data-ad|affiliate|afiliad|patrocinad|sponsor|utm_|[?&]ref=|comprar ahora|contrata ahora|precio|suscríbete/i);
 });
