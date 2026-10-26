@@ -23,6 +23,15 @@ test("protege necesidades básicas y salida gradual", () => {
   assert.doesNotMatch(text, /vete hoy|márchate inmediatamente|corta todo contacto/);
 });
 
+test("estructura una salida por capas y evita fraude o nueva dependencia", () => {
+  assert.match(text, /prepara una salida por capas, no una huida sin red/);
+  assert.match(text, /próximas 24 horas/);
+  assert.match(text, /próximos siete días/);
+  assert.match(text, /antes de entregar dinero/);
+  assert.match(text, /no crea una deuda, explotación o control nuevos/);
+  assert.match(text, /no uses este plan como sustituto de orientación especializada/);
+});
+
 test("exige salida segura condicionada y reversible", () => {
   assert.match(text, /persona segura, un lugar y un transporte/);
   assert.match(text, /medicación, teléfono y copias de tu documentación/);
@@ -62,7 +71,12 @@ test("protege mediación, fuentes, canonical, sitemap y firewall comercial", () 
   assert.match(html, /https:\/\/www\.anar\.org\/que-hacemos\/telefono-chat-anar\//);
   assert.match(html, /https:\/\/www\.sanidad\.gob\.es\/linea024\/home\.htm/);
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/familia\/vivo-con-mi-familia-y-no-aguanto-mas\//);
-  assert.match(text, /actualizado el 2 de septiembre de 2026/);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/vivo-con-mi-familia-y-no-aguanto-mas\/<\/loc><lastmod>2026-09-02<\/lastmod>/);
+  assert.match(text, /actualizado el 26 de octubre de 2026/);
+  assert.match(html, /"dateModified":"2026-10-26"/);
+  assert.match(html, /href="\/assets\/fonts\/fonts\.css"/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com/);
+  assert.match(html, /href="\/buscar\/"/);
+  assert.match(text, /no introduzcas nombres, dirección, contrato, ubicación en tiempo real/);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/vivo-con-mi-familia-y-no-aguanto-mas\/<\/loc><lastmod>2026-10-26<\/lastmod>/);
   assert.doesNotMatch(html, /data-ad|affiliate|afiliad|patrocinad|sponsor|utm_|[?&]ref=|comprar ahora|contrata ahora|precio|suscríbete/i);
 });
