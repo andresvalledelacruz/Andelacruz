@@ -45,6 +45,13 @@ test("protege logística compartida, sueño y funcionamiento", () => {
   assert.match(text, /pide apoyo sanitario o psicológico/);
 });
 
+test("añade un mapa de patrones y umbrales funcionales sin diagnosticar", () => {
+  assert.match(text, /un mapa de siete días: disparador, respuesta y efecto/);
+  assert.match(text, /el registro no diagnostica ni demuestra por qué piensas en tu ex/);
+  assert.match(text, /qué está pasando con tu funcionamiento y tu seguridad/);
+  assert.match(text, /una guía web no puede diagnosticarte ni decidir qué atención necesitas/);
+});
+
 test("reduce autocastigo sin borrar responsabilidad", () => {
   assert.match(text, /cuando aparece el autocastigo/);
   assert.match(text, /separar responsabilidad de identidad/);
@@ -67,7 +74,7 @@ test("protege evidencia, canonical, sitemap y firewall comercial", () => {
   assert.match(html, /https:\/\/pmc\.ncbi\.nlm\.nih\.gov\/articles\/PMC10727987\//);
   assert.match(html, /https:\/\/pmc\.ncbi\.nlm\.nih\.gov\/articles\/PMC3472530\//);
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/rupturas\/no-puedo-dejar-de-pensar-en-mi-ex\//);
-  assert.match(text, /actualizado el 2 de septiembre de 2026/);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/rupturas\/no-puedo-dejar-de-pensar-en-mi-ex\/<\/loc><lastmod>2026-09-02<\/lastmod>/);
+  assert.match(text, /actualizado el 27 de octubre de 2026/);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/rupturas\/no-puedo-dejar-de-pensar-en-mi-ex\/<\/loc><lastmod>2026-10-27<\/lastmod>/);
   assert.doesNotMatch(html, /data-ad|affiliate|afiliad|patrocinad|sponsor|utm_|[?&]ref=|comprar ahora|contrata ahora|precio|suscríbete/i);
 });
