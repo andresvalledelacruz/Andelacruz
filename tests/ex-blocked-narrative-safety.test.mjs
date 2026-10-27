@@ -36,7 +36,7 @@ test("separa dolor, responsabilidad práctica y riesgo antes de contactar", () =
   assert.match(text, /dolor, explicación o reconciliación/);
   assert.match(text, /responsabilidad compartida con fecha/);
   assert.match(text, /miedo, amenaza, vigilancia o medida vigente/);
-  assert.match(text, /no uses un canal formal como pretexto para reabrir la relación/);
+  assert.match(text, /ni uses un canal formal como pretexto para reabrir la relación/);
   assert.match(text, /una guía general no puede decidir qué vía formal corresponde/);
 });
 
