@@ -17,7 +17,9 @@ jobs:
   test:
     name: Node tests and syntax
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Chromium downloads occasionally consume most of the previous ten-minute
+    # budget before the browser, accessibility and performance audits begin.
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
