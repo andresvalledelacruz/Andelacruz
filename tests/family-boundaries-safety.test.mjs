@@ -68,7 +68,7 @@ test('propone un ensayo gradual, reversible y verificable sin vigilancia', () =>
   assert.match(html, /Comprueba dependencia y reversibilidad/i);
   assert.match(html, /Revisa hechos, no interpretaciones/i);
   assert.match(html, /No grabes a escondidas ni guardes datos íntimos/i);
-  assert.match(html, /no convierte el ensayo en una confrontación obligatoria/i);
+  assert.match(html, /no conviertas el ensayo en una confrontación obligatoria/i);
 });
 
 test('protege a menores y separa límites propios de decisiones compartidas', () => {
