@@ -34,7 +34,7 @@ test('la privacidad digital cubre accesos, permisos, límites y terceras persona
   assert.match(html, /métodos de recuperación y cierra sesiones abiertas/i);
   assert.match(html, /ubicación, álbumes compartidos, calendarios, nubes/i);
   assert.match(html, /no instales herramientas de seguimiento/i);
-  assert.match(html, /datos de menores o terceras personas/i);
+  assert.match(html, /(información de hijos|datos de menores) o terceras personas/i);
   assert.match(html, /borrarlo no elimina necesariamente las copias/i);
 });
 
