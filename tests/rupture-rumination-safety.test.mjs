@@ -34,3 +34,18 @@ test('la página conserva canonical y límite no diagnóstico', () => {
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/rupturas\/no-puedo-dejar-de-pensar-en-mi-ex\/"/);
   assert.match(html, /evita presentar una experiencia común tras una ruptura como un diagnóstico/i);
 });
+
+test('incluye un mapa práctico sin convertir el registro en diagnóstico', () => {
+  assert.match(html, /Un mapa de siete días: disparador, respuesta y efecto/i);
+  assert.match(html, /El registro no diagnostica ni demuestra por qué piensas en tu ex/i);
+  assert.match(html, /un experimento pequeño y reversible/i);
+  assert.match(html, /seguridad, medicación, hijos, vivienda, dinero, un plazo o una obligación/i);
+});
+
+test('declara entidad, fecha, tipografías locales y runtime compartido', () => {
+  assert.match(html, /"@type":"WebPage"/);
+  assert.match(html, /"dateModified":"2026-10-27"/);
+  assert.match(html, /href="\/assets\/home-fonts\.css"/);
+  assert.match(html, /src="\/public-page-runtime\.js" defer/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
+});
