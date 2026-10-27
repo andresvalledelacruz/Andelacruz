@@ -34,6 +34,22 @@ test('fear of error guide separates autonomy, review and stop thresholds', () =>
   assert.match(html, /Los límites concretos dependen del puesto y deben proceder de la organización/i);
 });
 
+test('fear of error guide adds a bounded pre-action check for high-impact work', () => {
+  for (const signal of ['Objeto:', 'Versión:', 'Alcance:', 'Reversibilidad:', 'Permiso:', 'Evidencia:']) {
+    assert.match(html, new RegExp(signal, 'i'), signal);
+  }
+  assert.match(html, /No inventes una autorización ni conviertas la prisa en permiso/i);
+});
+
+test('fear of error guide treats AI as an untrusted aid and protects workplace data', () => {
+  assert.match(html, /Una IA no sustituye el control del puesto/i);
+  assert.match(html, /No la uses como aprobación, firma, dictamen profesional ni segunda comprobación independiente/i);
+  assert.match(html, /No pegues nombres, documentos internos, credenciales, código privado/i);
+  assert.match(html, /ejemplos ficticios o anonimizados de forma efectiva/i);
+  assert.match(html, /aepd\.es\/guias\/recomendaciones-ia-aepd\.pdf/i);
+  assert.match(html, /incibe\.es\/empresas\/blog\/factor-humano-en-ciberseguridad/i);
+});
+
 test('fear of error guide routes to published non-commercial help and discloses review status', () => {
   assert.match(html, /href="\/buscar\/"/i);
   assert.match(html, /No consta revisión individual por un profesional externo/i);
@@ -43,7 +59,12 @@ test('fear of error guide routes to published non-commercial help and discloses 
 
 test('fear of error guide metadata and sitemap share the real modification date', () => {
   assert.match(html, /"@type":"WebPage"/);
-  assert.match(html, /"dateModified":"2026-10-20"/);
+  assert.match(html, /"dateModified":"2026-10-27"/);
+  assert.match(html, /Actualizado el 27 de octubre de 2026/);
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/trabajo\/tengo-miedo-de-equivocarme-en-el-trabajo\/"/);
-  assert.match(sitemap, /tengo-miedo-de-equivocarme-en-el-trabajo\/<\/loc><lastmod>2026-10-20<\/lastmod>/);
+  assert.match(sitemap, /tengo-miedo-de-equivocarme-en-el-trabajo\/<\/loc><lastmod>2026-10-27<\/lastmod>/);
+});
+
+test('fear of error guide avoids third-party font requests', () => {
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
 });
