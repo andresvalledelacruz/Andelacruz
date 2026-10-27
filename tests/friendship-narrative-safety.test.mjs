@@ -27,6 +27,24 @@ test('la guía protege frente a rechazo, vínculos inseguros y riesgos digitales
   assert.match(html, /Protege dirección, documentos, contraseñas, dinero e imágenes íntimas/i);
 });
 
+
+test('el paso de contacto digital a presencial es gradual, reversible y privado', () => {
+  assert.match(html, /una escalera reversible/i);
+  assert.match(html, /no se deduce de una biografía, una foto, muchos seguidores/i);
+  assert.match(html, /reglas, moderación y vías de denuncia/i);
+  assert.match(html, /lugar público y concurrido/i);
+  assert.match(html, /transporte que controles/i);
+  assert.match(html, /Poder cambiar de idea, terminar el encuentro o rechazar otra cita/i);
+  assert.match(html, /peticiones económicas, secretos forzados, aislamiento respecto a otros apoyos/i);
+});
+
+test('separa amistad, apoyo comunitario y ayuda profesional', () => {
+  assert.match(html, /Amistad, apoyo comunitario y ayuda profesional no son equivalentes/i);
+  assert.match(html, /eso no demuestra amistad, disponibilidad personal ilimitada ni confidencialidad/i);
+  assert.match(html, /para qué territorio, qué credenciales exige su profesión/i);
+  assert.match(html, /una amistad puede acompañarte, pero no sustituye atención sanitaria, social o jurídica/i);
+});
+
 test('la guía conserva Safety de crisis, límites y recursos oficiales', () => {
   assert.match(html, /tel:112/);
   assert.match(html, /tel:024/);
@@ -53,7 +71,11 @@ test('la página mantiene canonical, fuentes y prudencia causal', () => {
   assert.match(html, /soledades\.es\/estudios\/barometro-soledad-no-deseada-espana-2024/);
   assert.match(html, /Son asociaciones poblacionales/i);
   assert.match(html, /ni promete que una actividad concreta produzca una amistad/i);
-  assert.match(html, /"dateModified":"2026-10-21"/);
-  assert.match(html, /Actualizado el 21 de octubre de 2026/i);
+  assert.match(html, /"dateModified":"2026-10-27"/);
+  assert.match(html, /Actualizado el 27 de octubre de 2026/i);
   assert.match(html, /imserso\.es\/el-imserso/i);
+  assert.match(html, /Marco_Estrategico_Soledades\.pdf/);
+  assert.match(html, /href="\/assets\/home-fonts\.css"/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
+  assert.match(html, /src="\/public-page-runtime\.js" defer/);
 });
