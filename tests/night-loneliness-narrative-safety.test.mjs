@@ -24,11 +24,24 @@ test("ofrece un plan de 30 minutos y protege decisiones reversibles", () => {
   assert.doesNotMatch(text, /te funcionará|te calmará|vas a dormir/);
 });
 
+test("separa el alivio nocturno del trabajo diurno y deja un traspaso concreto", () => {
+  assert.match(text, /dos carriles: esta noche y mañana/);
+  assert.match(text, /esta noche.*acción pequeña y reversible.*mañana.*estructural/);
+  assert.match(text, /nota de traspaso/);
+  assert.match(text, /hora aproximada, qué necesitabas, qué ayudó y cuál es la primera acción diurna/);
+  assert.doesNotMatch(text, /registra cada minuto|controla cada minuto/);
+});
+
 test("protege conexión, privacidad y fraude", () => {
   assert.match(text, /la otra persona puede no estar despierta o no poder responder/);
+  assert.match(text, /qué harás si no contesta/);
+  assert.match(text, /eso habla de su disponibilidad, no de tu valor/);
+  assert.match(text, /no envíes el mismo mensaje íntimo a muchas personas o a un grupo/);
   assert.match(text, /dinero, contraseñas, códigos bancarios, documentos, dirección, ubicación en tiempo real ni imágenes íntimas/);
   assert.match(text, /persona desconocida/);
   assert.match(text, /no incluyas nombres, dirección, teléfonos, documentos ni otros datos personales/);
+  assert.match(html, /href="\/buscar\/">Buscar ayuda de forma privada/);
+  assert.doesNotMatch(html, /href="\/#inicio">Contar mi historia/);
 });
 
 test("delimita autocuidado del sueño y derivación profesional", () => {
@@ -55,7 +68,13 @@ test("protege fuentes, canonical y lastmod editorial", () => {
   assert.match(html, /https:\/\/www\.nhs\.uk\/conditions\/insomnia\//);
   assert.match(html, /https:\/\/www\.cdc\.gov\/sleep\/about\/index\.html/);
   assert.match(html, /https:\/\/www\.sanidad\.gob\.es\/linea024\/home\.htm/);
+  assert.match(html, /https:\/\/www\.sanidad\.gob\.es\/areas\/calidadAsistencial\/excelenciaClinica\/docs\/EyR_UAS\.pdf/);
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/soledad\/me-siento-solo-por-la-noche\//);
-  assert.match(text, /actualizado el 2 de septiembre de 2026/);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/soledad\/me-siento-solo-por-la-noche\/<\/loc><lastmod>2026-09-02<\/lastmod>/);
+  assert.match(text, /actualizado el 27 de octubre de 2026/);
+  assert.match(html, /"@type":"WebPage"/);
+  assert.match(html, /"dateModified":"2026-10-27"/);
+  assert.match(html, /href="\/assets\/home-fonts\.css"/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
+  assert.match(html, /src="\/public-page-runtime\.js" defer/);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/soledad\/me-siento-solo-por-la-noche\/<\/loc><lastmod>2026-10-27<\/lastmod>/);
 });
