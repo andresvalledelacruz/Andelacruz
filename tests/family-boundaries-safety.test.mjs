@@ -57,7 +57,30 @@ test('deriva dependencias prácticas a atención social primaria sin prometer pr
 
 test('fecha editorial y sitemap se mantienen alineados', async () => {
   const sitemap = await readFile(new URL('../sitemap.xml', import.meta.url), 'utf8');
-  assert.match(html, /"dateModified":"2026-10-20"/);
-  assert.match(html, /Actualizado el 20 de octubre de 2026/);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/necesito-poner-limites-a-mi-familia\/<\/loc><lastmod>2026-10-20<\/lastmod>/);
+  assert.match(html, /"dateModified":"2026-10-27"/);
+  assert.match(html, /Actualizado el 27 de octubre de 2026/);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/familia\/necesito-poner-limites-a-mi-familia\/<\/loc><lastmod>2026-10-27<\/lastmod>/);
+});
+
+
+test('propone un ensayo gradual, reversible y verificable sin vigilancia', () => {
+  assert.match(html, /Un plan de 72 horas para probar un límite sin escalarlo/i);
+  assert.match(html, /Comprueba dependencia y reversibilidad/i);
+  assert.match(html, /Revisa hechos, no interpretaciones/i);
+  assert.match(html, /No grabes a escondidas ni guardes datos íntimos/i);
+  assert.match(html, /no convierte el ensayo en una confrontación obligatoria/i);
+});
+
+test('protege a menores y separa límites propios de decisiones compartidas', () => {
+  assert.match(html, /No uses a un menor como mensajero, testigo o aliado/i);
+  assert.match(html, /decisiones compartidas sobre cuidados, residencia, salud o educación/i);
+  assert.match(html, /imágenes difundidas pueden copiarse y manipularse/i);
+  assert.match(html, /los-riesgos-del-sharenting/i);
+});
+
+test('delimita mediación y amplía canales oficiales sin confundirlos con emergencias', () => {
+  assert.match(html, /La mediación es voluntaria/i);
+  assert.match(html, /violencia, coacción, intimidación o miedo/i);
+  assert.match(html, /600 000 016/);
+  assert.match(html, /el 016 deriva las emergencias al 112/i);
 });
