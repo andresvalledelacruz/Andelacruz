@@ -31,6 +31,15 @@ test("ofrece un plan inmediato y reduce comprobaciones sin promesas", () => {
   assert.doesNotMatch(text, /lo superarás en|dejarás de pensar en|recuperarás a tu ex/);
 });
 
+test("separa dolor, responsabilidad práctica y riesgo antes de contactar", () => {
+  assert.match(text, /tres carriles antes de intentar cualquier contacto/);
+  assert.match(text, /dolor, explicación o reconciliación/);
+  assert.match(text, /responsabilidad compartida con fecha/);
+  assert.match(text, /miedo, amenaza, vigilancia o medida vigente/);
+  assert.match(text, /ni uses un canal formal como pretexto para reabrir la relación/);
+  assert.match(text, /una guía general no puede decidir qué vía formal corresponde/);
+});
+
 test("separa logística compartida de conversación sentimental", () => {
   assert.match(text, /hijos, vivienda, dinero o pertenencias pendientes/);
   assert.match(text, /canal neutral, autorizado y seguro/);
@@ -58,10 +67,21 @@ test("mantiene 112, 016 y 024 con alcance correcto y sin captación", () => {
 test("protege fuentes, canonical, sitemap y firewall comercial", () => {
   assert.match(html, /https:\/\/pmc\.ncbi\.nlm\.nih\.gov\/articles\/PMC3472530\//);
   assert.match(html, /https:\/\/pubmed\.ncbi\.nlm\.nih\.gov\/10972515\//);
+  assert.match(html, /https:\/\/www\.aepd\.es\/areas-de-actuacion\/internet-y-redes-sociales\/protege-tu-privacidad/);
+  assert.match(html, /https:\/\/www\.aepd\.es\/guias\/guia-privacidad-y-seguridad-en-internet\.pdf/);
   assert.match(html, /https:\/\/violenciagenero\.igualdad\.gob\.es\/informacion-3\/recursos\/telefono016\//);
   assert.match(html, /https:\/\/www\.sanidad\.gob\.es\/linea024\/home\.htm/);
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/rupturas\/mi-ex-me-ha-bloqueado\//);
-  assert.match(text, /actualizado el 2 de septiembre de 2026/);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/rupturas\/mi-ex-me-ha-bloqueado\/<\/loc><lastmod>2026-09-02<\/lastmod>/);
+  assert.match(text, /actualizado el 27 de octubre de 2026/);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/rupturas\/mi-ex-me-ha-bloqueado\/<\/loc><lastmod>2026-10-27<\/lastmod>/);
   assert.doesNotMatch(html, /data-ad|affiliate|afiliad|patrocinad|sponsor|utm_|[?&]ref=|comprar ahora|contrata ahora|precio|suscríbete/i);
+});
+
+test("declara entidad, fecha, tipografías locales y runtime compartido", () => {
+  assert.match(html, /"@type":"WebPage"/);
+  assert.match(html, /"dateModified":"2026-10-27"/);
+  assert.match(html, /href="\/assets\/home-fonts\.css"/);
+  assert.match(html, /src="\/public-page-runtime\.js" defer/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
+  assert.match(html, /wa\.me\/34600000016/);
 });
