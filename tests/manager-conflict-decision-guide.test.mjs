@@ -21,6 +21,20 @@ test('manager conflict guide supports factual records while limiting collection 
   assert.match(html, /aepd\.es\/guias\/la-proteccion-de-datos-en-las-relaciones-laborales\.pdf/i);
 });
 
+test('manager conflict guide offers a reversible 72-hour map and an actionable first report', () => {
+  for (const signal of ['Un mapa prudente para las próximas 72 horas', 'Hoy: protege seguridad y salud', 'En 24 horas: define el objetivo inmediato', 'En 48 horas: identifica el canal y su alcance', 'En 72 horas: decide un paso reversible', 'Prepara una primera comunicación que permita actuar', 'confirmación de recepción']) {
+    assert.match(html, new RegExp(signal, 'i'), signal);
+  }
+  assert.match(html, /no obligan a esperar si existe riesgo inmediato/i);
+  assert.match(html, /no adjuntes datos de clientes, salud o compañeros si no son necesarios/i);
+});
+
+test('manager conflict guide does not present whistleblowing protection as universal', () => {
+  assert.match(html, /Ley 2\/2023 tampoco es un buzón universal para cualquier desacuerdo/i);
+  assert.match(html, /no afirmes protección frente a represalias sin comprobar/i);
+  assert.match(html, /boe\.es\/buscar\/act\.php\?id=BOE-A-2023-4513/i);
+});
+
 test('manager conflict guide distinguishes routes and limits the discrimination service scope', () => {
   assert.match(html, /denuncia formal, previa identificación/i);
   assert.match(html, /buzón.+forma anónima/is);
@@ -38,7 +52,12 @@ test('manager conflict guide keeps crisis help non-commercial and avoids unsuppo
 
 test('manager conflict guide metadata and sitemap share the real modification date', () => {
   assert.match(html, /"@type":"WebPage"/);
-  assert.match(html, /"dateModified":"2026-10-20"/);
+  assert.match(html, /"dateModified":"2026-10-27"/);
+  assert.match(html, /Actualizado el 27 de octubre de 2026/);
   assert.match(html, /rel="canonical" href="https:\/\/desgracias\.es\/trabajo\/mi-jefe-me-hace-la-vida-imposible\/"/);
-  assert.match(sitemap, /mi-jefe-me-hace-la-vida-imposible\/<\/loc><lastmod>2026-10-20<\/lastmod>/);
+  assert.match(sitemap, /mi-jefe-me-hace-la-vida-imposible\/<\/loc><lastmod>2026-10-27<\/lastmod>/);
+});
+
+test('manager conflict guide avoids third-party font requests', () => {
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
 });
