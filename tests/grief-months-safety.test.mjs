@@ -21,6 +21,23 @@ test('months-later grief guide evaluates function, context and social pressure w
   assert.match(page, /aislamiento/i);
 });
 
+test('months-later grief guide offers a bounded private functional observation instead of self-diagnosis', () => {
+  assert.match(page, /observación privada de siete días, no un examen/i);
+  assert.match(page, /Sueño y descanso, alimentación y autocuidado, tareas imprescindibles/i);
+  assert.match(page, /hechos observables/i);
+  assert.match(page, /Separa urgencia y seguimiento/i);
+  assert.match(page, /No uses el registro para vigilarte durante todo el día ni para demostrar un diagnóstico/i);
+  assert.match(page, /No empieces, suspendas ni ajustes medicación/i);
+});
+
+test('months-later grief guide protects privacy and removes story capture', () => {
+  assert.match(page, /No publiques historiales, diagnósticos, conversaciones/i);
+  assert.match(page, /datos de la persona fallecida o de terceras personas/i);
+  assert.doesNotMatch(page, /Contar mi historia/i);
+  assert.doesNotMatch(page, /href="\/#inicio"/i);
+  assert.match(page, /href="\/buscar\/"/i);
+});
+
 test('months-later grief guide preserves urgent 112 and 024 routing', () => {
   assert.match(page, /peligro inmediato/i);
   assert.match(page, /href="tel:112"/);
@@ -32,11 +49,16 @@ test('months-later grief guide preserves urgent 112 and 024 routing', () => {
 
 test('months-later grief guide keeps authoritative sources and editorial date aligned with sitemap', () => {
   assert.match(page, /portal\.guiasalud\.es/);
-  assert.match(page, /iris\.who\.int/);
+  assert.match(page, /icd\.who\.int/);
   assert.match(page, /sanidad\.gob\.es\/linea024\//);
-  assert.match(page, /Actualizado el 1 de septiembre de 2026/);
+  assert.match(page, /Actualizado el 28 de octubre de 2026/);
+  assert.match(page, /"@type":"WebPage"/);
+  assert.match(page, /"dateModified":"2026-10-28"/);
+  assert.match(page, /href="\/assets\/home-fonts\.css"/i);
+  assert.match(page, /src="\/public-page-runtime\.js" defer/i);
+  assert.doesNotMatch(page, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
   assert.match(
     sitemap,
-    /<loc>https:\/\/desgracias\.es\/duelo\/han-pasado-meses-y-sigo-muy-mal\/<\/loc><lastmod>2026-09-01<\/lastmod>/
+    /<loc>https:\/\/desgracias\.es\/duelo\/han-pasado-meses-y-sigo-muy-mal\/<\/loc><lastmod>2026-10-28<\/lastmod>/
   );
 });
