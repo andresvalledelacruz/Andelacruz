@@ -108,6 +108,7 @@ test('official Spanish evidence set remains primary and external links are safe'
   assert.match(html, /boe\.es\/buscar\/act\.php\?id=BOE-A-2021-9347/);
   assert.match(html, /incibe\.es\/menores\/tematicas\/ciberacoso/);
   assert.match(html, /incibe\.es\/linea-de-ayuda-en-ciberseguridad/);
+  assert.match(html, /aepd\.es\/canalprioritario/);
   const externalAnchors = [...html.matchAll(/<a\s+[^>]*href=['\"]https?:\/\/[^'\"]+['\"][^>]*>/gi)].map(match => match[0]);
   assert.ok(externalAnchors.length >= 10, 'Expected a broad official evidence/resource set');
   for (const anchor of externalAnchors) {
@@ -128,4 +129,5 @@ test('page remains substantial, non-commercial and discoverable from safety surf
   assert.match(familyHtml, /href=['\"]\/familia\/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer\/['\"]/i);
   assert.match(urgentHtml, /href=['\"]\/familia\/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer\/['\"]/i);
   assert.match(urgentHtml, /href=['\"]tel:900018018['\"]/i);
+  assert.match(sitemap, /mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer\/<\/loc><lastmod>2026-10-28<\/lastmod>/i);
 });
