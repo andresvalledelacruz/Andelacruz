@@ -6,6 +6,7 @@ import { URL_OPPORTUNITY_MAP, EXPECTED_PRODUCTION_URL_COUNT } from '../opportuni
 const path = '/familia/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer/';
 const html = fs.readFileSync(new URL('../familia/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer/index.html', import.meta.url), 'utf8');
 const familyHtml = fs.readFileSync(new URL('../familia/index.html', import.meta.url), 'utf8');
+const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 const urgentHtml = fs.readFileSync(new URL('../ayuda-urgente.html', import.meta.url), 'utf8');
 const ctx = URL_OPPORTUNITY_MAP[path];
 
@@ -82,6 +83,17 @@ test('page rejects forced evidence gathering and impulsive confrontation', () =>
   assert.match(html, /no recomienda que el menor se exponga para conseguir pruebas/i);
 });
 
+test('next school day plan is concrete, discreet and does not burden the child', () => {
+  assert.match(html, /Un plan verificable para el siguiente día lectivo/i);
+  assert.match(html, /Momento y lugar/i);
+  assert.match(html, /Adulto responsable/i);
+  assert.match(html, /otra alternativa si no está disponible/i);
+  assert.match(html, /sin tener que explicar el caso delante del grupo ni entregar partes diarios/i);
+  assert.match(html, /Revisión con fecha/i);
+  assert.match(html, /no es que el menor vuelva inmediatamente contento/i);
+  assert.match(html, /Evita grupos amplios de familias, acusaciones públicas, fotografías identificables o rumores/i);
+});
+
 test('health impact and suicide-risk bridge remain explicit without causal oversimplification', () => {
   assert.match(html, /Cuando el acoso está afectando a su salud/i);
   assert.match(html, /pediatra, médico de familia o los servicios de salud mental infanto-juvenil/i);
@@ -96,6 +108,7 @@ test('official Spanish evidence set remains primary and external links are safe'
   assert.match(html, /boe\.es\/buscar\/act\.php\?id=BOE-A-2021-9347/);
   assert.match(html, /incibe\.es\/menores\/tematicas\/ciberacoso/);
   assert.match(html, /incibe\.es\/linea-de-ayuda-en-ciberseguridad/);
+  assert.match(html, /aepd\.es\/canalprioritario/);
   const externalAnchors = [...html.matchAll(/<a\s+[^>]*href=['\"]https?:\/\/[^'\"]+['\"][^>]*>/gi)].map(match => match[0]);
   assert.ok(externalAnchors.length >= 10, 'Expected a broad official evidence/resource set');
   for (const anchor of externalAnchors) {
@@ -108,7 +121,13 @@ test('page remains substantial, non-commercial and discoverable from safety surf
   assert.doesNotMatch(html, /class=['\"]cta['\"]/i);
   assert.doesNotMatch(html, /href=['\"]\/#inicio['\"]/i);
   assert.match(html, /no ofrece servicios comerciales alrededor de una situación de violencia infantil/i);
+  assert.match(html, /\"@type\":\"WebPage\"/);
+  assert.match(html, /\"dateModified\":\"2026-10-28\"/);
+  assert.match(html, /href=\"\/assets\/home-fonts\.css\"/);
+  assert.match(html, /src=\"\/public-page-runtime\.js\" defer/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
   assert.match(familyHtml, /href=['\"]\/familia\/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer\/['\"]/i);
   assert.match(urgentHtml, /href=['\"]\/familia\/mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer\/['\"]/i);
   assert.match(urgentHtml, /href=['\"]tel:900018018['\"]/i);
+  assert.match(sitemap, /mi-hijo-sufre-acoso-escolar-y-no-se-que-hacer\/<\/loc><lastmod>2026-10-28<\/lastmod>/i);
 });
