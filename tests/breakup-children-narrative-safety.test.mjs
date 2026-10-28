@@ -36,6 +36,17 @@ test("somete mediación, contacto y entregas a seguridad", () => {
   assert.match(text, /no organices un encuentro directo ni una entrega improvisada/);
 });
 
+test("coordina siete días sin vigilancia ni decisiones unilaterales", () => {
+  assert.match(text, /un parte de coordinación de siete días, no un expediente sobre la otra casa/);
+  assert.match(text, /hecho observable/);
+  assert.match(text, /necesidad del menor/);
+  assert.match(text, /confirmado”, “pendiente” o “requiere orientación/);
+  assert.match(text, /un silencio no debe convertirse automáticamente en consentimiento/);
+  assert.match(text, /no la conviertas en un registro de ubicaciones minuto a minuto/);
+  assert.match(text, /no debe actualizar el parte, confirmar versiones ni transportar contraseñas/);
+  assert.match(text, /no autoriza cambios unilaterales de residencia, colegio, tratamientos, estancias o contactos/);
+});
+
 test("mantiene resoluciones y decisiones legales fuera de la guía", () => {
   assert.match(text, /las medidas judiciales y las instrucciones de protección vigentes prevalecen sobre esta guía/);
   assert.match(text, /no autoriza a incumplir una resolución, ocultar a un menor/);
@@ -62,13 +73,18 @@ test("mantiene 112, 016, ANAR y 024 con alcance preciso y sin captación", () =>
 });
 
 test("protege fuentes, entity, sitemap y firewall comercial", () => {
+  assert.match(html, /"@type":"WebPage"/);
   assert.match(html, /"@type":"Article"/);
-  assert.match(html, /"dateModified":"2026-09-02"/);
+  assert.match(html, /"dateModified":"2026-10-28"/);
   assert.match(html, /https:\/\/pmc\.ncbi\.nlm\.nih\.gov\/articles\/PMC6313686\//);
   assert.match(html, /https:\/\/pmc\.ncbi\.nlm\.nih\.gov\/articles\/PMC8805665\//);
+  assert.match(html, /https:\/\/www\.aepd\.es\/preguntas-frecuentes\/10-menores-y-educacion\//);
   assert.match(html, /https:\/\/www\.anar\.org\/telefono-anar-familia-y-centros-escolares\//);
   assert.match(html, /https:\/\/violenciagenero\.igualdad\.gob\.es\/informacion-3\/recursos\/telefono016\//);
   assert.match(html, /https:\/\/www\.sanidad\.gob\.es\/linea024\/home\.htm/);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/rupturas\/tenemos-hijos-en-comun\/<\/loc><lastmod>2026-09-02<\/lastmod>/);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/rupturas\/tenemos-hijos-en-comun\/<\/loc><lastmod>2026-10-28<\/lastmod>/);
+  assert.match(html, /href="\/assets\/home-fonts\.css"/);
+  assert.match(html, /src="\/public-page-runtime\.js" defer/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
   assert.doesNotMatch(html, /data-ad|affiliate|afiliad|patrocinad|sponsor|utm_|[?&]ref=|comprar ahora|contrata ahora|precio|suscríbete/i);
 });
