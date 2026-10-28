@@ -52,9 +52,9 @@ test('protege intimidad, menores y sustituye captación por búsqueda privada', 
 });
 
 test('mantiene metadatos, recursos locales y fecha editorial sincronizada', () => {
-  assert.match(html, /Actualizado el 29 de octubre de 2026/);
+  assert.match(html, /Actualizado el 28 de octubre de 2026/);
   assert.match(html, /"@type":"WebPage"/);
-  assert.match(html, /"dateModified":"2026-10-29"/);
+  assert.match(html, /"dateModified":"2026-10-28"/);
   assert.match(html, /href="\/assets\/home-fonts\.css"/i);
   assert.match(html, /src="\/public-page-runtime\.js" defer/i);
   assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
@@ -62,6 +62,6 @@ test('mantiene metadatos, recursos locales y fecha editorial sincronizada', () =
   assert.match(html, /aepd\.es\/preguntas-frecuentes\/0-conceptos-basicos\/FAQ-0011/i);
   assert.match(
     sitemap,
-    /<loc>https:\/\/desgracias\.es\/duelo\/la-muerte-fue-inesperada-o-traumatica\/<\/loc><lastmod>2026-10-29<\/lastmod>/
+    /<loc>https:\/\/desgracias\.es\/duelo\/la-muerte-fue-inesperada-o-traumatica\/<\/loc><lastmod>2026-10-28<\/lastmod>/
   );
 });
