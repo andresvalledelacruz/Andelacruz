@@ -29,7 +29,32 @@ test('grief guilt guide preserves postvention routing without conflating it with
   assert.match(page, /\/duelo\/ha-muerto-por-suicidio-alguien-que-quiero\//);
 });
 
+test('grief guilt guide separates private evidence from unsupported causality and protects third parties', () => {
+  assert.match(page, /Un registro privado para separar culpa, dudas y decisiones/i);
+  assert.match(page, /hechos que puedes comprobar, cosas que no sabes y conclusiones/i);
+  assert.match(page, /emocional.*relacional.*sanitaria, administrativa o jurídica/is);
+  assert.match(page, /No expongas datos de salud, conversaciones privadas o acusaciones en redes/i);
+  assert.match(page, /no conviertas a menores o familiares en investigadores/i);
+  assert.match(page, /Buscar una explicación no permite afirmar una causa sin evidencia/i);
+  assert.match(page, /no bastan para determinar una causa médica, una responsabilidad profesional o una consecuencia jurídica/i);
+  assert.match(page, /no decide si tienes legitimación ni sustituye asesoramiento sanitario o jurídico/i);
+});
+
+test('grief guilt guide uses official legal sources without reopening story capture', () => {
+  assert.match(page, /boe\.es\/buscar\/act\.php\?id=BOE-A-2002-22188#a18/i);
+  assert.match(page, /aepd\.es\/areas-de-actuacion\/salud\/tus-derechos-en-relacion-con-tus-datos-de-salud/i);
+  assert.match(page, /El acceso a la historia clínica de una persona fallecida está sujeto a límites legales y de confidencialidad/i);
+  assert.doesNotMatch(page, /Contar mi historia/i);
+  assert.doesNotMatch(page, /href="\/#inicio"/i);
+  assert.match(page, /href="\/buscar\/"/i);
+});
+
 test('grief guilt guide date and sitemap stay aligned', () => {
-  assert.match(page, /Actualizado el 1 de septiembre de 2026/);
-  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/duelo\/me-siento-culpable-desde-que-murio\/<\/loc><lastmod>2026-09-01<\/lastmod>/);
+  assert.match(page, /Actualizado el 28 de octubre de 2026/);
+  assert.match(page, /"@type":"WebPage"/);
+  assert.match(page, /"dateModified":"2026-10-28"/);
+  assert.match(page, /href="\/assets\/home-fonts\.css"/i);
+  assert.match(page, /src="\/public-page-runtime\.js" defer/i);
+  assert.doesNotMatch(page, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/duelo\/me-siento-culpable-desde-que-murio\/<\/loc><lastmod>2026-10-28<\/lastmod>/);
 });
