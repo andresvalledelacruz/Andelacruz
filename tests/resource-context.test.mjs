@@ -26,7 +26,8 @@ test('published suicide page offers personal crisis and suicide support before v
   for (const phone of ['112','024','061','091','062','016','900018018']) {
     assert.ok(html.indexOf(`href="tel:${phone}"`) < html.indexOf('<a class="privacy-bar"'));
   }
-  assert.ok(html.includes('https://wa.me/3460000016'));
+  assert.ok(html.includes('https://wa.me/34600000016'));
+  assert.ok(!html.includes('https://wa.me/3460000016'));
   assert.ok(links.length >= 15);
 });
 
