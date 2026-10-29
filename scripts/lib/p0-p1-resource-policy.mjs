@@ -140,7 +140,7 @@ export function classifyExternalLink(href) {
 
   if (hostname === 'wa.me') {
     if (url.protocol !== 'https:') throw new Error('016 WhatsApp must use HTTPS');
-    if (url.pathname.replace(/\/$/, '') !== '/3460000016') {
+    if (url.pathname.replace(/\/$/, '') !== '/34600000016') {
       throw new Error('Only the official 016 WhatsApp number is allowed on P0/P1 routes');
     }
     if (url.search !== '') throw new Error('016 WhatsApp link must not contain query parameters');

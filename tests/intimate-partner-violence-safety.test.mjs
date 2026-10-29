@@ -46,6 +46,8 @@ test('emergency resources and 016 remain visible with accurate scope', () => {
   assert.match(html, /violencia contra las mujeres/i);
   assert.match(html, /Si no encajas en el ámbito del 016/i);
   assert.match(html, /hombre víctima de violencia en pareja/i);
+  assert.ok(occurrences(html, /href=['\"]https:\/\/wa\.me\/34600000016['\"]/g) >= 3, 'Official 016 WhatsApp link must remain visible');
+  assert.doesNotMatch(html, /wa\.me\/3460000016(?:['\"/?#]|$)/i, 'Truncated WhatsApp number must never be published');
 });
 
 test('privacy and quick-exit boundaries are explicit without false anonymity promises', () => {
