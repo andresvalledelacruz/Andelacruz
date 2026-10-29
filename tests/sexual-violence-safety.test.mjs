@@ -52,6 +52,8 @@ test('016 and legal scope remain accurate for women and adult men are not falsel
   assert.match(html, /No presentamos el 016 como un servicio universal para hombres adultos/i);
   assert.match(html, /Si eres un hombre adulto/i);
   assert.match(html, /mujeres, niñas y niños/i);
+  assert.ok(occurrences(html, /href=['\"]https:\/\/wa\.me\/34600000016['\"]/g) >= 3, 'Official 016 WhatsApp link must remain visible');
+  assert.doesNotMatch(html, /wa\.me\/3460000016(?:['\"/?#]|$)/i, 'Truncated WhatsApp number must never be published');
 });
 
 test('24-hour crisis centres and long-term support remain covered within legal boundaries', () => {
