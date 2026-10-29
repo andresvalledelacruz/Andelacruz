@@ -95,7 +95,7 @@ test('digital memory guidance protects third parties and uses local shared asset
   assert.match(html, /https:\/\/www\.aepd\.es\/areas-de-actuacion\/internet-y-redes-sociales\/protege-tu-privacidad/);
   assert.match(html, /href=['"]\/assets\/home-fonts\.css['"]/i);
   assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
-  assert.match(html, /src=['"]\/public-page-runtime\.js['"] defer/i);
+  assert.doesNotMatch(html, /public-page-runtime\.js|visitor-analytics\.js|googletagmanager|\bgtag\b/i);
 });
 
 test('page remains a substantial public-benefit guide without conversion CTA', () => {
