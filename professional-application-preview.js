@@ -9,8 +9,9 @@
   const publicFields = [
     ['Nombre profesional', 'pro-name'], ['Profesión', 'pro-field'],
     ['Áreas o especialidades', 'pro-specialties'], ['A quién atiende', 'pro-audience'],
-    ['Descripción', 'pro-description'], ['Zona', 'pro-area'],
-    ['Modalidad', 'pro-mode'], ['Idiomas', 'pro-languages'],
+    ['Descripción', 'pro-description'], ['País de establecimiento declarado', 'pro-country'],
+    ['Zona declarada', 'pro-area'], ['Países de prestación declarados', 'pro-service-countries'],
+    ['Modalidad', 'pro-mode'], ['Idiomas de atención declarados', 'pro-languages'],
     ['Precio o presupuesto', 'pro-price'], ['Web profesional', 'pro-website']
   ];
   const render = () => {
