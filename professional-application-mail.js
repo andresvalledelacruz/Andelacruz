@@ -8,7 +8,10 @@
   if (!form || !copyButton || !draft || !bodyField) return;
   const fields = [
     ['Nombre', 'pro-name'], ['Profesión', 'pro-field'],
-    ['Colegio o registro', 'pro-register'], ['Web', 'pro-website'],
+    ['Autoridad o registro competente', 'pro-register-authority'],
+    ['Número o identificador de inscripción', 'pro-register'],
+    ['Consulta pública oficial', 'pro-register-url'],
+    ['Seguro o cobertura declarada', 'pro-insurance-evidence'], ['Web', 'pro-website'],
     ['Áreas o especialidades', 'pro-specialties'], ['A quién atiende', 'pro-audience'],
     ['Descripción', 'pro-description'], ['País de establecimiento', 'pro-country'],
     ['Ciudad o región', 'pro-area'], ['Países de prestación declarados', 'pro-service-countries'],
