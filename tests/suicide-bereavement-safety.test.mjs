@@ -75,6 +75,29 @@ test('page covers digital legacy and physical grief without diagnosing', () => {
   assert.match(html, /No atribuyas automáticamente un síntoma físico al duelo/i);
 });
 
+test('private 72-hour coordination does not become investigation or unauthorized access', () => {
+  for (const marker of [
+    'Una hoja privada para coordinar las próximas 72 horas',
+    'Hecho confirmado y fuente',
+    'Pregunta pendiente',
+    'Siguiente acción y responsable',
+    'Información que puede compartirse',
+    'Próxima revisión'
+  ]) assert.match(html, new RegExp(marker, 'i'));
+  assert.match(html, /No es una historia clínica, un atestado ni un espacio para reconstruir por qué ocurrió/i);
+  assert.match(html, /No copies en esa hoja detalles del método, imágenes, informes clínicos completos, autopsias, atestados, contraseñas ni datos de menores/i);
+  assert.match(html, /Coordinar no autoriza a acceder a cuentas o dispositivos ajenos/i);
+});
+
+test('digital memory guidance protects third parties and uses local shared assets', () => {
+  assert.match(html, /también revelan datos de menores, familiares, profesionales o personas que escribieron esperando privacidad/i);
+  assert.match(html, /puede haber sido copiado o difundido aunque después se elimine/i);
+  assert.match(html, /https:\/\/www\.aepd\.es\/areas-de-actuacion\/internet-y-redes-sociales\/protege-tu-privacidad/);
+  assert.match(html, /href=['"]\/assets\/home-fonts\.css['"]/i);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
+  assert.match(html, /src=['"]\/public-page-runtime\.js['"] defer/i);
+});
+
 test('page remains a substantial public-benefit guide without conversion CTA', () => {
   assert.ok(html.length > 30_000, `Flagship guide unexpectedly short: ${html.length} chars`);
   assert.doesNotMatch(html, /class=['\"]cta['\"]/i);
