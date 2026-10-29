@@ -51,7 +51,11 @@ test('La solicitud prepara un correo legible y un borrador recuperable sin envia
   assert.equal(location.href, undefined, 'copy fallback never opens or sends mail');
   assert.equal(focused, true);
   assert.equal(draft.hidden, false);
-  assert.equal(body.value.split('\r\n').length, 16);
+  assert.equal(body.value.split('\r\n').length, 19);
+  assert.ok(body.value.includes('Autoridad o registro competente: Ejemplo & prueba'));
+  assert.ok(body.value.includes('Número o identificador de inscripción: Ejemplo & prueba'));
+  assert.ok(body.value.includes('Consulta pública oficial: Ejemplo & prueba'));
+  assert.ok(body.value.includes('Seguro o cobertura declarada: Ejemplo & prueba'));
   assert.ok(body.value.includes('País de establecimiento: Ejemplo & prueba'));
   assert.ok(body.value.includes('Países de prestación declarados: Ejemplo & prueba'));
   assert.ok(body.value.includes('Correo: Ejemplo & prueba'));
