@@ -5,6 +5,7 @@ import { URL_OPPORTUNITY_MAP, EXPECTED_PRODUCTION_URL_COUNT } from '../opportuni
 
 const path = '/alguien-cercano-ha-intentado-suicidarse/';
 const html = fs.readFileSync(new URL('../alguien-cercano-ha-intentado-suicidarse/index.html', import.meta.url), 'utf8');
+const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 const ctx = URL_OPPORTUNITY_MAP[path];
 
 function occurrences(text, regex) {
@@ -38,6 +39,36 @@ test('discharge planning and continuity of care stay central', () => {
   assert.match(html, /plan de seguridad/i);
   assert.match(html, /continuidad entre urgencias, atención primaria, salud mental/i);
   assert.match(html, /Alta no significa final del problema/i);
+});
+
+test('private 24-hour coordination executes the clinical plan without becoming surveillance', () => {
+  for (const marker of [
+    'Una hoja privada para coordinar las próximas 24 horas',
+    'Contacto asistencial y próxima cita',
+    'Instrucciones autorizadas',
+    'Necesidad práctica inmediata',
+    'Responsable y relevo',
+    'Información que puede compartirse',
+    'Próxima revisión'
+  ]) assert.match(html, new RegExp(marker, 'i'));
+  assert.match(html, /no es una historia clínica, una evaluación de riesgo ni un registro de vigilancia/i);
+  assert.match(html, /No la uses para revisar el teléfono, las cuentas o los movimientos de la persona/i);
+  assert.match(html, /tampoco autoriza a cambiar medicación, interpretar síntomas, decidir cuánto tiempo debe permanecer acompañada/i);
+  assert.match(html, /el plan de seguridad pertenece a la persona y al equipo que la atiende/i);
+});
+
+test('privacy, local delivery and P0 telemetry exclusion stay explicit', () => {
+  assert.match(html, /no copies detalles del intento, métodos, fotografías, informes completos, diagnósticos, contraseñas, ubicaciones en tiempo real/i);
+  assert.match(html, /href=['"]\/assets\/home-fonts\.css['"]/i);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
+  assert.doesNotMatch(html, /public-page-runtime\.js|visitor-analytics\.js|googletagmanager|\bgtag\b/i);
+});
+
+test('editorial and sitemap dates are synchronized', () => {
+  assert.match(html, /"dateModified":"2026-10-29"/);
+  assert.match(html, /Actualizado y auditado el 29 de octubre de 2026/i);
+  assert.match(html, /Datos y servicios comprobados el 29 de octubre de 2026/i);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/alguien-cercano-ha-intentado-suicidarse\/<\/loc><lastmod>2026-10-29<\/lastmod>/);
 });
 
 test('page rejects false guarantees and universal family surveillance', () => {
@@ -85,6 +116,9 @@ test('official post-attempt evidence set remains present and external links are 
   assert.match(html, /https:\/\/www3\.gobiernodecanarias\.org\/stopsuicidio\/es\/tras-un-intento-de-suicidio-familiares/);
   assert.match(html, /https:\/\/www\.sspa\.juntadeandalucia\.es\/servicioandaluzdesalud\/dirayabierto\/blog\/2025\/codigo-suicidio-contsui/);
   assert.match(html, /https:\/\/www\.sspa\.juntadeandalucia\.es\/servicioandaluzdesalud\/publicaciones\/guia-sobre-la-prevencion-del-suicidio/);
+  assert.match(html, /https:\/\/www\.sanidad\.gob\.es\/areas\/calidadAsistencial\/estrategias\/saludMental\/docs\/GPC_Conducta_Suicida\.pdf/);
+  assert.match(html, /https:\/\/www\.who\.int\/teams\/mental-health-and-substance-use\/treatment-care\/mental-health-gap-action-programme\/evidence-centre\/self-harm-and-suicide\/safety-planning-interventions/);
+  assert.match(html, /https:\/\/www\.who\.int\/teams\/mental-health-and-substance-use\/treatment-care\/mental-health-gap-action-programme\/evidence-centre\/self-harm-and-suicide\/usefulness-of-regular-contact/);
   assert.match(html, /https:\/\/www\.who\.int\/docs\/default-source\/mental-health\/suicide-prevention-first-responders\.pdf/);
   const externalAnchors = [...html.matchAll(/<a\s+[^>]*href=['\"]https?:\/\/[^'\"]+['\"][^>]*>/gi)].map(match => match[0]);
   assert.ok(externalAnchors.length >= 5, 'Expected a broad public evidence set');
