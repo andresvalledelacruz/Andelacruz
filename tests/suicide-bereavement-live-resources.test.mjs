@@ -32,11 +32,11 @@ test('international NHS timing source remains subordinate to the Spanish source 
 });
 
 test('resource repair has an explicit editorial date synchronized with sitemap', () => {
-  assert.match(html, /"dateModified":"2026-09-01"/);
-  assert.match(html, /Actualizado y auditado el 1 de septiembre de 2026/i);
-  assert.match(html, /Datos y servicios comprobados el 1 de septiembre de 2026/i);
+  assert.match(html, /"dateModified":"2026-10-28"/);
+  assert.match(html, /Actualizado y auditado el 28 de octubre de 2026/i);
+  assert.match(html, /Datos y servicios comprobados el 28 de octubre de 2026/i);
   assert.match(
     sitemap,
-    /<loc>https:\/\/desgracias\.es\/duelo\/ha-muerto-por-suicidio-alguien-que-quiero\/<\/loc><lastmod>2026-09-01<\/lastmod>/
+    /<loc>https:\/\/desgracias\.es\/duelo\/ha-muerto-por-suicidio-alguien-que-quiero\/<\/loc><lastmod>2026-10-28<\/lastmod>/
   );
 });

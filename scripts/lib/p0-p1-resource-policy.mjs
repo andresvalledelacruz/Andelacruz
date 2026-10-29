@@ -43,6 +43,9 @@ const INTERNATIONAL_AUTHORITY_HOSTS = new Set([
 
 export const PUBLIC_AUTHORITY_BASE_DOMAINS = [
   'sanidad.gob.es', 'inclusion.gob.es',
+  // Agencia Española de Protección de Datos, autoridad administrativa
+  // independiente; revisada 2026-10-29 para privacidad en rutas P0/P1.
+  'aepd.es',
   // Centro Europeo del Consumidor en España, Ministerio de Consumo; revisado 2026-10-23.
   'consumo.gob.es',
   // Instituto Nacional de Ciberseguridad, entidad pública estatal; revisado 2026-10-23.
