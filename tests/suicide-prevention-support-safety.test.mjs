@@ -6,6 +6,7 @@ import { URL_OPPORTUNITY_MAP, EXPECTED_PRODUCTION_URL_COUNT } from '../opportuni
 const path = '/me-preocupa-que-alguien-pueda-suicidarse/';
 const html = fs.readFileSync(new URL('../me-preocupa-que-alguien-pueda-suicidarse/index.html', import.meta.url), 'utf8');
 const urgentHtml = fs.readFileSync(new URL('../ayuda-urgente.html', import.meta.url), 'utf8');
+const sitemap = fs.readFileSync(new URL('../sitemap.xml', import.meta.url), 'utf8');
 const ctx = URL_OPPORTUNITY_MAP[path];
 
 function occurrences(text, regex) {
@@ -60,6 +61,33 @@ test('remote support, minors, follow-up and supporter self-care remain covered',
   assert.match(html, /Cuando la crisis inmediata parece haber pasado/i);
   assert.match(html, /Tú también necesitas apoyo/i);
   assert.match(html, /Nadie debería convertirse en el único sistema de seguridad/i);
+});
+
+test('follow-up agreement stays private, consensual and non-clinical', () => {
+  assert.match(html, /Un acuerdo privado para el próximo contacto/i);
+  assert.match(html, /Si la persona lo acepta/i);
+  assert.match(html, /Próximo contacto acordado/i);
+  assert.match(html, /Otra persona de apoyo/i);
+  assert.match(html, /Revisión y borrado/i);
+  assert.match(html, /no.*historia clínica, una puntuación de riesgo ni un registro de vigilancia/is);
+  assert.match(html, /No autoriza revisar dispositivos, cuentas o movimientos/i);
+  assert.match(html, /tampoco garantiza seguridad ni sustituye atención sanitaria/i);
+  assert.match(html, /Si aparece peligro inmediato, deja la nota y pide ayuda de emergencia/i);
+});
+
+test('post-attempt handoff points to the published specific guide', () => {
+  assert.match(html, /href=['"]\/alguien-cercano-ha-intentado-suicidarse\/['"]/i);
+  assert.doesNotMatch(html, /Desgracias\.es tratará esta necesidad en una guía específica/i);
+});
+
+test('page stays telemetry-free, locally styled and date-aligned', () => {
+  assert.match(html, /href=['"]\/assets\/home-fonts\.css['"]/i);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
+  assert.doesNotMatch(html, /site-runtime\.js|googletagmanager|google-analytics/i);
+  assert.match(html, /"dateModified":"2026-10-29"/i);
+  assert.match(html, /Actualizado y auditado el 29 de octubre de 2026/i);
+  assert.match(html, /Datos y servicios comprobados el 29 de octubre de 2026/i);
+  assert.match(sitemap, /<loc>https:\/\/desgracias\.es\/me-preocupa-que-alguien-pueda-suicidarse\/<\/loc><lastmod>2026-10-29<\/lastmod>/i);
 });
 
 test('official evidence set remains present and international guidance stays subordinate', () => {
