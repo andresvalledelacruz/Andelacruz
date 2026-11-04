@@ -62,7 +62,9 @@ puente heredado: esta dependencia sigue abierta y no debe eludirse.
 
 La aprobación exige identidad, credenciales, jurisdicción declarada y condiciones
 revisadas, fuentes HTTPS, revisión no caducada y referencia independiente de
-autorización de publicación. `jurisdiction_verified=true` solo puede registrarse
+autorización de publicación. Esa referencia queda vinculada al candidato privado y
+al evento de auditoría para que la proyección pueda revalidarla; nunca se copia a la
+ficha desplegable. `jurisdiction_verified=true` solo puede registrarse
 después de contrastar el país de establecimiento y los países de prestación con
 evidencia aplicable; el idioma de atención, la modalidad online o una equivalencia
 profesional de otro país no prueban por sí solos autorización territorial.

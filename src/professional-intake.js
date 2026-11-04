@@ -136,6 +136,7 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
         !reference(input.review.insurance_review_reference)) throw error(400, 'invalid_review');
       const p = row.payload;
       const candidate = { id:`professional-${receiptId}`, status:'published', publication_authorized:true,
+        publication_authorization_reference:input.publication_authorization_reference,
         commercial_relationship:'none',
         name:p.name, profession:p.profession, description:p.description, country:p.country, area:p.area,
         service_countries:p.service_countries, modality:p.modality, languages:p.languages,

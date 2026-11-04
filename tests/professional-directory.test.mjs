@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import { preparePublicProfile, publicProfiles, renderPublicProfile, matchPublicProfessionals } from '../scripts/lib/professional-directory.mjs';
-const candidate = () => ({id:'sample',name:'<script>alert(1)</script>',profession:'Formación',description:'Orientación',country:'España',area:'Madrid',service_countries:'España',modality:'Online',languages:'Español',pricing:'Consultar presupuesto',website:'https://example.org/',categories:['education'],status:'published',publication_authorized:true,commercial_relationship:'none',review:{identity_verified:true,credentials_verified:true,jurisdiction_verified:true,terms_verified:true,registration_status:'verified',registration_review_reference:'registration-review-1',insurance_status:'not_applicable',insurance_review_reference:'insurance-scope-review-1',reviewer_reference:'private-review-1',reviewed_at:'2026-10-01',expires_at:'2099-01-01',sources:['https://example.org/register']}});
+const candidate = () => ({id:'sample',name:'<script>alert(1)</script>',profession:'Formación',description:'Orientación',country:'España',area:'Madrid',service_countries:'España',modality:'Online',languages:'Español',pricing:'Consultar presupuesto',website:'https://example.org/',categories:['education'],status:'published',publication_authorized:true,publication_authorization_reference:'private-publication-authorization-1',commercial_relationship:'none',review:{identity_verified:true,credentials_verified:true,jurisdiction_verified:true,terms_verified:true,registration_status:'verified',registration_review_reference:'registration-review-1',insurance_status:'not_applicable',insurance_review_reference:'insurance-scope-review-1',reviewer_reference:'private-review-1',reviewed_at:'2026-10-01',expires_at:'2099-01-01',sources:['https://example.org/register']}});
 const profile = () => preparePublicProfile(candidate());
 const registry = p => ({version:1,profiles:[p]});
 test('Public directory is empty until real reviewed profiles exist',()=>assert.deepEqual(publicProfiles(JSON.parse(fs.readFileSync('data/professional-directory.json'))),[]));
@@ -11,6 +11,7 @@ test('Publication rejects missing evidence, consent, expired reviews and unsafe 
   assert.equal(publicProfiles(registry(profile())).length,1);
   assert.equal(publicProfiles(registry(profile()))[0].commercial_relationship,'none');
   for(const mutate of [p=>p.status='pending',p=>p.publication_authorized=false,p=>delete p.commercial_relationship,
+    p=>delete p.publication_authorization_reference,p=>p.publication_authorization_reference='',
     p=>p.commercial_relationship='paid_listing',p=>p.review.credentials_verified=false,
     p=>p.review.jurisdiction_verified=false,p=>delete p.review.jurisdiction_verified,p=>p.review.sources=[],
     p=>delete p.review.registration_status,p=>p.review.registration_status='pending',
@@ -27,7 +28,7 @@ test('Private review evidence is projected away before a profile can enter the d
   privateCandidate.review.sources=['https://evidence.example.org/private/credential?token=secret-review-token'];
   const publicProfile=preparePublicProfile(privateCandidate);
   assert.ok(publicProfile);
-  assert.doesNotMatch(JSON.stringify(publicProfile),/private-review|reviewer_reference|review_reference|evidence\.example|secret-review-token|sources/);
+  assert.doesNotMatch(JSON.stringify(publicProfile),/private-review|private-publication-authorization|reviewer_reference|review_reference|publication_authorization_reference|evidence\.example|secret-review-token|sources/);
   assert.deepEqual(publicProfiles(registry(privateCandidate)),[]);
   assert.throws(()=>renderPublicProfile(privateCandidate));
   const html=renderPublicProfile(publicProfile);assert.ok(html.includes('&lt;script&gt;'));assert.ok(!html.includes('<script>'));assert.ok(!html.includes('private-review-1'));
