@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import { publicProfiles, renderPublicProfile, matchPublicProfessionals } from '../scripts/lib/professional-directory.mjs';
-const profile = () => ({id:'sample',name:'<script>alert(1)</script>',profession:'Formación',description:'Orientación',country:'España',area:'Madrid',service_countries:'España',modality:'Online',languages:'Español',pricing:'Consultar presupuesto',website:'https://example.org/',categories:['education'],status:'published',publication_authorized:true,commercial_relationship:'none',review:{identity_verified:true,credentials_verified:true,jurisdiction_verified:true,terms_verified:true,reviewer_reference:'private-review-1',reviewed_at:'2026-10-01',expires_at:'2099-01-01',sources:['https://example.org/register']}});
+const profile = () => ({id:'sample',name:'<script>alert(1)</script>',profession:'Formación',description:'Orientación',country:'España',area:'Madrid',service_countries:'España',modality:'Online',languages:'Español',pricing:'Consultar presupuesto',website:'https://example.org/',categories:['education'],status:'published',publication_authorized:true,commercial_relationship:'none',review:{identity_verified:true,credentials_verified:true,jurisdiction_verified:true,terms_verified:true,registration_status:'verified',registration_review_reference:'registration-review-1',insurance_status:'not_applicable',insurance_review_reference:'insurance-scope-review-1',reviewer_reference:'private-review-1',reviewed_at:'2026-10-01',expires_at:'2099-01-01',sources:['https://example.org/register']}});
 const registry = p => ({version:1,profiles:[p]});
 test('Public directory is empty until real reviewed profiles exist',()=>assert.deepEqual(publicProfiles(JSON.parse(fs.readFileSync('data/professional-directory.json'))),[]));
 test('Publication rejects missing evidence, consent, expired reviews and unsafe URLs',()=>{
@@ -12,6 +12,9 @@ test('Publication rejects missing evidence, consent, expired reviews and unsafe 
   for(const mutate of [p=>p.status='pending',p=>p.publication_authorized=false,p=>delete p.commercial_relationship,
     p=>p.commercial_relationship='paid_listing',p=>p.review.credentials_verified=false,
     p=>p.review.jurisdiction_verified=false,p=>delete p.review.jurisdiction_verified,p=>p.review.sources=[],
+    p=>delete p.review.registration_status,p=>p.review.registration_status='pending',
+    p=>p.review.registration_review_reference='',p=>delete p.review.insurance_status,
+    p=>p.review.insurance_status='declared',p=>p.review.insurance_review_reference='',
     p=>p.review.expires_at='2026-01-01',p=>p.review.reviewed_at='2099-01-01',
     p=>p.website='javascript:alert(1)',p=>p.review.sources=['http://example.org/']]){
     const p=profile();mutate(p);assert.deepEqual(publicProfiles(registry(p)),[]);assert.throws(()=>renderPublicProfile(p));
@@ -19,6 +22,7 @@ test('Publication rejects missing evidence, consent, expired reviews and unsafe 
 });
 test('Public rendering escapes content and excludes private review references',()=>{
   const html=renderPublicProfile(profile());assert.ok(html.includes('&lt;script&gt;'));assert.ok(!html.includes('<script>'));assert.ok(!html.includes('private-review-1'));
+  assert.ok(!html.includes('registration-review-1'));assert.ok(!html.includes('insurance-scope-review-1'));
   assert.match(html,/País de establecimiento<\/dt><dd>España/);
   assert.match(html,/Países de prestación declarados<\/dt><dd>España/);
   assert.match(html,/Sin relación comercial remunerada con Desgracias\.es/);
