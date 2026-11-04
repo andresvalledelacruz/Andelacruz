@@ -62,6 +62,11 @@ puente heredado: esta dependencia sigue abierta y no debe eludirse.
 
 La aprobación exige identidad, credenciales y condiciones revisadas, fuentes HTTPS,
 revisión no caducada y referencia independiente de autorización de publicación.
+La proyección preparada fija `commercial_relationship: none` y la ficha debe mostrar
+que no existe relación comercial remunerada. La casilla opcional de interés comercial
+de una candidatura no cambia ese estado. Un modelo de pago, afiliación, coste por
+contacto o posición destacada requiere aprobación real, esquema y disclosure nuevos;
+un valor distinto de `none` se rechaza por defecto.
 El candidato revisado permanece en la tabla privada con su evidencia: todavía no
 está publicado. Para publicar debe pasar de nuevo por `publicProfiles`, excluir
 correo, teléfono, registro, cobertura y referencias internas, y actualizar el registro público mediante

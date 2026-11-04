@@ -128,7 +128,8 @@ test('named admin and MFA are required; shared staging token cannot read or revi
 test('approval requires complete human evidence and a separate publication authorization; it never publishes or bills', async () => {
   const review={identity_verified:true,credentials_verified:true,terms_verified:true,reviewed_at:'2026-10-19T14:00:00Z',
     expires_at:'2026-11-01T00:00:00Z',sources:['https://example.org/credentials']};
-  const makePool=()=>database(sql=>({rows:sql.includes('for update')?[{receipt_id:receiptId,status:'pending_review',payload:validateProfessionalApplication(input).payload}]:[]}));
+  const makePool=()=>database(sql=>({rows:sql.includes('for update')?[{receipt_id:receiptId,status:'pending_review',
+    payload:validateProfessionalApplication({...input,commercial_opt_in:true}).payload}]:[]}));
   for(const patch of [{publication_authorization_reference:undefined},{review:{...review,credentials_verified:false}},
     {review:{...review,expires_at:'2026-10-18T00:00:00Z'}},{review:{...review,sources:['http://example.org']}},
     {review:{...review,reviewer_reference:'client-supplied'}}]) {
@@ -143,6 +144,7 @@ test('approval requires complete human evidence and a separate publication autho
   assert.equal(candidate.review.reviewer_reference,principal.subject);
   assert.equal(candidate.country,'España');
   assert.equal(candidate.service_countries,'España');
+  assert.equal(candidate.commercial_relationship,'none');
   assert.doesNotMatch(JSON.stringify(candidate),/synthetic@example|commercial_opt_in|register|insurance|phone/);
   assert.equal(pool.calls.some(c=>/commercial_events|conversion|pageview/.test(c.sql)),false);
 });

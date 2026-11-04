@@ -23,6 +23,7 @@ function reviewedProfiles(registry, asOf = new Date()) {
     const reviewed = Date.parse(review?.reviewed_at);
     const expires = Date.parse(review?.expires_at);
     return p.status === 'published' && p.publication_authorized === true &&
+      p.commercial_relationship === 'none' &&
       required.every(key => typeof p[key] === 'string' && p[key].trim().length > 0 && p[key].length <= 1000) &&
       https(p.website) && review?.identity_verified === true && review?.credentials_verified === true &&
       review?.terms_verified === true && typeof review.reviewer_reference === 'string' && review.reviewer_reference.trim() &&
@@ -32,7 +33,8 @@ function reviewedProfiles(registry, asOf = new Date()) {
 }
 
 const publicProjection = p => ({ id:p.id, ...Object.fromEntries(required.map(key => [key,p[key]])),
-  website:p.website, reviewed_at:p.review.reviewed_at, sources:[...p.review.sources] });
+  website:p.website, commercial_relationship:p.commercial_relationship,
+  reviewed_at:p.review.reviewed_at, sources:[...p.review.sources] });
 
 export function publicProfiles(registry, asOf = new Date()) {
   return reviewedProfiles(registry, asOf).map(publicProjection);
@@ -42,7 +44,7 @@ export function renderPublicProfile(profile) {
   // Revalidate at the call boundary; callers cannot render unreviewed candidates.
   const p = publicProfiles({version:1,profiles:[profile]})[0];
   if (!p) throw new Error('Profile is not eligible for publication');
-  return `<article id="professional-${escape(p.id)}"><h3>${escape(p.name)}</h3><p>${escape(p.profession)}</p><p>${escape(p.description)}</p><dl>${['country','area','service_countries','modality','languages','pricing'].map((key,i)=>`<dt>${['País de establecimiento','Zona','Países de prestación declarados','Modalidad','Idiomas','Tarifas'][i]}</dt><dd>${escape(p[key])}</dd>`).join('')}</dl><p>Datos profesionales revisados: ${escape(p.reviewed_at)}. La revisión no garantiza resultados.</p><p><a href="${escape(p.website)}" rel="noopener noreferrer">Consultar web y condiciones del profesional</a></p></article>`;
+  return `<article id="professional-${escape(p.id)}"><h3>${escape(p.name)}</h3><p>${escape(p.profession)}</p><p>${escape(p.description)}</p><dl>${['country','area','service_countries','modality','languages','pricing'].map((key,i)=>`<dt>${['País de establecimiento','Zona','Países de prestación declarados','Modalidad','Idiomas','Tarifas'][i]}</dt><dd>${escape(p[key])}</dd>`).join('')}</dl><p>Datos profesionales revisados: ${escape(p.reviewed_at)}. La revisión no garantiza resultados.</p><p>Sin relación comercial remunerada con Desgracias.es. La candidatura y el interés comercial opcional no alteran esta declaración.</p><p><a href="${escape(p.website)}" rel="noopener noreferrer">Consultar web y condiciones del profesional</a></p></article>`;
 }
 
 export function matchPublicProfessionals({registry, category, ...eligibility} = {}) {
