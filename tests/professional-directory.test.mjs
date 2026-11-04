@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import { publicProfiles, renderPublicProfile, matchPublicProfessionals } from '../scripts/lib/professional-directory.mjs';
-const profile = () => ({id:'sample',name:'<script>alert(1)</script>',profession:'Formación',description:'Orientación',area:'España',modality:'Online',languages:'Español',pricing:'Consultar presupuesto',website:'https://example.org/',categories:['education'],status:'published',publication_authorized:true,review:{identity_verified:true,credentials_verified:true,terms_verified:true,reviewer_reference:'private-review-1',reviewed_at:'2026-10-01',expires_at:'2099-01-01',sources:['https://example.org/register']}});
+const profile = () => ({id:'sample',name:'<script>alert(1)</script>',profession:'Formación',description:'Orientación',country:'España',area:'Madrid',service_countries:'España',modality:'Online',languages:'Español',pricing:'Consultar presupuesto',website:'https://example.org/',categories:['education'],status:'published',publication_authorized:true,review:{identity_verified:true,credentials_verified:true,terms_verified:true,reviewer_reference:'private-review-1',reviewed_at:'2026-10-01',expires_at:'2099-01-01',sources:['https://example.org/register']}});
 const registry = p => ({version:1,profiles:[p]});
 test('Public directory is empty until real reviewed profiles exist',()=>assert.deepEqual(publicProfiles(JSON.parse(fs.readFileSync('data/professional-directory.json'))),[]));
 test('Publication rejects missing evidence, consent, expired reviews and unsafe URLs',()=>{
@@ -14,6 +14,8 @@ test('Publication rejects missing evidence, consent, expired reviews and unsafe 
 });
 test('Public rendering escapes content and excludes private review references',()=>{
   const html=renderPublicProfile(profile());assert.ok(html.includes('&lt;script&gt;'));assert.ok(!html.includes('<script>'));assert.ok(!html.includes('private-review-1'));
+  assert.match(html,/País de establecimiento<\/dt><dd>España/);
+  assert.match(html,/Países de prestación declarados<\/dt><dd>España/);
 });
 test('Matching denies sensitive and unknown routes even with a published profile',()=>{
   const input={registry:registry(profile()),category:'education',route:'/violencia/',safety_level:'P0',critical_routes:['/violencia/'],prerequisites:{commercial_phase_authorized:true,insurance_risk_review_complete:true,legal_privacy_review_complete:true,consent_mechanism_ready:true,surface_approved:true}};

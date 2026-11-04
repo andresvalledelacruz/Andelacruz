@@ -14,9 +14,13 @@ import { createHash } from 'node:crypto';
 const requestId = '11111111-1111-4111-8111-111111111111';
 const receiptId = '22222222-2222-4222-8222-222222222222';
 const now = new Date('2026-10-19T15:00:00Z');
-const input = {request_id:requestId,name:'Synthetic professional',profession:'Formación',website:'https://example.org',
+const input = {request_id:requestId,name:'Synthetic professional',profession:'Formación',
+  register_authority:'Registro sintético de prueba',register:'TEST-123',
+  register_url:'https://example.org/registro?id=TEST-123',insurance_evidence:'Cobertura declarada de prueba',
+  website:'https://example.org',
   specialties:'Formación profesional',audience:'Personas adultas',description:'Descripción sintética para pruebas',area:'España',
-  modality:'Online',languages:'Español',pricing:'Consultar presupuesto',email:'synthetic@example.org',
+  country:'España',service_countries:'España',modality:'Online',languages:'Español',
+  pricing:'Consultar presupuesto',email:'synthetic@example.org',
   privacy_acknowledged:true,truth_confirmed:true,commercial_opt_in:false};
 const env = {PROFESSIONAL_INTAKE_ENABLED:'true',PROFESSIONAL_INTAKE_RETENTION_READY:'true',
   PROFESSIONAL_INTAKE_REVIEW_READY:'true',PROFESSIONAL_INTAKE_PRIVACY_REVIEW:'test-review-v1',PROFESSIONAL_INTAKE_RETENTION_DAYS:'30'};
@@ -45,6 +49,11 @@ test('rejects arbitrary help text, revenue claims, malformed contact data and mi
     assert.throws(()=>validateProfessionalApplication({...input,...patch}),{code:'invalid_application'});
   }
   assert.equal(validateProfessionalApplication(input).payload.commercial_opt_in,false);
+  assert.equal(validateProfessionalApplication(input).payload.register_url,'https://example.org/registro?id=TEST-123');
+  for (const patch of [{country:''},{service_countries:''},{register_url:'http://example.org/registro'},
+    {register_url:'https://user:password@example.org/registro'}]) {
+    assert.throws(()=>validateProfessionalApplication({...input,...patch}),{code:'invalid_application'});
+  }
 });
 
 test('acknowledges receipt only after commit and returns no contact or commercial data', async () => {
@@ -132,7 +141,9 @@ test('approval requires complete human evidence and a separate publication autho
   assert.deepEqual(result,{receipt_id:receiptId,status:'approved_for_publication',published:false});
   const candidate=JSON.parse(pool.calls.find(c=>c.sql.startsWith('update')).args[2]);
   assert.equal(candidate.review.reviewer_reference,principal.subject);
-  assert.doesNotMatch(JSON.stringify(candidate),/synthetic@example|commercial_opt_in|register|phone/);
+  assert.equal(candidate.country,'España');
+  assert.equal(candidate.service_countries,'España');
+  assert.doesNotMatch(JSON.stringify(candidate),/synthetic@example|commercial_opt_in|register|insurance|phone/);
   assert.equal(pool.calls.some(c=>/commercial_events|conversion|pageview/.test(c.sql)),false);
 });
 

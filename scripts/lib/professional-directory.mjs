@@ -1,6 +1,7 @@
 import { evaluateMonetizationEligibility } from './monetization-eligibility.mjs';
 
-const required = ['name', 'profession', 'description', 'area', 'modality', 'languages', 'pricing'];
+const required = ['name', 'profession', 'description', 'country', 'area', 'service_countries',
+  'modality', 'languages', 'pricing'];
 const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const https = value => {
   if (typeof value !== 'string') return false;
@@ -41,7 +42,7 @@ export function renderPublicProfile(profile) {
   // Revalidate at the call boundary; callers cannot render unreviewed candidates.
   const p = publicProfiles({version:1,profiles:[profile]})[0];
   if (!p) throw new Error('Profile is not eligible for publication');
-  return `<article id="professional-${escape(p.id)}"><h3>${escape(p.name)}</h3><p>${escape(p.profession)}</p><p>${escape(p.description)}</p><dl>${['area','modality','languages','pricing'].map((key,i)=>`<dt>${['Zona','Modalidad','Idiomas','Tarifas'][i]}</dt><dd>${escape(p[key])}</dd>`).join('')}</dl><p>Datos profesionales revisados: ${escape(p.reviewed_at)}. La revisión no garantiza resultados.</p><p><a href="${escape(p.website)}" rel="noopener noreferrer">Consultar web y condiciones del profesional</a></p></article>`;
+  return `<article id="professional-${escape(p.id)}"><h3>${escape(p.name)}</h3><p>${escape(p.profession)}</p><p>${escape(p.description)}</p><dl>${['country','area','service_countries','modality','languages','pricing'].map((key,i)=>`<dt>${['País de establecimiento','Zona','Países de prestación declarados','Modalidad','Idiomas','Tarifas'][i]}</dt><dd>${escape(p[key])}</dd>`).join('')}</dl><p>Datos profesionales revisados: ${escape(p.reviewed_at)}. La revisión no garantiza resultados.</p><p><a href="${escape(p.website)}" rel="noopener noreferrer">Consultar web y condiciones del profesional</a></p></article>`;
 }
 
 export function matchPublicProfessionals({registry, category, ...eligibility} = {}) {

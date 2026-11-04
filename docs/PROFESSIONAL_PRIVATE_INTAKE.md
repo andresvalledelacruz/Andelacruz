@@ -29,6 +29,12 @@ solicitudes caducadas, pero esto no sustituye el borrado físico programado.
 `POST /public/professional-applications` acepta JSON de hasta 8 KiB, con campos
 profesionales acotados, `request_id` UUID, `privacy_acknowledged=true`,
 `truth_confirmed=true` y `commercial_opt_in` booleano independiente.
+El esquema separa país de establecimiento (`country`), zona (`area`), países de
+prestación declarados (`service_countries`) e idiomas (`languages`). Autoridad de
+registro, identificador, URL oficial de consulta y declaración mínima de cobertura
+se conservan únicamente en el expediente privado; son datos declarados pendientes
+de contraste. La URL de consulta debe ser HTTPS, pero superar esa validación técnica
+no acredita que la fuente sea oficial ni que la credencial esté vigente.
 No admite consultas de ayuda, historias, importes de conversión o estados de
 verificación enviados por el navegador. No enviar datos de pacientes o terceros.
 El CORS conserva la lista existente de staging; no habilita el dominio de
@@ -58,7 +64,7 @@ La aprobación exige identidad, credenciales y condiciones revisadas, fuentes HT
 revisión no caducada y referencia independiente de autorización de publicación.
 El candidato revisado permanece en la tabla privada con su evidencia: todavía no
 está publicado. Para publicar debe pasar de nuevo por `publicProfiles`, excluir
-correo/teléfono y referencias internas, y actualizar el registro público mediante
+correo, teléfono, registro, cobertura y referencias internas, y actualizar el registro público mediante
 un cambio revisado. Retirar una candidatura elimina su candidato aprobado; si ya
 se hubiera publicado por separado, la retirada pública debe completarse también.
 
