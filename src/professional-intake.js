@@ -127,6 +127,7 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
         ['identity_verified','credentials_verified','terms_verified','reviewed_at','expires_at','sources'])) throw error(400, 'invalid_review');
       const p = row.payload;
       const candidate = { id:`professional-${receiptId}`, status:'published', publication_authorized:true,
+        commercial_relationship:'none',
         name:p.name, profession:p.profession, description:p.description, country:p.country, area:p.area,
         service_countries:p.service_countries, modality:p.modality, languages:p.languages,
         pricing:p.pricing, website:p.website,
@@ -142,8 +143,9 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
       values ($1::uuid,$2::uuid,$3,$4,$5::timestamptz)`,
       [receiptId,principal.subject,input.decision,input.decision === 'approve_for_publication' ? input.publication_authorization_reference : null,now.toISOString()]);
     await client.query('commit');
-    // Approval prepares a public projection; a separate governed publication
-    // must revalidate evidence/expiry. It never activates matching or billing.
+    // Approval prepares an explicitly unpaid public projection; a separate governed
+    // publication must revalidate evidence/expiry. Applicant opt-in never activates
+    // matching, billing or an undisclosed commercial relationship.
     return {receipt_id:receiptId,status,published:false};
   } catch (cause) {
     await client.query('rollback').catch(() => {});
