@@ -126,13 +126,17 @@ test('named admin and MFA are required; shared staging token cannot read or revi
 });
 
 test('approval requires complete human evidence and a separate publication authorization; it never publishes or bills', async () => {
-  const review={identity_verified:true,credentials_verified:true,jurisdiction_verified:true,terms_verified:true,reviewed_at:'2026-10-19T14:00:00Z',
+  const review={identity_verified:true,credentials_verified:true,jurisdiction_verified:true,terms_verified:true,
+    registration_status:'verified',registration_review_reference:'registration-review-test-v1',
+    insurance_status:'not_applicable',insurance_review_reference:'insurance-scope-review-test-v1',reviewed_at:'2026-10-19T14:00:00Z',
     expires_at:'2026-11-01T00:00:00Z',sources:['https://example.org/credentials']};
   const makePool=()=>database(sql=>({rows:sql.includes('for update')?[{receipt_id:receiptId,status:'pending_review',
     payload:validateProfessionalApplication({...input,commercial_opt_in:true}).payload}]:[]}));
   for(const patch of [{publication_authorization_reference:undefined},{review:{...review,credentials_verified:false}},
     {review:{...review,jurisdiction_verified:false}},
     {review:Object.fromEntries(Object.entries(review).filter(([key])=>key !== 'jurisdiction_verified'))},
+    {review:{...review,registration_status:'pending'}},{review:{...review,registration_review_reference:''}},
+    {review:{...review,insurance_status:'declared'}},{review:{...review,insurance_review_reference:''}},
     {review:{...review,expires_at:'2026-10-18T00:00:00Z'}},{review:{...review,sources:['http://example.org']}},
     {review:{...review,reviewer_reference:'client-supplied'}}]) {
     await assert.rejects(reviewProfessionalApplication(makePool(),receiptId,
@@ -147,8 +151,10 @@ test('approval requires complete human evidence and a separate publication autho
   assert.equal(candidate.country,'España');
   assert.equal(candidate.service_countries,'España');
   assert.equal(candidate.review.jurisdiction_verified,true);
+  assert.equal(candidate.review.registration_status,'verified');
+  assert.equal(candidate.review.insurance_status,'not_applicable');
   assert.equal(candidate.commercial_relationship,'none');
-  assert.doesNotMatch(JSON.stringify(candidate),/synthetic@example|commercial_opt_in|register|insurance|phone/);
+  assert.doesNotMatch(JSON.stringify(candidate),/synthetic@example|commercial_opt_in|TEST-123|Cobertura declarada de prueba|phone/);
   assert.equal(pool.calls.some(c=>/commercial_events|conversion|pageview/.test(c.sql)),false);
 });
 
