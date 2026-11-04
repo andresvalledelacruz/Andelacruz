@@ -17,7 +17,8 @@ test('Publication rejects missing evidence, consent, expired reviews and unsafe 
     p=>p.review.registration_review_reference='',p=>delete p.review.insurance_status,
     p=>p.review.insurance_status='declared',p=>p.review.insurance_review_reference='',
     p=>p.review.expires_at='2026-01-01',p=>p.review.reviewed_at='2099-01-01',
-    p=>p.website='javascript:alert(1)',p=>p.review.sources=['http://example.org/']]){
+    p=>p.website='javascript:alert(1)',p=>p.review.sources=['http://example.org/'],p=>delete p.categories,
+    p=>p.categories=[],p=>p.categories=['mental_health'],p=>p.categories=['education','education']]){
     const p=candidate();mutate(p);assert.equal(preparePublicProfile(p),null);
   }
 });
@@ -68,7 +69,7 @@ test('Rejected duplicate cannot supply categories to a published profile',()=>{
 });
 
 test('Matching rejects malformed category declarations without throwing',()=>{
-  for(const categories of ['education',{includes:true},null,['education','mental_health'],['education',null]]){
+  for(const categories of ['education',{includes:true},null,[],['education','mental_health'],['education',null],['education','education']]){
     const p=profile();p.categories=categories;
     assert.deepEqual(matchPublicProfessionals(eligibleMatch([p])),[]);
   }
