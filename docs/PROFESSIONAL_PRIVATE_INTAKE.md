@@ -85,7 +85,10 @@ un valor distinto de `none` se rechaza por defecto.
 El candidato revisado permanece en la tabla privada con su evidencia: todavía no
 está publicado. `preparePublicProfile` es la única frontera preparada para convertirlo
 en una ficha desplegable: revalida evidencia y caducidad y elimina correo, teléfono,
-registro, cobertura, el objeto privado de revisión y sus referencias internas.
+registro, cobertura, el objeto privado de revisión, las URL de sus fuentes y sus
+referencias internas. Las fuentes HTTPS son obligatorias para que el revisor pueda
+justificar la decisión privada, pero no se copian al JSON público aunque la URL sea
+técnicamente válida; podría identificar documentación o contener acceso transitorio.
 `publicProfiles` acepta solo esa forma pública estricta y rechaza la candidatura
 privada aunque sus pruebas sean válidas. Publicar todavía exige actualizar el registro
 público mediante un cambio revisado. Retirar una candidatura elimina su candidato aprobado; si ya

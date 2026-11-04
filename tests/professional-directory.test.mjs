@@ -24,9 +24,10 @@ test('Publication rejects missing evidence, consent, expired reviews and unsafe 
 });
 test('Private review evidence is projected away before a profile can enter the deployable registry',()=>{
   const privateCandidate=candidate();
+  privateCandidate.review.sources=['https://evidence.example.org/private/credential?token=secret-review-token'];
   const publicProfile=preparePublicProfile(privateCandidate);
   assert.ok(publicProfile);
-  assert.doesNotMatch(JSON.stringify(publicProfile),/private-review|reviewer_reference|review_reference/);
+  assert.doesNotMatch(JSON.stringify(publicProfile),/private-review|reviewer_reference|review_reference|evidence\.example|secret-review-token|sources/);
   assert.deepEqual(publicProfiles(registry(privateCandidate)),[]);
   assert.throws(()=>renderPublicProfile(privateCandidate));
   const html=renderPublicProfile(publicProfile);assert.ok(html.includes('&lt;script&gt;'));assert.ok(!html.includes('<script>'));assert.ok(!html.includes('private-review-1'));
@@ -35,6 +36,13 @@ test('Private review evidence is projected away before a profile can enter the d
   assert.match(html,/Países de prestación declarados<\/dt><dd>España/);
   assert.match(html,/Sin relación comercial remunerada con Desgracias\.es/);
   assert.doesNotMatch(html,/rel="[^"]*sponsored/);
+});
+
+test('Deployable profiles reject review source URLs even when they are valid HTTPS',()=>{
+  const publicProfile=profile();
+  publicProfile.verification.sources=['https://evidence.example.org/private/credential?token=secret-review-token'];
+  assert.deepEqual(publicProfiles(registry(publicProfile)),[]);
+  assert.throws(()=>renderPublicProfile(publicProfile));
 });
 test('Matching denies sensitive and unknown routes even with a published profile',()=>{
   const input={registry:registry(profile()),category:'education',route:'/violencia/',safety_level:'P0',critical_routes:['/violencia/'],prerequisites:{commercial_phase_authorized:true,insurance_risk_review_complete:true,legal_privacy_review_complete:true,consent_mechanism_ready:true,surface_approved:true}};

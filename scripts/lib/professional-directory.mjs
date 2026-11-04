@@ -48,8 +48,7 @@ export function preparePublicProfile(candidate, asOf = new Date()) {
     commercial_relationship:'none',
     categories:[...candidate.categories],
     verification:{ reviewed_at:candidate.review.reviewed_at, expires_at:candidate.review.expires_at,
-      registration_status:candidate.review.registration_status, insurance_status:candidate.review.insurance_status,
-      sources:[...candidate.review.sources] } };
+      registration_status:candidate.review.registration_status, insurance_status:candidate.review.insurance_status } };
 }
 
 function reviewedProfiles(registry, asOf = new Date()) {
@@ -57,7 +56,7 @@ function reviewedProfiles(registry, asOf = new Date()) {
   const now = asOf.getTime();
   if (!Number.isFinite(now)) return [];
   const allowed = ['id','status','publication_authorized',...required,'website','commercial_relationship','categories','verification'];
-  const verificationKeys = ['reviewed_at','expires_at','registration_status','insurance_status','sources'];
+  const verificationKeys = ['reviewed_at','expires_at','registration_status','insurance_status'];
   const seen = new Set();
   return registry.profiles.filter(p => {
     if (!exactKeys(p, allowed) || typeof p.id !== 'string' || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(p.id) || seen.has(p.id)) return false;
@@ -69,14 +68,13 @@ function reviewedProfiles(registry, asOf = new Date()) {
       required.every(key => typeof p[key] === 'string' && p[key].trim().length > 0 && p[key].length <= 1000) &&
       https(p.website) && validCategories(p.categories) && exactKeys(verification, verificationKeys) &&
       reviewedStatus(verification.registration_status) && reviewedStatus(verification.insurance_status) &&
-      Array.isArray(verification.sources) && verification.sources.length > 0 && Array.from(verification.sources).every(https) &&
       Number.isFinite(reviewed) && Number.isFinite(expires) && reviewed <= now && expires > now && expires > reviewed;
   });
 }
 
 export function publicProfiles(registry, asOf = new Date()) {
   return reviewedProfiles(registry, asOf).map(p => ({...p, categories:[...p.categories],
-    verification:{...p.verification, sources:[...p.verification.sources]}}));
+    verification:{...p.verification}}));
 }
 
 export function renderPublicProfile(profile) {
