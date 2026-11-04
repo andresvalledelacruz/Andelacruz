@@ -124,7 +124,12 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
     let profile = null;
     if (input.decision === 'approve_for_publication') {
       if (!reference(input.publication_authorization_reference) || !exactKeys(input.review,
-        ['identity_verified','credentials_verified','jurisdiction_verified','terms_verified','reviewed_at','expires_at','sources'])) throw error(400, 'invalid_review');
+        ['identity_verified','credentials_verified','jurisdiction_verified','terms_verified','registration_status',
+          'registration_review_reference','insurance_status','insurance_review_reference','reviewed_at','expires_at','sources']) ||
+        !['verified','not_applicable'].includes(input.review.registration_status) ||
+        !['verified','not_applicable'].includes(input.review.insurance_status) ||
+        !reference(input.review.registration_review_reference) ||
+        !reference(input.review.insurance_review_reference)) throw error(400, 'invalid_review');
       const p = row.payload;
       const candidate = { id:`professional-${receiptId}`, status:'published', publication_authorized:true,
         commercial_relationship:'none',
