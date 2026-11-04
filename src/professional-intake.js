@@ -2,10 +2,11 @@ import { createHash, randomUUID } from 'node:crypto';
 import { publicProfiles } from '../scripts/lib/professional-directory.mjs';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const fields = Object.freeze({ name:100, profession:100, register:120, website:200,
-  specialties:500, audience:200, description:700, area:150, modality:80,
+const fields = Object.freeze({ name:100, profession:100, register_authority:180, register:120,
+  register_url:240, insurance_evidence:300, website:200, specialties:500, audience:200,
+  description:700, country:100, area:150, service_countries:240, modality:80,
   languages:180, pricing:180, email:150, phone:40 });
-const optional = new Set(['register','phone']);
+const optional = new Set(['register_authority','register','register_url','insurance_evidence','phone']);
 const exactKeys = (value, allowed) => value && typeof value === 'object' && !Array.isArray(value) &&
   Object.keys(value).every(key => allowed.includes(key));
 const reference = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.:/-]{2,159}$/.test(value);
@@ -38,6 +39,13 @@ export function validateProfessionalApplication(input) {
     if (url.protocol !== 'https:' || url.username || url.password || url.search || url.hash) throw new Error();
     payload.website = url.href;
   } catch { throw error(400, 'invalid_application'); }
+  if (payload.register_url) {
+    try {
+      const url = new URL(payload.register_url);
+      if (url.protocol !== 'https:' || url.username || url.password) throw new Error();
+      payload.register_url = url.href;
+    } catch { throw error(400, 'invalid_application'); }
+  }
   payload.commercial_opt_in = input.commercial_opt_in;
   return Object.freeze({ requestId:input.request_id.toLowerCase(), payload:Object.freeze(payload) });
 }
@@ -119,8 +127,9 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
         ['identity_verified','credentials_verified','terms_verified','reviewed_at','expires_at','sources'])) throw error(400, 'invalid_review');
       const p = row.payload;
       const candidate = { id:`professional-${receiptId}`, status:'published', publication_authorized:true,
-        name:p.name, profession:p.profession, description:p.description, area:p.area, modality:p.modality,
-        languages:p.languages, pricing:p.pricing, website:p.website,
+        name:p.name, profession:p.profession, description:p.description, country:p.country, area:p.area,
+        service_countries:p.service_countries, modality:p.modality, languages:p.languages,
+        pricing:p.pricing, website:p.website,
         review:{ ...input.review, reviewer_reference:principal.subject } };
       if (!publicProfiles({version:1,profiles:[candidate]}, now)[0]) throw error(400, 'review_evidence_incomplete');
       profile = candidate;
