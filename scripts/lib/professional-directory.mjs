@@ -8,6 +8,8 @@ const https = value => {
   try { const url = new URL(value); return url.protocol === 'https:' && !url.username && !url.password; }
   catch { return false; }
 };
+const reviewedStatus = value => value === 'verified' || value === 'not_applicable';
+const reviewReference = value => typeof value === 'string' && value.trim().length > 0 && value.length <= 160;
 
 // The registry contains public information only. Applications and review documents
 // belong in a private system, never in this deployable tree.
@@ -27,6 +29,8 @@ function reviewedProfiles(registry, asOf = new Date()) {
       required.every(key => typeof p[key] === 'string' && p[key].trim().length > 0 && p[key].length <= 1000) &&
       https(p.website) && review?.identity_verified === true && review?.credentials_verified === true &&
       review?.jurisdiction_verified === true && review?.terms_verified === true &&
+      reviewedStatus(review?.registration_status) && reviewedStatus(review?.insurance_status) &&
+      reviewReference(review?.registration_review_reference) && reviewReference(review?.insurance_review_reference) &&
       typeof review.reviewer_reference === 'string' && review.reviewer_reference.trim() &&
       Array.isArray(review.sources) && review.sources.length > 0 && Array.from(review.sources).every(https) &&
       Number.isFinite(reviewed) && Number.isFinite(expires) && reviewed <= now && expires > now && expires > reviewed;

@@ -66,6 +66,12 @@ autorización de publicación. `jurisdiction_verified=true` solo puede registrar
 después de contrastar el país de establecimiento y los países de prestación con
 evidencia aplicable; el idioma de atención, la modalidad online o una equivalencia
 profesional de otro país no prueban por sí solos autorización territorial.
+Registro y cobertura deben quedar resueltos por separado como `verified` o
+`not_applicable`, cada uno con una referencia privada de revisión. `verified` exige
+evidencia pertinente; `not_applicable` exige una determinación documentada para la
+profesión y jurisdicción concretas. La mera ausencia de datos o la declaración de la
+persona candidata no permiten ninguno de los dos estados. Estas referencias siguen
+fuera de la proyección y de la ficha pública.
 La proyección preparada fija `commercial_relationship: none` y la ficha debe mostrar
 que no existe relación comercial remunerada. La casilla opcional de interés comercial
 de una candidatura no cambia ese estado. Un modelo de pago, afiliación, coste por
