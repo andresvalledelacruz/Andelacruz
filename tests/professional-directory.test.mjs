@@ -2,8 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
-import { publicProfiles, renderPublicProfile, matchPublicProfessionals } from '../scripts/lib/professional-directory.mjs';
-const profile = () => ({id:'sample',name:'<script>alert(1)</script>',profession:'Formación',description:'Orientación',country:'España',area:'Madrid',service_countries:'España',modality:'Online',languages:'Español',pricing:'Consultar presupuesto',website:'https://example.org/',categories:['education'],status:'published',publication_authorized:true,commercial_relationship:'none',review:{identity_verified:true,credentials_verified:true,jurisdiction_verified:true,terms_verified:true,registration_status:'verified',registration_review_reference:'registration-review-1',insurance_status:'not_applicable',insurance_review_reference:'insurance-scope-review-1',reviewer_reference:'private-review-1',reviewed_at:'2026-10-01',expires_at:'2099-01-01',sources:['https://example.org/register']}});
+import { preparePublicProfile, publicProfiles, renderPublicProfile, matchPublicProfessionals } from '../scripts/lib/professional-directory.mjs';
+const candidate = () => ({id:'sample',name:'<script>alert(1)</script>',profession:'Formación',description:'Orientación',country:'España',area:'Madrid',service_countries:'España',modality:'Online',languages:'Español',pricing:'Consultar presupuesto',website:'https://example.org/',categories:['education'],status:'published',publication_authorized:true,commercial_relationship:'none',review:{identity_verified:true,credentials_verified:true,jurisdiction_verified:true,terms_verified:true,registration_status:'verified',registration_review_reference:'registration-review-1',insurance_status:'not_applicable',insurance_review_reference:'insurance-scope-review-1',reviewer_reference:'private-review-1',reviewed_at:'2026-10-01',expires_at:'2099-01-01',sources:['https://example.org/register']}});
+const profile = () => preparePublicProfile(candidate());
 const registry = p => ({version:1,profiles:[p]});
 test('Public directory is empty until real reviewed profiles exist',()=>assert.deepEqual(publicProfiles(JSON.parse(fs.readFileSync('data/professional-directory.json'))),[]));
 test('Publication rejects missing evidence, consent, expired reviews and unsafe URLs',()=>{
@@ -17,11 +18,17 @@ test('Publication rejects missing evidence, consent, expired reviews and unsafe 
     p=>p.review.insurance_status='declared',p=>p.review.insurance_review_reference='',
     p=>p.review.expires_at='2026-01-01',p=>p.review.reviewed_at='2099-01-01',
     p=>p.website='javascript:alert(1)',p=>p.review.sources=['http://example.org/']]){
-    const p=profile();mutate(p);assert.deepEqual(publicProfiles(registry(p)),[]);assert.throws(()=>renderPublicProfile(p));
+    const p=candidate();mutate(p);assert.equal(preparePublicProfile(p),null);
   }
 });
-test('Public rendering escapes content and excludes private review references',()=>{
-  const html=renderPublicProfile(profile());assert.ok(html.includes('&lt;script&gt;'));assert.ok(!html.includes('<script>'));assert.ok(!html.includes('private-review-1'));
+test('Private review evidence is projected away before a profile can enter the deployable registry',()=>{
+  const privateCandidate=candidate();
+  const publicProfile=preparePublicProfile(privateCandidate);
+  assert.ok(publicProfile);
+  assert.doesNotMatch(JSON.stringify(publicProfile),/private-review|reviewer_reference|review_reference/);
+  assert.deepEqual(publicProfiles(registry(privateCandidate)),[]);
+  assert.throws(()=>renderPublicProfile(privateCandidate));
+  const html=renderPublicProfile(publicProfile);assert.ok(html.includes('&lt;script&gt;'));assert.ok(!html.includes('<script>'));assert.ok(!html.includes('private-review-1'));
   assert.ok(!html.includes('registration-review-1'));assert.ok(!html.includes('insurance-scope-review-1'));
   assert.match(html,/País de establecimiento<\/dt><dd>España/);
   assert.match(html,/Países de prestación declarados<\/dt><dd>España/);
@@ -69,7 +76,7 @@ test('Matching rejects malformed category declarations without throwing',()=>{
 });
 
 test('Publication rejects absent or non-text identifiers and sparse evidence',()=>{
-  for(const mutate of [p=>delete p.id,p=>p.id=123,p=>p.review.sources=Array(1)]){
+  for(const mutate of [p=>delete p.id,p=>p.id=123,p=>p.verification.sources=Array(1),p=>p.private_note='never public']){
     const p=profile();mutate(p);
     assert.deepEqual(publicProfiles(registry(p)),[]);
     assert.throws(()=>renderPublicProfile(p));

@@ -78,9 +78,12 @@ de una candidatura no cambia ese estado. Un modelo de pago, afiliación, coste p
 contacto o posición destacada requiere aprobación real, esquema y disclosure nuevos;
 un valor distinto de `none` se rechaza por defecto.
 El candidato revisado permanece en la tabla privada con su evidencia: todavía no
-está publicado. Para publicar debe pasar de nuevo por `publicProfiles`, excluir
-correo, teléfono, registro, cobertura y referencias internas, y actualizar el registro público mediante
-un cambio revisado. Retirar una candidatura elimina su candidato aprobado; si ya
+está publicado. `preparePublicProfile` es la única frontera preparada para convertirlo
+en una ficha desplegable: revalida evidencia y caducidad y elimina correo, teléfono,
+registro, cobertura, el objeto privado de revisión y sus referencias internas.
+`publicProfiles` acepta solo esa forma pública estricta y rechaza la candidatura
+privada aunque sus pruebas sean válidas. Publicar todavía exige actualizar el registro
+público mediante un cambio revisado. Retirar una candidatura elimina su candidato aprobado; si ya
 se hubiera publicado por separado, la retirada pública debe completarse también.
 
 ## Datos y medición
