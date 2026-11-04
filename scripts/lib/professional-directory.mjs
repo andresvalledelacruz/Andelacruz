@@ -26,7 +26,8 @@ function reviewedProfiles(registry, asOf = new Date()) {
       p.commercial_relationship === 'none' &&
       required.every(key => typeof p[key] === 'string' && p[key].trim().length > 0 && p[key].length <= 1000) &&
       https(p.website) && review?.identity_verified === true && review?.credentials_verified === true &&
-      review?.terms_verified === true && typeof review.reviewer_reference === 'string' && review.reviewer_reference.trim() &&
+      review?.jurisdiction_verified === true && review?.terms_verified === true &&
+      typeof review.reviewer_reference === 'string' && review.reviewer_reference.trim() &&
       Array.isArray(review.sources) && review.sources.length > 0 && Array.from(review.sources).every(https) &&
       Number.isFinite(reviewed) && Number.isFinite(expires) && reviewed <= now && expires > now && expires > reviewed;
   });
