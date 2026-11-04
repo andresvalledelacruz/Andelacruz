@@ -1,5 +1,5 @@
 import { createHash, randomUUID } from 'node:crypto';
-import { publicProfiles } from '../scripts/lib/professional-directory.mjs';
+import { preparePublicProfile } from '../scripts/lib/professional-directory.mjs';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const fields = Object.freeze({ name:100, profession:100, register_authority:180, register:120,
@@ -137,7 +137,7 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
         service_countries:p.service_countries, modality:p.modality, languages:p.languages,
         pricing:p.pricing, website:p.website,
         review:{ ...input.review, reviewer_reference:principal.subject } };
-      if (!publicProfiles({version:1,profiles:[candidate]}, now)[0]) throw error(400, 'review_evidence_incomplete');
+      if (!preparePublicProfile(candidate, now)) throw error(400, 'review_evidence_incomplete');
       profile = candidate;
     }
     const status = {approve_for_publication:'approved_for_publication',reject:'rejected',withdraw:'withdrawn'}[input.decision];
