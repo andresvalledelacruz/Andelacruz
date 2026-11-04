@@ -149,6 +149,7 @@ test('approval requires complete human evidence and a separate publication autho
   assert.deepEqual(result,{receipt_id:receiptId,status:'approved_for_publication',published:false});
   const candidate=JSON.parse(pool.calls.find(c=>c.sql.startsWith('update')).args[2]);
   assert.equal(candidate.review.reviewer_reference,principal.subject);
+  assert.equal(candidate.publication_authorization_reference,'authorization-test-v1');
   assert.equal(candidate.country,'España');
   assert.equal(candidate.service_countries,'España');
   assert.equal(candidate.review.jurisdiction_verified,true);

@@ -26,6 +26,7 @@ function reviewedCandidate(p, asOf = new Date()) {
   const reviewed = Date.parse(review?.reviewed_at);
   const expires = Date.parse(review?.expires_at);
   return p.status === 'published' && p.publication_authorized === true &&
+    reviewReference(p.publication_authorization_reference) &&
     p.commercial_relationship === 'none' &&
     validCategories(p.categories) &&
     required.every(key => typeof p[key] === 'string' && p[key].trim().length > 0 && p[key].length <= 1000) &&
@@ -40,7 +41,8 @@ function reviewedCandidate(p, asOf = new Date()) {
 
 // Convert a candidate held in the private intake store into the only shape that
 // may be copied to the deployable registry. Internal reviewer and evidence
-// references deliberately have no destination in this projection.
+// references, including the publication authorization reference, deliberately
+// have no destination in this projection.
 export function preparePublicProfile(candidate, asOf = new Date()) {
   if (!reviewedCandidate(candidate, asOf)) return null;
   return { id:candidate.id, status:'published', publication_authorized:true,
