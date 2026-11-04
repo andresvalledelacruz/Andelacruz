@@ -7,8 +7,12 @@ const fields = Object.freeze({ name:100, profession:100, register_authority:180,
   description:700, country:100, area:150, service_countries:240, modality:80,
   languages:180, pricing:180, email:150, phone:40 });
 const optional = new Set(['register_authority','register','register_url','insurance_evidence','phone']);
+const professionalCategories = ['employment','education'];
 const exactKeys = (value, allowed) => value && typeof value === 'object' && !Array.isArray(value) &&
   Object.keys(value).every(key => allowed.includes(key));
+const validCategories = value => Array.isArray(value) && value.length > 0 &&
+  value.length <= professionalCategories.length && value.length === new Set(value).size &&
+  Array.from(value).every(category => professionalCategories.includes(category));
 const reference = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9_.:/-]{2,159}$/.test(value);
 const error = (status, code) => Object.assign(new Error(code), { status, code });
 
@@ -110,7 +114,7 @@ export async function listProfessionalApplications(pool, principal) {
 
 export async function reviewProfessionalApplication(pool, receiptId, input, principal, now = new Date()) {
   requireProfessionalReviewer(principal);
-  if (!UUID.test(receiptId ?? '') || !exactKeys(input, ['decision','review','publication_authorization_reference']) ||
+  if (!UUID.test(receiptId ?? '') || !exactKeys(input, ['decision','review','publication_authorization_reference','categories']) ||
       !['approve_for_publication','reject','withdraw'].includes(input.decision)) throw error(400, 'invalid_review');
   if (!pool) throw error(503, 'professional_intake_unavailable');
   const client = await pool.connect();
@@ -123,7 +127,7 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
     if (row.status !== 'pending_review' && input.decision !== 'withdraw') throw error(409, 'application_already_reviewed');
     let profile = null;
     if (input.decision === 'approve_for_publication') {
-      if (!reference(input.publication_authorization_reference) || !exactKeys(input.review,
+      if (!reference(input.publication_authorization_reference) || !validCategories(input.categories) || !exactKeys(input.review,
         ['identity_verified','credentials_verified','jurisdiction_verified','terms_verified','registration_status',
           'registration_review_reference','insurance_status','insurance_review_reference','reviewed_at','expires_at','sources']) ||
         !['verified','not_applicable'].includes(input.review.registration_status) ||
@@ -135,7 +139,7 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
         commercial_relationship:'none',
         name:p.name, profession:p.profession, description:p.description, country:p.country, area:p.area,
         service_countries:p.service_countries, modality:p.modality, languages:p.languages,
-        pricing:p.pricing, website:p.website,
+        pricing:p.pricing, website:p.website, categories:[...input.categories],
         review:{ ...input.review, reviewer_reference:principal.subject } };
       if (!preparePublicProfile(candidate, now)) throw error(400, 'review_evidence_incomplete');
       profile = candidate;

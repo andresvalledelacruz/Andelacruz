@@ -133,6 +133,7 @@ test('approval requires complete human evidence and a separate publication autho
   const makePool=()=>database(sql=>({rows:sql.includes('for update')?[{receipt_id:receiptId,status:'pending_review',
     payload:validateProfessionalApplication({...input,commercial_opt_in:true}).payload}]:[]}));
   for(const patch of [{publication_authorization_reference:undefined},{review:{...review,credentials_verified:false}},
+    {categories:undefined},{categories:[]},{categories:['mental_health']},{categories:['education','education']},
     {review:{...review,jurisdiction_verified:false}},
     {review:Object.fromEntries(Object.entries(review).filter(([key])=>key !== 'jurisdiction_verified'))},
     {review:{...review,registration_status:'pending'}},{review:{...review,registration_review_reference:''}},
@@ -140,11 +141,11 @@ test('approval requires complete human evidence and a separate publication autho
     {review:{...review,expires_at:'2026-10-18T00:00:00Z'}},{review:{...review,sources:['http://example.org']}},
     {review:{...review,reviewer_reference:'client-supplied'}}]) {
     await assert.rejects(reviewProfessionalApplication(makePool(),receiptId,
-      {decision:'approve_for_publication',review,publication_authorization_reference:'authorization-test-v1',...patch},principal,now));
+      {decision:'approve_for_publication',review,categories:['education'],publication_authorization_reference:'authorization-test-v1',...patch},principal,now));
   }
   const pool=makePool();
   const result=await reviewProfessionalApplication(pool,receiptId,
-    {decision:'approve_for_publication',review,publication_authorization_reference:'authorization-test-v1'},principal,now);
+    {decision:'approve_for_publication',review,categories:['education'],publication_authorization_reference:'authorization-test-v1'},principal,now);
   assert.deepEqual(result,{receipt_id:receiptId,status:'approved_for_publication',published:false});
   const candidate=JSON.parse(pool.calls.find(c=>c.sql.startsWith('update')).args[2]);
   assert.equal(candidate.review.reviewer_reference,principal.subject);
@@ -154,6 +155,7 @@ test('approval requires complete human evidence and a separate publication autho
   assert.equal(candidate.review.registration_status,'verified');
   assert.equal(candidate.review.insurance_status,'not_applicable');
   assert.equal(candidate.commercial_relationship,'none');
+  assert.deepEqual(candidate.categories,['education']);
   assert.doesNotMatch(JSON.stringify(candidate),/synthetic@example|commercial_opt_in|TEST-123|Cobertura declarada de prueba|phone/);
   assert.equal(pool.calls.some(c=>/commercial_events|conversion|pageview/.test(c.sql)),false);
 });

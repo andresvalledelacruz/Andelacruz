@@ -72,6 +72,11 @@ evidencia pertinente; `not_applicable` exige una determinación documentada para
 profesión y jurisdicción concretas. La mera ausencia de datos o la declaración de la
 persona candidata no permiten ninguno de los dos estados. Estas referencias siguen
 fuera de la proyección y de la ficha pública.
+La aprobación también exige que el revisor asigne al menos una categoría editorial
+acotada (`employment` o `education`). No se deriva de especialidades, descripción,
+idioma ni texto libre de la candidatura, y no acredita una profesión o competencia.
+Categorías vacías, repetidas, desconocidas o sensibles se rechazan antes de preparar
+la ficha; esta taxonomía solo permite el matching no sensible ya previsto.
 La proyección preparada fija `commercial_relationship: none` y la ficha debe mostrar
 que no existe relación comercial remunerada. La casilla opcional de interés comercial
 de una candidatura no cambia ese estado. Un modelo de pago, afiliación, coste por

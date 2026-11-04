@@ -13,6 +13,9 @@ const reviewReference = value => typeof value === 'string' && value.trim().lengt
 const exactKeys = (value, allowed) => value && typeof value === 'object' && !Array.isArray(value) &&
   Object.keys(value).every(key => allowed.includes(key));
 const categories = ['employment', 'education'];
+const validCategories = value => Array.isArray(value) && value.length > 0 &&
+  value.length <= categories.length && value.length === new Set(value).size &&
+  Array.from(value).every(category => categories.includes(category));
 
 // The registry contains public information only. Applications and review documents
 // belong in a private system, never in this deployable tree.
@@ -24,6 +27,7 @@ function reviewedCandidate(p, asOf = new Date()) {
   const expires = Date.parse(review?.expires_at);
   return p.status === 'published' && p.publication_authorized === true &&
     p.commercial_relationship === 'none' &&
+    validCategories(p.categories) &&
     required.every(key => typeof p[key] === 'string' && p[key].trim().length > 0 && p[key].length <= 1000) &&
     https(p.website) && review?.identity_verified === true && review?.credentials_verified === true &&
     review?.jurisdiction_verified === true && review?.terms_verified === true &&
@@ -42,8 +46,7 @@ export function preparePublicProfile(candidate, asOf = new Date()) {
   return { id:candidate.id, status:'published', publication_authorized:true,
     ...Object.fromEntries(required.map(key => [key,candidate[key]])), website:candidate.website,
     commercial_relationship:'none',
-    categories:Array.isArray(candidate.categories) && candidate.categories.length === Array.from(candidate.categories).length &&
-      Array.from(candidate.categories).every(value => categories.includes(value)) ? [...candidate.categories] : [],
+    categories:[...candidate.categories],
     verification:{ reviewed_at:candidate.review.reviewed_at, expires_at:candidate.review.expires_at,
       registration_status:candidate.review.registration_status, insurance_status:candidate.review.insurance_status,
       sources:[...candidate.review.sources] } };
@@ -64,8 +67,7 @@ function reviewedProfiles(registry, asOf = new Date()) {
     const expires = Date.parse(verification?.expires_at);
     return p.status === 'published' && p.publication_authorized === true && p.commercial_relationship === 'none' &&
       required.every(key => typeof p[key] === 'string' && p[key].trim().length > 0 && p[key].length <= 1000) &&
-      https(p.website) && Array.isArray(p.categories) && p.categories.length === Array.from(p.categories).length &&
-      Array.from(p.categories).every(value => categories.includes(value)) && exactKeys(verification, verificationKeys) &&
+      https(p.website) && validCategories(p.categories) && exactKeys(verification, verificationKeys) &&
       reviewedStatus(verification.registration_status) && reviewedStatus(verification.insurance_status) &&
       Array.isArray(verification.sources) && verification.sources.length > 0 && Array.from(verification.sources).every(https) &&
       Number.isFinite(reviewed) && Number.isFinite(expires) && reviewed <= now && expires > now && expires > reviewed;
