@@ -26,6 +26,58 @@ export function professionalIntakeConfiguration(env = process.env) {
     privacyReference:ready ? env.PROFESSIONAL_INTAKE_PRIVACY_REVIEW : null });
 }
 
+export function professionalRetentionPurgeConfiguration(env = process.env) {
+  const batchSize = Number(env.PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE ?? 250);
+  const enabled = env.PROFESSIONAL_INTAKE_PURGE_ENABLED === 'true' &&
+    Number.isInteger(batchSize) && batchSize >= 1 && batchSize <= 1000;
+  return Object.freeze({ enabled, batchSize:enabled ? batchSize : null });
+}
+
+// This prepares a bounded physical deletion, but deliberately does not schedule
+// or activate it. A real retention claim still requires an independently
+// configured runner and evidence that expired rows were actually purged.
+export async function purgeExpiredProfessionalApplications(pool, {
+  configuration = professionalRetentionPurgeConfiguration(), now = new Date()
+} = {}) {
+  if (!configuration?.enabled || !Number.isInteger(configuration.batchSize) ||
+      configuration.batchSize < 1 || configuration.batchSize > 1000) {
+    throw error(503, 'professional_retention_purge_disabled');
+  }
+  if (!pool || !(now instanceof Date) || !Number.isFinite(now.getTime())) {
+    throw error(503, 'professional_retention_purge_unavailable');
+  }
+  const client = await pool.connect();
+  try {
+    await client.query('begin');
+    await client.query("select pg_advisory_xact_lock(hashtext('professional_intake_retention_v1'))");
+    const result = await client.query(`with expired as (
+        select receipt_id from private.professional_applications
+        where expires_at <= $1::timestamptz
+        order by expires_at asc
+        limit $2
+        for update skip locked
+      )
+      delete from private.professional_applications as application
+      using expired
+      where application.receipt_id = expired.receipt_id
+      returning application.synthetic, application.status`, [now.toISOString(), configuration.batchSize]);
+    if (!Array.isArray(result?.rows)) throw error(503, 'professional_retention_purge_unavailable');
+    const allowedStatuses = new Set(['pending_review','approved_for_publication','rejected','withdrawn']);
+    if (result.rows.some(row => typeof row.synthetic !== 'boolean' || !allowedStatuses.has(row.status))) {
+      throw error(503, 'professional_retention_purge_unavailable');
+    }
+    const summary = { deleted:result.rows.length,
+      synthetic:result.rows.filter(row => row.synthetic).length,
+      non_synthetic:result.rows.filter(row => !row.synthetic).length };
+    await client.query('commit');
+    return Object.freeze(summary);
+  } catch (cause) {
+    await client.query('rollback').catch(() => {});
+    if (cause.status) throw cause;
+    throw error(503, 'professional_retention_purge_unavailable');
+  } finally { client.release(); }
+}
+
 export function validateProfessionalApplication(input) {
   const allowed = [...Object.keys(fields), 'request_id', 'privacy_acknowledged', 'truth_confirmed', 'commercial_opt_in'];
   if (!exactKeys(input, allowed) || !UUID.test(input.request_id ?? '') ||

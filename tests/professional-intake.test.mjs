@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { validateProfessionalApplication, professionalIntakeConfiguration, receiveProfessionalApplication,
+  professionalRetentionPurgeConfiguration, purgeExpiredProfessionalApplications,
   listProfessionalApplications, previewProfessionalPublicProfile, reviewProfessionalApplication } from '../src/professional-intake.js';
 import { buildOpsAuthorizationContext } from '../src/ops-authz.js';
 import { authorizeOpsAction, OPS_CAPABILITIES } from '../src/ops-rbac.js';
@@ -39,6 +40,54 @@ test('intake is disabled unless every operational and privacy prerequisite is ex
   const pool=database();
   await assert.rejects(receiveProfessionalApplication(pool,input,{configuration:professionalIntakeConfiguration({})}),{code:'professional_intake_disabled'});
   assert.equal(pool.calls.length,0);
+});
+
+test('retention purge is separately gated and bounded before any database access', async () => {
+  const pool=database();
+  for (const purgeEnv of [{}, {PROFESSIONAL_INTAKE_PURGE_ENABLED:'false'},
+    {PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'0'},
+    {PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'1001'},
+    {PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'1.5'}]) {
+    const purgeConfiguration=professionalRetentionPurgeConfiguration(purgeEnv);
+    assert.equal(purgeConfiguration.enabled,false);
+    await assert.rejects(purgeExpiredProfessionalApplications(pool,{configuration:purgeConfiguration,now}),
+      {code:'professional_retention_purge_disabled'});
+  }
+  assert.equal(pool.calls.length,0);
+  assert.deepEqual(professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true'}),
+    {enabled:true,batchSize:250});
+});
+
+test('retention purge deletes only expired rows in a bounded locked transaction and reports aggregates', async () => {
+  const rows=[
+    {synthetic:true,status:'pending_review'},
+    {synthetic:false,status:'withdrawn'},
+    {synthetic:false,status:'rejected'}
+  ];
+  const pool=database(sql=>({rows:sql.includes('delete from private.professional_applications')?rows:[]}));
+  const configuration=professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
+    PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'25'});
+  assert.deepEqual(await purgeExpiredProfessionalApplications(pool,{configuration,now}),
+    {deleted:3,synthetic:1,non_synthetic:2});
+  assert.ok(pool.calls.some(call=>call.sql.includes('pg_advisory_xact_lock')));
+  const deletion=pool.calls.find(call=>call.sql.includes('delete from private.professional_applications'));
+  assert.match(deletion.sql,/expires_at <= \$1::timestamptz/);
+  assert.match(deletion.sql,/limit \$2/);
+  assert.match(deletion.sql,/for update skip locked/);
+  assert.match(deletion.sql,/returning application\.synthetic, application\.status/);
+  assert.deepEqual(deletion.args,[now.toISOString(),25]);
+  assert.doesNotMatch(deletion.sql,/payload|email|phone|public_profile/);
+  assert.deepEqual(pool.calls.slice(-2).map(call=>call.sql),['commit','release']);
+});
+
+test('retention purge rolls back on malformed results and never reports operational success', async () => {
+  for (const response of [{}, {rows:[{synthetic:'false',status:'withdrawn'}]},
+    {rows:[{synthetic:false,status:'unknown'}]}]) {
+    const pool=database(sql=>sql.includes('delete from private.professional_applications')?response:{rows:[]});
+    await assert.rejects(purgeExpiredProfessionalApplications(pool,{configuration:{enabled:true,batchSize:10},now}),
+      {code:'professional_retention_purge_unavailable'});
+    assert.deepEqual(pool.calls.slice(-2).map(call=>call.sql),['rollback','release']);
+  }
 });
 
 test('rejects arbitrary help text, revenue claims, malformed contact data and missing acknowledgements', () => {
