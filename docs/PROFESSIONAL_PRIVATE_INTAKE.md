@@ -21,7 +21,12 @@ No configurar estos indicadores para simular una aprobación. Hace falta definir
 información al solicitante, responsables y acceso, y verificar el borrado dentro
 del plazo aprobado. La limpieza preparada se ejecuta con
 `npm run purge:professional-intake`, únicamente cuando
-`PROFESSIONAL_INTAKE_PURGE_ENABLED=true` y existe una conexión de servidor.
+`PROFESSIONAL_INTAKE_PURGE_ENABLED=true`, se elige un modo explícito y existe una
+conexión de servidor. `PROFESSIONAL_INTAKE_PURGE_MODE=plan` hace una consulta
+acotada de solo lectura y devuelve cuántas filas serían elegibles; no bloquea ni
+borra. `PROFESSIONAL_INTAKE_PURGE_MODE=commit` vuelve a seleccionar las filas bajo
+bloqueo y ejecuta el borrado. Omitir el modo, usar otro valor o intentar borrar con
+una configuración de planificación falla antes de acceder a los datos.
 El ejecutor usa un bloqueo transaccional, elimina como máximo 250 filas por lote
 (configurable entre 1 y 1000), selecciona solo `expires_at <= now()` con
 `FOR UPDATE SKIP LOCKED` y devuelve exclusivamente recuentos agregados. Los eventos
@@ -31,7 +36,10 @@ caducadas, pero esto no sustituye el borrado físico programado.
 El ejecutor permanece desactivado y no está programado en ningún servicio: disponer
 del código o de pruebas no acredita borrado operativo. Antes de marcar
 `PROFESSIONAL_INTAKE_RETENTION_READY=true` hay que configurar un runner autorizado,
-observar una ejecución real sobre datos de prueba caducados y documentar su resultado.
+ejecutar primero `plan`, cambiar después de forma deliberada a `commit`, observar una
+ejecución real sobre datos de prueba caducados y documentar su resultado. El plan es
+una fotografía orientativa: el lote se recalcula al confirmar y nunca acredita por sí
+solo una eliminación.
 
 ## Recepción
 

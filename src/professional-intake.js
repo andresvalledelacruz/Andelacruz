@@ -28,9 +28,59 @@ export function professionalIntakeConfiguration(env = process.env) {
 
 export function professionalRetentionPurgeConfiguration(env = process.env) {
   const batchSize = Number(env.PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE ?? 250);
+  const mode = env.PROFESSIONAL_INTAKE_PURGE_MODE;
   const enabled = env.PROFESSIONAL_INTAKE_PURGE_ENABLED === 'true' &&
-    Number.isInteger(batchSize) && batchSize >= 1 && batchSize <= 1000;
-  return Object.freeze({ enabled, batchSize:enabled ? batchSize : null });
+    ['plan','commit'].includes(mode) && Number.isInteger(batchSize) && batchSize >= 1 && batchSize <= 1000;
+  return Object.freeze({ enabled, mode:enabled ? mode : null, batchSize:enabled ? batchSize : null });
+}
+
+const retentionStatuses = new Set(['pending_review','approved_for_publication','rejected','withdrawn']);
+const retentionSummary = (rows, totalField, maxTotal) => {
+  if (!Array.isArray(rows)) throw error(503, 'professional_retention_purge_unavailable');
+  let total = 0;
+  let synthetic = 0;
+  for (const row of rows) {
+    const count = Number(row.count);
+    if (typeof row.synthetic !== 'boolean' || !retentionStatuses.has(row.status) ||
+        !Number.isSafeInteger(count) || count < 0) {
+      throw error(503, 'professional_retention_purge_unavailable');
+    }
+    total += count;
+    if (row.synthetic) synthetic += count;
+  }
+  if (!Number.isSafeInteger(total) || !Number.isSafeInteger(synthetic) || total > maxTotal) {
+    throw error(503, 'professional_retention_purge_unavailable');
+  }
+  return Object.freeze({ [totalField]:total, synthetic, non_synthetic:total - synthetic });
+};
+
+// Read-only, bounded planning. The result is only a momentary aggregate and is
+// never evidence that deletion ran or that retention is operational.
+export async function planExpiredProfessionalApplications(pool, {
+  configuration = professionalRetentionPurgeConfiguration(), now = new Date()
+} = {}) {
+  if (!configuration?.enabled || configuration.mode !== 'plan' ||
+      !Number.isInteger(configuration.batchSize) || configuration.batchSize < 1 ||
+      configuration.batchSize > 1000) {
+    throw error(503, 'professional_retention_purge_plan_disabled');
+  }
+  if (!pool || !(now instanceof Date) || !Number.isFinite(now.getTime())) {
+    throw error(503, 'professional_retention_purge_unavailable');
+  }
+  try {
+    const result = await pool.query(`with expired as (
+        select synthetic, status from private.professional_applications
+        where expires_at <= $1::timestamptz
+        order by expires_at asc
+        limit $2
+      )
+      select synthetic, status, count(*)::int as count
+      from expired group by synthetic, status`, [now.toISOString(), configuration.batchSize]);
+    return retentionSummary(result?.rows, 'eligible', configuration.batchSize);
+  } catch (cause) {
+    if (cause.status) throw cause;
+    throw error(503, 'professional_retention_purge_unavailable');
+  }
 }
 
 // This prepares a bounded physical deletion, but deliberately does not schedule
@@ -39,9 +89,9 @@ export function professionalRetentionPurgeConfiguration(env = process.env) {
 export async function purgeExpiredProfessionalApplications(pool, {
   configuration = professionalRetentionPurgeConfiguration(), now = new Date()
 } = {}) {
-  if (!configuration?.enabled || !Number.isInteger(configuration.batchSize) ||
+  if (!configuration?.enabled || configuration.mode !== 'commit' || !Number.isInteger(configuration.batchSize) ||
       configuration.batchSize < 1 || configuration.batchSize > 1000) {
-    throw error(503, 'professional_retention_purge_disabled');
+    throw error(503, 'professional_retention_purge_commit_required');
   }
   if (!pool || !(now instanceof Date) || !Number.isFinite(now.getTime())) {
     throw error(503, 'professional_retention_purge_unavailable');
@@ -62,13 +112,12 @@ export async function purgeExpiredProfessionalApplications(pool, {
       where application.receipt_id = expired.receipt_id
       returning application.synthetic, application.status`, [now.toISOString(), configuration.batchSize]);
     if (!Array.isArray(result?.rows)) throw error(503, 'professional_retention_purge_unavailable');
-    const allowedStatuses = new Set(['pending_review','approved_for_publication','rejected','withdrawn']);
-    if (result.rows.some(row => typeof row.synthetic !== 'boolean' || !allowedStatuses.has(row.status))) {
-      throw error(503, 'professional_retention_purge_unavailable');
+    const groups = new Map();
+    for (const row of result.rows) {
+      const key = `${row.synthetic}:${row.status}`;
+      groups.set(key, { synthetic:row.synthetic, status:row.status, count:(groups.get(key)?.count || 0) + 1 });
     }
-    const summary = { deleted:result.rows.length,
-      synthetic:result.rows.filter(row => row.synthetic).length,
-      non_synthetic:result.rows.filter(row => !row.synthetic).length };
+    const summary = retentionSummary([...groups.values()], 'deleted', configuration.batchSize);
     await client.query('commit');
     return Object.freeze(summary);
   } catch (cause) {
