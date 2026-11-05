@@ -19,10 +19,19 @@ El servicio exige simultáneamente:
 
 No configurar estos indicadores para simular una aprobación. Hace falta definir
 información al solicitante, responsables y acceso, y verificar el borrado dentro
-del plazo aprobado. La limpieza elimina solicitudes caducadas con
-`delete from private.professional_applications where expires_at <= now()`;
-los eventos privados de revisión se eliminan en cascada. El listado ya excluye
-solicitudes caducadas, pero esto no sustituye el borrado físico programado.
+del plazo aprobado. La limpieza preparada se ejecuta con
+`npm run purge:professional-intake`, únicamente cuando
+`PROFESSIONAL_INTAKE_PURGE_ENABLED=true` y existe una conexión de servidor.
+El ejecutor usa un bloqueo transaccional, elimina como máximo 250 filas por lote
+(configurable entre 1 y 1000), selecciona solo `expires_at <= now()` con
+`FOR UPDATE SKIP LOCKED` y devuelve exclusivamente recuentos agregados. Los eventos
+privados de revisión se eliminan en cascada. El listado ya excluye solicitudes
+caducadas, pero esto no sustituye el borrado físico programado.
+
+El ejecutor permanece desactivado y no está programado en ningún servicio: disponer
+del código o de pruebas no acredita borrado operativo. Antes de marcar
+`PROFESSIONAL_INTAKE_RETENTION_READY=true` hay que configurar un runner autorizado,
+observar una ejecución real sobre datos de prueba caducados y documentar su resultado.
 
 ## Recepción
 

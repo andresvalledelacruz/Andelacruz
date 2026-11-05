@@ -15,6 +15,7 @@
     "audit:ops-readiness": "node scripts/audit-ops-readiness.mjs",
     "audit:backup-readiness": "node scripts/audit-backup-readiness.mjs",
     "audit:copyright-ip": "node scripts/audit-copyright-ip-risk.mjs",
+    "purge:professional-intake": "node scripts/purge-professional-intake.mjs",
     "test:story-updates": "node --test tests/story-update-policy.test.js",
     "test:needs-router": "node --test tests/human-needs-router.test.js",
     "test:decision-ledger": "node --test tests/decision-ledger.test.js",
