@@ -198,6 +198,41 @@ test('publication preview revalidates the approved candidate and returns only pu
   assert.equal(deniedPool.calls.length,0);
 });
 
+test('withdrawal preserves the opaque public ID for governed removal and is idempotent', async () => {
+  const publicProfileId='professional-44444444-4444-4444-8444-444444444444';
+  const candidate={id:publicProfileId,status:'published',publication_authorized:true,
+    publication_authorization_reference:'private-publication-authorization',commercial_relationship:'none'};
+  const approvedPool=database(sql=>({rows:sql.includes('for update')?
+    [{receipt_id:receiptId,status:'approved_for_publication',payload:{},public_profile:candidate}]:[]}));
+  const withdrawn=await reviewProfessionalApplication(approvedPool,receiptId,
+    {decision:'withdraw',review:null,categories:null,publication_authorization_reference:null},principal,now);
+  assert.deepEqual(withdrawn,{receipt_id:receiptId,status:'withdrawn',published:false,
+    withdrawn_public_profile_id:publicProfileId});
+  const update=approvedPool.calls.find(call=>call.sql.startsWith('update'));
+  assert.equal(update.args[1],'withdrawn');
+  assert.equal(JSON.parse(update.args[2]).id,publicProfileId,'private candidate remains traceable until retention cleanup');
+  assert.equal(approvedPool.calls.some(call=>/commercial_events|conversion|pageview/.test(call.sql)),false);
+
+  const repeatedPool=database(sql=>({rows:sql.includes('for update')?
+    [{receipt_id:receiptId,status:'withdrawn',payload:{},public_profile:candidate}]:[]}));
+  assert.deepEqual(await reviewProfessionalApplication(repeatedPool,receiptId,
+    {decision:'withdraw',review:null,categories:null,publication_authorization_reference:null},principal,now),withdrawn);
+  assert.equal(repeatedPool.calls.some(call=>call.sql.startsWith('update') || call.sql.includes('insert into')),false);
+  assert.deepEqual(repeatedPool.calls.slice(-2).map(call=>call.sql),['commit','release']);
+
+  const rejectedPool=database(sql=>({rows:sql.includes('for update')?
+    [{receipt_id:receiptId,status:'rejected',payload:{},public_profile:null}]:[]}));
+  await assert.rejects(reviewProfessionalApplication(rejectedPool,receiptId,
+    {decision:'withdraw',review:null,categories:null,publication_authorization_reference:null},principal,now),
+    {code:'application_already_reviewed'});
+
+  const missingIdPool=database(sql=>({rows:sql.includes('for update')?
+    [{receipt_id:receiptId,status:'approved_for_publication',payload:{},public_profile:{id:'invalid'}}]:[]}));
+  await assert.rejects(reviewProfessionalApplication(missingIdPool,receiptId,
+    {decision:'withdraw',review:null,categories:null,publication_authorization_reference:null},principal,now),
+    {code:'approved_profile_reference_missing'});
+});
+
 test('Fastify intake respects origin denial, disabled state, payload limit and transactional receipt semantics', async () => {
   const pool=database(sql=>({rows:sql.includes('count(*)')?[{received:0}]:[]}));
   let config=professionalIntakeConfiguration({});
