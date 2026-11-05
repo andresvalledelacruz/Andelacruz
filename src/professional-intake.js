@@ -135,7 +135,10 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
         !reference(input.review.registration_review_reference) ||
         !reference(input.review.insurance_review_reference)) throw error(400, 'invalid_review');
       const p = row.payload;
-      const candidate = { id:`professional-${receiptId}`, status:'published', publication_authorized:true,
+      // The public identifier must not expose or be derivable from the private
+      // receipt returned to the applicant. It is created once, inside the
+      // approval transaction, and remains attached to the private candidate.
+      const candidate = { id:`professional-${randomUUID()}`, status:'published', publication_authorized:true,
         publication_authorization_reference:input.publication_authorization_reference,
         commercial_relationship:'none',
         name:p.name, profession:p.profession, description:p.description, country:p.country, area:p.area,

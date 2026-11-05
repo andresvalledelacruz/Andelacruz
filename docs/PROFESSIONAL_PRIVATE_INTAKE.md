@@ -85,7 +85,9 @@ de una candidatura no cambia ese estado. Un modelo de pago, afiliación, coste p
 contacto o posición destacada requiere aprobación real, esquema y disclosure nuevos;
 un valor distinto de `none` se rechaza por defecto.
 El candidato revisado permanece en la tabla privada con su evidencia: todavía no
-está publicado. `preparePublicProfile` es la única frontera preparada para convertirlo
+está publicado. Su identificador público se genera de forma independiente dentro de
+la transacción de aprobación: nunca reutiliza ni permite derivar el `receipt_id`
+privado entregado a la persona solicitante. `preparePublicProfile` es la única frontera preparada para convertirlo
 en una ficha desplegable: revalida evidencia y caducidad y elimina correo, teléfono,
 registro, cobertura, el objeto privado de revisión, las URL de sus fuentes y sus
 referencias internas. Las fuentes HTTPS son obligatorias para que el revisor pueda
