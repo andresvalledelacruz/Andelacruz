@@ -148,6 +148,18 @@ El esquema está en `scripts/sql/professional-intake.sql`. Las dos tablas privad
 tienen RLS y carecen de permisos para `anon` y `authenticated`. No hay RPC de datos
 profesionales en `public`. El backend requiere su conexión de servidor autorizada.
 
+Una instalación que ya tenga las tablas de recepción y revisión, pero no el recibo
+anti-reutilización, dispone de la migración aditiva
+`supabase/migrations/20261105150000_add_professional_retention_purge_receipts.sql`.
+El archivo no se aplica automáticamente y su presencia en el repositorio no acredita
+que una base real esté migrada. Antes de usarlo hay que inspeccionar el esquema del
+entorno autorizado y conservar la salvaguarda aprobada. La migración falla si la
+tabla ya existe para evitar aceptar silenciosamente una estructura desconocida;
+en ese caso se debe comparar su definición y resolver la divergencia, no omitir la
+comprobación. Tras aplicarla únicamente en staging autorizado, se deben verificar
+RLS y privilegios y después ejecutar el circuito `plan`/`commit` sobre datos
+sintéticos caducados. Ninguno de esos pasos se ha ejecutado por añadir este archivo.
+
 Ops solo cuenta solicitudes no sintéticas cuando la recepción está habilitada.
 Son solicitudes recibidas conservadas, no leads; el plazo de retención limita la
 cobertura histórica. La consulta no devuelve nombres, correo, teléfono ni texto.
