@@ -2,6 +2,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { preparePublicProfile } from '../scripts/lib/professional-directory.mjs';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+const PUBLIC_PROFILE_ID = /^professional-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const fields = Object.freeze({ name:100, profession:100, register_authority:180, register:120,
   register_url:240, insurance_evidence:300, website:200, specialties:500, audience:200,
   description:700, country:100, area:150, service_countries:240, modality:80,
@@ -143,11 +144,20 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
   const client = await pool.connect();
   try {
     await client.query('begin');
-    const { rows } = await client.query(`select receipt_id, status, payload, expires_at from private.professional_applications
+    const { rows } = await client.query(`select receipt_id, status, payload, public_profile, expires_at from private.professional_applications
       where receipt_id = $1::uuid and expires_at > $2::timestamptz for update`, [receiptId, now.toISOString()]);
     const row = rows[0];
     if (!row) throw error(404, 'application_not_found');
-    if (row.status !== 'pending_review' && input.decision !== 'withdraw') throw error(409, 'application_already_reviewed');
+    const withdrawnPublicProfileId = input.decision === 'withdraw' &&
+      PUBLIC_PROFILE_ID.test(row.public_profile?.id ?? '') ? row.public_profile.id : null;
+    if (row.status === 'withdrawn' && input.decision === 'withdraw') {
+      await client.query('commit');
+      return {receipt_id:receiptId,status:'withdrawn',published:false,
+        ...(withdrawnPublicProfileId ? {withdrawn_public_profile_id:withdrawnPublicProfileId} : {})};
+    }
+    const mayWithdrawApproved = input.decision === 'withdraw' && row.status === 'approved_for_publication';
+    if (row.status !== 'pending_review' && !mayWithdrawApproved) throw error(409, 'application_already_reviewed');
+    if (mayWithdrawApproved && !withdrawnPublicProfileId) throw error(409, 'approved_profile_reference_missing');
     let profile = null;
     if (input.decision === 'approve_for_publication') {
       if (!reference(input.publication_authorization_reference) || !validCategories(input.categories) || !exactKeys(input.review,
@@ -170,6 +180,11 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
         review:{ ...input.review, reviewer_reference:principal.subject } };
       if (!preparePublicProfile(candidate, now)) throw error(400, 'review_evidence_incomplete');
       profile = candidate;
+    } else if (mayWithdrawApproved) {
+      // Retain the private candidate until the configured retention deadline so
+      // its opaque public ID remains available for a governed registry removal.
+      // The withdrawn status prevents preview or republication.
+      profile = row.public_profile;
     }
     const status = {approve_for_publication:'approved_for_publication',reject:'rejected',withdraw:'withdrawn'}[input.decision];
     await client.query(`update private.professional_applications set status=$2, public_profile=$3::jsonb
@@ -182,7 +197,8 @@ export async function reviewProfessionalApplication(pool, receiptId, input, prin
     // Approval prepares an explicitly unpaid public projection; a separate governed
     // publication must revalidate evidence/expiry. Applicant opt-in never activates
     // matching, billing or an undisclosed commercial relationship.
-    return {receipt_id:receiptId,status,published:false};
+    return {receipt_id:receiptId,status,published:false,
+      ...(withdrawnPublicProfileId ? {withdrawn_public_profile_id:withdrawnPublicProfileId} : {})};
   } catch (cause) {
     await client.query('rollback').catch(() => {});
     if (cause.status) throw cause;

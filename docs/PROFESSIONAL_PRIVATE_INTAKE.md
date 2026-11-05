@@ -99,8 +99,13 @@ privada aunque sus pruebas sean válidas. Publicar todavía exige actualizar el 
 público mediante un cambio revisado. La ruta de previsualización vuelve a comprobar
 estado, retención, autorización y vigencia, y devuelve exclusivamente esa proyección
 pública: no devuelve el recibo, contacto, fuentes ni referencias internas y tampoco
-publica o modifica el registro. Retirar una candidatura elimina su candidato aprobado; si ya
-se hubiera publicado por separado, la retirada pública debe completarse también.
+publica o modifica el registro. Al retirar una candidatura aprobada, el candidato
+privado se conserva solo hasta su fecha de retención y la respuesta devuelve su ID
+público opaco. Así puede retirarse la entrada correcta mediante un cambio revisado sin
+exponer ni reutilizar el recibo privado. El estado `withdrawn` impide previsualizar o
+republicar la ficha. La retirada repetida es idempotente y una candidatura rechazada no
+puede cambiarse a retirada. Si ya se hubiera publicado por separado, la retirada del
+registro público debe completarse también: este paso no modifica el JSON desplegable.
 
 ## Datos y medición
 
