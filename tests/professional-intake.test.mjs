@@ -62,32 +62,40 @@ test('retention purge is separately gated and bounded before any database access
   assert.equal(pool.calls.length,0);
   assert.deepEqual(professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
     PROFESSIONAL_INTAKE_PURGE_MODE:'plan',PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret}),
-  {enabled:true,mode:'plan',batchSize:250,confirmationSecret:purgeSecret,planToken:null});
+  {enabled:true,mode:'plan',batchSize:250,confirmationSecret:purgeSecret,planToken:null,includeNonSynthetic:false});
+  assert.equal(professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
+    PROFESSIONAL_INTAKE_PURGE_MODE:'plan',PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret,
+    PROFESSIONAL_INTAKE_PURGE_INCLUDE_NON_SYNTHETIC:'true'}).includeNonSynthetic,false);
+  assert.equal(professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
+    PROFESSIONAL_INTAKE_PURGE_MODE:'plan',PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret,
+    PROFESSIONAL_INTAKE_PURGE_INCLUDE_NON_SYNTHETIC:'true',PROFESSIONAL_INTAKE_RETENTION_READY:'true',
+    PROFESSIONAL_INTAKE_PRIVACY_REVIEW:'privacy-review-test-v1'}).includeNonSynthetic,true);
 });
 
 test('retention planning is read-only, bounded and reports only aggregates', async () => {
   const pool=database(sql=>({rows:sql.includes('from expired group by')?[
-    {synthetic:true,status:'pending_review',count:2},
-    {synthetic:false,status:'withdrawn',count:3}
+    {synthetic:true,status:'pending_review',count:2}
   ]:[]}));
   const configuration=professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
     PROFESSIONAL_INTAKE_PURGE_MODE:'plan',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'25',
     PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret});
   const plan=await planExpiredProfessionalApplications(pool,{configuration,now});
   assert.deepEqual({...plan,confirmation:undefined},
-    {eligible:5,synthetic:2,non_synthetic:3,confirmation:undefined});
+    {eligible:2,synthetic:2,non_synthetic:0,confirmation:undefined});
   assert.match(plan.confirmation,/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/);
   assert.doesNotMatch(plan.confirmation,/pending_review|withdrawn|example|receipt/i);
   const confirmationPayload=JSON.parse(Buffer.from(plan.confirmation.split('.')[0],'base64url').toString('utf8'));
   assert.match(confirmationPayload.plan_id,/^[0-9a-f-]{36}$/i);
   assert.deepEqual(Object.keys(confirmationPayload).sort(),
-    ['batch_size','cutoff','eligible','non_synthetic','plan_id','synthetic','version']);
+    ['batch_size','cutoff','eligible','non_synthetic','plan_id','scope','synthetic','version']);
+  assert.equal(confirmationPayload.scope,'synthetic-only');
   const planning=pool.calls.find(call=>call.sql.includes('from expired group by'));
   assert.match(planning.sql,/expires_at <= \$1::timestamptz/);
   assert.match(planning.sql,/order by expires_at asc, receipt_id asc/);
   assert.match(planning.sql,/limit \$2/);
   assert.doesNotMatch(planning.sql,/delete|for update|payload|email|phone|public_profile/i);
-  assert.deepEqual(planning.args,[now.toISOString(),25]);
+  assert.match(planning.sql,/\(\$3::boolean or synthetic = true\)/);
+  assert.deepEqual(planning.args,[now.toISOString(),25,false]);
   assert.equal(pool.calls.some(call=>/begin|commit|rollback/.test(call.sql)),false);
   await assert.rejects(purgeExpiredProfessionalApplications(pool,{configuration,now}),
     {code:'professional_retention_purge_commit_required'});
@@ -107,15 +115,35 @@ test('retention planning fails closed on malformed or impossible aggregates', as
   }
 });
 
+test('non-synthetic scope requires every explicit gate and is bound into the signed plan', async () => {
+  const pool=database(sql=>({rows:sql.includes('from expired group by')?[
+    {synthetic:false,status:'withdrawn',count:2}
+  ]:[]}));
+  const configuration=professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
+    PROFESSIONAL_INTAKE_PURGE_MODE:'plan',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'10',
+    PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret,
+    PROFESSIONAL_INTAKE_PURGE_INCLUDE_NON_SYNTHETIC:'true',PROFESSIONAL_INTAKE_RETENTION_READY:'true',
+    PROFESSIONAL_INTAKE_PRIVACY_REVIEW:'privacy-review-test-v1'});
+  const plan=await planExpiredProfessionalApplications(pool,{configuration,now});
+  const payload=JSON.parse(Buffer.from(plan.confirmation.split('.')[0],'base64url').toString('utf8'));
+  assert.equal(payload.scope,'all-expired');
+  assert.deepEqual(pool.calls.find(call=>call.sql.includes('from expired group by')).args,
+    [now.toISOString(),10,true]);
+  const commitPool=database();
+  await assert.rejects(purgeExpiredProfessionalApplications(commitPool,{configuration:{enabled:true,mode:'commit',
+    batchSize:10,confirmationSecret:purgeSecret,planToken:plan.confirmation,includeNonSynthetic:false},now}),
+  {code:'professional_retention_purge_confirmation_required'});
+  assert.equal(commitPool.calls.length,0,'scope mismatch fails before database access');
+});
+
 test('retention purge deletes only expired rows in a bounded locked transaction and reports aggregates', async () => {
   const rows=[
     {synthetic:true,status:'pending_review'},
-    {synthetic:false,status:'withdrawn'},
-    {synthetic:false,status:'rejected'}
+    {synthetic:true,status:'withdrawn'},
+    {synthetic:true,status:'rejected'}
   ];
   const planPool=database(sql=>({rows:sql.includes('from expired group by')?[
-    {synthetic:true,status:'pending_review',count:1},
-    {synthetic:false,status:'withdrawn',count:2}
+    {synthetic:true,status:'pending_review',count:3}
   ]:[]}));
   const planConfiguration=professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
     PROFESSIONAL_INTAKE_PURGE_MODE:'plan',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'25',
@@ -127,27 +155,27 @@ test('retention purge deletes only expired rows in a bounded locked transaction 
     PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret,
     PROFESSIONAL_INTAKE_PURGE_PLAN_TOKEN:plan.confirmation});
   assert.deepEqual(await purgeExpiredProfessionalApplications(pool,{configuration,now}),
-    {deleted:3,synthetic:1,non_synthetic:2});
+    {deleted:3,synthetic:3,non_synthetic:0});
   assert.ok(pool.calls.some(call=>call.sql.includes('pg_advisory_xact_lock')));
   const receipt=pool.calls.find(call=>call.sql.includes('professional_retention_purge_receipts'));
   assert.match(receipt.sql,/insert into private\.professional_retention_purge_receipts/);
   assert.equal(receipt.args[1],now.toISOString());
-  assert.deepEqual(receipt.args.slice(2),[25,3,1,2,now.toISOString()]);
+  assert.deepEqual(receipt.args.slice(2),[25,'synthetic-only',3,3,0,now.toISOString()]);
   const deletion=pool.calls.find(call=>call.sql.includes('delete from private.professional_applications'));
   assert.match(deletion.sql,/expires_at <= \$1::timestamptz/);
   assert.match(deletion.sql,/order by expires_at asc, receipt_id asc/);
   assert.match(deletion.sql,/limit \$2/);
   assert.match(deletion.sql,/for update skip locked/);
-  assert.match(deletion.sql,/having count\(\*\)::int = \$3/);
+  assert.match(deletion.sql,/having count\(\*\)::int = \$4/);
   assert.match(deletion.sql,/returning application\.synthetic, application\.status/);
-  assert.deepEqual(deletion.args,[now.toISOString(),25,3,1]);
+  assert.deepEqual(deletion.args,[now.toISOString(),25,false,3,3]);
   assert.doesNotMatch(deletion.sql,/payload|email|phone|public_profile/);
   assert.deepEqual(pool.calls.slice(-2).map(call=>call.sql),['commit','release']);
 });
 
 test('retention purge rolls back on malformed results and never reports operational success', async () => {
   const planPool=database(sql=>({rows:sql.includes('from expired group by')?[
-    {synthetic:false,status:'withdrawn',count:1}
+    {synthetic:true,status:'withdrawn',count:1}
   ]:[]}));
   const plan=await planExpiredProfessionalApplications(planPool,{configuration:{enabled:true,mode:'plan',batchSize:10,
     confirmationSecret:purgeSecret},now});
@@ -163,7 +191,7 @@ test('retention purge rolls back on malformed results and never reports operatio
 
 test('retention commit requires a fresh authentic matching plan before database access', async () => {
   const planPool=database(sql=>({rows:sql.includes('from expired group by')?[
-    {synthetic:false,status:'withdrawn',count:1}
+    {synthetic:true,status:'withdrawn',count:1}
   ]:[]}));
   const plan=await planExpiredProfessionalApplications(planPool,{configuration:{enabled:true,mode:'plan',batchSize:10,
     confirmationSecret:purgeSecret},now});
@@ -186,7 +214,7 @@ test('retention commit requires a fresh authentic matching plan before database 
 
 test('retention commit rolls back without deleting when the planned aggregate changed', async () => {
   const planPool=database(sql=>({rows:sql.includes('from expired group by')?[
-    {synthetic:false,status:'withdrawn',count:2}
+    {synthetic:true,status:'withdrawn',count:2}
   ]:[]}));
   const plan=await planExpiredProfessionalApplications(planPool,{configuration:{enabled:true,mode:'plan',batchSize:10,
     confirmationSecret:purgeSecret},now});
@@ -199,7 +227,7 @@ test('retention commit rolls back without deleting when the planned aggregate ch
 
 test('retention confirmation is single-use and a replay cannot reach deletion', async () => {
   const planPool=database(sql=>({rows:sql.includes('from expired group by')?[
-    {synthetic:false,status:'withdrawn',count:1}
+    {synthetic:true,status:'withdrawn',count:1}
   ]:[]}));
   const plan=await planExpiredProfessionalApplications(planPool,{configuration:{enabled:true,mode:'plan',batchSize:10,
     confirmationSecret:purgeSecret},now});

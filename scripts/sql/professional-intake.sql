@@ -28,6 +28,7 @@ create table private.professional_retention_purge_receipts (
   plan_id uuid primary key,
   cutoff timestamptz not null,
   batch_size integer not null check (batch_size between 1 and 1000),
+  scope text not null check (scope in ('synthetic-only','all-expired')),
   eligible integer not null check (eligible >= 0 and eligible <= batch_size),
   synthetic integer not null check (synthetic >= 0 and synthetic <= eligible),
   non_synthetic integer not null check (non_synthetic >= 0 and non_synthetic <= eligible),
