@@ -55,6 +55,7 @@ en el servidor. Las solicitudes no se convierten en leads ni ingresos.
 ## Revisión y publicación
 
 `GET /ops/professionals/applications` y
+`GET /ops/professionals/:applicationId/public-profile` y
 `POST /ops/professionals/:applicationId/review` exigen la capacidad
 `professional.review`, administrador nominal y MFA AAL2. El token compartido de
 staging no puede acceder. La autorización nominal no está implementada por ese
@@ -95,7 +96,10 @@ justificar la decisión privada, pero no se copian al JSON público aunque la UR
 técnicamente válida; podría identificar documentación o contener acceso transitorio.
 `publicProfiles` acepta solo esa forma pública estricta y rechaza la candidatura
 privada aunque sus pruebas sean válidas. Publicar todavía exige actualizar el registro
-público mediante un cambio revisado. Retirar una candidatura elimina su candidato aprobado; si ya
+público mediante un cambio revisado. La ruta de previsualización vuelve a comprobar
+estado, retención, autorización y vigencia, y devuelve exclusivamente esa proyección
+pública: no devuelve el recibo, contacto, fuentes ni referencias internas y tampoco
+publica o modifica el registro. Retirar una candidatura elimina su candidato aprobado; si ya
 se hubiera publicado por separado, la retirada pública debe completarse también.
 
 ## Datos y medición

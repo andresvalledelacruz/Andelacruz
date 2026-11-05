@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { validateProfessionalApplication, professionalIntakeConfiguration, receiveProfessionalApplication,
-  listProfessionalApplications, reviewProfessionalApplication } from '../src/professional-intake.js';
+  listProfessionalApplications, previewProfessionalPublicProfile, reviewProfessionalApplication } from '../src/professional-intake.js';
 import { buildOpsAuthorizationContext } from '../src/ops-authz.js';
 import { authorizeOpsAction, OPS_CAPABILITIES } from '../src/ops-rbac.js';
 import { readBusinessMetrics } from '../src/ops-business-metrics.js';
@@ -118,7 +118,8 @@ test('named admin and MFA are required; shared staging token cannot read or revi
     await assert.rejects(listProfessionalApplications(pool,p),{code:'individual_reviewer_required'});
     assert.equal(pool.calls.length,0);
   }
-  for (const [method,route] of [['GET','/ops/professionals/applications'],['POST','/ops/professionals/:applicationId/review']]) {
+  for (const [method,route] of [['GET','/ops/professionals/applications'],
+    ['GET','/ops/professionals/:applicationId/public-profile'],['POST','/ops/professionals/:applicationId/review']]) {
     const auth=buildOpsAuthorizationContext({authorization:'Bearer test-token',configuredToken:'test-token',environment:'staging',method,route});
     assert.equal(auth.allowed,false);
   }
@@ -161,6 +162,40 @@ test('approval requires complete human evidence and a separate publication autho
   assert.deepEqual(candidate.categories,['education']);
   assert.doesNotMatch(JSON.stringify(candidate),/synthetic@example|commercial_opt_in|TEST-123|Cobertura declarada de prueba|phone/);
   assert.equal(pool.calls.some(c=>/commercial_events|conversion|pageview/.test(c.sql)),false);
+});
+
+test('publication preview revalidates the approved candidate and returns only public fields', async () => {
+  const review={identity_verified:true,credentials_verified:true,jurisdiction_verified:true,terms_verified:true,
+    registration_status:'verified',registration_review_reference:'private-registration-review',
+    insurance_status:'not_applicable',insurance_review_reference:'private-insurance-review',
+    reviewer_reference:principal.subject,reviewed_at:'2026-10-19T14:00:00Z',expires_at:'2026-11-01T00:00:00Z',
+    sources:['https://evidence.example.org/private?token=secret']};
+  const candidate={id:'professional-44444444-4444-4444-8444-444444444444',status:'published',
+    publication_authorized:true,publication_authorization_reference:'private-publication-authorization',
+    commercial_relationship:'none',name:'Synthetic professional',profession:'Formación',description:'Descripción pública',
+    country:'España',area:'Madrid',service_countries:'España',modality:'Online',languages:'Español',
+    pricing:'Consultar presupuesto',website:'https://example.org/',categories:['education'],review};
+  const pool=database(sql=>({rows:sql.includes('select status, public_profile')?
+    [{status:'approved_for_publication',public_profile:candidate}]:[]}));
+  const result=await previewProfessionalPublicProfile(pool,receiptId,principal,now);
+  assert.equal(result.status,'approved_for_publication');
+  assert.equal(result.published,false);
+  assert.equal(result.profile.id,candidate.id);
+  assert.deepEqual(Object.keys(result).sort(),['profile','published','status']);
+  assert.doesNotMatch(JSON.stringify(result),/private-|secret|sources|reviewer_reference|publication_authorization_reference|receipt_id|email|phone/);
+  assert.match(pool.calls[0].sql,/expires_at > \$2::timestamptz/);
+
+  for (const row of [null,{status:'pending_review',public_profile:null},
+    {status:'approved_for_publication',public_profile:{...candidate,publication_authorized:false}},
+    {status:'approved_for_publication',public_profile:{...candidate,review:{...review,expires_at:now.toISOString()}}}]) {
+    const rejectedPool=database(sql=>({rows:sql.includes('select status, public_profile') && row?[row]:[]}));
+    await assert.rejects(previewProfessionalPublicProfile(rejectedPool,receiptId,principal,now),
+      {code:row ? (row.status === 'approved_for_publication' ? 'professional_profile_not_publishable' : 'professional_profile_not_approved') : 'application_not_found'});
+  }
+  const deniedPool=database();
+  await assert.rejects(previewProfessionalPublicProfile(deniedPool,receiptId,{...principal,aal:'aal1'},now),
+    {code:'individual_reviewer_required'});
+  assert.equal(deniedPool.calls.length,0);
 });
 
 test('Fastify intake respects origin denial, disabled state, payload limit and transactional receipt semantics', async () => {

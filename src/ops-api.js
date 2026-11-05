@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import pg from 'pg';
-import { listProfessionalApplications, reviewProfessionalApplication, professionalIntakeConfiguration } from './professional-intake.js';
+import { listProfessionalApplications, previewProfessionalPublicProfile, reviewProfessionalApplication, professionalIntakeConfiguration } from './professional-intake.js';
 import { handleProfessionalApplication } from './professional-intake-http.js';
 import { readBusinessMetrics, loadSearchConsoleSnapshot, loadAdtractionSnapshot, loadAwinSnapshot } from './ops-business-metrics.js';
 import { evaluateExecutiveDecision } from './executive-decision-engine.js';
@@ -538,6 +538,11 @@ app.post('/public/professional-applications', { bodyLimit: 8 * 1024 }, async (re
 app.get('/ops/professionals/applications', { preHandler: requireOpsCapability('GET', '/ops/professionals/applications') }, async (request, reply) => {
   try { return await listProfessionalApplications(pool, request.opsAuthorization?.principal); }
   catch (error) { return reply.code(error.status || 503).send({error:error.code || 'professional_intake_unavailable'}); }
+});
+
+app.get('/ops/professionals/:applicationId/public-profile', { preHandler: requireOpsCapability('GET', '/ops/professionals/:applicationId/public-profile') }, async (request, reply) => {
+  try { return await previewProfessionalPublicProfile(pool, request.params.applicationId, request.opsAuthorization?.principal); }
+  catch (error) { return reply.code(error.status || 503).send({error:error.code || 'professional_profile_preview_unavailable'}); }
 });
 
 app.post('/ops/professionals/:applicationId/review', { preHandler: requireOpsCapability('POST', '/ops/professionals/:applicationId/review') }, async (request, reply) => {

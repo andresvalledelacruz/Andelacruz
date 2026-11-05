@@ -112,6 +112,29 @@ export async function listProfessionalApplications(pool, principal) {
   return { applications:rows };
 }
 
+export async function previewProfessionalPublicProfile(pool, receiptId, principal, now = new Date()) {
+  requireProfessionalReviewer(principal);
+  if (!UUID.test(receiptId ?? '')) throw error(400, 'invalid_application_id');
+  if (!pool) throw error(503, 'professional_intake_unavailable');
+  try {
+    const { rows } = await pool.query(`select status, public_profile from private.professional_applications
+      where receipt_id = $1::uuid and expires_at > $2::timestamptz`, [receiptId, now.toISOString()]);
+    const row = rows[0];
+    if (!row) throw error(404, 'application_not_found');
+    if (row.status !== 'approved_for_publication' || !row.public_profile) {
+      throw error(409, 'professional_profile_not_approved');
+    }
+    const profile = preparePublicProfile(row.public_profile, now);
+    if (!profile) throw error(409, 'professional_profile_not_publishable');
+    // Return only the strict public projection. The receipt, contact details,
+    // evidence URLs and internal review references have no response field.
+    return { status:'approved_for_publication', published:false, profile };
+  } catch (cause) {
+    if (cause.status) throw cause;
+    throw error(503, 'professional_profile_preview_unavailable');
+  }
+}
+
 export async function reviewProfessionalApplication(pool, receiptId, input, principal, now = new Date()) {
   requireProfessionalReviewer(principal);
   if (!UUID.test(receiptId ?? '') || !exactKeys(input, ['decision','review','publication_authorization_reference','categories']) ||
