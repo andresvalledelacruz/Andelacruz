@@ -25,21 +25,26 @@ del plazo aprobado. La limpieza preparada se ejecuta con
 conexión de servidor. Ambos modos necesitan un secreto operativo independiente de
 al menos 32 bytes en `PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET`; no debe
 registrarse, publicarse ni guardarse en el repositorio.
+Por defecto, ambos modos seleccionan exclusivamente filas sintéticas. Incluir datos
+no sintéticos exige además `PROFESSIONAL_INTAKE_PURGE_INCLUDE_NON_SYNTHETIC=true`,
+`PROFESSIONAL_INTAKE_RETENTION_READY=true` y una referencia válida en
+`PROFESSIONAL_INTAKE_PRIVACY_REVIEW`. No se deben configurar estos valores para
+simular preparación: la prueba inicial debe permanecer en el ámbito sintético.
 `PROFESSIONAL_INTAKE_PURGE_MODE=plan` hace una consulta acotada de solo lectura y
 devuelve cuántas filas serían elegibles junto con un token de confirmación firmado;
 no bloquea ni borra. Para confirmar, el operador debe conservar el mismo lote y
 secreto, cambiar a `PROFESSIONAL_INTAKE_PURGE_MODE=commit` y proporcionar ese token
 en `PROFESSIONAL_INTAKE_PURGE_PLAN_TOKEN`. El token caduca a los 15 minutos, está
-vinculado a un identificador aleatorio de plan, instante de corte, tamaño del lote y
+vinculado a un identificador aleatorio de plan, ámbito sintético o completo, instante de corte, tamaño del lote y
 recuentos agregados, y no contiene identificadores de candidaturas ni datos personales.
 El commit vuelve a seleccionar bajo bloqueo y reserva el identificador en un recibo
 privado antes de tocar las candidaturas. Ese recibo se confirma atómicamente con el
-borrado, conserva solo el identificador del plan, corte, lote, recuentos y finalización,
+borrado, conserva solo el identificador del plan, ámbito, corte, lote, recuentos y finalización,
 e impide reutilizar el mismo token. Un rollback elimina también la reserva y no deja
 un falso recibo de éxito. El commit solo ejecuta el borrado si los recuentos siguen
 coincidiendo. Omitir el modo, secreto o token, usar otro valor, presentar una firma
 inválida o confirmar un plan caducado falla antes de acceder a los datos; un token ya
-consumido o un cambio en el lote provoca rollback sin borrar.
+consumido, un cambio de ámbito o un cambio en el lote provoca rollback sin borrar.
 El ejecutor usa un bloqueo transaccional, elimina como máximo 250 filas por lote
 (configurable entre 1 y 1000), selecciona solo `expires_at <= now()` con
 `FOR UPDATE SKIP LOCKED` y devuelve exclusivamente recuentos agregados. Los eventos

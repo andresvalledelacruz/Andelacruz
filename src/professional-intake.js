@@ -34,12 +34,15 @@ export function professionalRetentionPurgeConfiguration(env = process.env) {
   const secretReady = typeof confirmationSecret === 'string' &&
     Buffer.byteLength(confirmationSecret) >= 32 && Buffer.byteLength(confirmationSecret) <= 256;
   const tokenReady = mode !== 'commit' || (typeof planToken === 'string' && planToken.length >= 80 && planToken.length <= 2048);
+  const includeNonSynthetic = env.PROFESSIONAL_INTAKE_PURGE_INCLUDE_NON_SYNTHETIC === 'true' &&
+    env.PROFESSIONAL_INTAKE_RETENTION_READY === 'true' && reference(env.PROFESSIONAL_INTAKE_PRIVACY_REVIEW);
   const enabled = env.PROFESSIONAL_INTAKE_PURGE_ENABLED === 'true' &&
     ['plan','commit'].includes(mode) && Number.isInteger(batchSize) && batchSize >= 1 && batchSize <= 1000 &&
     secretReady && tokenReady;
   return Object.freeze({ enabled, mode:enabled ? mode : null, batchSize:enabled ? batchSize : null,
     confirmationSecret:enabled ? confirmationSecret : null,
-    planToken:enabled && mode === 'commit' ? planToken : null });
+    planToken:enabled && mode === 'commit' ? planToken : null,
+    includeNonSynthetic:enabled ? includeNonSynthetic : false });
 }
 
 const retentionStatuses = new Set(['pending_review','approved_for_publication','rejected','withdrawn']);
@@ -63,8 +66,9 @@ const retentionSummary = (rows, totalField, maxTotal) => {
 };
 
 const confirmationWindowMs = 15 * 60 * 1000;
-const confirmationPayload = (planId, cutoff, batchSize, summary) => Object.freeze({
-  version:1, plan_id:planId, cutoff, batch_size:batchSize, eligible:summary.eligible,
+const confirmationPayload = (planId, cutoff, batchSize, includeNonSynthetic, summary) => Object.freeze({
+  version:1, plan_id:planId, cutoff, batch_size:batchSize,
+  scope:includeNonSynthetic ? 'all-expired' : 'synthetic-only', eligible:summary.eligible,
   synthetic:summary.synthetic, non_synthetic:summary.non_synthetic
 });
 const encodePurgeConfirmation = (payload, secret) => {
@@ -72,7 +76,7 @@ const encodePurgeConfirmation = (payload, secret) => {
   const signature = createHmac('sha256', secret).update(encoded).digest('base64url');
   return `${encoded}.${signature}`;
 };
-const decodePurgeConfirmation = (token, secret, batchSize, now) => {
+const decodePurgeConfirmation = (token, secret, batchSize, includeNonSynthetic, now) => {
   if (typeof token !== 'string' || typeof secret !== 'string') {
     throw error(503, 'professional_retention_purge_confirmation_required');
   }
@@ -90,8 +94,9 @@ const decodePurgeConfirmation = (token, secret, batchSize, now) => {
     throw error(503, 'professional_retention_purge_confirmation_required');
   }
   if (received.length !== expected.length || !timingSafeEqual(received, expected) ||
-      !exactKeys(payload, ['version','plan_id','cutoff','batch_size','eligible','synthetic','non_synthetic']) ||
+      !exactKeys(payload, ['version','plan_id','cutoff','batch_size','scope','eligible','synthetic','non_synthetic']) ||
       payload.version !== 1 || !UUID.test(payload.plan_id ?? '') || payload.batch_size !== batchSize ||
+      payload.scope !== (includeNonSynthetic === true ? 'all-expired' : 'synthetic-only') ||
       !Number.isSafeInteger(payload.eligible) || !Number.isSafeInteger(payload.synthetic) ||
       !Number.isSafeInteger(payload.non_synthetic) || payload.eligible < 0 || payload.synthetic < 0 ||
       payload.non_synthetic < 0 || payload.synthetic + payload.non_synthetic !== payload.eligible ||
@@ -122,14 +127,16 @@ export async function planExpiredProfessionalApplications(pool, {
   try {
     const result = await pool.query(`with expired as (
         select synthetic, status from private.professional_applications
-        where expires_at <= $1::timestamptz
+        where expires_at <= $1::timestamptz and ($3::boolean or synthetic = true)
         order by expires_at asc, receipt_id asc
         limit $2
       )
       select synthetic, status, count(*)::int as count
-      from expired group by synthetic, status`, [now.toISOString(), configuration.batchSize]);
+      from expired group by synthetic, status`, [now.toISOString(), configuration.batchSize,
+      configuration.includeNonSynthetic === true]);
     const summary = retentionSummary(result?.rows, 'eligible', configuration.batchSize);
-    const payload = confirmationPayload(randomUUID(), now.toISOString(), configuration.batchSize, summary);
+    const payload = confirmationPayload(randomUUID(), now.toISOString(), configuration.batchSize,
+      configuration.includeNonSynthetic === true, summary);
     return Object.freeze({ ...summary,
       confirmation:encodePurgeConfirmation(payload, configuration.confirmationSecret) });
   } catch (cause) {
@@ -153,7 +160,8 @@ export async function purgeExpiredProfessionalApplications(pool, {
     throw error(503, 'professional_retention_purge_unavailable');
   }
   const confirmation = decodePurgeConfirmation(configuration.planToken,
-    configuration.confirmationSecret, configuration.batchSize, now);
+    configuration.confirmationSecret, configuration.batchSize,
+    configuration.includeNonSynthetic === true, now);
   const client = await pool.connect();
   try {
     await client.query('begin');
@@ -163,26 +171,26 @@ export async function purgeExpiredProfessionalApplications(pool, {
     // deletion, making every confirmation single-use without claiming success
     // for a rolled-back attempt.
     await client.query(`insert into private.professional_retention_purge_receipts
-      (plan_id, cutoff, batch_size, eligible, synthetic, non_synthetic, completed_at)
-      values ($1::uuid,$2::timestamptz,$3,$4,$5,$6,$7::timestamptz)`,
-    [confirmation.plan_id, confirmation.cutoff, configuration.batchSize, confirmation.eligible,
+      (plan_id, cutoff, batch_size, scope, eligible, synthetic, non_synthetic, completed_at)
+      values ($1::uuid,$2::timestamptz,$3,$4,$5,$6,$7,$8::timestamptz)`,
+    [confirmation.plan_id, confirmation.cutoff, configuration.batchSize, confirmation.scope, confirmation.eligible,
       confirmation.synthetic, confirmation.non_synthetic, now.toISOString()]);
     const result = await client.query(`with expired as materialized (
         select receipt_id, synthetic, status from private.professional_applications
-        where expires_at <= $1::timestamptz
+        where expires_at <= $1::timestamptz and ($3::boolean or synthetic = true)
         order by expires_at asc, receipt_id asc
         limit $2
         for update skip locked
       ), authorized as (
         select 1 from expired
-        having count(*)::int = $3
-          and count(*) filter (where synthetic)::int = $4
+        having count(*)::int = $4
+          and count(*) filter (where synthetic)::int = $5
       )
       delete from private.professional_applications as application
       using expired, authorized
       where application.receipt_id = expired.receipt_id
       returning application.synthetic, application.status`, [confirmation.cutoff, configuration.batchSize,
-      confirmation.eligible, confirmation.synthetic]);
+      configuration.includeNonSynthetic === true, confirmation.eligible, confirmation.synthetic]);
     if (!Array.isArray(result?.rows)) throw error(503, 'professional_retention_purge_unavailable');
     const groups = new Map();
     for (const row of result.rows) {
