@@ -22,11 +22,19 @@ información al solicitante, responsables y acceso, y verificar el borrado dentr
 del plazo aprobado. La limpieza preparada se ejecuta con
 `npm run purge:professional-intake`, únicamente cuando
 `PROFESSIONAL_INTAKE_PURGE_ENABLED=true`, se elige un modo explícito y existe una
-conexión de servidor. `PROFESSIONAL_INTAKE_PURGE_MODE=plan` hace una consulta
-acotada de solo lectura y devuelve cuántas filas serían elegibles; no bloquea ni
-borra. `PROFESSIONAL_INTAKE_PURGE_MODE=commit` vuelve a seleccionar las filas bajo
-bloqueo y ejecuta el borrado. Omitir el modo, usar otro valor o intentar borrar con
-una configuración de planificación falla antes de acceder a los datos.
+conexión de servidor. Ambos modos necesitan un secreto operativo independiente de
+al menos 32 bytes en `PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET`; no debe
+registrarse, publicarse ni guardarse en el repositorio.
+`PROFESSIONAL_INTAKE_PURGE_MODE=plan` hace una consulta acotada de solo lectura y
+devuelve cuántas filas serían elegibles junto con un token de confirmación firmado;
+no bloquea ni borra. Para confirmar, el operador debe conservar el mismo lote y
+secreto, cambiar a `PROFESSIONAL_INTAKE_PURGE_MODE=commit` y proporcionar ese token
+en `PROFESSIONAL_INTAKE_PURGE_PLAN_TOKEN`. El token caduca a los 15 minutos, está
+vinculado al instante de corte, tamaño del lote y recuentos agregados, y no contiene
+identificadores ni datos personales. El commit vuelve a seleccionar bajo bloqueo y
+solo ejecuta el borrado si los recuentos siguen coincidiendo. Omitir el modo, secreto
+o token, usar otro valor, presentar una firma inválida o confirmar un plan caducado
+falla antes de acceder a los datos; un cambio en el lote provoca rollback sin borrar.
 El ejecutor usa un bloqueo transaccional, elimina como máximo 250 filas por lote
 (configurable entre 1 y 1000), selecciona solo `expires_at <= now()` con
 `FOR UPDATE SKIP LOCKED` y devuelve exclusivamente recuentos agregados. Los eventos
@@ -36,10 +44,10 @@ caducadas, pero esto no sustituye el borrado físico programado.
 El ejecutor permanece desactivado y no está programado en ningún servicio: disponer
 del código o de pruebas no acredita borrado operativo. Antes de marcar
 `PROFESSIONAL_INTAKE_RETENTION_READY=true` hay que configurar un runner autorizado,
-ejecutar primero `plan`, cambiar después de forma deliberada a `commit`, observar una
-ejecución real sobre datos de prueba caducados y documentar su resultado. El plan es
-una fotografía orientativa: el lote se recalcula al confirmar y nunca acredita por sí
-solo una eliminación.
+ejecutar primero `plan`, copiar su confirmación de vida corta, cambiar después de
+forma deliberada a `commit`, observar una ejecución real sobre datos de prueba
+caducados y documentar su resultado. El plan es una fotografía orientativa: el lote
+se revalida al confirmar y nunca acredita por sí solo una eliminación.
 
 ## Recepción
 
