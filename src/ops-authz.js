@@ -73,6 +73,7 @@ export function capabilityForOpsRoute(method, route) {
     ['GET /ops/summary', OPS_CAPABILITIES.SUMMARY_READ],
     ['GET /ops/business-metrics', OPS_CAPABILITIES.SUMMARY_READ],
     ['GET /ops/professionals/applications', OPS_CAPABILITIES.PROFESSIONAL_REVIEW],
+    ['GET /ops/professionals/:applicationId/public-profile', OPS_CAPABILITIES.PROFESSIONAL_REVIEW],
     ['POST /ops/professionals/:applicationId/review', OPS_CAPABILITIES.PROFESSIONAL_REVIEW],
     ['GET /ops/moderation/pending', OPS_CAPABILITIES.MODERATION_QUEUE_READ],
     ['GET /ops/moderation/:messageId/brief', OPS_CAPABILITIES.MODERATION_BRIEF_READ],

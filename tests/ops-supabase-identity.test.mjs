@@ -66,9 +66,11 @@ test('editable metadata never grants a role; allowlist removal denies the next r
 test('route resolution preserves legacy restrictions, requires nominal MFA for applications and never queries unmapped routes',async()=>{
  const f=fixture();const request={...f,environment:'staging',method:'GET',route:'/ops/professionals/applications'};
  const allowed=await resolveOpsRequestAuthorization(request);assert.equal(allowed.allowed,true);assert.equal(allowed.principal.transitional,false);
+ const preview=await resolveOpsRequestAuthorization({...request,route:'/ops/professionals/:applicationId/public-profile'});
+ assert.equal(preview.allowed,true);assert.equal(preview.capability,'professional.review');
  const denied=await resolveOpsRequestAuthorization({...request,authorization:'Bearer legacy',configuredToken:'legacy'});
- assert.equal(denied.allowed,false);assert.equal(denied.reason,'individual_identity_required_for_moderation_data');assert.equal(f.calls.http.length,1);
- const unknown=await resolveOpsRequestAuthorization({...request,route:'/ops/unknown'});assert.equal(unknown.reason,'unmapped_route');assert.equal(f.calls.http.length,1);
+ assert.equal(denied.allowed,false);assert.equal(denied.reason,'individual_identity_required_for_moderation_data');assert.equal(f.calls.http.length,2);
+ const unknown=await resolveOpsRequestAuthorization({...request,route:'/ops/unknown'});assert.equal(unknown.reason,'unmapped_route');assert.equal(f.calls.http.length,2);
  const disabled=await resolveOpsRequestAuthorization({...request,configuration:null});assert.equal(disabled.allowed,false);
 });
 
