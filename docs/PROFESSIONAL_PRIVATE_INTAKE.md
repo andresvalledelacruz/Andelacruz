@@ -148,6 +148,14 @@ El esquema está en `scripts/sql/professional-intake.sql`. Las dos tablas privad
 tienen RLS y carecen de permisos para `anon` y `authenticated`. No hay RPC de datos
 profesionales en `public`. El backend requiere su conexión de servidor autorizada.
 
+Una instalación nueva dispone primero de la migración
+`supabase/migrations/20261105140000_create_professional_intake_core.sql`, que crea
+el esquema privado, candidaturas y eventos de revisión. Después se aplica
+`supabase/migrations/20261105150000_add_professional_retention_purge_receipts.sql`.
+Ambas conservan el orden previo al recibo anti-reutilización. Si aparece cualquiera
+de esas tablas antes de empezar, la cadena aborta para exigir inspección del esquema
+en lugar de aceptar silenciosamente una instalación parcial o divergente.
+
 Una instalación que ya tenga las tablas de recepción y revisión, pero no el recibo
 anti-reutilización, dispone de la migración aditiva
 `supabase/migrations/20261105150000_add_professional_retention_purge_receipts.sql`.
