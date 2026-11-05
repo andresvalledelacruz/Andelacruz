@@ -24,9 +24,23 @@ create table private.professional_review_events (
   decided_at timestamptz not null
 );
 create index professional_review_events_receipt_idx on private.professional_review_events(receipt_id);
+create table private.professional_retention_purge_receipts (
+  plan_id uuid primary key,
+  cutoff timestamptz not null,
+  batch_size integer not null check (batch_size between 1 and 1000),
+  eligible integer not null check (eligible >= 0 and eligible <= batch_size),
+  synthetic integer not null check (synthetic >= 0 and synthetic <= eligible),
+  non_synthetic integer not null check (non_synthetic >= 0 and non_synthetic <= eligible),
+  completed_at timestamptz not null,
+  check (synthetic + non_synthetic = eligible),
+  check (completed_at >= cutoff and completed_at <= cutoff + interval '15 minutes')
+);
 alter table private.professional_applications enable row level security;
 alter table private.professional_review_events enable row level security;
-revoke all on private.professional_applications, private.professional_review_events from public, anon, authenticated;
+alter table private.professional_retention_purge_receipts enable row level security;
+revoke all on private.professional_applications, private.professional_review_events,
+  private.professional_retention_purge_receipts from public, anon, authenticated;
 revoke all on sequence private.professional_review_events_id_seq from public, anon, authenticated;
 comment on table private.professional_applications is 'Private intake, never exposed via Data API. Retention purging must be configured before real activation.';
+comment on table private.professional_retention_purge_receipts is 'Private aggregate receipts that make signed retention confirmations single-use; contains no application identifiers or payloads.';
 commit;

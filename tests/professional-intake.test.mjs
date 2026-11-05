@@ -78,6 +78,10 @@ test('retention planning is read-only, bounded and reports only aggregates', asy
     {eligible:5,synthetic:2,non_synthetic:3,confirmation:undefined});
   assert.match(plan.confirmation,/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/);
   assert.doesNotMatch(plan.confirmation,/pending_review|withdrawn|example|receipt/i);
+  const confirmationPayload=JSON.parse(Buffer.from(plan.confirmation.split('.')[0],'base64url').toString('utf8'));
+  assert.match(confirmationPayload.plan_id,/^[0-9a-f-]{36}$/i);
+  assert.deepEqual(Object.keys(confirmationPayload).sort(),
+    ['batch_size','cutoff','eligible','non_synthetic','plan_id','synthetic','version']);
   const planning=pool.calls.find(call=>call.sql.includes('from expired group by'));
   assert.match(planning.sql,/expires_at <= \$1::timestamptz/);
   assert.match(planning.sql,/order by expires_at asc, receipt_id asc/);
@@ -125,6 +129,10 @@ test('retention purge deletes only expired rows in a bounded locked transaction 
   assert.deepEqual(await purgeExpiredProfessionalApplications(pool,{configuration,now}),
     {deleted:3,synthetic:1,non_synthetic:2});
   assert.ok(pool.calls.some(call=>call.sql.includes('pg_advisory_xact_lock')));
+  const receipt=pool.calls.find(call=>call.sql.includes('professional_retention_purge_receipts'));
+  assert.match(receipt.sql,/insert into private\.professional_retention_purge_receipts/);
+  assert.equal(receipt.args[1],now.toISOString());
+  assert.deepEqual(receipt.args.slice(2),[25,3,1,2,now.toISOString()]);
   const deletion=pool.calls.find(call=>call.sql.includes('delete from private.professional_applications'));
   assert.match(deletion.sql,/expires_at <= \$1::timestamptz/);
   assert.match(deletion.sql,/order by expires_at asc, receipt_id asc/);
@@ -186,6 +194,25 @@ test('retention commit rolls back without deleting when the planned aggregate ch
   await assert.rejects(purgeExpiredProfessionalApplications(pool,{configuration:{enabled:true,mode:'commit',batchSize:10,
     confirmationSecret:purgeSecret,planToken:plan.confirmation},now}),
   {code:'professional_retention_purge_plan_changed'});
+  assert.deepEqual(pool.calls.slice(-2).map(call=>call.sql),['rollback','release']);
+});
+
+test('retention confirmation is single-use and a replay cannot reach deletion', async () => {
+  const planPool=database(sql=>({rows:sql.includes('from expired group by')?[
+    {synthetic:false,status:'withdrawn',count:1}
+  ]:[]}));
+  const plan=await planExpiredProfessionalApplications(planPool,{configuration:{enabled:true,mode:'plan',batchSize:10,
+    confirmationSecret:purgeSecret},now});
+  const pool=database(sql=>{
+    if(sql.includes('professional_retention_purge_receipts')) {
+      throw Object.assign(new Error('duplicate plan id'),{code:'23505'});
+    }
+    return {rows:[]};
+  });
+  await assert.rejects(purgeExpiredProfessionalApplications(pool,{configuration:{enabled:true,mode:'commit',batchSize:10,
+    confirmationSecret:purgeSecret,planToken:plan.confirmation},now}),
+  {status:409,code:'professional_retention_purge_confirmation_used'});
+  assert.equal(pool.calls.some(call=>call.sql.includes('delete from private.professional_applications')),false);
   assert.deepEqual(pool.calls.slice(-2).map(call=>call.sql),['rollback','release']);
 });
 
