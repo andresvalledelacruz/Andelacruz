@@ -148,6 +148,8 @@ test('approval requires complete human evidence and a separate publication autho
     {decision:'approve_for_publication',review,categories:['education'],publication_authorization_reference:'authorization-test-v1'},principal,now);
   assert.deepEqual(result,{receipt_id:receiptId,status:'approved_for_publication',published:false});
   const candidate=JSON.parse(pool.calls.find(c=>c.sql.startsWith('update')).args[2]);
+  assert.match(candidate.id,/^professional-[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+  assert.notEqual(candidate.id,`professional-${receiptId}`,'public ID must not reveal the private receipt');
   assert.equal(candidate.review.reviewer_reference,principal.subject);
   assert.equal(candidate.publication_authorization_reference,'authorization-test-v1');
   assert.equal(candidate.country,'España');
