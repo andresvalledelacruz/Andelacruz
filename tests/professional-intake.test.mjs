@@ -15,6 +15,7 @@ import { createHash } from 'node:crypto';
 const requestId = '11111111-1111-4111-8111-111111111111';
 const receiptId = '22222222-2222-4222-8222-222222222222';
 const now = new Date('2026-10-19T15:00:00Z');
+const purgeSecret = 'synthetic-confirmation-secret-for-tests-only';
 const input = {request_id:requestId,name:'Synthetic professional',profession:'Formación',
   register_authority:'Registro sintético de prueba',register:'TEST-123',
   register_url:'https://example.org/registro?id=TEST-123',insurance_evidence:'Cobertura declarada de prueba',
@@ -47,6 +48,9 @@ test('retention purge is separately gated and bounded before any database access
   for (const purgeEnv of [{}, {PROFESSIONAL_INTAKE_PURGE_ENABLED:'false'},
     {PROFESSIONAL_INTAKE_PURGE_ENABLED:'true'},
     {PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',PROFESSIONAL_INTAKE_PURGE_MODE:'delete'},
+    {PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',PROFESSIONAL_INTAKE_PURGE_MODE:'plan'},
+    {PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',PROFESSIONAL_INTAKE_PURGE_MODE:'commit',
+      PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret},
     {PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'0'},
     {PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'1001'},
     {PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'1.5'}]) {
@@ -57,9 +61,8 @@ test('retention purge is separately gated and bounded before any database access
   }
   assert.equal(pool.calls.length,0);
   assert.deepEqual(professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
-    PROFESSIONAL_INTAKE_PURGE_MODE:'plan'}), {enabled:true,mode:'plan',batchSize:250});
-  assert.deepEqual(professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
-    PROFESSIONAL_INTAKE_PURGE_MODE:'commit'}), {enabled:true,mode:'commit',batchSize:250});
+    PROFESSIONAL_INTAKE_PURGE_MODE:'plan',PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret}),
+  {enabled:true,mode:'plan',batchSize:250,confirmationSecret:purgeSecret,planToken:null});
 });
 
 test('retention planning is read-only, bounded and reports only aggregates', async () => {
@@ -68,13 +71,18 @@ test('retention planning is read-only, bounded and reports only aggregates', asy
     {synthetic:false,status:'withdrawn',count:3}
   ]:[]}));
   const configuration=professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
-    PROFESSIONAL_INTAKE_PURGE_MODE:'plan',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'25'});
-  assert.deepEqual(await planExpiredProfessionalApplications(pool,{configuration,now}),
-    {eligible:5,synthetic:2,non_synthetic:3});
+    PROFESSIONAL_INTAKE_PURGE_MODE:'plan',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'25',
+    PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret});
+  const plan=await planExpiredProfessionalApplications(pool,{configuration,now});
+  assert.deepEqual({...plan,confirmation:undefined},
+    {eligible:5,synthetic:2,non_synthetic:3,confirmation:undefined});
+  assert.match(plan.confirmation,/^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/);
+  assert.doesNotMatch(plan.confirmation,/pending_review|withdrawn|example|receipt/i);
   const planning=pool.calls.find(call=>call.sql.includes('from expired group by'));
   assert.match(planning.sql,/expires_at <= \$1::timestamptz/);
+  assert.match(planning.sql,/order by expires_at asc, receipt_id asc/);
   assert.match(planning.sql,/limit \$2/);
-  assert.doesNotMatch(planning.sql,/delete|for update|receipt_id|payload|email|phone|public_profile/i);
+  assert.doesNotMatch(planning.sql,/delete|for update|payload|email|phone|public_profile/i);
   assert.deepEqual(planning.args,[now.toISOString(),25]);
   assert.equal(pool.calls.some(call=>/begin|commit|rollback/.test(call.sql)),false);
   await assert.rejects(purgeExpiredProfessionalApplications(pool,{configuration,now}),
@@ -82,7 +90,7 @@ test('retention planning is read-only, bounded and reports only aggregates', asy
 });
 
 test('retention planning fails closed on malformed or impossible aggregates', async () => {
-  const configuration={enabled:true,mode:'plan',batchSize:25};
+  const configuration={enabled:true,mode:'plan',batchSize:25,confirmationSecret:purgeSecret};
   for (const rows of [null,
     [{synthetic:'false',status:'withdrawn',count:1}],
     [{synthetic:false,status:'unknown',count:1}],
@@ -101,31 +109,84 @@ test('retention purge deletes only expired rows in a bounded locked transaction 
     {synthetic:false,status:'withdrawn'},
     {synthetic:false,status:'rejected'}
   ];
+  const planPool=database(sql=>({rows:sql.includes('from expired group by')?[
+    {synthetic:true,status:'pending_review',count:1},
+    {synthetic:false,status:'withdrawn',count:2}
+  ]:[]}));
+  const planConfiguration=professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
+    PROFESSIONAL_INTAKE_PURGE_MODE:'plan',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'25',
+    PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret});
+  const plan=await planExpiredProfessionalApplications(planPool,{configuration:planConfiguration,now});
   const pool=database(sql=>({rows:sql.includes('delete from private.professional_applications')?rows:[]}));
   const configuration=professionalRetentionPurgeConfiguration({PROFESSIONAL_INTAKE_PURGE_ENABLED:'true',
-    PROFESSIONAL_INTAKE_PURGE_MODE:'commit',
-    PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'25'});
+    PROFESSIONAL_INTAKE_PURGE_MODE:'commit',PROFESSIONAL_INTAKE_PURGE_BATCH_SIZE:'25',
+    PROFESSIONAL_INTAKE_PURGE_CONFIRMATION_SECRET:purgeSecret,
+    PROFESSIONAL_INTAKE_PURGE_PLAN_TOKEN:plan.confirmation});
   assert.deepEqual(await purgeExpiredProfessionalApplications(pool,{configuration,now}),
     {deleted:3,synthetic:1,non_synthetic:2});
   assert.ok(pool.calls.some(call=>call.sql.includes('pg_advisory_xact_lock')));
   const deletion=pool.calls.find(call=>call.sql.includes('delete from private.professional_applications'));
   assert.match(deletion.sql,/expires_at <= \$1::timestamptz/);
+  assert.match(deletion.sql,/order by expires_at asc, receipt_id asc/);
   assert.match(deletion.sql,/limit \$2/);
   assert.match(deletion.sql,/for update skip locked/);
+  assert.match(deletion.sql,/having count\(\*\)::int = \$3/);
   assert.match(deletion.sql,/returning application\.synthetic, application\.status/);
-  assert.deepEqual(deletion.args,[now.toISOString(),25]);
+  assert.deepEqual(deletion.args,[now.toISOString(),25,3,1]);
   assert.doesNotMatch(deletion.sql,/payload|email|phone|public_profile/);
   assert.deepEqual(pool.calls.slice(-2).map(call=>call.sql),['commit','release']);
 });
 
 test('retention purge rolls back on malformed results and never reports operational success', async () => {
+  const planPool=database(sql=>({rows:sql.includes('from expired group by')?[
+    {synthetic:false,status:'withdrawn',count:1}
+  ]:[]}));
+  const plan=await planExpiredProfessionalApplications(planPool,{configuration:{enabled:true,mode:'plan',batchSize:10,
+    confirmationSecret:purgeSecret},now});
   for (const response of [{}, {rows:[{synthetic:'false',status:'withdrawn'}]},
     {rows:[{synthetic:false,status:'unknown'}]}]) {
     const pool=database(sql=>sql.includes('delete from private.professional_applications')?response:{rows:[]});
-    await assert.rejects(purgeExpiredProfessionalApplications(pool,{configuration:{enabled:true,mode:'commit',batchSize:10},now}),
+    await assert.rejects(purgeExpiredProfessionalApplications(pool,{configuration:{enabled:true,mode:'commit',batchSize:10,
+      confirmationSecret:purgeSecret,planToken:plan.confirmation},now}),
       {code:'professional_retention_purge_unavailable'});
     assert.deepEqual(pool.calls.slice(-2).map(call=>call.sql),['rollback','release']);
   }
+});
+
+test('retention commit requires a fresh authentic matching plan before database access', async () => {
+  const planPool=database(sql=>({rows:sql.includes('from expired group by')?[
+    {synthetic:false,status:'withdrawn',count:1}
+  ]:[]}));
+  const plan=await planExpiredProfessionalApplications(planPool,{configuration:{enabled:true,mode:'plan',batchSize:10,
+    confirmationSecret:purgeSecret},now});
+  for (const [planToken,runAt,code] of [
+    [undefined,now,'professional_retention_purge_commit_required'],
+    [`${plan.confirmation}x`,now,'professional_retention_purge_confirmation_required'],
+    [plan.confirmation,new Date(now.getTime()+16*60*1000),'professional_retention_purge_confirmation_expired']
+  ]) {
+    const pool=database();
+    await assert.rejects(purgeExpiredProfessionalApplications(pool,{configuration:{enabled:true,mode:'commit',batchSize:10,
+      confirmationSecret:purgeSecret,planToken},now:runAt}),{code});
+    assert.equal(pool.calls.length,0);
+  }
+  const wrongSecretPool=database();
+  await assert.rejects(purgeExpiredProfessionalApplications(wrongSecretPool,{configuration:{enabled:true,mode:'commit',batchSize:10,
+    confirmationSecret:`${purgeSecret}-wrong`,planToken:plan.confirmation},now}),
+  {code:'professional_retention_purge_confirmation_required'});
+  assert.equal(wrongSecretPool.calls.length,0);
+});
+
+test('retention commit rolls back without deleting when the planned aggregate changed', async () => {
+  const planPool=database(sql=>({rows:sql.includes('from expired group by')?[
+    {synthetic:false,status:'withdrawn',count:2}
+  ]:[]}));
+  const plan=await planExpiredProfessionalApplications(planPool,{configuration:{enabled:true,mode:'plan',batchSize:10,
+    confirmationSecret:purgeSecret},now});
+  const pool=database(sql=>({rows:sql.includes('delete from private.professional_applications')?[]:[]}));
+  await assert.rejects(purgeExpiredProfessionalApplications(pool,{configuration:{enabled:true,mode:'commit',batchSize:10,
+    confirmationSecret:purgeSecret,planToken:plan.confirmation},now}),
+  {code:'professional_retention_purge_plan_changed'});
+  assert.deepEqual(pool.calls.slice(-2).map(call=>call.sql),['rollback','release']);
 });
 
 test('rejects arbitrary help text, revenue claims, malformed contact data and missing acknowledgements', () => {
