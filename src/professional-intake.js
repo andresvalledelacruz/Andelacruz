@@ -63,8 +63,8 @@ const retentionSummary = (rows, totalField, maxTotal) => {
 };
 
 const confirmationWindowMs = 15 * 60 * 1000;
-const confirmationPayload = (cutoff, batchSize, summary) => Object.freeze({
-  version:1, cutoff, batch_size:batchSize, eligible:summary.eligible,
+const confirmationPayload = (planId, cutoff, batchSize, summary) => Object.freeze({
+  version:1, plan_id:planId, cutoff, batch_size:batchSize, eligible:summary.eligible,
   synthetic:summary.synthetic, non_synthetic:summary.non_synthetic
 });
 const encodePurgeConfirmation = (payload, secret) => {
@@ -90,8 +90,8 @@ const decodePurgeConfirmation = (token, secret, batchSize, now) => {
     throw error(503, 'professional_retention_purge_confirmation_required');
   }
   if (received.length !== expected.length || !timingSafeEqual(received, expected) ||
-      !exactKeys(payload, ['version','cutoff','batch_size','eligible','synthetic','non_synthetic']) ||
-      payload.version !== 1 || payload.batch_size !== batchSize ||
+      !exactKeys(payload, ['version','plan_id','cutoff','batch_size','eligible','synthetic','non_synthetic']) ||
+      payload.version !== 1 || !UUID.test(payload.plan_id ?? '') || payload.batch_size !== batchSize ||
       !Number.isSafeInteger(payload.eligible) || !Number.isSafeInteger(payload.synthetic) ||
       !Number.isSafeInteger(payload.non_synthetic) || payload.eligible < 0 || payload.synthetic < 0 ||
       payload.non_synthetic < 0 || payload.synthetic + payload.non_synthetic !== payload.eligible ||
@@ -129,7 +129,7 @@ export async function planExpiredProfessionalApplications(pool, {
       select synthetic, status, count(*)::int as count
       from expired group by synthetic, status`, [now.toISOString(), configuration.batchSize]);
     const summary = retentionSummary(result?.rows, 'eligible', configuration.batchSize);
-    const payload = confirmationPayload(now.toISOString(), configuration.batchSize, summary);
+    const payload = confirmationPayload(randomUUID(), now.toISOString(), configuration.batchSize, summary);
     return Object.freeze({ ...summary,
       confirmation:encodePurgeConfirmation(payload, configuration.confirmationSecret) });
   } catch (cause) {
@@ -158,6 +158,15 @@ export async function purgeExpiredProfessionalApplications(pool, {
   try {
     await client.query('begin');
     await client.query("select pg_advisory_xact_lock(hashtext('professional_intake_retention_v1'))");
+    // Reserve the signed plan before touching applications. The receipt contains
+    // no application identifiers or payloads and commits atomically with the
+    // deletion, making every confirmation single-use without claiming success
+    // for a rolled-back attempt.
+    await client.query(`insert into private.professional_retention_purge_receipts
+      (plan_id, cutoff, batch_size, eligible, synthetic, non_synthetic, completed_at)
+      values ($1::uuid,$2::timestamptz,$3,$4,$5,$6,$7::timestamptz)`,
+    [confirmation.plan_id, confirmation.cutoff, configuration.batchSize, confirmation.eligible,
+      confirmation.synthetic, confirmation.non_synthetic, now.toISOString()]);
     const result = await client.query(`with expired as materialized (
         select receipt_id, synthetic, status from private.professional_applications
         where expires_at <= $1::timestamptz
@@ -189,6 +198,7 @@ export async function purgeExpiredProfessionalApplications(pool, {
     return Object.freeze(summary);
   } catch (cause) {
     await client.query('rollback').catch(() => {});
+    if (cause?.code === '23505') throw error(409, 'professional_retention_purge_confirmation_used');
     if (cause.status) throw cause;
     throw error(503, 'professional_retention_purge_unavailable');
   } finally { client.release(); }

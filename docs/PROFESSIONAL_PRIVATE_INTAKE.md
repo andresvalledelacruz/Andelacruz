@@ -30,11 +30,16 @@ devuelve cuántas filas serían elegibles junto con un token de confirmación fi
 no bloquea ni borra. Para confirmar, el operador debe conservar el mismo lote y
 secreto, cambiar a `PROFESSIONAL_INTAKE_PURGE_MODE=commit` y proporcionar ese token
 en `PROFESSIONAL_INTAKE_PURGE_PLAN_TOKEN`. El token caduca a los 15 minutos, está
-vinculado al instante de corte, tamaño del lote y recuentos agregados, y no contiene
-identificadores ni datos personales. El commit vuelve a seleccionar bajo bloqueo y
-solo ejecuta el borrado si los recuentos siguen coincidiendo. Omitir el modo, secreto
-o token, usar otro valor, presentar una firma inválida o confirmar un plan caducado
-falla antes de acceder a los datos; un cambio en el lote provoca rollback sin borrar.
+vinculado a un identificador aleatorio de plan, instante de corte, tamaño del lote y
+recuentos agregados, y no contiene identificadores de candidaturas ni datos personales.
+El commit vuelve a seleccionar bajo bloqueo y reserva el identificador en un recibo
+privado antes de tocar las candidaturas. Ese recibo se confirma atómicamente con el
+borrado, conserva solo el identificador del plan, corte, lote, recuentos y finalización,
+e impide reutilizar el mismo token. Un rollback elimina también la reserva y no deja
+un falso recibo de éxito. El commit solo ejecuta el borrado si los recuentos siguen
+coincidiendo. Omitir el modo, secreto o token, usar otro valor, presentar una firma
+inválida o confirmar un plan caducado falla antes de acceder a los datos; un token ya
+consumido o un cambio en el lote provoca rollback sin borrar.
 El ejecutor usa un bloqueo transaccional, elimina como máximo 250 filas por lote
 (configurable entre 1 y 1000), selecciona solo `expires_at <= now()` con
 `FOR UPDATE SKIP LOCKED` y devuelve exclusivamente recuentos agregados. Los eventos
