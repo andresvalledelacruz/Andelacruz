@@ -39,6 +39,12 @@ Do not convert it to SECURITY INVOKER by simply broadening the authenticated `st
 
 `get_owner_privacy_safe_analytics` is a legacy aggregate report and is not a browser API. The supported Control Centre path is the protected operations backend, which reads the aggregate tables with its server-side database identity. The legacy function therefore grants `EXECUTE` only to `service_role`; `PUBLIC`, `anon` and `authenticated` must not invoke it, even if they know an earlier owner token.
 
+## Dormant partner offers
+
+`get_runtime_partner_offers_v2` has no consumer in the current public runtime or backend. The repository partner registry is empty and commercial activation is disabled; an external network request or account application is not partner approval. The dormant function therefore grants `EXECUTE` only to `service_role`; `PUBLIC`, `anon` and `authenticated` must not use it as an undocumented offer feed.
+
+Reopening browser access requires a separate reviewed change with an approved partner, an approved non-Safety surface, disclosure and consent behavior, and an explicit runtime consumer. Activating a network or inserting a database row outside that review does not satisfy this contract.
+
 ## Learning integrity
 
 Outcome events require a real recent decision, are semantically deduplicated and capped per decision. An `opportunity_id` is accepted only if it was eligible in the original decision. Learning snapshots only aggregate events with a non-null verified opportunity ID. Fewer than 10 samples remain early; 10–49 are partial; 50+ are measured.
