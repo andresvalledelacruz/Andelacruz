@@ -35,6 +35,10 @@ Do not convert it to SECURITY INVOKER by simply broadening the authenticated `st
 
 `report_story` intentionally remains available to authenticated sessions, including anonymous Supabase sessions. It requires `auth.uid()`, checks that the story is published, rate-limits reports, prevents duplicate open reports and records moderation/audit events.
 
+## Owner analytics
+
+`get_owner_privacy_safe_analytics` is a legacy aggregate report and is not a browser API. The supported Control Centre path is the protected operations backend, which reads the aggregate tables with its server-side database identity. The legacy function therefore grants `EXECUTE` only to `service_role`; `PUBLIC`, `anon` and `authenticated` must not invoke it, even if they know an earlier owner token.
+
 ## Learning integrity
 
 Outcome events require a real recent decision, are semantically deduplicated and capped per decision. An `opportunity_id` is accepted only if it was eligible in the original decision. Learning snapshots only aggregate events with a non-null verified opportunity ID. Fewer than 10 samples remain early; 10–49 are partial; 50+ are measured.
