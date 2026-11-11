@@ -36,7 +36,7 @@ No se guardan:
 1. Las páginas habilitadas cargan `/visitor-analytics.js` directamente o mediante `/public-page-runtime.js`.
 2. El beacon solo funciona en `desgracias.es` y `www.desgracias.es`.
 3. Envía un `POST` a la RPC `record_privacy_safe_pageview` de Supabase.
-4. La RPC valida las dimensiones y hace `upsert` sobre contadores agregados.
+4. La RPC valida las dimensiones, ignora rutas ambiguas y aplica en servidor la lista completa de superficies P0/P1 antes de cualquier escritura.
 5. La tabla tiene RLS y no se concede lectura a `anon` ni `authenticated`.
 
 ## Consultas operativas
@@ -113,7 +113,7 @@ Después de un despliegue de analítica:
 
 El contador está habilitado en la portada y en los hubs públicos que ya cargan el runtime común, incluidos Familia, Rupturas, Duelo, Dinero, Trabajo y Soledad. La extensión a guías individuales debe hacerse en lotes pequeños y revisables para evitar reescrituras accidentales de contenido YMYL.
 
-Ejecutar `node scripts/analytics-coverage-inventory.mjs` para obtener la cobertura por página indexable. El campo `missing` cuenta páginas sin beacon, **no fallos**. El desglose distingue `explicitly_unmeasured` (Recursos y las cinco páginas internacionales cuyo contrato conserva ausencia de medición o scripts), `safety_review` (rutas P0/P1 que requieren una decisión específica) y `review_needed` (otras páginas aún sin decisión individual). No añadir analítica automáticamente a cualquiera de estos grupos por el mero hecho de aparecer en el inventario.
+Ejecutar `node scripts/analytics-coverage-inventory.mjs` para obtener la cobertura por página indexable. El campo `missing` cuenta páginas sin beacon, **no fallos**. El desglose distingue `explicitly_unmeasured` (Recursos y páginas internacionales cuyo contrato conserva ausencia de medición o scripts), `safety_review` (rutas P0/P1 que requieren una decisión específica) y `review_needed` (otras páginas aún sin decisión individual). No añadir analítica automáticamente a cualquiera de estos grupos por el mero hecho de aparecer en el inventario.
 
 ## Principios de producto
 
