@@ -75,6 +75,10 @@ async function ensureSchema() {
     )
   `);
   await pool.query(`
+    create index if not exists staging_story_update_candidates_story_idx
+      on staging_story_update_candidates (story_id, submitted_at desc)
+  `);
+  await pool.query(`
     create table if not exists staging_story_updates (
       id bigserial primary key,
       story_id bigint not null references staging_published_stories(id) on delete cascade,
@@ -85,6 +89,10 @@ async function ensureSchema() {
       published_at timestamptz not null default now(),
       status text not null default 'published' check (status in ('published','withdrawn'))
     )
+  `);
+  await pool.query(`
+    create index if not exists staging_story_updates_story_published_idx
+      on staging_story_updates (story_id, published_at asc)
   `);
 }
 
