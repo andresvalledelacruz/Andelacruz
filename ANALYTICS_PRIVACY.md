@@ -113,6 +113,12 @@ Después de un despliegue de analítica:
 
 El contador está habilitado en la portada y en los hubs públicos que ya cargan el runtime común, incluidos Familia, Rupturas, Duelo, Dinero, Trabajo y Soledad. La extensión a guías individuales debe hacerse en lotes pequeños y revisables para evitar reescrituras accidentales de contenido YMYL.
 
+### Interacciones heredadas
+
+La RPC `record_privacy_safe_interaction` no tiene consumidor en el runtime ni en el backend actuales. Su ejecución está revocada para `PUBLIC`, `anon` y `authenticated`; solo `service_role` conserva acceso técnico para diagnóstico o retirada controlada. La tabla agregada histórica se conserva y no se presenta como actividad actual.
+
+No se debe reconectar esa RPC desde el navegador. Una futura medición de clics, secciones o profundidad necesita un contrato revisado que demuestre utilidad, mantenga fuera todas las rutas Safety y no acepte texto libre, identificadores de persona ni datos de sesión.
+
 Ejecutar `node scripts/analytics-coverage-inventory.mjs` para obtener la cobertura por página indexable. El campo `missing` cuenta páginas sin beacon, **no fallos**. El desglose distingue `explicitly_unmeasured` (Recursos y páginas internacionales cuyo contrato conserva ausencia de medición o scripts), `safety_review` (rutas P0/P1 que requieren una decisión específica) y `review_needed` (otras páginas aún sin decisión individual). No añadir analítica automáticamente a cualquiera de estos grupos por el mero hecho de aparecer en el inventario.
 
 ## Principios de producto
